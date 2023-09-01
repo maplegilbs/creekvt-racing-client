@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../css/stylesExamples.css">
+    <title>Creek VT - Racing</title>
+    <link rel="icon" href="https://creekvt.com/wp-content/uploads/2019/02/CreekVTLogo1A-100x100.png" sizes="32x32">
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta property="og:title" content="Creek VT Race Page" />
+    <meta property="og:url" content="https://creekvt.com/races" />
+    <meta property="og:image" content="https://creekvt.com/FlowsPageAssets/Images/FlowsPageUpdatesSocial.jpg" />
+    <meta property="og:type" content="website" />
+    <meta property="og:description" content="Information about Vermont whitewater races" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.2/handlebars.min.js"></script>
+
+</head>
+
+<body>
+
+
+
+    <!--Header Navbar-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand mobile-hide" href="https://creekvt.com"><img
+                src="https://creekvt.com/wp-content/uploads/2020/05/CreekVTLogo150x150.png"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="nav navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle d-flex justify-content-start" style="color: white;" href="#"
+                        id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">
+                        Flows & Forecasts
+                    </a>
+                    <div class="dropdown-menu flex-column" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="https://creekvt.com/flows">Current Flows</a>
+                        <a class="dropdown-item" href="https://creekvt.com/river-level-reporting">Level Reporting</a>
+                    </div>
+                </li>
+                <hr class="mobile-show">
+                <li class="nav-item d-flex justify-content-start">
+                    <a class="nav-link" href="https://creekvt.com/map.html">The Map</a>
+                </li>
+                <hr class="mobile-show">
+                <li class="nav-item d-flex justify-content-start">
+                    <a class="nav-link" href="https://creekvt.com/riverguide">River Guide</a>
+                </li>
+                <hr class="mobile-show">
+                <li class="nav-item d-flex justify-content-start">
+                    <a class="nav-link" href="https://creekvt.com/blog">Blog</a>
+                </li>
+                <hr class="mobile-show">
+                <li class="nav-item d-flex justify-content-start">
+                    <a class="nav-link" href="https://creekvt.com/about">About</a>
+                </li>
+            </ul>
+        </div>
+        <a class="navbar-brand mobile-show" href="https://creekvt.com"><img height="42px"
+                src="https://creekvt.com/wp-content/uploads/2019/04/MobileLogo7.png"></a>
+    </nav>
+
+
+    <div id="allSections">
+
+
+
+
+        <div class="sectionContainer">
+            <div class="innerSection">
+                <h2 class="sectionHeader">Gauges</h2>
+                <hr class="sectionHr">
+                <div id="gaugesLoading" class="loading">LOADING</div>
+                <div id="gaugesLoader" class="loader"></div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="sectionContainer">
+        <div class="innerSection">
+            <h2 class="sectionHeader">Remote Visuals</h2>
+            <hr class="sectionHr">
+            <div id="riverCams">
+                <div id="camsLoading" class="loading">LOADING</div>
+                <div id="camsLoader" class="loader"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="sectionContainer">
+        <div class="innerSection">
+            <h2 class="sectionHeader">Recent Level Reports</h2>
+            <hr class="sectionHr">
+            <div id="levelReports"></div>
+        </div>
+    </div>
+
+    <!-- Reinstate when either NOAA fixes issues or USGS stations are back online (seasonally)
+		be sure to link rainInfo script-->
+    <div class="sectionContainer">
+        <div class="innerSection">
+            <h2 class="sectionHeader">Rain Totals</h2>
+            <hr class="sectionHr">
+            <div id="rainTotals">
+                <div id="rainLoading" class="loading">LOADING</div>
+                <div id="rainLoader" class="loader"></div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="sectionContainer">
+        <div class="innerSection">
+            <h2 class="sectionHeader">Current Radar</h2>
+            <hr class="sectionHr">
+            <div id="currentRadar">
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div class="sectionContainer" id="forecastedPrecip">
+        <div class="innerSection">
+            <h2 class="sectionHeader">Forecasted QPF</h2>
+            <hr class="sectionHr">
+            <br />
+            <br />
+        </div>
+    </div>
+    </div>
+
+    <footer id="flowsFooter">
+        <div class="footerItems">
+            <a href="https://creekvt.com">
+                <img src="https://creekvt.com/wp-content/uploads/2019/04/CreekVTLogo1A-150x150.png">
+            </a>
+        </div>
+        <div class="footerItems">
+            <ul>
+                <li><a title="River Guide" href="https://creekvt.com/riverguide/">River Guide</a></li>
+                <li><a href="https://creekvt.com/map.html">The Map</a></li>
+                <li><a title="River Level Reporting" href="https://creekvt.com/river-level-reporting/">River Level
+                        Reporting</a></li>
+                <li><a href="https://creekvt.com/blog/">Blog</a></li>
+                <li><a href="https://creekvt.com/about/">About</a></li>
+                <li><a href="https://creekvt.com/contact/">Contact</a></li>
+            </ul>
+        </div>
+        <div class="footerItems">
+            <p>Creek VT 2023</p>
+            <p>Thanks For Visiting</p>
+        </div>
+    </footer>
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
