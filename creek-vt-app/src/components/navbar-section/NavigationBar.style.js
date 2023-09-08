@@ -1,18 +1,22 @@
 import styled from 'styled-components';
 import '../../App.css';
+import { Link } from 'react-router-dom';
 /*Header Nav Styles*/
 
 /* Navbar */
 
 export const NavbarContainer = styled.nav`
-font-family: Montserrat, sans-serif;
+  font-family: Montserrat, sans-serif;
   text-transform: uppercase;
   font-weight: 700;
   font-size: 14px;
   background-image: linear-gradient(110deg, #4e647b, #293b46);
   box-shadow: 2px 3px 10px 4px;
   margin-bottom: 20px;
+  width: 100%;
   height: 70px;
+  display: flex;
+  flex-direction: column;
   padding: 2px 20px 4px 0;
 
  styled.navbar-dark styled.navbar-toggler-icon {
@@ -24,25 +28,49 @@ font-family: Montserrat, sans-serif;
 }
 `;
 
-export const LeftContainer = styled.div`
-.navbar-brand,
-.navbar-brand img {
-  height: 66px;
+export const LeftContainer = styled.div` {
+  flex: 70%;
+  display: flex;
+  align-items: center;
+  padding-left: 15%;
+
+`;
+
+export const NavbarBrand = styled.div`
+nav navbar-brand,
+nav navbar-brand img {
+  height: 80px;
   padding: 2px 20px;
   background-color: red;
 }
-`;
+`
+
 
 export const NavbarLinkContainer = styled.div`
+  display: flex;
+`;
 
+export const NavbarLink = styled(Link)`
+  color: white;
+  font-family: Montserrat, sans-serif;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: medium;
+  margin: 30px 10px;
+  text-decoration: none;
 `;
 
 export const RightContainer = styled.div`
-background-color: salmon;
+flex: 30%;
+display: flex;
+justify-content: flex-end;
+padding-right: 50px;
 `
 
 export const NavbarInnerContainer = styled.div`
-
+width: 100%;
+height: 80px;
+display: inline-block;
 `
 export const NavbarExtendedContainer = styled.div`
 
