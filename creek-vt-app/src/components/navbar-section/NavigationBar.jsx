@@ -1,5 +1,13 @@
 import React from 'react';
-import './NavigationBar.css';
+import {
+  NavbarContainer,
+  LeftContainer,
+  RightContainer, 
+  NavbarInnerContainer,
+NavbarExtendedContainer, 
+  NavbarLinkContainer
+} from './NavigationBar.style.js';
+import { Link } from 'react-router-dom';
 
 
 
@@ -8,7 +16,23 @@ import './NavigationBar.css';
 const NavigationBar = (props) => {
   return (
     <>
-      
+      <NavbarContainer>
+        <NavbarInnerContainer>
+
+          <LeftContainer>
+          </LeftContainer>
+
+          <RightContainer>
+            <NavbarLinkContainer>
+              <Link to="/"></Link>
+            </NavbarLinkContainer>
+          </RightContainer>
+
+        </NavbarInnerContainer>
+
+        <NavbarExtendedContainer>
+        </NavbarExtendedContainer>
+      </NavbarContainer>
     </>
   );
 }
