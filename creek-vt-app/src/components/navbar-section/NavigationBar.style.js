@@ -16,11 +16,14 @@ export const NavbarContainer = styled.nav`
   box-shadow: 2px 3px 10px 4px;
   margin-bottom: 15px;
   width: 100%;
-  height: 70px;
+  height: ${(props) => (props.extendNavbar ? "100vh" : "80px")};
   display: flex;
   flex-direction: column;
   padding: 2px 20px 4px 0;
-
+  
+  @media (min-width: 700px) {
+    height: 80px;
+  }
  styled.navbar-dark,
  styled.navbar-toggler-icon {
   background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255, 255, 255, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
@@ -29,6 +32,7 @@ export const NavbarContainer = styled.nav`
 #navbarSupportedContent {
   justify-content: flex-end;
 }
+
 `;
 
 export const LeftContainer = styled.div` {
@@ -54,6 +58,20 @@ nav navbar-brand,
 
 
 export const NavbarLink = styled(Link)`
+  color: white;
+  font-family: Montserrat, sans-serif;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: medium;
+  margin: 30px 20px;
+  text-decoration: none;
+
+  @media (max-width: 700px) {
+    display: none;
+  }
+`;
+
+export const NavbarLinkExtended = styled(Link)`
   color: white;
   font-family: Montserrat, sans-serif;
   text-transform: uppercase;
@@ -98,8 +116,32 @@ height: 80px;
 display: flex;
 
 `
+
+export const OpenLinksButton = styled.button`
+  width: 70px;
+  height: 50px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 45px;
+  cursor: pointer;
+  display: inline-block;
+  margin-left: 300%;
+  position: sticky;
+
+  @media (min-width: 700px) {
+    display: none;
+  }
+`;
+
 export const NavbarExtendedContainer = styled.div`
-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  @media (min-width: 700px) {
+    display: none;
+  }
 `
 
 // export const 
