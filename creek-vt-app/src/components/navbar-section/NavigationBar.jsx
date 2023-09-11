@@ -45,10 +45,26 @@ const NavigationBar = (props) => {
                   <DropdownContainer>
                     <DropdownItem
                       //! need these to change the state of show signin and register
-                      onClick={() => props.setShowSignIn(true)}>
+                      onClick={() => {
+                        props.setShowSignIn(true);
+                        props.setShowRacesMain(false);
+                        props.setShowRaceRegistration(false);
+                        props.setShowRaceInfo(false);
+                        props.setShowRaceResults(false);
+                        props.setShowRegisteredRacers(false);
+                      }}>
                       signin
                     </DropdownItem>
-                    <DropdownItem onClick={() => props.SetShowRegister(true)}>
+                    <DropdownItem
+                      onClick={() => {
+                        props.setShowRegister(true);
+                        props.setShowRacesMain(false);
+                        props.setShowRaceRegistration(false);
+                        props.setShowRaceInfo(false);
+                        props.setShowRaceResults(false);
+                        props.setShowRegisteredRacers(false);
+                        console.log("looking for this", props);
+                      }}>
                       Register
                     </DropdownItem>
                   </DropdownContainer>
@@ -80,10 +96,29 @@ const NavigationBar = (props) => {
               <NavbarLinkExtended to="/">My Profile</NavbarLinkExtended>
               {showDropdown && (
                 <DropdownContainer>
-                  <DropdownItem onClick={() => <Signin>signin</Signin>}>
+                  {/* on dropdown items need to make showsignin/showregister as true and all else pages false */}
+                  <DropdownItem
+                    onClick={() =>
+                      props.setShowSignIn(true) &&
+                      props.setShowRegister(false) &&
+                      props.setShowRacesMain(false) &&
+                      props.setShowRaceRegistration(false) &&
+                      props.setShowRaceInfo(false) &&
+                      props.setShowRaceResults(false) &&
+                      props.setShowRegisteredRacers(false)
+                    }>
                     signin
                   </DropdownItem>
-                  <DropdownItem onClick={() => <Register>register</Register>}>
+                  <DropdownItem
+                    onClick={() =>
+                      props.setShowRegister(true) &&
+                      props.setShowSignIn(false) &&
+                      props.setShowRacesMain(false) &&
+                      props.setShowRaceRegistration(false) &&
+                      props.setShowRaceInfo(false) &&
+                      props.setShowRaceResults(false) &&
+                      props.setShowRegisteredRacers(false)
+                    }>
                     Register
                   </DropdownItem>
                 </DropdownContainer>
