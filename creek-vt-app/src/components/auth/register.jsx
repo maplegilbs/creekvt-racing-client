@@ -13,8 +13,8 @@ const Register = (props) => {
   function handleSubmit(e) {
     e.preventDefault();
     registerUser();
-    props.setShowRegister(false);
     props.setShowRacesMain(true);
+    props.setShowRegister(false);
   }
   async function registerUser() {
     try {
