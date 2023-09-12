@@ -43,6 +43,8 @@ const PageControl = (props) => {
           setShowRaceResults={props.setShowRaceResults}
           setShowRaceInfo={props.setShowRaceInfo}
           setShowRegisteredRacers={props.setShowRegisteredRacers}
+          setRace={setRace}
+          race={race}
         />
       )}
       {props.showRaceResults === true && (
