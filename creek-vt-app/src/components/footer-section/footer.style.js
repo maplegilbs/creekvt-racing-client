@@ -6,17 +6,19 @@ import "../../App.css";
 export const FooterContainer = styled.nav`
   background-image: linear-gradient(110deg, #4e647b, #293b46);
   box-shadow: 2px 3px 10px 4px;
-  margin-bottom: 5px;
+  margin: 1px 0px;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 4vh 15vh 9vh 0;
-  position: absolute;
+  padding: 3vh 4vh 4vh 0;
+  position: sticky;
   bottom: 0;
+  zindex: 1;
 
   @media (min-width: 700px) {
     height: 20vh;
+    padding: 3vh 4vh 7vh 0;
   }
 `;
 
