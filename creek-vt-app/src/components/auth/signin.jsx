@@ -8,6 +8,8 @@ const Signin = (props) => {
   function handleSubmit(e) {
     e.preventDefault();
     signin();
+    props.setShowRacesMain(true);
+    props.setShowSignIn(false);
   }
   async function signin() {
     try {

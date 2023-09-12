@@ -9,7 +9,15 @@ import RaceInfo from "./raceInfo";
 const PageControl = (props) => {
   return (
     <>
-      <Signin updateToken={props.updateToken} />
+      {props.showRacesMain === true && <RacesMain />}
+      {props.showRegister === true && (
+        <Register
+          updateToken={props.updateToken}
+          setShowRacesMain={props.setShowRacesMain}
+          setShowRegister={props.setShowRegister}
+        />
+      )}
+      {/* <Signin updateToken={props.updateToken} setShowRacesMain={props.SetShowRacesMain} setShowSignIn={props.setShowSignIn}/> */}
     </>
   );
 };

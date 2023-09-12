@@ -10,6 +10,10 @@ function App() {
   const [showRacesMain, setShowRacesMain] = useState(true);
   const [showSignIn, setShowSignIn] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
+  const [showRaceRegistration, setShowRaceRegistration] = useState(false);
+  const [showraceResults, setShowRaceResults] = useState(false);
+  const [showregisteredRacers, setShowRegisteredRacers] = useState(false);
+  const [showraceInfo, setShowRaceInfo] = useState(false);
 
   function updateToken(newToken) {
     setToken(newToken);
@@ -26,9 +30,21 @@ function App() {
       <NavigationBar
         setToken={setToken}
         token={token}
-        setShowRegister={setShowRegister}
-        setShowSignIn={setShowSignIn}
         updateToken={updateToken}
+        setShowRegister={setShowRegister}
+        showRegister={showRegister}
+        setShowSignIn={setShowSignIn}
+        showSignIn={showSignIn}
+        setShowRacesMain={setShowRacesMain}
+        showRacesMain={showRacesMain}
+        setShowRaceRegistration={setShowRaceRegistration}
+        showRaceRegistration={showRaceRegistration}
+        setShowRaceInfo={setShowRaceInfo}
+        showraceInfo={showraceInfo}
+        setShowRaceResults={setShowRaceResults}
+        showraceResults={showraceResults}
+        setShowRegisteredRacers={setShowRegisteredRacers}
+        showregisteredRacers={showregisteredRacers}
       />
       <Routes>
         <Route path="/" />
@@ -43,6 +59,15 @@ function App() {
         setToken={setToken}
         updateToken={updateToken}
         setShowRacesMain={setShowRacesMain}
+        showRacesMain={showRacesMain}
+        setShowRaceRegistration={setShowRaceRegistration}
+        showRaceRegistration={showRaceRegistration}
+        setShowRaceInfo={setShowRaceInfo}
+        showraceInfo={showraceInfo}
+        setShowRaceResults={setShowRaceResults}
+        showraceResults={showraceResults}
+        setShowRegisteredRacers={setShowRegisteredRacers}
+        showregisteredRacers={showregisteredRacers}
       />
       <Footer />
     </Router>
