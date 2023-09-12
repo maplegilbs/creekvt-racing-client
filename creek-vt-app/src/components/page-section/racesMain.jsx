@@ -1,6 +1,7 @@
 import { API_VIEWALL_RACES } from "../../constants/endpoints";
 import RaceInfoCards from "../linkingComponents/raceInfoCards";
 import React, { useState, useEffect } from "react";
+// const jwt = require("jsonwebtoken");
 
 // main races page, also landing page for site. will show by default.
 const RacesMain = (props) => {
@@ -16,14 +17,13 @@ const RacesMain = (props) => {
       const response = await fetch(API_VIEWALL_RACES, requestOptions);
       const data = await response.json();
       setRaceFeedItems(data.races);
-      console.log("racefeeditems here", raceFeedItems);
     } catch (error) {
       console.log(error);
     }
   }
   return (
     <div
-      className="d-flex flex-column align-items-center m-5"
+      className="d-flex flex-column align-items-center m-3"
       style={{ zIndex: 1 }}>
       {/* need real image*/}
       <img

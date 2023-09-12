@@ -11,7 +11,7 @@ const PageControl = (props) => {
   const [race, setRace] = useState(null);
   return (
     // below is the logic for what page is currently showing.
-    <div style={{ zIndex: 1 }}>
+    <div style={{ zIndex: 1, height: "max-content" }}>
       {props.showRacesMain === true && (
         <RacesMain
           setShowRacesMain={props.setShowRacesMain}

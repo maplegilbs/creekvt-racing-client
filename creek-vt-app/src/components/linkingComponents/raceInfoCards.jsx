@@ -1,24 +1,7 @@
 import { CardBody, CardTitle } from "reactstrap";
-import RaceInfo from "../page-section/raceInfo";
 
 const RaceInfoCards = (props) => {
-  let {
-    affiliatedOrganization,
-    date,
-    difficulty,
-    fallBackDate,
-    format,
-    gauges,
-    id,
-    location,
-    name,
-    numberOfLaps,
-    organizerContaact,
-    putIn,
-    takeOut,
-    year,
-    startTime,
-  } = props.race;
+  let { name } = props.race;
   function handleSubmit(e) {
     e.preventDefault();
     props.setShowRacesMain(false);
@@ -40,7 +23,13 @@ const RaceInfoCards = (props) => {
           alt="defaultKayak"
           style={{ maxWidth: "12vh", maxHeight: "12vh" }}
         />
-        <CardTitle style={{ border: "solid black 1px" }}>{name}</CardTitle>
+        <CardTitle
+          style={{
+            border: "solid black 1px",
+            textAlign: "center",
+          }}>
+          {name}
+        </CardTitle>
       </CardBody>
     </>
   );

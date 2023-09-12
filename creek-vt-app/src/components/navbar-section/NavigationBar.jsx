@@ -19,7 +19,7 @@ const NavigationBar = (props) => {
   const [showDropdown, setShowDropdown] = useState(false);
   return (
     <>
-      <NavbarContainer extendNavbar={extendNavbar} style={{ zIndex: 4 }}>
+      <NavbarContainer extendNavbar={extendNavbar}>
         <NavbarInnerContainer>
           <LeftContainer>
             <NavbarBrand>
@@ -63,7 +63,6 @@ const NavigationBar = (props) => {
                         props.setShowRaceInfo(false);
                         props.setShowRaceResults(false);
                         props.setShowRegisteredRacers(false);
-                        console.log("looking for this", props);
                       }}>
                       Register
                     </DropdownItem>
