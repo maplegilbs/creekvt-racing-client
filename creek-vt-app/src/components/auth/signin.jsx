@@ -11,6 +11,7 @@ const Signin = (props) => {
     signin();
     props.setShowRacesMain(true);
     props.setShowSignIn(false);
+    props.setShowRegister(false);
   }
   async function signin() {
     try {
@@ -42,7 +43,7 @@ const Signin = (props) => {
     <>
       <div className="d-flex justify-content-center">
         <div className="w-45 border border-primary p-3 d-flex flex-column align-items-center">
-          <h2>Signin</h2>
+          <h2>Sign in</h2>
           <Form className="d-flex align-items-center flex-column">
             {/*email group */}
             <FormGroup>

@@ -19,7 +19,7 @@ const NavigationBar = (props) => {
   const [showDropdown, setShowDropdown] = useState(false);
   return (
     <>
-      <NavbarContainer extendNavbar={extendNavbar}>
+      <NavbarContainer extendNavbar={extendNavbar} style={{ zIndex: 4 }}>
         <NavbarInnerContainer>
           <LeftContainer>
             <NavbarBrand>
@@ -95,7 +95,7 @@ const NavigationBar = (props) => {
               }>
               <NavbarLinkExtended to="/">My Profile</NavbarLinkExtended>
               {showDropdown && (
-                <DropdownContainer>
+                <DropdownContainer style={{ zIndex: 4 }}>
                   {/* on dropdown items need to make showsignin/showregister as true and all else pages false */}
                   <DropdownItem
                     onClick={() => {

@@ -15,6 +15,7 @@ const Register = (props) => {
     registerUser();
     props.setShowRacesMain(true);
     props.setShowRegister(false);
+    props.setShowSignIn(false);
   }
   async function registerUser() {
     try {

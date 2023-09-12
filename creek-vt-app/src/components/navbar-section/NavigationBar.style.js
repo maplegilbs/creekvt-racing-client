@@ -143,6 +143,8 @@ export const DropdownContainer = styled.div`
   align-items: center;
   background-color: #293b46;
   margin-top 5px
+  zIndex: 5;
+  position: absolute;
 `;
 
 export const DropdownItem = styled(Link)`
