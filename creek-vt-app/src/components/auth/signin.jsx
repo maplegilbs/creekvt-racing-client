@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { Form, FormGroup, Input, Label, Button } from "reactstrap";
 import { API_SIGNIN_USER } from "../../constants/endpoints";
-
+require("bootstrap");
 const Signin = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   function handleSubmit(e) {
+    console.log(props);
     e.preventDefault();
     signin();
     props.setShowRacesMain(true);
@@ -67,7 +68,9 @@ const Signin = (props) => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </FormGroup>
-            <Button onClick={handleSubmit}>LOGIN</Button>
+            <Button type="submit" onClick={handleSubmit}>
+              LOGIN
+            </Button>
           </Form>
         </div>
       </div>

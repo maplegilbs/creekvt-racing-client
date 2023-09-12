@@ -11,9 +11,9 @@ function App() {
   const [showSignIn, setShowSignIn] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
   const [showRaceRegistration, setShowRaceRegistration] = useState(false);
-  const [showraceResults, setShowRaceResults] = useState(false);
-  const [showregisteredRacers, setShowRegisteredRacers] = useState(false);
-  const [showraceInfo, setShowRaceInfo] = useState(false);
+  const [showRaceResults, setShowRaceResults] = useState(false);
+  const [showRegisteredRacers, setShowRegisteredRacers] = useState(false);
+  const [showRaceInfo, setShowRaceInfo] = useState(false);
 
   function updateToken(newToken) {
     setToken(newToken);
@@ -40,11 +40,11 @@ function App() {
         setShowRaceRegistration={setShowRaceRegistration}
         showRaceRegistration={showRaceRegistration}
         setShowRaceInfo={setShowRaceInfo}
-        showraceInfo={showraceInfo}
+        showRaceInfo={showRaceInfo}
         setShowRaceResults={setShowRaceResults}
-        showraceResults={showraceResults}
+        showRaceResults={showRaceResults}
         setShowRegisteredRacers={setShowRegisteredRacers}
-        showregisteredRacers={showregisteredRacers}
+        showRegisteredRacers={showRegisteredRacers}
       />
       <Routes>
         <Route path="/" />
@@ -63,11 +63,11 @@ function App() {
         setShowRaceRegistration={setShowRaceRegistration}
         showRaceRegistration={showRaceRegistration}
         setShowRaceInfo={setShowRaceInfo}
-        showraceInfo={showraceInfo}
+        showRaceInfo={showRaceInfo}
         setShowRaceResults={setShowRaceResults}
-        showraceResults={showraceResults}
+        showRaceResults={showRaceResults}
         setShowRegisteredRacers={setShowRegisteredRacers}
-        showregisteredRacers={showregisteredRacers}
+        showRegisteredRacers={showRegisteredRacers}
       />
       <Footer />
     </Router>
