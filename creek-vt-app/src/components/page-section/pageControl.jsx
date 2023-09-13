@@ -12,7 +12,7 @@ const PageControl = (props) => {
   const [race, setRace] = useState("New Haven Ledges Race");
   return (
     <div style={{height: "max-content"}}>
-    <RaceInfo/>
+    <RaceResults />
       {/* {props.showRacesMain === true && <RacesMain />}
       {props.showRegister === true && (
         <Register
