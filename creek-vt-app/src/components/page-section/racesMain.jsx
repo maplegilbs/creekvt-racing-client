@@ -1,11 +1,14 @@
 import { API_VIEWALL_RACES } from "../../constants/endpoints";
 import RaceInfoCards from "../linkingComponents/raceInfoCards";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { UserContext } from "../store/UserContext";
+
 // const jwt = require("jsonwebtoken");
 
 // main races page, also landing page for site. will show by default.
 const RacesMain = (props) => {
   const [raceFeedItems, setRaceFeedItems] = useState([]);
+  const userctx = useContext(UserContext);
   useEffect(() => {
     fetchRacesFeed();
   }, []);
@@ -43,9 +46,6 @@ const RacesMain = (props) => {
             fetchRacesFeed={fetchRacesFeed}
             key={index}
             race={race}
-            setShowRacesMain={props.setShowRacesMain}
-            setShowRaceInfo={props.setShowRaceInfo}
-            setRace={props.setRace}
           />
         ))}
       </div>
