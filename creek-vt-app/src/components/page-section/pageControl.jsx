@@ -21,6 +21,9 @@ const PageControl = (props) => {
       )}
       {props.showRegister === true && (
         <Register
+          globalDecodedToken={props.globalDecodedToken}
+          setGlobalDecodedToken={props.setGlobalDecodedToken}
+          decodeToken={props.decodeToken}
           updateToken={props.updateToken}
           setShowRacesMain={props.setShowRacesMain}
           setShowRegister={props.setShowRegister}
@@ -29,6 +32,9 @@ const PageControl = (props) => {
       )}
       {props.showSignIn === true && (
         <Signin
+          globalDecodedToken={props.globalDecodedToken}
+          setGlobalDecodedToken={props.setGlobalDecodedToken}
+          decodeToken={props.decodeToken}
           updateToken={props.updateToken}
           setShowRacesMain={props.setShowRacesMain}
           setShowSignIn={props.setShowSignIn}
@@ -56,6 +62,7 @@ const PageControl = (props) => {
       {props.showRaceRegistration === true && (
         <RaceRegistration
           setShowRaceRegistration={props.setShowRaceRegistration}
+          globalDecodedToken={props.globalDecodedToken}
         />
       )}
       {props.registeredRacers === true && (

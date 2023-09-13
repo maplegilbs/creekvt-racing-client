@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Form, FormGroup, Input, Label, Button } from "reactstrap";
 import { API_REGISTER_USER } from "../../constants/endpoints";
 require("bootstrap");
+
 const Register = (props) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -17,6 +18,7 @@ const Register = (props) => {
     props.setShowRegister(false);
     props.setShowSignIn(false);
   }
+
   async function registerUser() {
     try {
       //heaaders
@@ -41,7 +43,6 @@ const Register = (props) => {
       const response = await fetch(API_REGISTER_USER, requestOption);
       //get response
       const data = await response.json();
-      //!update token (need to do after we establish where it lives)
       props.updateToken(data.token);
     } catch (error) {
       console.log(error);
