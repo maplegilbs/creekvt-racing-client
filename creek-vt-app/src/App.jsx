@@ -6,6 +6,7 @@ import NavigationBar from "./components/navbar-section/NavigationBar";
 import PhotoGallery from "./components/photo-gal-section/PhotoGallery";
 import Footer from "./components/footer-section/footer";
 import PageControl from "./components/page-section/pageControl";
+import jwtDecode from "jwt-decode";
 
 
 function App({Component, pageProps}) {
@@ -21,6 +22,7 @@ function App({Component, pageProps}) {
 
 
   function updateToken(newToken) {
+    localStorage.removeItem("token");
     setToken(newToken);
     localStorage.setItem("token", newToken);
   }
@@ -30,54 +32,58 @@ function App({Component, pageProps}) {
       setToken(token);
     }
   }, []);
+
   return (
-    <Router>
-      <NavigationBar
-        setToken={setToken}
-        token={token}
-        updateToken={updateToken}
-        setShowRegister={setShowRegister}
-        showRegister={showRegister}
-        setShowSignIn={setShowSignIn}
-        showSignIn={showSignIn}
-        setShowRacesMain={setShowRacesMain}
-        showRacesMain={showRacesMain}
-        setShowRaceRegistration={setShowRaceRegistration}
-        showRaceRegistration={showRaceRegistration}
-        setShowRaceInfo={setShowRaceInfo}
-        showRaceInfo={showRaceInfo}
-        setShowRaceResults={setShowRaceResults}
-        showRaceResults={showRaceResults}
-        setShowRegisteredRacers={setShowRegisteredRacers}
-        showRegisteredRacers={showRegisteredRacers}
-      />
-       //<PhotoGallery />
-      <Routes>
-        <Route path="/" />
-        <Route path="/flows" />
-      </Routes>
-      <PageControl
-        showRegister={showRegister}
-        setShowRegister={setShowRegister}
-        showSignIn={showSignIn}
-        setShowSignIn={setShowSignIn}
-        token={token}
-        setToken={setToken}
-        updateToken={updateToken}
-        setShowRacesMain={setShowRacesMain}
-        showRacesMain={showRacesMain}
-        setShowRaceRegistration={setShowRaceRegistration}
-        showRaceRegistration={showRaceRegistration}
-        setShowRaceInfo={setShowRaceInfo}
-        showRaceInfo={showRaceInfo}
-        setShowRaceResults={setShowRaceResults}
-        showRaceResults={showRaceResults}
-        setShowRegisteredRacers={setShowRegisteredRacers}
-        showRegisteredRacers={showRegisteredRacers}
-      />
-      <Footer />
-    </Router>
-    
+    <div
+      style={{ minHeight: "100vh" }}
+      className="d-flex flex-column justify-content-between">
+      <Router>
+        <NavigationBar
+          setToken={setToken}
+          token={token}
+          updateToken={updateToken}
+          setShowRegister={setShowRegister}
+          showRegister={showRegister}
+          setShowSignIn={setShowSignIn}
+          showSignIn={showSignIn}
+          setShowRacesMain={setShowRacesMain}
+          showRacesMain={showRacesMain}
+          setShowRaceRegistration={setShowRaceRegistration}
+          showRaceRegistration={showRaceRegistration}
+          setShowRaceInfo={setShowRaceInfo}
+          showRaceInfo={showRaceInfo}
+          setShowRaceResults={setShowRaceResults}
+          showRaceResults={showRaceResults}
+          setShowRegisteredRacers={setShowRegisteredRacers}
+          showRegisteredRacers={showRegisteredRacers}
+        />
+        //<PhotoGallery />
+        <Routes>
+          <Route path="/" />
+          <Route path="/flows" />
+        </Routes>
+        <PageControl
+          showRegister={showRegister}
+          setShowRegister={setShowRegister}
+          showSignIn={showSignIn}
+          setShowSignIn={setShowSignIn}
+          token={token}
+          setToken={setToken}
+          updateToken={updateToken}
+          setShowRacesMain={setShowRacesMain}
+          showRacesMain={showRacesMain}
+          setShowRaceRegistration={setShowRaceRegistration}
+          showRaceRegistration={showRaceRegistration}
+          setShowRaceInfo={setShowRaceInfo}
+          showRaceInfo={showRaceInfo}
+          setShowRaceResults={setShowRaceResults}
+          showRaceResults={showRaceResults}
+          setShowRegisteredRacers={setShowRegisteredRacers}
+          showRegisteredRacers={showRegisteredRacers}
+        />
+        <Footer />
+      </Router>
+    </div>
   );
 }
 export default App;

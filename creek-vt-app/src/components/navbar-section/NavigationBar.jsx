@@ -42,7 +42,7 @@ const NavigationBar = (props) => {
                 }>
                 <NavbarLink to="/">My Profile</NavbarLink>
                 {showDropdown && (
-                  <DropdownContainer>
+                  <DropdownContainer style={{ zIndex: 4 }}>
                     <DropdownItem
                       //! need these to change the state of show signin and register
                       onClick={() => {

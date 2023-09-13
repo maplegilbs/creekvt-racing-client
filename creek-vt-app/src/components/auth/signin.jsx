@@ -6,7 +6,6 @@ const Signin = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   function handleSubmit(e) {
-    console.log(props);
     e.preventDefault();
     signin();
     props.setShowRacesMain(true);
@@ -33,7 +32,6 @@ const Signin = (props) => {
       const response = await fetch(API_SIGNIN_USER, requestOption);
       //get response
       const data = await response.json();
-      //!update token (needs path up)
       props.updateToken(data.token);
     } catch (error) {
       console.log(error);
