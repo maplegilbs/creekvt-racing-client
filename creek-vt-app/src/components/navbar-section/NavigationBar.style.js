@@ -147,7 +147,7 @@ export const DropdownContainer = styled.div`
   position: absolute;
 `;
 
-export const DropdownItem = styled(Link)`
+export const NavLink = styled(Link)`
   color: white;
   font-family: Montserrat, sans-serif;
   text-transform: uppercase;
