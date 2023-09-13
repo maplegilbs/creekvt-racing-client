@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Form, FormGroup, Input, Label, Button } from "reactstrap";
 import { API_SIGNIN_USER } from "../../constants/endpoints";
-
+require("bootstrap");
 const Signin = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -10,6 +10,7 @@ const Signin = (props) => {
     signin();
     props.setShowRacesMain(true);
     props.setShowSignIn(false);
+    props.setShowRegister(false);
   }
   async function signin() {
     try {
@@ -31,7 +32,6 @@ const Signin = (props) => {
       const response = await fetch(API_SIGNIN_USER, requestOption);
       //get response
       const data = await response.json();
-      //!update token (needs path up)
       props.updateToken(data.token);
     } catch (error) {
       console.log(error);
@@ -41,7 +41,7 @@ const Signin = (props) => {
     <>
       <div className="d-flex justify-content-center">
         <div className="w-45 border border-primary p-3 d-flex flex-column align-items-center">
-          <h2>Signin</h2>
+          <h2>Sign in</h2>
           <Form className="d-flex align-items-center flex-column">
             {/*email group */}
             <FormGroup>
@@ -67,7 +67,9 @@ const Signin = (props) => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </FormGroup>
-            <Button onClick={handleSubmit}>LOGIN</Button>
+            <Button type="submit" onClick={handleSubmit}>
+              LOGIN
+            </Button>
           </Form>
         </div>
       </div>
