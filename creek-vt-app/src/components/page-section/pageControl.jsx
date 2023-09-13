@@ -5,11 +5,15 @@ import RaceRegistration from "./raceRegistration";
 import RaceResults from "./raceResults";
 import RegisteredRacers from "./registeredRacers";
 import RaceInfo from "./raceInfo";
+import React, { useState } from 'react';
+
 
 const PageControl = (props) => {
+  const [race, setRace] = useState("New Haven Ledges Race");
   return (
-    <>
-      {props.showRacesMain === true && <RacesMain />}
+    <div style={{height: "max-content"}}>
+    <RaceInfo/>
+      {/* {props.showRacesMain === true && <RacesMain />}
       {props.showRegister === true && (
         <Register
           updateToken={props.updateToken}
@@ -17,8 +21,9 @@ const PageControl = (props) => {
           setShowRegister={props.setShowRegister}
         />
       )}
-      {/* <Signin updateToken={props.updateToken} setShowRacesMain={props.SetShowRacesMain} setShowSignIn={props.setShowSignIn}/> */}
-    </>
+      <Signin updateToken={props.updateToken} setShowRacesMain={props.SetShowRacesMain} setShowSignIn={props.setShowSignIn}/> */}
+      </div>
+
   );
 };
 

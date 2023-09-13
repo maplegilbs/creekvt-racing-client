@@ -98,27 +98,27 @@ const NavigationBar = (props) => {
                 <DropdownContainer>
                   {/* on dropdown items need to make showsignin/showregister as true and all else pages false */}
                   <DropdownItem
-                    onClick={() =>
-                      props.setShowSignIn(true) &&
-                      props.setShowRegister(false) &&
-                      props.setShowRacesMain(false) &&
-                      props.setShowRaceRegistration(false) &&
-                      props.setShowRaceInfo(false) &&
-                      props.setShowRaceResults(false) &&
+                    onClick={() => {
+                      props.setShowSignIn(true)
+                      props.setShowRegister(false)
+                      props.setShowRacesMain(false)
+                      props.setShowRaceRegistration(false)
+                      props.setShowRaceInfo(false)
+                      props.setShowRaceResults(false)
                       props.setShowRegisteredRacers(false)
-                    }>
+                    }}>
                     signin
                   </DropdownItem>
                   <DropdownItem
-                    onClick={() =>
-                      props.setShowRegister(true) &&
-                      props.setShowSignIn(false) &&
-                      props.setShowRacesMain(false) &&
-                      props.setShowRaceRegistration(false) &&
-                      props.setShowRaceInfo(false) &&
-                      props.setShowRaceResults(false) &&
+                    onClick={() => {
+                      props.setShowRegister(true)
+                      props.setShowSignIn(false)
+                      props.setShowRacesMain(false)
+                      props.setShowRaceRegistration(false)
+                      props.setShowRaceInfo(false)
+                      props.setShowRaceResults(false)
                       props.setShowRegisteredRacers(false)
-                    }>
+                    }}>
                     Register
                   </DropdownItem>
                 </DropdownContainer>

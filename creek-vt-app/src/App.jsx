@@ -7,13 +7,13 @@ import PageControl from "./components/page-section/pageControl";
 
 function App() {
   const [token, setToken] = useState("");
-  const [showRacesMain, setShowRacesMain] = useState(true);
+  const [showRacesMain, setShowRacesMain] = useState(false);
   const [showSignIn, setShowSignIn] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
   const [showRaceRegistration, setShowRaceRegistration] = useState(false);
   const [showraceResults, setShowRaceResults] = useState(false);
   const [showregisteredRacers, setShowRegisteredRacers] = useState(false);
-  const [showraceInfo, setShowRaceInfo] = useState(false);
+  const [showraceInfo, setShowRaceInfo] = useState(true);
 
   function updateToken(newToken) {
     setToken(newToken);
