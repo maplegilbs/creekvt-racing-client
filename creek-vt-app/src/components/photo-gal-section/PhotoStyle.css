@@ -1,0 +1,63 @@
+.img__wrap {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 100%;
+    /* object-fit: contain; */
+  }
+  .img__img{
+    height: 100%;
+    width: 100%;
+  }
+  .img__description {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    background:#344756;
+    color: #fff;
+    visibility: hidden;
+    opacity: .75;
+    transition: .75s ease;
+    font-family: 'Roboto Serif', serif;
+
+    
+  }
+  
+  .img__wrap:hover .img__description {
+  visibility: visible;
+  opacity: 0.75;
+} 
+
+
+@media (max-width: 780px) {
+    .img__wrap {
+      display: flex;
+      flex-direction: column ;
+      width: 100vw;
+     object-fit: cover;
+     border: 2px solid red;
+      
+    }
+    .MuiImageList-root{
+        grid-template-columns: 1fr !important;
+        border: 5px solid black;
+        width: 100vw;
+        height: 100vw;
+    }
+   
+    .img__img {
+      width: 100%;
+    }
+  
+    .img__description {
+      /* position: static; */
+      background: #344756;
+      color: white; 
+      opacity: 1;
+      visibility: hidden;
+    }
+  }
