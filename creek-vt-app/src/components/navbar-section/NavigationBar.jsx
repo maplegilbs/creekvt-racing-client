@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { NavLink } from "react-router-dom";
 import {
   NavbarContainer,
   LeftContainer,
@@ -11,8 +12,18 @@ import {
   OpenLinksButton,
   NavbarLinkExtended,
   DropdownContainer,
-  DropdownItem,
 } from "./NavigationBar.style.js";
+let navLinkStyle = {
+  color: "white",
+  fontFamily: "Montserrat, sans-serif",
+  textTransform: "uppercase",
+  fontWeight: 700,
+  fontSize: "medium",
+  textDecoration: "none",
+  margin: "10px 10px",
+  border: "1.5px darkgray solid",
+  padding: "5px",
+};
 
 const NavigationBar = (props) => {
   const [extendNavbar, setExtendNavbar] = useState(false);
@@ -43,29 +54,12 @@ const NavigationBar = (props) => {
                 <NavbarLink to="/">My Profile</NavbarLink>
                 {showDropdown && (
                   <DropdownContainer style={{ zIndex: 4 }}>
-                    <DropdownItem
-                      //! need these to change the state of show signin and register
-                      onClick={() => {
-                        props.setShowSignIn(true);
-                        props.setShowRacesMain(false);
-                        props.setShowRaceRegistration(false);
-                        props.setShowRaceInfo(false);
-                        props.setShowRaceResults(false);
-                        props.setShowRegisteredRacers(false);
-                      }}>
-                      signin
-                    </DropdownItem>
-                    <DropdownItem
-                      onClick={() => {
-                        props.setShowRegister(true);
-                        props.setShowRacesMain(false);
-                        props.setShowRaceRegistration(false);
-                        props.setShowRaceInfo(false);
-                        props.setShowRaceResults(false);
-                        props.setShowRegisteredRacers(false);
-                      }}>
-                      Register
-                    </DropdownItem>
+                    <NavLink style={navLinkStyle} to={"/signin"}>
+                      Signin Here
+                    </NavLink>
+                    <NavLink style={navLinkStyle} to={"/register"}>
+                      Register Here
+                    </NavLink>
                   </DropdownContainer>
                 )}
               </NavbarLink>
@@ -96,30 +90,12 @@ const NavigationBar = (props) => {
               {showDropdown && (
                 <DropdownContainer style={{ zIndex: 4 }}>
                   {/* on dropdown items need to make showsignin/showregister as true and all else pages false */}
-                  <DropdownItem
-                    onClick={() => {
-                      props.setShowSignIn(true);
-                      props.setShowRegister(false);
-                      props.setShowRacesMain(false);
-                      props.setShowRaceRegistration(false);
-                      props.setShowRaceInfo(false);
-                      props.setShowRaceResults(false);
-                      props.setShowRegisteredRacers(false);
-                    }}>
-                    signin
-                  </DropdownItem>
-                  <DropdownItem
-                    onClick={() => {
-                      props.setShowRegister(true);
-                      props.setShowSignIn(false);
-                      props.setShowRacesMain(false);
-                      props.setShowRaceRegistration(false);
-                      props.setShowRaceInfo(false);
-                      props.setShowRaceResults(false);
-                      props.setShowRegisteredRacers(false);
-                    }}>
-                    Register
-                  </DropdownItem>
+                  <NavLink style={navLinkStyle} to={"/signin"}>
+                    Signin Here
+                  </NavLink>
+                  <NavLink style={navLinkStyle} to={"/register"}>
+                    Register Here
+                  </NavLink>
                 </DropdownContainer>
               )}
             </NavbarLinkExtended>
