@@ -2,12 +2,16 @@ import "./App.css";
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import NavigationBar from "./components/navbar-section/NavigationBar";
+
+import PhotoGallery from "./components/photo-gal-section/PhotoGallery";
 import Footer from "./components/footer-section/footer";
 import PageControl from "./components/page-section/pageControl";
 import jwtDecode from "jwt-decode";
 
-function App() {
+
+function App({Component, pageProps}) {
   const [token, setToken] = useState("");
+
   const [showRacesMain, setShowRacesMain] = useState(true);
   const [showSignIn, setShowSignIn] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
@@ -15,6 +19,7 @@ function App() {
   const [showRaceResults, setShowRaceResults] = useState(false);
   const [showRegisteredRacers, setShowRegisteredRacers] = useState(false);
   const [showRaceInfo, setShowRaceInfo] = useState(false);
+
 
   function updateToken(newToken) {
     localStorage.removeItem("token");
@@ -52,6 +57,7 @@ function App() {
           setShowRegisteredRacers={setShowRegisteredRacers}
           showRegisteredRacers={showRegisteredRacers}
         />
+        //<PhotoGallery />
         <Routes>
           <Route path="/" />
           <Route path="/flows" />
