@@ -13,10 +13,11 @@ galleryItems.map((item) => {
   photos.push(photo)
  
 });
-console.log(photos)
+
+const styles = photos.length < 2 ? {maxWidth: "414px"} : {}
   return ( 
     <>
-  <PhotoAlbum layout="rows"
+  <PhotoAlbum layout="rows" style={{justifyContent: "center"}}
    photos={photos}
   renderPhoto={({ layout, layoutOptions, imageProps: { src, alt, style, raceYear, index, ...restImageProps } }) => (
     <div style={{
@@ -24,10 +25,11 @@ console.log(photos)
       borderRadius: "4px",
       boxSizing: "content-box",
       alignItems: "center",
-      width: style?.width,
+      width: style?.width, 
       padding: `${layoutOptions.padding - 2}px`,
       paddingBottom: 0,
-      position: "relative"
+      position: "relative",
+      ...styles
   }}>
     
       <img src={src} alt={alt} style={{...style, width: "100%"}} {...restImageProps} />
