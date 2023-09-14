@@ -5,3 +5,4 @@ export function urlBuilder(str) {
   return str.toLowerCase().replaceAll(" ", "-");
 }
 export default urlBuilder;
+

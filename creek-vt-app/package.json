@@ -30,7 +30,8 @@
     "reactstrap": "^9.2.0",
     "sort-by": "^1.2.0",
     "styled-components": "^5.3.11",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "yet-another-react-lightbox": "^3.12.2"
   },
   "scripts": {
     "start": "react-scripts start",
