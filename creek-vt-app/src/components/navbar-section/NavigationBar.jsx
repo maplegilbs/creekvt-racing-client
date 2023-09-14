@@ -51,7 +51,7 @@ const NavigationBar = (props) => {
                     ? setShowDropdown(true)
                     : setShowDropdown(false)
                 }>
-                <NavbarLink to="/">My Profile</NavbarLink>
+                <NavbarLink>My Profile</NavbarLink>
                 {showDropdown && (
                   <DropdownContainer style={{ zIndex: 4 }}>
                     <NavLink style={navLinkStyle} to={"/signin"}>
@@ -86,7 +86,7 @@ const NavigationBar = (props) => {
                   ? setShowDropdown(true)
                   : setShowDropdown(false)
               }>
-              <NavbarLinkExtended to="/">My Profile</NavbarLinkExtended>
+              <NavbarLinkExtended>My Profile</NavbarLinkExtended>
               {showDropdown && (
                 <DropdownContainer style={{ zIndex: 4 }}>
                   {/* on dropdown items need to make showsignin/showregister as true and all else pages false */}
