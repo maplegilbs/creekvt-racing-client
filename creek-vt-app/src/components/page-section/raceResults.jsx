@@ -1,5 +1,5 @@
 import { API_VIEW_RESULTS_BY_RACENAME } from "../../constants/endpoints";
-import urlBuilder from "../../constants/urlBuilder";
+import urlBuilder from "../util/urlBuilder"
 
 // race results filtered by race ID
 const RaceResults = (props) => {

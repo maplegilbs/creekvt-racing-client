@@ -4,3 +4,4 @@ export function urlBuilder(str) {
     // return newString
     return str.toLowerCase().replaceAll(" ", "-")
 }
+export default urlBuilder;
