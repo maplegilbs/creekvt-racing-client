@@ -14,9 +14,6 @@ const Register = (props) => {
   function handleSubmit(e) {
     e.preventDefault();
     registerUser();
-    props.setShowRacesMain(true);
-    props.setShowRegister(false);
-    props.setShowSignIn(false);
   }
 
   async function registerUser() {
