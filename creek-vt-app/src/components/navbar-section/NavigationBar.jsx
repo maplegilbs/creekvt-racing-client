@@ -45,13 +45,10 @@ const NavigationBar = (props) => {
               <NavbarLink to="/">River Guide</NavbarLink>
               <NavbarLink to="/">Blog</NavbarLink>
               <NavbarLink to="/">About</NavbarLink>
-              <NavbarLink
-                onClick={(e) =>
-                  showDropdown === false
-                    ? setShowDropdown(true)
-                    : setShowDropdown(false)
-                }>
-                <NavbarLink>My Profile</NavbarLink>
+              <div style={{ margin: "30px 5px" }}>
+                <NavbarLink onClick={(e) => setShowDropdown(!showDropdown)}>
+                  My Profile
+                </NavbarLink>
                 {showDropdown && (
                   <DropdownContainer style={{ zIndex: 4 }}>
                     <NavLink style={navLinkStyle} to={"/signin"}>
@@ -62,7 +59,7 @@ const NavigationBar = (props) => {
                     </NavLink>
                   </DropdownContainer>
                 )}
-              </NavbarLink>
+              </div>
               <OpenLinksButton
                 onClick={() => {
                   setExtendNavbar((curr) => !curr);

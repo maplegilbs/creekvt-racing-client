@@ -2,21 +2,20 @@ import { useContext } from "react";
 import { Button } from "reactstrap";
 import { UserContext } from "../store/UserContext";
 import { useNavigate } from "react-router-dom";
+import { urlBuilder } from "../util/urlBuilder";
 const RaceInfo = (props) => {
   const userctx = useContext(UserContext);
-  const { name, year, location } = userctx.race;
+  const { name, year, location, id } = userctx.race;
   const navigate = useNavigate();
-  function handleRegisterClick(e) {
-    e.preventDefault();
+
+  function handleRegisterClick() {
     navigate("/raceRegistration");
   }
-  function handleGalleryClick(e) {
-    e.preventDefault();
+  function handleGalleryClick() {
     navigate("/photoGallery");
   }
-  function handleRegisteredRacersClick(e) {
-    e.preventDefault();
-    navigate("/registeredRacers");
+  function handleRegisteredRacersClick() {
+    navigate(`/registeredRacers/${id}`);
   }
   return (
     <>
