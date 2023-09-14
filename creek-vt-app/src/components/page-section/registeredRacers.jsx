@@ -2,14 +2,15 @@ import React, { useState, useContext, useEffect } from "react";
 import { UserContext } from "../store/UserContext";
 import { API_VIEW_REGISTERED_RACERS } from "../../constants/endpoints";
 import RegisteredRacersCards from "../linkingComponents/registeredRacersCard";
+import { useParams } from "react-router-dom";
 
 const RegisteredRacers = (props) => {
   const userctx = useContext(UserContext);
   const [registeredRacersItems, setRegisteredRacersItems] = useState([]);
+  const { raceid } = useParams();
 
   // need endpoint to
   async function fetchRegisteredRacers() {
-    let raceid = userctx.race.id;
     try {
       let requestOptions = {
         method: "GET",
@@ -26,17 +27,17 @@ const RegisteredRacers = (props) => {
   }
   useEffect(() => {
     fetchRegisteredRacers();
-  }, []);
+  }, [raceid]);
   return (
     <div className="d-flex justify-content-center align-items-center text-center">
       <div className="d-flex justify-content-center flex-column align-items-center border border-dark w-25">
         <h2>
-          {userctx.race.name}
+          {userctx.race?.name}
           <br />
           Registered Racers
         </h2>
         <div className="d-flex justify-content-between border border-dark bg-secondary text-light w-100">
-          <h4>year:{userctx.race.year}</h4>
+          <h4>year:{userctx.race?.year}</h4>
           <button>Filter</button>
         </div>
         <div className="w-100">

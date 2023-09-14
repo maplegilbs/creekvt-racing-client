@@ -4,7 +4,6 @@ import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "../store/UserContext";
 
 const RacesMain = (props) => {
-  const [raceFeedItems, setRaceFeedItems] = useState([]);
   const userctx = useContext(UserContext);
   useEffect(() => {
     fetchRacesFeed();
@@ -16,7 +15,7 @@ const RacesMain = (props) => {
       };
       const response = await fetch(API_VIEWALL_RACES, requestOptions);
       const data = await response.json();
-      setRaceFeedItems(data.races);
+      userctx.setRaceFeedItems(data.races);
     } catch (error) {
       console.log(error);
     }
@@ -38,7 +37,7 @@ const RacesMain = (props) => {
       <div
         className="d-flex m-8 flex-wrap justify-content-center g-10"
         style={{ maxWidth: "75%" }}>
-        {raceFeedItems.map((race, index) => (
+        {userctx.raceFeedItems.map((race, index) => (
           <RaceInfoCards
             fetchRacesFeed={fetchRacesFeed}
             key={index}

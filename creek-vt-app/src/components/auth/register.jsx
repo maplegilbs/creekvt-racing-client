@@ -13,7 +13,7 @@ const Register = (props) => {
   const [age, setAge] = useState("");
   const [gender, setGender] = useState("");
   const userctx = useContext(UserContext);
-  const navigate = useNavigate;
+  const navigate = useNavigate();
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -45,7 +45,7 @@ const Register = (props) => {
       const response = await fetch(API_REGISTER_USER, requestOption);
       //get response
       const data = await response.json();
-      props.updateToken(data.token);
+      userctx.updateToken(data.token);
       userctx.updateFirstName(firstName);
     } catch (error) {
       console.log(error);
