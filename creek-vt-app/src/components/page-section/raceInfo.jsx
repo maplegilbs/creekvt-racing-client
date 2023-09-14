@@ -10,9 +10,13 @@ const RaceInfo = (props) => {
     e.preventDefault();
     navigate("/raceRegistration");
   }
-  function handleGalleryClick(e){
-    e.preventDefault()
-    navigate("/photoGallery")
+  function handleGalleryClick(e) {
+    e.preventDefault();
+    navigate("/photoGallery");
+  }
+  function handleRegisteredRacersClick(e) {
+    e.preventDefault();
+    navigate("/registeredRacers");
   }
   return (
     <>
@@ -20,6 +24,7 @@ const RaceInfo = (props) => {
       <h3>{year}</h3>
       <h3>{location}</h3>
       <Button onClick={handleRegisterClick}>Register</Button>
+      <Button onClick={handleRegisteredRacersClick}>Racers</Button>
       <div className="d-flex justify-content-center">
         <img
           src="https://creekvt.com/wp-content/uploads/2023/07/All-American-Michael-from-NH-1024x603.jpg"

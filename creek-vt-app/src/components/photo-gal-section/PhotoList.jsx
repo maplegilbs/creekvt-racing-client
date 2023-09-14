@@ -1,4 +1,4 @@
-import { PhotoAlbum } from "react-photo-album"
+import { PhotoAlbum } from "react-photo-album";
 import React from "react";
 import "./PhotoStyle.css"
 
@@ -35,11 +35,9 @@ console.log(photos)
   </div>
 )}
   />
-        
-       
-      
   </>
   ); 
 }
+
 
 export default PhotoList;
