@@ -13,6 +13,7 @@ import RaceInfo from "./components/page-section/raceInfo";
 import RacesMain from "./components/page-section/racesMain";
 import Register from "./components/auth/register";
 import AdminDashboard from "./components/page-section/adminDashboard";
+import SuccessPage from "./components/page-section/successPage";
 
 function App({ Component, pageProps }) {
   const [token, setToken] = useState("");
@@ -60,6 +61,7 @@ function App({ Component, pageProps }) {
                 element={<PhotoGallery />}
               />
               <Route path="/adminDashboard" element={<AdminDashboard />} />
+              <Route path="/successPage" element={<SuccessPage />} />
             </Routes>
           </div>
           <Footer />

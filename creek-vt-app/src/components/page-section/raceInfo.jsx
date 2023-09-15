@@ -27,6 +27,9 @@ const RaceInfo = (props) => {
   function handleResultsClick(e) {
     navigate("/raceResults/" + urlBuilder(raceName));
   }
+  function handleSuccessPage(){
+    navigate("/successPage")
+  }
   return (
     <>
       <h2>{titleizeName}</h2>
@@ -42,7 +45,11 @@ const RaceInfo = (props) => {
       </div>
       <Button>Course Details</Button>
       <Button onClick={handleGalleryClick}>Gallery</Button>
+
+      <Button>Results</Button>
+      <Button onClick={handleSuccessPage}>Success Page</Button>
       <Button onClick={handleResultsClick}>Results</Button>
+
     </>
   );
 };
