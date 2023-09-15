@@ -35,7 +35,7 @@ const NavigationBar = (props) => {
     if (storedFirstName) {
       setFirstName(storedFirstName);
     }
-  }, []);
+  }, [localStorage.getItem("firstName")]);
   function handleLogout() {
     localStorage.removeItem("firstName");
     localStorage.removeItem("token");

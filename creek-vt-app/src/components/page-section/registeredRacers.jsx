@@ -11,7 +11,6 @@ const RegisteredRacers = (props) => {
   const unURLName = raceName.replaceAll("-", " ");
   const titleizeName = userctx.titleize(unURLName);
 
-  // need endpoint to
   async function fetchRegisteredRacers() {
     try {
       let requestOptions = {
