@@ -3,7 +3,6 @@ import { Button } from "reactstrap";
 import { UserContext } from "../store/UserContext";
 import { useNavigate } from "react-router-dom";
 import urlBuilder from "../util/urlBuilder";
-import { urlBuilder } from "../util/urlBuilder";
 const RaceInfo = (props) => {
   const userctx = useContext(UserContext);
   const { name, year, location, id } = userctx.race;
