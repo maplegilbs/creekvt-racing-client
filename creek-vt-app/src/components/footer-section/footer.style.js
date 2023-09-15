@@ -16,7 +16,7 @@ export const FooterContainer = styled.nav`
   bottom: 0;
 
   @media (min-width: 700px) {
-    height: 20vh;
+    height: 18vh;
     padding: 3vh 4vh 7vh 0;
   }
 `;

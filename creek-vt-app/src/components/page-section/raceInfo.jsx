@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { Button } from "reactstrap";
 import { UserContext } from "../store/UserContext";
+
 import { useNavigate, useParams } from "react-router-dom";
 import { urlBuilder } from "../util/urlBuilder";
 const RaceInfo = (props) => {
@@ -15,10 +16,16 @@ const RaceInfo = (props) => {
     navigate("/raceRegistration");
   }
   function handleGalleryClick() {
-    navigate("/photoGallery");
+    navigate("/photoGallery/" + urlBuilder(name) + "/all-photos");
   }
   function handleRegisteredRacersClick() {
     navigate(`/registeredRacers/${raceid}/${raceYear}/${urlBuilder(raceName)}`);
+  }
+  function handleResultsClick(e){
+    navigate("/raceResults/" + urlBuilder(name))
+  }
+  function handleResultsClick(e){
+    navigate("/raceResults/" + urlBuilder(name))
   }
   return (
     <>
@@ -35,7 +42,7 @@ const RaceInfo = (props) => {
       </div>
       <Button>Course Details</Button>
       <Button onClick={handleGalleryClick}>Gallery</Button>
-      <Button>Results</Button>
+      <Button onClick={handleResultsClick}>Results</Button>
     </>
   );
 };

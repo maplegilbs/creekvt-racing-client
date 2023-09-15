@@ -28,7 +28,6 @@ function App({ Component, pageProps }) {
       setToken(token);
     }
   }, []);
-
   return (
     <div
       style={{ minHeight: "100vh" }}
@@ -56,7 +55,7 @@ function App({ Component, pageProps }) {
                 path="/raceInfo/:raceYear/:raceLocation/:raceid/:raceName"
                 element={<RaceInfo />}
               />
-              <Route path="/photoGallery" element={<PhotoGallery />} />
+              <Route path="/photoGallery/:raceName/:year" element={<PhotoGallery />} />
               <Route path="/adminDashboard" element={<AdminDashboard />} />
             </Routes>
           </div>
