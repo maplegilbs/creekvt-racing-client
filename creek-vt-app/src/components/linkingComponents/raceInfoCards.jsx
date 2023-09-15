@@ -2,15 +2,16 @@ import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { CardBody, CardTitle } from "reactstrap";
 import { UserContext } from "../store/UserContext";
+import urlBuilder from "../util/urlBuilder";
 
 const RaceInfoCards = (props) => {
   const userctx = useContext(UserContext);
   const navigate = useNavigate();
-  let { name } = props.race;
+  let { name, year, id, location } = props.race;
   function handleSubmit(e) {
     e.preventDefault();
     userctx.setRace(props.race);
-    navigate("/raceInfo");
+    navigate(`/raceInfo/${year}/${location}/${id}/${urlBuilder(name)}`);
   }
   return (
     <>

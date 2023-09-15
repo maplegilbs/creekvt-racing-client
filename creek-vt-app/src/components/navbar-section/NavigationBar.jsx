@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import {
   NavbarContainer,
@@ -28,6 +28,21 @@ let navLinkStyle = {
 const NavigationBar = (props) => {
   const [extendNavbar, setExtendNavbar] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [firstName, setFirstName] = useState("");
+
+  useEffect(() => {
+    const storedFirstName = localStorage.getItem("firstName");
+    if (storedFirstName) {
+      setFirstName(storedFirstName);
+    }
+  }, [localStorage.getItem("firstName")]);
+  function handleLogout() {
+    localStorage.removeItem("firstName");
+    localStorage.removeItem("token");
+    localStorage.removeItem("isAdmin");
+    window.location.reload();
+  }
+
   return (
     <>
       <NavbarContainer extendNavbar={extendNavbar}>
@@ -51,12 +66,22 @@ const NavigationBar = (props) => {
                 </NavbarLink>
                 {showDropdown && (
                   <DropdownContainer style={{ zIndex: 4 }}>
-                    <NavLink style={navLinkStyle} to={"/signin"}>
-                      Signin Here
-                    </NavLink>
-                    <NavLink style={navLinkStyle} to={"/register"}>
-                      Register Here
-                    </NavLink>
+                    {firstName ? (
+                      <span style={navLinkStyle}>Hello {firstName}</span>
+                    ) : (
+                      <NavLink style={navLinkStyle} to={"/signin"}>
+                        Signin Here
+                      </NavLink>
+                    )}
+                    {firstName ? (
+                      <button style={navLinkStyle} onClick={handleLogout}>
+                        Logout
+                      </button>
+                    ) : (
+                      <NavLink style={navLinkStyle} to={"/register"}>
+                        Register Here
+                      </NavLink>
+                    )}
                   </DropdownContainer>
                 )}
               </div>
