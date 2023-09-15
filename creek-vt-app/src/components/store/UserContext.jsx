@@ -12,6 +12,8 @@ export const UserContext = createContext({
   updateFirstName: () => {},
   updateAdminCred: () => {},
   setRaceFeedItems: () => {},
+  capitalize: () => {},
+  titleize: () => {},
 });
 
 //creates functions available sitewide
@@ -25,6 +27,19 @@ const UserContextProvider = (props) => {
   function updateToken(newToken) {
     setToken(newToken);
     localStorage.setItem("token", newToken);
+  }
+  function capitalize(string) {
+    let firstLetter = string[0];
+    firstLetter = firstLetter.toUpperCase();
+    let restOfWord = string.slice(1).toLowerCase();
+    let fullWord = firstLetter + restOfWord;
+    return fullWord;
+  }
+  function titleize(string) {
+    return string
+      .split(" ")
+      .map((words) => capitalize(words))
+      .join(" ");
   }
   function updateFirstName(nameStore) {
     setFirstName(nameStore);
@@ -53,6 +68,8 @@ const UserContextProvider = (props) => {
     setRace,
     updateFirstName,
     updateAdminCred,
+    titleize,
+    capitalize,
   };
   return (
     <>

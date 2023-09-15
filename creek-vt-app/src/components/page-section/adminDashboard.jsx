@@ -1,7 +1,14 @@
 const AdminDashboard = (props) => {
+  let adminName = localStorage.getItem("firstName");
   return (
     <div>
-      <h2>you are in the admin dashboard, suprise it's in Alpha</h2>
+      <div>Welcome Back Admin {adminName}</div>
+      <div>
+        Use This daashboard to edit race information, racers, and to post
+        results.
+      </div>
+      <div>Select A Race To Edit</div>
+      {/* <div></div> will have race pannel here from admin dashboard wireframe. */}
     </div>
   );
 };
