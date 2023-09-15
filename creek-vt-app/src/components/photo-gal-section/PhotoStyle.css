@@ -23,13 +23,22 @@
 
 .dropdown{
    text-align: center !important;
+   
 }
 #dropdown-basic{
-   background-color: #565566;
-   border-radius: 5px;
-   color: white;
-   margin: auto;
-   font-family: 'Roboto Serif', serif;
+      display: block;
+      background: linear-gradient(45deg,#e1eaf4, #4d7288);
+      color: white;
+      padding: 10px;
+      margin: 0 auto;
+      border: 2px solid rgb(118,118,118);
+      font-family: 'Montserrat';
+      font-weight: 700;
+      font-size: .8em;
+      text-transform: uppercase;
+      text-shadow: 1px 1px 5px #333;
+      border-radius: 5px;
+   
 }
 
 .dropdown-menu{

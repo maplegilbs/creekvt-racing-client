@@ -17,6 +17,9 @@ const RaceInfo = (props) => {
   function handleRegisteredRacersClick() {
     navigate(`/registeredRacers/${id}`);
   }
+  function handleSuccessPage(){
+    navigate("/successPage")
+  }
   return (
     <>
       <h2>{name}</h2>
@@ -33,6 +36,7 @@ const RaceInfo = (props) => {
       <Button>Course Details</Button>
       <Button onClick={handleGalleryClick}>Gallery</Button>
       <Button>Results</Button>
+      <Button onClick={handleSuccessPage}>Success Page</Button>
     </>
   );
 };
