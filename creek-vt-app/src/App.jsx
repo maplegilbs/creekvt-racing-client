@@ -45,7 +45,7 @@ function App({ Component, pageProps }) {
               <Route path="/racesMain" element={<RacesMain />} />
               <Route path="/register" element={<Register />} />
               <Route path="/signin" element={<Signin />} />
-              <Route path="/raceResults" element={<RaceResults />} />
+              <Route path="/raceResults/:raceName"  element={<RaceResults />} />
               <Route path="/registeredRacers" element={<RegisteredRacers />} />
               <Route path="/raceRegistration" element={<RaceRegistration />} />
               <Route path="/raceInfo" element={<RaceInfo />} />
