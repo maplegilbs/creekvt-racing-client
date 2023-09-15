@@ -1,15 +1,53 @@
-// a view of all racers registered for the race.
+import React, { useState, useContext, useEffect } from "react";
+import { UserContext } from "../store/UserContext";
+import { API_VIEW_REGISTERED_RACERS } from "../../constants/endpoints";
+import RegisteredRacersCards from "../linkingComponents/registeredRacersCard";
+import { useParams } from "react-router-dom";
+
 const RegisteredRacers = (props) => {
+  const userctx = useContext(UserContext);
+  const [registeredRacersItems, setRegisteredRacersItems] = useState([]);
+  const { raceid } = useParams();
+
+  // need endpoint to
+  async function fetchRegisteredRacers() {
+    try {
+      let requestOptions = {
+        method: "GET",
+      };
+      const response = await fetch(
+        API_VIEW_REGISTERED_RACERS + raceid,
+        requestOptions
+      );
+      const data = await response.json();
+      setRegisteredRacersItems(data.registeredRacers);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  useEffect(() => {
+    fetchRegisteredRacers();
+  }, [raceid]);
   return (
-    <div className="d-flex flex-column justify-content-center">
-      <h4>race name</h4>
-      <h3>Registered Racers</h3>
-      <div className="d-flex flex-column justify-content-center">
-        <div className="d-flex justify-content-around">
-          <h3>year: selected year here</h3>
+    <div className="d-flex justify-content-center align-items-center text-center">
+      <div className="d-flex justify-content-center flex-column align-items-center border border-dark w-25">
+        <h2>
+          {userctx.race?.name}
+          <br />
+          Registered Racers
+        </h2>
+        <div className="d-flex justify-content-between border border-dark bg-secondary text-light w-100">
+          <h4>year:{userctx.race?.year}</h4>
           <button>Filter</button>
         </div>
-        <div></div>
+        <div className="w-100">
+          {registeredRacersItems.map((registeredAthlete, index) => (
+            <RegisteredRacersCards
+              key={index}
+              registeredAthlete={registeredAthlete}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

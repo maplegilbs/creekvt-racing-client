@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Form, FormGroup, Input, Label, Button } from "reactstrap";
 import { API_REGISTER_USER } from "../../constants/endpoints";
+import { UserContext } from "../store/UserContext";
+import { useNavigate } from "react-router-dom";
 require("bootstrap");
 
 const Register = (props) => {
@@ -10,10 +12,13 @@ const Register = (props) => {
   const [password, setPassword] = useState("");
   const [age, setAge] = useState("");
   const [gender, setGender] = useState("");
+  const userctx = useContext(UserContext);
+  const navigate = useNavigate();
 
   function handleSubmit(e) {
     e.preventDefault();
     registerUser();
+    navigate("/racesMain");
   }
 
   async function registerUser() {
@@ -40,7 +45,8 @@ const Register = (props) => {
       const response = await fetch(API_REGISTER_USER, requestOption);
       //get response
       const data = await response.json();
-      props.updateToken(data.token);
+      userctx.updateToken(data.token);
+      userctx.updateFirstName(firstName);
     } catch (error) {
       console.log(error);
     }

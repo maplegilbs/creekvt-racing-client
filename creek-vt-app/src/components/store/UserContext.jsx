@@ -4,19 +4,35 @@ import React, { createContext, useState, useEffect } from "react";
 export const UserContext = createContext({
   token: "",
   race: "",
+  firstName: "",
+  adminCredentials: "",
+  raceFeedItems: "",
   updateToken: () => {},
   setRace: () => {},
+  updateFirstName: () => {},
+  updateAdminCred: () => {},
+  setRaceFeedItems: () => {},
 });
 
 //creates functions available sitewide
 const UserContextProvider = (props) => {
   const [token, setToken] = useState("");
   const [race, setRace] = useState(null);
+  const [firstName, setFirstName] = useState("");
+  const [adminCredentials, setAdminCredentials] = useState("");
+  const [raceFeedItems, setRaceFeedItems] = useState([]);
 
   function updateToken(newToken) {
-    localStorage.removeItem("token");
     setToken(newToken);
     localStorage.setItem("token", newToken);
+  }
+  function updateFirstName(nameStore) {
+    setFirstName(nameStore);
+    localStorage.setItem("firstName", nameStore);
+  }
+  function updateAdminCred(adminStored) {
+    setAdminCredentials(adminStored);
+    localStorage.setItem("isAdmin", adminStored);
   }
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -28,9 +44,15 @@ const UserContextProvider = (props) => {
   //values passed
   const value = {
     token: token,
-    updateToken: updateToken,
     race,
+    firstName,
+    adminCredentials,
+    raceFeedItems,
+    setRaceFeedItems,
+    updateToken,
     setRace,
+    updateFirstName,
+    updateAdminCred,
   };
   return (
     <>

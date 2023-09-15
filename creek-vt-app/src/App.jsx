@@ -12,6 +12,7 @@ import RaceRegistration from "./components/page-section/raceRegistration";
 import RaceInfo from "./components/page-section/raceInfo";
 import RacesMain from "./components/page-section/racesMain";
 import Register from "./components/auth/register";
+import AdminDashboard from "./components/page-section/adminDashboard";
 
 function App({ Component, pageProps }) {
   const [token, setToken] = useState("");
@@ -45,11 +46,17 @@ function App({ Component, pageProps }) {
               <Route path="/racesMain" element={<RacesMain />} />
               <Route path="/register" element={<Register />} />
               <Route path="/signin" element={<Signin />} />
+              <Route path="/raceResults" element={<RaceResults />} />
+              <Route
+                path="/registeredRacers/:raceid"
+                element={<RegisteredRacers />}
+              />
               <Route path="/raceResults/:raceName"  element={<RaceResults />} />
               <Route path="/registeredRacers" element={<RegisteredRacers />} />
               <Route path="/raceRegistration" element={<RaceRegistration />} />
               <Route path="/raceInfo" element={<RaceInfo />} />
               <Route path="/photoGallery" element={<PhotoGallery />} />
+              <Route path="/adminDashboard" element={<AdminDashboard />} />
             </Routes>
           </div>
           <Footer />

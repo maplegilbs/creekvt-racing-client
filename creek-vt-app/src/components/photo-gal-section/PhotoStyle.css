@@ -1,3 +1,43 @@
-img.react-photo-album--photo{
+.react-photo-album--photo{
    border: 2px solid black;
+   
 }
+.react-photo-album{
+   justify-content: center !important;
+   flex-flow: row wrap !important;
+}
+.overlay{
+   position: absolute;
+   left: 5px;
+   bottom: 5px;
+   background-color: #565566;
+   font-family: 'Roboto Serif', serif;
+   color: white;
+   border: 1px solid black;
+   text-shadow: 1px 1px black;
+}
+#gallery-header{
+   text-align: center;
+}
+
+.dropdown{
+   text-align: center !important;
+}
+#dropdown-basic{
+   background-color: #565566;
+   border-radius: 5px;
+   color: white;
+   margin: auto;
+}
+
+.dropdown-menu{
+   background-color: #565566 !important;
+  
+}
+
+.dropdown-item{
+   background-color:rgb(78, 100, 123) !important; 
+   color: white !important;
+}
+/* LIGHT rgb(78, 100, 123) */
+/* DARK  rgb(41, 59, 70)) */
