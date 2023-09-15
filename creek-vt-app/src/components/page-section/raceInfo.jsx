@@ -12,7 +12,7 @@ const RaceInfo = (props) => {
     navigate("/raceRegistration");
   }
   function handleGalleryClick() {
-    navigate("/photoGallery");
+    navigate("/photoGallery/" + urlBuilder(name) + "/all-photos");
   }
   function handleRegisteredRacersClick() {
     navigate(`/registeredRacers/${id}`);

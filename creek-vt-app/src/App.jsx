@@ -50,7 +50,7 @@ function App({ Component, pageProps }) {
               <Route path="/registeredRacers/:raceId" element={<RegisteredRacers />} />
               <Route path="/raceRegistration" element={<RaceRegistration />} />
               <Route path="/raceInfo" element={<RaceInfo />} />
-              <Route path="/photoGallery" element={<PhotoGallery />} />
+              <Route path="/photoGallery/:raceName/:year" element={<PhotoGallery />} />
               <Route path="/adminDashboard" element={<AdminDashboard />} />
             </Routes>
           </div>
