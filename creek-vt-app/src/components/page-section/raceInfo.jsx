@@ -16,16 +16,16 @@ const RaceInfo = (props) => {
     navigate("/raceRegistration");
   }
   function handleGalleryClick() {
-    navigate("/photoGallery/" + urlBuilder(name) + "/all-photos");
+    navigate("/photoGallery/" + urlBuilder(raceName) + "/all-photos");
   }
   function handleRegisteredRacersClick() {
     navigate(`/registeredRacers/${raceid}/${raceYear}/${urlBuilder(raceName)}`);
   }
-  function handleResultsClick(e){
-    navigate("/raceResults/" + urlBuilder(name))
+  function handleResultsClick(e) {
+    navigate("/raceResults/" + urlBuilder(raceName));
   }
-  function handleResultsClick(e){
-    navigate("/raceResults/" + urlBuilder(name))
+  function handleResultsClick(e) {
+    navigate("/raceResults/" + urlBuilder(raceName));
   }
   return (
     <>

@@ -45,7 +45,7 @@ function App({ Component, pageProps }) {
               <Route path="/racesMain" element={<RacesMain />} />
               <Route path="/register" element={<Register />} />
               <Route path="/signin" element={<Signin />} />
-              <Route path="/raceResults" element={<RaceResults />} />
+              <Route path="/raceResults/:raceName" element={<RaceResults />} />
               <Route
                 path="/registeredRacers/:raceid/:raceYear/:raceName"
                 element={<RegisteredRacers />}
@@ -55,7 +55,10 @@ function App({ Component, pageProps }) {
                 path="/raceInfo/:raceYear/:raceLocation/:raceid/:raceName"
                 element={<RaceInfo />}
               />
-              <Route path="/photoGallery/:raceName/:year" element={<PhotoGallery />} />
+              <Route
+                path="/photoGallery/:raceName/:year"
+                element={<PhotoGallery />}
+              />
               <Route path="/adminDashboard" element={<AdminDashboard />} />
             </Routes>
           </div>
