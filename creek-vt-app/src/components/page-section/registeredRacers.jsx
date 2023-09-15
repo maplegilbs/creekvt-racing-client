@@ -7,7 +7,9 @@ import { useParams } from "react-router-dom";
 const RegisteredRacers = (props) => {
   const userctx = useContext(UserContext);
   const [registeredRacersItems, setRegisteredRacersItems] = useState([]);
-  const { raceid } = useParams();
+  const { raceid, raceYear, raceName } = useParams();
+  const unURLName = raceName.replaceAll("-", " ");
+  const titleizeName = userctx.titleize(unURLName);
 
   // need endpoint to
   async function fetchRegisteredRacers() {
@@ -32,12 +34,12 @@ const RegisteredRacers = (props) => {
     <div className="d-flex justify-content-center align-items-center text-center">
       <div className="d-flex justify-content-center flex-column align-items-center border border-dark w-25">
         <h2>
-          {userctx.race?.name}
+          {titleizeName}
           <br />
           Registered Racers
         </h2>
         <div className="d-flex justify-content-between border border-dark bg-secondary text-light w-100">
-          <h4>year:{userctx.race?.year}</h4>
+          <h4>year:{raceYear}</h4>
           <button>Filter</button>
         </div>
         <div className="w-100">

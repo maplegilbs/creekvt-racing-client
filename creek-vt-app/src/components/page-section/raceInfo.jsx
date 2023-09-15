@@ -1,12 +1,15 @@
 import { useContext } from "react";
 import { Button } from "reactstrap";
 import { UserContext } from "../store/UserContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { urlBuilder } from "../util/urlBuilder";
 const RaceInfo = (props) => {
   const userctx = useContext(UserContext);
-  const { name, year, location, id } = userctx.race;
   const navigate = useNavigate();
+  const { raceName, raceYear, raceLocation, raceid } = useParams();
+  const unURLName = raceName.replaceAll("-", " ");
+  const titleizeName = userctx.titleize(unURLName);
+  console.log(raceid);
 
   function handleRegisterClick() {
     navigate("/raceRegistration");
@@ -15,13 +18,13 @@ const RaceInfo = (props) => {
     navigate("/photoGallery");
   }
   function handleRegisteredRacersClick() {
-    navigate(`/registeredRacers/${id}`);
+    navigate(`/registeredRacers/${raceid}/${raceYear}/${urlBuilder(raceName)}`);
   }
   return (
     <>
-      <h2>{name}</h2>
-      <h3>{year}</h3>
-      <h3>{location}</h3>
+      <h2>{titleizeName}</h2>
+      <h3>{raceYear}</h3>
+      <h3>{raceLocation}</h3>
       <Button onClick={handleRegisterClick}>Register</Button>
       <Button onClick={handleRegisteredRacersClick}>Racers</Button>
       <div className="d-flex justify-content-center">

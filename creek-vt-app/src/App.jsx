@@ -48,11 +48,14 @@ function App({ Component, pageProps }) {
               <Route path="/signin" element={<Signin />} />
               <Route path="/raceResults" element={<RaceResults />} />
               <Route
-                path="/registeredRacers/:raceid"
+                path="/registeredRacers/:raceid/:raceYear/:raceName"
                 element={<RegisteredRacers />}
               />
               <Route path="/raceRegistration" element={<RaceRegistration />} />
-              <Route path="/raceInfo" element={<RaceInfo />} />
+              <Route
+                path="/raceInfo/:raceYear/:raceLocation/:raceid/:raceName"
+                element={<RaceInfo />}
+              />
               <Route path="/photoGallery" element={<PhotoGallery />} />
               <Route path="/adminDashboard" element={<AdminDashboard />} />
             </Routes>
