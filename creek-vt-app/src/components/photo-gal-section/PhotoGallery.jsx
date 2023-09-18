@@ -66,21 +66,7 @@ const PhotoGallery = (props) => {
    function handleRaceYearClick(raceYear) {
     navigate("/photoGallery/" + raceName + `/${raceYear}`);
   }
-  // let uniqueYears = []; //[2022,2023]
   
-  // returnedData.forEach(result => {
-  //     if (!uniqueYears.includes(result.raceYear)) {
-  //         uniqueYears.push(result.raceYear)
-  //     }
-  // })
-  
-  // console.log(uniqueYears)
-  
-  // uniqueYears.map(year => {
-  //     return (
-  //         <ComponentName props clickhandler = { () => handleclick({year})} />
-  //     )
-  // }
   let pulledYears = []
   data?.photos?.forEach(item => {
     if(!pulledYears.includes(item.raceYear)){
