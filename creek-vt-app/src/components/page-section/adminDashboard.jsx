@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Dropdown } from "react-bootstrap";
 import {
+  API_DELETE_REGISTERED_RACER,
   API_UPDATE_RACE,
   API_VIEWALL_RACES,
   API_VIEW_REGISTERED_RACERS,
@@ -59,6 +60,9 @@ const AdminDashboard = (props) => {
     e.preventDefault();
     updateRace();
   }
+  function handleDeleteRacerClick(clickValue) {
+    deleteRegisteredRacer(clickValue);
+  }
 
   //fetch section
   async function fetchRacesFeed() {
@@ -103,6 +107,25 @@ const AdminDashboard = (props) => {
       );
       const data = await response.json();
       setRegisteredRacersItems(data.registeredRacers);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function deleteRegisteredRacer(selectedRacer) {
+    try {
+      const token = localStorage.getItem("token");
+      const myHeaders = new Headers();
+      myHeaders.append("Authorization", token);
+      let requestOptions = {
+        method: "DELETE",
+        headers: myHeaders,
+      };
+      const response = await fetch(
+        API_DELETE_REGISTERED_RACER + selectedRacer,
+        requestOptions
+      );
+      const data = await response.json();
     } catch (error) {
       console.log(error);
     }
@@ -197,7 +220,9 @@ const AdminDashboard = (props) => {
                 ID:{racer.id}, Firstname: {racer.firstName}, Lastname:{" "}
                 {racer.lastName}
                 <div className="d-flex flex-column m-1">
-                  <button style={{ height: "50%", backgroundColor: "red" }}>
+                  <button
+                    onClick={handleDeleteRacerClick(racer.id)}
+                    style={{ height: "50%", backgroundColor: "red" }}>
                     DELETE
                   </button>
                   <button
