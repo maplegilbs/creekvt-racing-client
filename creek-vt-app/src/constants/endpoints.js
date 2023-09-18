@@ -16,7 +16,6 @@ export const API_VIEWBY_ATHLETE_PHOTOS = `${API}/photos/view/`;
 
 export const API_VIEWBY_RACE_PHOTOS = `${API}/photos/search/`;
 
-
 //races api
 export const API_VIEWALL_RACES = `${API}/races/view-all`;
 
@@ -34,6 +33,10 @@ export const API_VIEW_REGISTERED_RACERS = `${API}/races/view-registered-athletes
 
 export const API_VIEW_REGISTERED_RACES = `${API}/races/view-registered-races/`;
 
+export const API_DELETE_REGISTERED_RACER = `${API}/races/delete-athlete/`;
+
+export const API_UPDATE_REGISTERED_RACER = `${API}/races/update-racers/`;
+
 //results api
 export const API_ADD_RESULTS = `${API}/results/new`;
 
@@ -43,9 +46,9 @@ export const API_VIEW_RESULTS_BY_RACENAME = `${API}/race-results/view-by-name/`;
 
 export const API_VIEW_RESULTS_BY_YEAR = `${API}/race-results/view-by-year/`;
 
-export const API_VIEW_RESULTS_BY_CATEGORY = `${API}/race-results/view-by-category/`
+export const API_VIEW_RESULTS_BY_CATEGORY = `${API}/race-results/view-by-category/`;
 
-export const API_VIEW_RESULTS_BY_ATHLETE = `${API}/race-results/view-by-athlete/`
+export const API_VIEW_RESULTS_BY_ATHLETE = `${API}/race-results/view-by-athlete/`;
 
 export const API_ADD_RACE_RESULTS = `${API}/race-results/new`;
 
