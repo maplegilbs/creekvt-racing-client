@@ -13,6 +13,8 @@ import {
   NavbarLinkExtended,
   DropdownContainer,
 } from "./NavigationBar.style.js";
+
+
 let navLinkStyle = {
   color: "white",
   fontFamily: "Montserrat, sans-serif",
@@ -36,6 +38,7 @@ const NavigationBar = (props) => {
       setFirstName(storedFirstName);
     }
   }, []);
+
   function handleLogout() {
     localStorage.removeItem("firstName");
     localStorage.removeItem("token");
@@ -98,6 +101,7 @@ const NavigationBar = (props) => {
         {extendNavbar && (
           <NavbarExtendedContainer>
             <NavbarLink to="/">Flows & Forecasts</NavbarLink>
+            <NavbarLinkExtended to="/">Flows & Forecasts</NavbarLinkExtended>   
             <NavbarLinkExtended to="/">The Map</NavbarLinkExtended>
             <NavbarLinkExtended to="/">River Guide</NavbarLinkExtended>
             <NavbarLinkExtended to="/">Blog</NavbarLinkExtended>
@@ -123,6 +127,7 @@ const NavigationBar = (props) => {
             </NavbarLinkExtended>
           </NavbarExtendedContainer>
         )}
+
       </NavbarContainer>
     </>
   );

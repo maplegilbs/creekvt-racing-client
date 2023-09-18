@@ -13,6 +13,7 @@ import RaceInfo from "./components/page-section/raceInfo";
 import RacesMain from "./components/page-section/racesMain";
 import Register from "./components/auth/register";
 import AdminDashboard from "./components/page-section/adminDashboard";
+import CourseDetails from "./components/page-section/courseDetails";
 
 function App({ Component, pageProps }) {
   const [token, setToken] = useState("");
@@ -54,6 +55,10 @@ function App({ Component, pageProps }) {
               <Route
                 path="/raceInfo/:raceYear/:raceLocation/:raceid/:raceName"
                 element={<RaceInfo />}
+              />
+              <Route
+                path="/raceInfo/:raceYear/:raceLocation/:raceid/:raceName/:courseDetails"
+                element={<CourseDetails />}
               />
               <Route path="/photoGallery/:raceName/:year" element={<PhotoGallery />} />
               <Route path="/adminDashboard" element={<AdminDashboard />} />
