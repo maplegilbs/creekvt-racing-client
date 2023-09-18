@@ -1,6 +1,14 @@
 import { useContext } from "react";
-import { Button } from "reactstrap";
+// import { Button } from "reactstrap";
 import { UserContext } from "../store/UserContext";
+import {
+  Button,
+  RaceImage,
+  RaceInfoContainer,
+  RaceInfoHeader,
+  ButtonGrid,
+  RaceDescription
+} from "../styles/raceInfo.styles";
 
 import { useNavigate, useParams } from "react-router-dom";
 import { urlBuilder } from "../util/urlBuilder";
@@ -16,40 +24,41 @@ const RaceInfo = (props) => {
     navigate("/raceRegistration");
   }
   function handleGalleryClick() {
-    navigate("/photoGallery/" + urlBuilder(raceName) + "/all-photos");
+    // navigate("/photoGallery/" + urlBuilder(name) + "/all-photos");
   }
   function handleRegisteredRacersClick() {
     navigate(`/registeredRacers/${raceid}/${raceYear}/${urlBuilder(raceName)}`);
   }
   function handleResultsClick(e) {
-    navigate("/raceResults/" + urlBuilder(raceName));
+    // navigate("/raceResults/" + urlBuilder(name))
   }
-  function handleResultsClick(e) {
-    navigate("/raceResults/" + urlBuilder(raceName));
+  function handleContactClick(e) {
+    // navigate("/raceResults/" + urlBuilder(name))
   }
-  function handleSuccessPage(){
-    navigate("/successPage")
+  function handleCourseClick(e) {
+    // navigate("/courseDetails" + urlBuilder(name))
   }
   return (
     <>
-      <h2>{titleizeName}</h2>
-      <h3>{raceYear}</h3>
-      <h3>{raceLocation}</h3>
-      <Button onClick={handleRegisterClick}>Register</Button>
-      <Button onClick={handleRegisteredRacersClick}>Racers</Button>
-      <div className="d-flex justify-content-center">
-        <img
-          src="https://creekvt.com/wp-content/uploads/2023/07/All-American-Michael-from-NH-1024x603.jpg"
-          style={{ maxHeight: "30vh", width: "auto", borderRadius: "8px" }}
-        />
-      </div>
-      <Button>Course Details</Button>
-      <Button onClick={handleGalleryClick}>Gallery</Button>
+      <RaceInfoContainer>
+        <RaceInfoHeader>
+          <h2>{titleizeName}</h2>
+          <h3>{raceYear}</h3>
+          <h3>{raceLocation}</h3>
+        </RaceInfoHeader>
+        <RaceImage src="https://creekvt.com/wp-content/uploads/2023/07/All-American-Michael-from-NH-1024x603.jpg" />
+          <Button onClick={handleRegisterClick}>Register</Button>
+        <Button className="racers-btn" onClick={handleRegisteredRacersClick}>Racers</Button>
+        
+        <RaceDescription>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ad optio debitis ipsam perferendis accusantium quos, impedit omnis illum error molestias id pariatur aperiam sit nisi soluta! Odit libero, nemo eveniet dolor voluptas vero. Fugiat assumenda dolore autem, alias iure in, exercitationem corrupti et doloremque reiciendis possimus eveniet quibusdam nobis quis sit tenetur facere eum magnam unde esse, sed ab eligendi accusantium dolorum. Ullam nesciunt eligendi, a, voluptatum ad qui animi consectetur quibusdam fuga nam impedit perferendis veritatis facilis quo quia recusandae, quis dolorem unde aliquid laborum provident ratione exercitationem. Voluptas vel culpa voluptatem. Animi, fugit incidunt laboriosam nulla beatae explicabo?</RaceDescription>
 
-      <Button>Results</Button>
-      <Button onClick={handleSuccessPage}>Success Page</Button>
-      <Button onClick={handleResultsClick}>Results</Button>
-
+        <ButtonGrid>
+          <Button onClick={handleCourseClick}>Course Details</Button>
+          <Button onClick={handleGalleryClick}>Gallery</Button>
+          <Button onClick={handleResultsClick}>Results</Button>
+          <Button onClick={handleContactClick}>Contact</Button>
+        </ButtonGrid>
+      </RaceInfoContainer>
     </>
   );
 };
