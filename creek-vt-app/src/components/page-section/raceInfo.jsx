@@ -23,6 +23,9 @@ const RaceInfo = (props) => {
   function handleResultsClick(e){
     navigate("/raceResults/" + urlBuilder(name))
   }
+  function handleContactClick(){
+    navigate(`/contact-us/${urlBuilder(name)}`)
+  }
   return (
     <>
       <h2>{name}</h2>
@@ -39,6 +42,7 @@ const RaceInfo = (props) => {
       <Button>Course Details</Button>
       <Button onClick={handleGalleryClick}>Gallery</Button>
       <Button onClick={handleResultsClick}>Results</Button>
+      <Button onClick={handleContactClick}>Contact Us</Button>
     </>
   );
 };

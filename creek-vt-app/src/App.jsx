@@ -13,6 +13,7 @@ import RaceInfo from "./components/page-section/raceInfo";
 import RacesMain from "./components/page-section/racesMain";
 import Register from "./components/auth/register";
 import AdminDashboard from "./components/page-section/adminDashboard";
+import ContactUs from "./components/page-section/contactUs";
 
 function App({ Component, pageProps }) {
   const [token, setToken] = useState("");
@@ -52,6 +53,7 @@ function App({ Component, pageProps }) {
               <Route path="/raceInfo" element={<RaceInfo />} />
               <Route path="/photoGallery" element={<PhotoGallery />} />
               <Route path="/adminDashboard" element={<AdminDashboard />} />
+              <Route path="/contact-us/:race-name" element={<ContactUs />} />
             </Routes>
           </div>
           <Footer />
