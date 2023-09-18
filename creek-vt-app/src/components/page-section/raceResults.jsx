@@ -10,7 +10,6 @@ const RaceResults = (props) => {
   const [results, setResults] = useState([]);
   const userctx = useContext(UserContext);
   const { raceName } = useParams();
-  console.log(raceName)
   async function fetchRaceResults() {
     try {
       let requestOptions = {
@@ -21,7 +20,6 @@ const RaceResults = (props) => {
         requestOptions
       );
       const data = await response.json();
-      console.log(data);
       setResults(data?.races);
     } catch (error) {
       console.error(error);
@@ -37,58 +35,55 @@ const RaceResults = (props) => {
   let id = 1;
   let columns = [];
   if (raceName === "new-haven-ledges-race") {
-  results.map((result) => {
-    let row = {
-      id: id,
-      col1: result.year,
-      col2: result.place,
-      col3: result.firstName,
-      col4: result.lastName,
-      col5: result.fastestLap,
-      col6: result.lap1,
-      col7: result.lap2,
-    };
-    console.log(row)
-    rows.push(row);
-    id += 1;
-  });
+    results.map((result) => {
+      let row = {
+        id: id,
+        col1: result.year,
+        col2: result.place,
+        col3: result.firstName,
+        col4: result.lastName,
+        col5: result.fastestLap,
+        col6: result.lap1,
+        col7: result.lap2,
+      };
+      rows.push(row);
+      id += 1;
+    });
 
-  columns = [
-    { field: "col1", headerName: "Year", width: 150 },
-    { field: "col2", headerName: "Place", width: 150 },
-    { field: "col3", headerName: "Athlete First Name", width: 150 },
-    { field: "col4", headerName: "Athlete Last Name", width: 150 },
-    { field: "col5", headerName: "Fastest Lap", width: 150 },
-    { field: "col6", headerName: "Lap 1", width: 150 },
-    { field: "col7", headerName: "Lap 2", width: 150 },
-  ];
-}
-if (raceName === "peavine-race"){
-  results.map((result) => {
-    let row = {
-      id: id,
-      col1: result.year,
-      col2: result.place,
-      col3: result.firstName,
-      col4: result.lastName,
-      col5: result.fastestLap,
-      col6: result.raceCategory,
-    };
-    console.log(row)
-    rows.push(row);
-    id += 1;
-});
-columns = [
-  { field: "col1", headerName: "Year", width: 150 },
-  { field: "col2", headerName: "Place", width: 150 },
-  { field: "col3", headerName: "Athlete First Name", width: 150 },
-  { field: "col4", headerName: "Athlete Last Name", width: 150 },
-  { field: "col5", headerName: "Time", width: 150 },
-  { field: "col6", headerName: "Category", width: 150 },
-];
-}
+    columns = [
+      { field: "col1", headerName: "Year", width: 150 },
+      { field: "col2", headerName: "Place", width: 150 },
+      { field: "col3", headerName: "Athlete First Name", width: 150 },
+      { field: "col4", headerName: "Athlete Last Name", width: 150 },
+      { field: "col5", headerName: "Fastest Lap", width: 150 },
+      { field: "col6", headerName: "Lap 1", width: 150 },
+      { field: "col7", headerName: "Lap 2", width: 150 },
+    ];
+  }
+  if (raceName === "peavine-race") {
+    results.map((result) => {
+      let row = {
+        id: id,
+        col1: result.year,
+        col2: result.place,
+        col3: result.firstName,
+        col4: result.lastName,
+        col5: result.fastestLap,
+        col6: result.raceCategory,
+      };
+      rows.push(row);
+      id += 1;
+    });
+    columns = [
+      { field: "col1", headerName: "Year", width: 150 },
+      { field: "col2", headerName: "Place", width: 150 },
+      { field: "col3", headerName: "Athlete First Name", width: 150 },
+      { field: "col4", headerName: "Athlete Last Name", width: 150 },
+      { field: "col5", headerName: "Time", width: 150 },
+      { field: "col6", headerName: "Category", width: 150 },
+    ];
+  }
 
-  
   return (
     <>
       <h2>RACE RESULTS</h2>

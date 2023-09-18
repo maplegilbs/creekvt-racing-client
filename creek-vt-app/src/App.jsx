@@ -13,6 +13,7 @@ import RaceInfo from "./components/page-section/raceInfo";
 import RacesMain from "./components/page-section/racesMain";
 import Register from "./components/auth/register";
 import AdminDashboard from "./components/page-section/adminDashboard";
+import SuccessPage from "./components/page-section/successPage";
 import ContactUs from "./components/page-section/contactUs";
 
 function App({ Component, pageProps }) {
@@ -29,7 +30,6 @@ function App({ Component, pageProps }) {
       setToken(token);
     }
   }, []);
-
   return (
     <div
       style={{ minHeight: "100vh" }}
@@ -47,12 +47,22 @@ function App({ Component, pageProps }) {
               <Route path="/racesMain" element={<RacesMain />} />
               <Route path="/register" element={<Register />} />
               <Route path="/signin" element={<Signin />} />
-              <Route path="/raceResults/:raceName"  element={<RaceResults />} />
-              <Route path="/registeredRacers/:raceId" element={<RegisteredRacers />} />
+              <Route path="/raceResults/:raceName" element={<RaceResults />} />
+              <Route
+                path="/registeredRacers/:raceid/:raceYear/:raceName"
+                element={<RegisteredRacers />}
+              />
               <Route path="/raceRegistration" element={<RaceRegistration />} />
-              <Route path="/raceInfo" element={<RaceInfo />} />
-              <Route path="/photoGallery" element={<PhotoGallery />} />
+              <Route
+                path="/raceInfo/:raceYear/:raceLocation/:raceid/:raceName"
+                element={<RaceInfo />}
+              />
+              <Route
+                path="/photoGallery/:raceName/:year"
+                element={<PhotoGallery />}
+              />
               <Route path="/adminDashboard" element={<AdminDashboard />} />
+              <Route path="/successPage" element={<SuccessPage />} />
               <Route path="/contact-us/:race-name" element={<ContactUs />} />
             </Routes>
           </div>

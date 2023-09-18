@@ -8,7 +8,7 @@
 }
 .overlay{
    position: absolute;
-   left: 5px;
+   right: 5px;
    bottom: 5px;
    background-color: #565566;
    font-family: 'Roboto Serif', serif;
@@ -18,21 +18,32 @@
 }
 #gallery-header{
    text-align: center;
+   font-family: 'Roboto Serif', serif;
 }
 
 .dropdown{
    text-align: center !important;
+   
 }
 #dropdown-basic{
-   background-color: #565566;
-   border-radius: 5px;
-   color: white;
-   margin: auto;
+      display: block;
+      background: linear-gradient(45deg,#e1eaf4, #4d7288);
+      color: white;
+      padding: 10px;
+      margin: 0 auto;
+      border: 2px solid rgb(118,118,118);
+      font-family: 'Montserrat';
+      font-weight: 700;
+      font-size: .8em;
+      text-transform: uppercase;
+      text-shadow: 1px 1px 5px #333;
+      border-radius: 5px;
+   
 }
 
 .dropdown-menu{
    background-color: #565566 !important;
-  
+   font-family: 'Roboto Serif', serif;
 }
 
 .dropdown-item{
@@ -41,3 +52,15 @@
 }
 /* LIGHT rgb(78, 100, 123) */
 /* DARK  rgb(41, 59, 70)) */
+
+@media screen and (min-width: 600px) {
+   .overlay {
+     font-size: 16px;
+   }
+ }
+ 
+ @media screen and (max-width: 600px) {
+   .overlay {
+     font-size: 8px;
+   }
+ }

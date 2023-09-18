@@ -1,6 +1,7 @@
-import styled from "styled-components";
-import "../../App.css";
-import { Link } from "react-router-dom";
+import styled from 'styled-components';
+import '../../App.css';
+import { Link } from 'react-router-dom';
+
 
 /*Header Nav Styles*/
 
@@ -147,7 +148,7 @@ export const DropdownContainer = styled.div`
   position: absolute;
 `;
 
-export const NavLink = styled(Link)`
+export const DropdownItem = styled(Link)`
   color: white;
   font-family: Montserrat, sans-serif;
   text-transform: uppercase;
@@ -157,9 +158,9 @@ export const NavLink = styled(Link)`
   text-decoration: none;
   border: 1.5px darkgray solid;
   padding: 10px;
-`;
+;`
 
-// export const
+
 
 // /* NavbarBrand */
 // .navbar-brand,
