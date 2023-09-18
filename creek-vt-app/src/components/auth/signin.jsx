@@ -16,13 +16,13 @@ const Signin = (props) => {
   }
 
   function navControl() {
-    console.log(userctx.adminCredentials);
-    if (userctx.adminCredentials === 1) {
+    if (localStorage.getItem("isAdmin") === "1") {
       navigate("/adminDashboard");
     } else {
       navigate("/racesMain");
     }
   }
+
   async function signin() {
     try {
       // headers
