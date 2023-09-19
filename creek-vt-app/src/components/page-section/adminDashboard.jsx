@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Dropdown } from "react-bootstrap";
 import {
-  API_DELETE_REGISTERED_RACER,
+  API_ADD_REGISTERED_RACER,
   API_UPDATE_RACE,
+  API_UPDATE_REGISTERED_RACER,
   API_VIEWALL_RACES,
   API_VIEW_REGISTERED_RACERS,
 } from "../../constants/endpoints";
 import { UserContext } from "../store/UserContext";
+import AdminRRCard from "../linkingComponents/adminRRCard";
 
 const AdminDashboard = (props) => {
   const userctx = useContext(UserContext);
@@ -14,6 +16,13 @@ const AdminDashboard = (props) => {
   const [selectedRace, setSelectedRace] = useState("");
   const [registeredRacersItems, setRegisteredRacersItems] = useState([]);
   let adminName = localStorage.getItem("firstName");
+  const [racerUpdateData, setRacerUpdateData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    category: "",
+  });
   const [editData, setEditData] = useState({
     name: "",
     date: "",
@@ -21,10 +30,9 @@ const AdminDashboard = (props) => {
     location: "",
   });
   const [racerAddData, setRacerAddData] = useState({
-    athleteId: "",
     firstName: "",
     lastName: "",
-    age: "",
+    DOB: "",
     email: "",
     phone: "",
     category: "",
@@ -52,19 +60,56 @@ const AdminDashboard = (props) => {
   }
   function handleAddInputChange(e) {
     const { name, value } = e.target;
-    setRacerAddData(() => ({
+    setRacerAddData((prevData) => ({
+      ...prevData,
       [name]: value,
     }));
   }
+  function handleUpdateInputChange(e) {
+    const { name, value } = e.target;
+    setRacerUpdateData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  }
+
   function handleSubmitUpdate(e) {
     e.preventDefault();
     updateRace();
   }
-  function handleDeleteRacerClick(clickValue) {
-    deleteRegisteredRacer(clickValue);
+
+  function handleSubmitAdd(e) {
+    e.preventDefault();
+    addRacer();
   }
 
-  //fetch section
+  function handleUpdateRacerClick(e) {
+    e.preventDefault();
+    updateRacers();
+  }
+
+  // use effects
+  useEffect(() => {
+    if (selectedRace.id) {
+      fetchRegisteredRacers();
+    }
+  }, [selectedRace]);
+  useEffect(() => {
+    fetchRacesFeed();
+  }, []);
+  useEffect(() => {
+    if (selectedRace.id) {
+      setRacerUpdateData({
+        firstName: userctx.selectedUpdateAthlete.firstName,
+        lastName: userctx.selectedUpdateAthlete.lastName,
+        email: userctx.selectedUpdateAthlete.email,
+        phone: userctx.selectedUpdateAthlete.phone,
+        category: userctx.selectedUpdateAthlete.category,
+      });
+    }
+  }, [userctx.selectedUpdateAthlete]);
+
+  //fetch section for races
   async function fetchRacesFeed() {
     try {
       let requestOptions = {
@@ -77,6 +122,7 @@ const AdminDashboard = (props) => {
       console.log(error);
     }
   }
+
   async function updateRace() {
     try {
       const myHeaders = new Headers();
@@ -96,6 +142,8 @@ const AdminDashboard = (props) => {
       console.log(error);
     }
   }
+
+  // fetch section for racers
   async function fetchRegisteredRacers() {
     try {
       let requestOptions = {
@@ -112,34 +160,44 @@ const AdminDashboard = (props) => {
     }
   }
 
-  async function deleteRegisteredRacer(selectedRacer) {
+  async function updateRacers() {
     try {
-      const token = localStorage.getItem("token");
       const myHeaders = new Headers();
-      myHeaders.append("Authorization", token);
+      myHeaders.append("Content-Type", "application/json");
       let requestOptions = {
-        method: "DELETE",
+        method: "PATCH",
         headers: myHeaders,
+        body: JSON.stringify(racerUpdateData),
       };
       const response = await fetch(
-        API_DELETE_REGISTERED_RACER + selectedRacer,
+        API_UPDATE_REGISTERED_RACER +
+          selectedRace.id +
+          "/" +
+          racerUpdateData.email,
         requestOptions
       );
       const data = await response.json();
+      fetchRegisteredRacers();
     } catch (error) {
       console.log(error);
     }
   }
 
-  // use effects
-  useEffect(() => {
-    if (selectedRace.id) {
-      fetchRegisteredRacers();
+  async function addRacer() {
+    try {
+      const myHeaders = new Headers();
+      myHeaaders.append("Content-Type", "application/json");
+      let requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: JSON.stringify(racerAddData),
+      };
+      const response = await fetch(API_ADD_REGISTERED_RACER + selectedRace);
+      const data = await response.json();
+    } catch (error) {
+      console.log(error);
     }
-  }, [selectedRace]);
-  useEffect(() => {
-    fetchRacesFeed();
-  }, []);
+  }
 
   // This section is what renders in the options box
   function renderEditOptions() {
@@ -206,40 +264,106 @@ const AdminDashboard = (props) => {
           <div
             className="bg-light d-flex flex-column m-1"
             style={{
-              width: "50%",
+              width: "40%",
               fontSize: "",
               maxHeight: "40vh",
               overflowY: "auto",
             }}>
+            {" "}
             <h4>Registered Racers:</h4>
             {registeredRacersItems?.map((racer, index) => (
-              <div
-                style={{ border: "black 1.5px solid" }}
+              <AdminRRCard
                 key={index}
-                className="d-flex justify-content-between">
-                ID:{racer.id}, Firstname: {racer.firstName}, Lastname:{" "}
-                {racer.lastName}
-                <div className="d-flex flex-column m-1">
-                  <button
-                    onClick={handleDeleteRacerClick(racer.id)}
-                    style={{ height: "50%", backgroundColor: "red" }}>
-                    DELETE
-                  </button>
-                  <button
-                    style={{
-                      height: "50%",
-                      backgroundColor: "blue",
-                      color: "white",
-                    }}>
-                    UPDATE
-                  </button>
-                </div>
-              </div>
+                racer={racer}
+                fetchRegisteredRacers={fetchRegisteredRacers}
+              />
             ))}
           </div>
           <div
             style={{
-              width: "50%",
+              width: "30%",
+              backgroundColor: "khaki",
+              border: "black solid 2px",
+              maxHeight: "40vh",
+              overflowY: "auto",
+            }}>
+            <form
+              className="d-flex flex-column align-items-center"
+              style={{ gap: "3px" }}>
+              <h5 style={{ textAlign: "center" }}>
+                update Racer: {userctx?.selectedUpdateAthlete.email}
+              </h5>
+              <div>
+                <label htmlFor="updateRacerFirstName">First Name:</label>
+                <input
+                  type="text"
+                  name="updateRacerFirstName"
+                  id="updateRacerFirstName"
+                  className="form-control"
+                  value={racerUpdateData.firstName}
+                  onChange={handleUpdateInputChange}
+                  placeholder="Enter first name"
+                />
+              </div>
+              <div>
+                <label htmlFor="updateRacerLastName">Last Name:</label>
+                <input
+                  type="text"
+                  name="updateRacerLastName"
+                  id="updateRacerLastName"
+                  className="form-control"
+                  value={racerUpdateData.lastName}
+                  onChange={handleUpdateInputChange}
+                  placeholder="Enter last name"
+                />
+              </div>
+              <div>
+                <label htmlFor="updateRacerEmail">Email:</label>
+                <input
+                  type="text"
+                  name="updateRacerEmail"
+                  id="updateRacerEmail"
+                  className="form-control"
+                  value={racerUpdateData.email}
+                  onChange={handleUpdateInputChange}
+                  placeholder="Enter email"
+                />
+              </div>
+              <div>
+                <label htmlFor="updateRacerPhone">Phone:</label>
+                <input
+                  type="text"
+                  name="updateRacerPhone"
+                  id="updateRacerPhone"
+                  className="form-control"
+                  value={racerUpdateData.phone}
+                  onChange={handleUpdateInputChange}
+                  placeholder="Enter phone number"
+                />
+              </div>
+              <div>
+                <label htmlFor="updateRacerCategory">Category:</label>
+                <input
+                  type="text"
+                  name="updateRacerCategory"
+                  id="updateRacerCategory"
+                  className="form-control"
+                  value={racerUpdateData.category}
+                  onChange={handleUpdateInputChange}
+                  placeholder="Enter category"
+                />
+              </div>
+              <button
+                type="submit"
+                className="btn btn-primary"
+                onClick={handleUpdateRacerClick}>
+                update Racer
+              </button>
+            </form>
+          </div>
+          <div
+            style={{
+              width: "30%",
               backgroundColor: "khaki",
               border: "black solid 2px",
               maxHeight: "40vh",
@@ -249,18 +373,6 @@ const AdminDashboard = (props) => {
               className="d-flex flex-column align-items-center"
               style={{ gap: "3px" }}>
               <h5 style={{ textAlign: "center" }}>Add Racer</h5>
-              <div>
-                <label htmlFor="addRacerAthleteId">Athlete ID:</label>
-                <input
-                  type="text"
-                  name="addRacerAthleteId"
-                  id="addRacerAthleteId"
-                  className="form-control"
-                  value={racerAddData.athleteId}
-                  onChange={handleAddInputChange}
-                  placeholder="Enter id"
-                />
-              </div>
               <div>
                 <label htmlFor="addRacerFirstName">First Name:</label>
                 <input
@@ -286,15 +398,15 @@ const AdminDashboard = (props) => {
                 />
               </div>
               <div>
-                <label htmlFor="addRacerAge">Age:</label>
+                <label htmlFor="addRacerAge">Date of Birth:</label>
                 <input
                   type="text"
-                  name="addRacerAge"
-                  id="addRacerAge"
+                  name="addRacerDOB"
+                  id="addRacerDOB"
                   className="form-control"
-                  value={racerAddData.age}
+                  value={racerAddData.DOB}
                   onChange={handleAddInputChange}
-                  placeholder="Enter age"
+                  placeholder="Enter Date of Birth"
                 />
               </div>
               <div>
@@ -336,7 +448,7 @@ const AdminDashboard = (props) => {
               <button
                 type="submit"
                 className="btn btn-primary"
-                onClick={handleSubmitUpdate}>
+                onClick={handleSubmitAdd}>
                 Add Racer
               </button>
             </form>
@@ -397,7 +509,7 @@ const AdminDashboard = (props) => {
       <div className="d-flex justify-content-center">
         <div
           style={{
-            width: "50vw",
+            width: "70vw",
             height: "40vh",
             backgroundColor: "darkgray",
           }}>

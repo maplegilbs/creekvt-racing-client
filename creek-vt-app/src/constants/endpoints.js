@@ -37,6 +37,8 @@ export const API_DELETE_REGISTERED_RACER = `${API}/races/delete-athlete/`;
 
 export const API_UPDATE_REGISTERED_RACER = `${API}/races/update-racers/`;
 
+export const API_ADD_REGISTERED_RACER = `${API}/races/register-new/`;
+
 //results api
 export const API_ADD_RESULTS = `${API}/results/new`;
 

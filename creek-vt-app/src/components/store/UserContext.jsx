@@ -7,6 +7,7 @@ export const UserContext = createContext({
   firstName: "",
   adminCredentials: "",
   raceFeedItems: "",
+  selectedUpdateAthlete: "",
   updateToken: () => {},
   setRace: () => {},
   updateFirstName: () => {},
@@ -14,6 +15,7 @@ export const UserContext = createContext({
   setRaceFeedItems: () => {},
   capitalize: () => {},
   titleize: () => {},
+  setSelectedUpdateAthlete: () => {},
 });
 
 //creates functions available sitewide
@@ -23,6 +25,7 @@ const UserContextProvider = (props) => {
   const [firstName, setFirstName] = useState("");
   const [adminCredentials, setAdminCredentials] = useState("");
   const [raceFeedItems, setRaceFeedItems] = useState([]);
+  const [selectedUpdateAthlete, setSelectedUpdateAthlete] = useState([]);
 
   function updateToken(newToken) {
     setToken(newToken);
@@ -63,6 +66,7 @@ const UserContextProvider = (props) => {
     firstName,
     adminCredentials,
     raceFeedItems,
+    selectedUpdateAthlete,
     setRaceFeedItems,
     updateToken,
     setRace,
@@ -70,6 +74,7 @@ const UserContextProvider = (props) => {
     updateAdminCred,
     titleize,
     capitalize,
+    setSelectedUpdateAthlete,
   };
   return (
     <>
