@@ -39,7 +39,7 @@ const RaceInfo = (props) => {
     // navigate("/courseDetails" + urlBuilder(name))
   }
   function handleContactClick(){
-    navigate(`/contact-us/${urlBuilder(name)}`)
+    navigate(`/contact-us/${urlBuilder(raceName)}`)
   }
   return (
     <>

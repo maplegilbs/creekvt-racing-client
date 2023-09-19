@@ -63,7 +63,7 @@ function App({ Component, pageProps }) {
               />
               <Route path="/adminDashboard" element={<AdminDashboard />} />
               <Route path="/successPage" element={<SuccessPage />} />
-              <Route path="/contact-us/:race-name" element={<ContactUs />} />
+              <Route path="/contact-us/:raceName" element={<ContactUs />} />
             </Routes>
           </div>
           <Footer />
