@@ -22,6 +22,7 @@
 #form-shadow{
     margin: auto;
     padding: 20px;
+    /* width: 80vw !important; */
 }
 .form-div{
     
@@ -52,7 +53,7 @@
       text-transform: uppercase;
       text-shadow: 1px 1px 5px #333;
       border-radius: 5px;
-      width: 30em;
+      width: 15em;
 }
 .dropdown{
     padding: 10px 0px 0px 0px;
@@ -62,6 +63,22 @@
 
 @media screen and (max-width: 600px){
     .form-cont{
-        width: 65vw;
+        width: fit-content;
+    }
+    .pay-btn{
+        width: fit-content;
+    }
+    #form-shadow{
+        width: 80vw !important;
+        margin: auto;
+        padding: 20px;
+    }
+}
+@media screen and (max-width: 400px) {
+    
+    #form-shadow{
+        width: 80vw !important;
+        margin: auto;
+        padding: 0px;
     }
 }

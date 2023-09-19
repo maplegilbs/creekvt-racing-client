@@ -1,0 +1,8 @@
+.blurb-txt{
+    text-align: center;
+    font-family: 'Roboto Serif', serif;
+    padding: 20px;
+}
+.overlay{
+    display: none;
+}
