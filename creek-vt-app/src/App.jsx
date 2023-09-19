@@ -14,6 +14,8 @@ import RacesMain from "./components/page-section/racesMain";
 import Register from "./components/auth/register";
 import AdminDashboard from "./components/page-section/adminDashboard";
 import SuccessPage from "./components/page-section/successPage";
+import CourseDetails from "./components/page-section/courseDetails";
+import RaceMap from "./components/page-section/raceMap";
 
 function App({ Component, pageProps }) {
   const [token, setToken] = useState("");
@@ -56,6 +58,9 @@ function App({ Component, pageProps }) {
                 path="/raceInfo/:raceYear/:raceLocation/:raceid/:raceName"
                 element={<RaceInfo />}
               />
+              <Route path="/raceInfo/:raceYear/:raceLocation/:raceid/:raceName/:courseDetails" element={<CourseDetails />} />
+              <Route path="/map.html" />
+              <Route path="/map/:raceName" element={<RaceMap />} />
               <Route
                 path="/photoGallery/:raceName/:year"
                 element={<PhotoGallery />}
