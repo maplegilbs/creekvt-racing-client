@@ -22,8 +22,8 @@ export const Directions = styled.div`
 
 `;
 
-export default GoogleApiWrapper(
-  (props) => ({
-    apiKey: props.apiKey
-  })
-)(MapContainer)
+// export default GoogleApiWrapper(
+//   (props) => ({
+//     apiKey: props.apiKey
+//   })
+// )(MapContainer)
