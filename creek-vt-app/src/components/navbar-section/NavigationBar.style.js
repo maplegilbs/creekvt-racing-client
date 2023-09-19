@@ -121,7 +121,7 @@ export const OpenLinksButton = styled.button`
   font-size: 45px;
   cursor: pointer;
   display: inline-block;
-  margin-left: 300%;
+  margin-left: 200%;
   position: sticky;
 
   @media (min-width: 700px) {

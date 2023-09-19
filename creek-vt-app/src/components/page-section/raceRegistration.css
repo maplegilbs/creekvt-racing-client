@@ -1,0 +1,91 @@
+.register-header{
+    text-align: center;
+    font-family: 'Roboto Serif', serif;
+    font-weight: 600;
+}
+
+.subhead-cont{
+    text-align: center;
+}
+
+.all-lbls{
+    font-weight: 600;
+    padding: 15px;
+}
+
+.reg-subhead{
+    margin: auto;
+    width: 50%;
+    font-family: 'Roboto Serif', serif;
+    font-size: medium;
+    font-weight: 100;
+    padding: 10px
+}
+#form-shadow{
+    margin: auto;
+    padding: 20px;
+    /* width: 80vw !important; */
+}
+.form-div{
+    
+    box-shadow: #333;
+}
+.form-cont{
+    width: 40vw;
+    margin: auto;
+    /* border: .5px solid black; */
+    text-align: center;
+    font-family: 'Roboto Serif', serif;
+    font-size: 20px;
+    padding: 20px;
+    gap: 10px;
+
+}
+.btn-cont{
+    padding: 10px
+}
+
+.pay-btn{
+    background: linear-gradient(45deg,#e1eaf4, #4d7288);
+      color: white;
+      padding: 10px;
+      margin: 0 auto;
+      border: 2px solid rgb(118,118,118);
+      font-family: 'Montserrat';
+      font-weight: 700;
+      font-size: .8em;
+      text-transform: uppercase;
+      text-shadow: 1px 1px 5px #333;
+      border-radius: 5px;
+      width: 15em;
+}
+.dropdown{
+    padding: 10px 0px 0px 0px;
+}
+
+
+
+@media screen and (max-width: 600px){
+    .form-cont{
+        width: fit-content;
+    }
+    .pay-btn{
+        width: fit-content;
+    }
+    #form-shadow{
+        width: 80vw !important;
+        margin: auto;
+        padding: 20px;
+    }
+    .reg-subhead{
+        font-size: small;
+    }
+}
+@media screen and (max-width: 400px) {
+    
+    #form-shadow{
+        width: 80vw !important;
+        margin: auto;
+        padding: 0px;
+    }
+}

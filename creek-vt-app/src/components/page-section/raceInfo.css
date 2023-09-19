@@ -1,0 +1,72 @@
+.title-txt{
+    text-align: center;
+    font-family: 'Roboto Serif', serif;
+   
+}
+.year-txt{
+    text-align: center;
+    font-family: 'Roboto Serif', serif;
+}
+.location-txt{
+    text-align: center;
+    font-family: 'Roboto Serif', serif;
+}
+.kaXqIW{
+    margin-top: 25px;
+    padding: 0px !important;
+}
+.race-desc-txt{
+    text-align: center;
+    font-family: 'Roboto Serif', serif;
+}
+.bTShbK {
+    display: flex;
+    flex-direction: column;
+    height: 60vh !important;
+    margin: auto 30px !important;
+    padding: 5px;
+    justify-content: center;
+}
+.ktWkOj {
+    display: flex;
+    flex-direction: column;
+    -webkit-box-pack: center;
+    justify-content: center;
+    height: 140vh !important;
+    width: 70% !important;
+    margin: auto;
+}
+@media screen and (max-width: 700px){
+    .bTShbK {
+        display: flex;
+        flex-direction: column;
+        height: 30vh !important;
+        margin: 0px -40px !important;
+        padding: 10px;
+        width: 90vw;
+        
+    }
+    .ktWkOj {
+        width: 100%;
+        height: 150vh !important;
+        margin: auto;
+    }
+}
+
+@media screen and (max-width: 400px){
+    .bTShbK {
+        display: flex;
+        flex-direction: column;
+        height: 30vh !important;
+        /* margin: 0px -5px   !important; */
+        padding: 10px;
+        width: 90vw;
+        justify-content: center !important;
+        margin: 0px -40px !important;
+    }
+    .ktWkOj {
+        width: 100%;
+        height: 190vh !important;
+        margin: auto;
+    }
+}

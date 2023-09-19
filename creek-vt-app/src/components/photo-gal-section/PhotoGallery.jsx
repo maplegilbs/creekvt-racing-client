@@ -24,7 +24,6 @@ const PhotoGallery = (props) => {
         requestOptions
       );
       const data = await response.json();
-      console.log(data.photos);
       //  setGalleryItems(data.photos) ;
       setData(data);
     } catch (error) {
@@ -36,33 +35,35 @@ const PhotoGallery = (props) => {
       fetchPhotoGallery();
     }
   }, []);
-  
-// Fetching raceYear
-   async function fetchRaceYear(){
-    try {
-        let requestOptions ={
-            method: "GET",
-        }
-        const response = await fetch(API_VIEWBY_RACE_PHOTOS + raceName, requestOptions)
-        const data = await response.json();
-        setData(data)
-        
-    } catch (error) {
-        console.log(error)
+  useEffect(() => {
+    if (raceName) {
+      fetchPhotoGallery();
     }
-   }
-
+  }, []);
+  // Fetching raceYear
+  async function fetchRaceYear() {
+    try {
+      let requestOptions = {
+        method: "GET",
+      };
+      const response = await fetch(
+        API_VIEWBY_RACE_PHOTOS + raceName,
+        requestOptions
+      );
+      const data = await response.json();
+      setData(data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   useEffect(() => {
     if (year === "all-photos") {
       setGalleryItems(data.photos);
-      console.log(galleryItems);
     } else {
-      console.log(data.photos);
       const filteredPhotos = data?.photos?.filter(
         (photo) => photo.raceYear == year
       );
-      console.log(filteredPhotos);
       setGalleryItems(filteredPhotos);
     }
   }, [year, data]);
@@ -72,21 +73,43 @@ const PhotoGallery = (props) => {
     navigate("/photoGallery/" + raceName + `/${raceYear}`);
   }
 
+<<<<<<< HEAD
   let pulledYears = []
   data?.photos?.forEach(item => {
     if(!pulledYears.includes(item.raceYear)){
         pulledYears.push(item.raceYear)
+=======
+  // let uniqueYears = []; //[2022,2023]
+
+  // returnedData.forEach(result => {
+  //     if (!uniqueYears.includes(result.raceYear)) {
+  //         uniqueYears.push(result.raceYear)
+  //     }
+  // })
+
+  // console.log(uniqueYears)
+
+  // uniqueYears.map(year => {
+  //     return (
+  //         <ComponentName props clickhandler = { () => handleclick({year})} />
+  //     )
+  // }
+  let pulledYears = [];
+  data?.photos?.forEach((item) => {
+    if (!pulledYears.includes(item.raceYear)) {
+      pulledYears.push(item.raceYear);
+>>>>>>> b34a2f86ce56098603afff6e33f2ecb48a15349b
     }
-  })
-  console.log(pulledYears)
+  });
 
- let dropItems = pulledYears.map(year => {
-    return(
-        <Dropdown.Item onClick={() => handleRaceYearClick(year)}>{year}</Dropdown.Item>
-    )
-  })
-   return ( 
-
+  let dropItems = pulledYears.map((year) => {
+    return (
+      <Dropdown.Item onClick={() => handleRaceYearClick(year)}>
+        {year}
+      </Dropdown.Item>
+    );
+  });
+  return (
     <>
       <h2 id="gallery-header">
         {" "}
@@ -97,16 +120,15 @@ const PhotoGallery = (props) => {
           Sort Photos
         </Dropdown.Toggle>
 
-
-      <Dropdown.Menu>
-        <Dropdown.Item onClick={() => handleRaceYearClick("all-photos")} >All Photos</Dropdown.Item>
-        {dropItems}
-       
-      </Dropdown.Menu>
-    </Dropdown>
-     {galleryItems && <PhotoList galleryItems={galleryItems}/>}
-     
-    </> 
+        <Dropdown.Menu>
+          <Dropdown.Item onClick={() => handleRaceYearClick("all-photos")}>
+            All Photos
+          </Dropdown.Item>
+          {dropItems}
+        </Dropdown.Menu>
+      </Dropdown>
+      {galleryItems && <PhotoList galleryItems={galleryItems} />}
+    </>
   );
-}
+};
 export default PhotoGallery;

@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import '../../App.css';
+import styled from "styled-components";
+import "../../App.css";
 
 export const CourseContainer = styled.div`
   display: flex;
@@ -10,14 +10,15 @@ export const CourseContainer = styled.div`
   margin: 2vh auto;
 `;
 
-export const CourseMap = styled.div`
+export const CourseMap = styled.div``;
 
-`;
+export const InfoBlurb = styled.p``;
 
-export const InfoBlurb = styled.p`
+export const Directions = styled.div``;
 
-`;
+// export default GoogleApiWrapper(
+//   (props) => ({
+//     apiKey: props.apiKey
+//   })
+// )(MapContainer)
 
-export const Directions = styled.div`
-
-`;
