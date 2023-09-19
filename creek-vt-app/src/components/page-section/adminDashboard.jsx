@@ -30,6 +30,7 @@ const AdminDashboard = (props) => {
     location: "",
   });
   const [racerAddData, setRacerAddData] = useState({
+    raceId: selectedRace.id,
     firstName: "",
     lastName: "",
     DOB: "",
@@ -93,7 +94,7 @@ const AdminDashboard = (props) => {
     if (selectedRace.id) {
       fetchRegisteredRacers();
     }
-  }, [selectedRace]);
+  }, [selectedRace, updateRacers, addRacer]);
   useEffect(() => {
     fetchRacesFeed();
   }, []);
@@ -186,14 +187,26 @@ const AdminDashboard = (props) => {
   async function addRacer() {
     try {
       const myHeaders = new Headers();
-      myHeaaders.append("Content-Type", "application/json");
+      myHeaders.append("Content-Type", "application/json");
       let requestOptions = {
         method: "POST",
         headers: myHeaders,
-        body: JSON.stringify(racerAddData),
+        body: JSON.stringify({
+          raceID: selectedRace.id,
+          firstName: racerAddData.firstName,
+          lastName: racerAddData.lastName,
+          DOB: racerAddData.DOB,
+          email: racerAddData.email,
+          phone: racerAddData.phone,
+          category: racerAddData.category,
+        }),
       };
-      const response = await fetch(API_ADD_REGISTERED_RACER + selectedRace);
+      const response = await fetch(
+        API_ADD_REGISTERED_RACER + selectedRace.id,
+        requestOptions
+      );
       const data = await response.json();
+      fetchRegisteredRacers();
     } catch (error) {
       console.log(error);
     }
@@ -297,7 +310,7 @@ const AdminDashboard = (props) => {
                 <label htmlFor="updateRacerFirstName">First Name:</label>
                 <input
                   type="text"
-                  name="updateRacerFirstName"
+                  name="firstName"
                   id="updateRacerFirstName"
                   className="form-control"
                   value={racerUpdateData.firstName}
@@ -309,7 +322,7 @@ const AdminDashboard = (props) => {
                 <label htmlFor="updateRacerLastName">Last Name:</label>
                 <input
                   type="text"
-                  name="updateRacerLastName"
+                  name="lastName"
                   id="updateRacerLastName"
                   className="form-control"
                   value={racerUpdateData.lastName}
@@ -321,7 +334,7 @@ const AdminDashboard = (props) => {
                 <label htmlFor="updateRacerEmail">Email:</label>
                 <input
                   type="text"
-                  name="updateRacerEmail"
+                  name="email"
                   id="updateRacerEmail"
                   className="form-control"
                   value={racerUpdateData.email}
@@ -333,7 +346,7 @@ const AdminDashboard = (props) => {
                 <label htmlFor="updateRacerPhone">Phone:</label>
                 <input
                   type="text"
-                  name="updateRacerPhone"
+                  name="phone"
                   id="updateRacerPhone"
                   className="form-control"
                   value={racerUpdateData.phone}
@@ -345,7 +358,7 @@ const AdminDashboard = (props) => {
                 <label htmlFor="updateRacerCategory">Category:</label>
                 <input
                   type="text"
-                  name="updateRacerCategory"
+                  name="category"
                   id="updateRacerCategory"
                   className="form-control"
                   value={racerUpdateData.category}
@@ -377,7 +390,7 @@ const AdminDashboard = (props) => {
                 <label htmlFor="addRacerFirstName">First Name:</label>
                 <input
                   type="text"
-                  name="addRacerFirstName"
+                  name="firstName"
                   id="addRacerFirstName"
                   className="form-control"
                   value={racerAddData.firstName}
@@ -389,7 +402,7 @@ const AdminDashboard = (props) => {
                 <label htmlFor="addRacerLastName">Last Name:</label>
                 <input
                   type="text"
-                  name="addRacerLastName"
+                  name="lastName"
                   id="addRacerLastName"
                   className="form-control"
                   value={racerAddData.lastName}
@@ -401,31 +414,34 @@ const AdminDashboard = (props) => {
                 <label htmlFor="addRacerAge">Date of Birth:</label>
                 <input
                   type="text"
-                  name="addRacerDOB"
+                  name="DOB"
                   id="addRacerDOB"
                   className="form-control"
                   value={racerAddData.DOB}
                   onChange={handleAddInputChange}
-                  placeholder="Enter Date of Birth"
+                  placeholder="Enter Date of Birth (YYYY-MM-DD)"
+                  pattern="\d{4}-\d{2}-\d{2}"
+                  title="Please enter a daate in the format YYYY-MM-DD"
+                  required
                 />
               </div>
               <div>
                 <label htmlFor="addRacerEmail">Email:</label>
                 <input
                   type="text"
-                  name="addRacerEmail"
+                  name="email"
                   id="addRacerEmail"
                   className="form-control"
                   value={racerAddData.email}
                   onChange={handleAddInputChange}
-                  placeholder="Enter email"
+                  placeholder="Enter email "
                 />
               </div>
               <div>
                 <label htmlFor="addRacerPhone">Phone:</label>
                 <input
                   type="text"
-                  name="addRacerPhone"
+                  name="phone"
                   id="addRacerPhone"
                   className="form-control"
                   value={racerAddData.phone}
@@ -437,7 +453,7 @@ const AdminDashboard = (props) => {
                 <label htmlFor="addRacerCategory">Category:</label>
                 <input
                   type="text"
-                  name="addRacerCategory"
+                  name="category"
                   id="addRacerCategory"
                   className="form-control"
                   value={racerAddData.category}
@@ -464,8 +480,8 @@ const AdminDashboard = (props) => {
         Welcome Back Admin {adminName}
       </div>
       <div style={{ textAlign: "center", fontWeight: "bold", margin: "10px" }}>
-        Use This dashboard to edit race information, racers, and to post
-        results.
+        Use This dashboard to edit race information and add/update/delete
+        racers.
       </div>
       <div className="d-flex justify-content-center">
         <Dropdown>
