@@ -3,7 +3,7 @@ import { UserContext } from "../store/UserContext";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { API_VIEW_RACES_BY_NAME } from "../../constants/endpoints";
-
+import "./contactUs.css"
 const ContactUs = (props) => {
     const { raceName } = useParams();
     const [race, setRace] = useState({});
@@ -31,13 +31,12 @@ const ContactUs = (props) => {
     }, []);
     return ( 
         <>
-        <h2>Contact Us</h2>
-        <h4>Organization Name:</h4>
-        <h5>{race.affiliatedOrganization}</h5>
-        <h4>Contact Information:</h4>
-        <h5>{race.organizerContact}</h5>
-        <p>If you have any general questions, would like to help out with some projects, or possibly just want to connect with other members of the community you can access our main contact page via the button below.  </p>
-        <Button onClick={handleClick}>Main Contact Page</Button>
+        <h2 className="contact-txt-main">Contact Us!</h2>
+        <h4 className="contact-txt">Organization: {race.affiliatedOrganization}</h4>
+        <h4 className="contact-txt">Contact Information: {race.organizerContact}</h4>
+        <p className="contact-txt-sub">If you have any general questions, would like to help out with some projects, or possibly just want to connect with other members of the community you can access our main contact page via the button below.  </p>
+        <div className="btn-main">
+        <Button id="btn-actual"  onClick={handleClick}>Main Contact Page</Button></div>
         </>
      );
 }
