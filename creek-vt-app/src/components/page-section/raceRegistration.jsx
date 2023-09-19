@@ -95,7 +95,6 @@ const RaceRegistration = (props) => {
       
       <Form.Label className="all-lbls">Location</Form.Label>
       <Form.Control
-       required
        type="text"
        name="location"
        placeholder=""
