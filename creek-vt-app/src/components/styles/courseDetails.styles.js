@@ -21,3 +21,9 @@ export const InfoBlurb = styled.p`
 export const Directions = styled.div`
 
 `;
+
+export default GoogleApiWrapper(
+  (props) => ({
+    apiKey: props.apiKey
+  })
+)(MapContainer)

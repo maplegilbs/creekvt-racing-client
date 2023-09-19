@@ -1,6 +1,7 @@
-import React, { useState, Select, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Dropdown } from "react-bootstrap";
 import {
+  API_DELETE_REGISTERED_RACER,
   API_UPDATE_RACE,
   API_VIEWALL_RACES,
   API_VIEW_REGISTERED_RACERS,
@@ -16,11 +17,28 @@ const AdminDashboard = (props) => {
   const [editData, setEditData] = useState({
     name: "",
     date: "",
-    time: "",
+    startTime: "",
     location: "",
   });
+  const [racerAddData, setRacerAddData] = useState({
+    athleteId: "",
+    firstName: "",
+    lastName: "",
+    age: "",
+    email: "",
+    phone: "",
+    category: "",
+  });
+
+  //function section
   function handleRaceSelect(selection) {
     setSelectedRace(selection);
+    setEditData({
+      name: selection.name,
+      date: selection.date,
+      startTime: selection.startTime,
+      location: selection.location,
+    });
   }
   function handleRadioChange(event) {
     setSelectedEdit(event.target.value);
@@ -32,10 +50,21 @@ const AdminDashboard = (props) => {
       [name]: value,
     }));
   }
+  function handleAddInputChange(e) {
+    const { name, value } = e.target;
+    setRacerAddData(() => ({
+      [name]: value,
+    }));
+  }
   function handleSubmitUpdate(e) {
     e.preventDefault();
     updateRace();
   }
+  function handleDeleteRacerClick(clickValue) {
+    deleteRegisteredRacer(clickValue);
+  }
+
+  //fetch section
   async function fetchRacesFeed() {
     try {
       let requestOptions = {
@@ -82,11 +111,37 @@ const AdminDashboard = (props) => {
       console.log(error);
     }
   }
+
+  async function deleteRegisteredRacer(selectedRacer) {
+    try {
+      const token = localStorage.getItem("token");
+      const myHeaders = new Headers();
+      myHeaders.append("Authorization", token);
+      let requestOptions = {
+        method: "DELETE",
+        headers: myHeaders,
+      };
+      const response = await fetch(
+        API_DELETE_REGISTERED_RACER + selectedRacer,
+        requestOptions
+      );
+      const data = await response.json();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  // use effects
   useEffect(() => {
     if (selectedRace.id) {
       fetchRegisteredRacers();
     }
   }, [selectedRace]);
+  useEffect(() => {
+    fetchRacesFeed();
+  }, []);
+
+  // This section is what renders in the options box
   function renderEditOptions() {
     if (selectedEdit === "option1") {
       return (
@@ -114,15 +169,15 @@ const AdminDashboard = (props) => {
               value={editData.date}
               onChange={handleInputChange}
             />
-            <label htmlFor="time" className="form-label">
+            <label htmlFor="startTime" className="form-label">
               Time:
             </label>
             <input
               type="text"
-              id="time"
-              name="time"
+              id="startTime"
+              name="startTime"
               className="form-control"
-              value={editData.time}
+              value={editData.startTime}
               onChange={handleInputChange}
             />
             <label htmlFor="location" className="form-label">
@@ -149,41 +204,167 @@ const AdminDashboard = (props) => {
       return (
         <div className="d-flex">
           <div
-            className="bg-light d-flex flex-column"
-            style={{ width: "50%", fontSize: "" }}>
+            className="bg-light d-flex flex-column m-1"
+            style={{
+              width: "50%",
+              fontSize: "",
+              maxHeight: "40vh",
+              overflowY: "auto",
+            }}>
             <h4>Registered Racers:</h4>
-            {registeredRacersItems.map((racer, index) => (
+            {registeredRacersItems?.map((racer, index) => (
               <div
                 style={{ border: "black 1.5px solid" }}
                 key={index}
                 className="d-flex justify-content-between">
                 ID:{racer.id}, Firstname: {racer.firstName}, Lastname:{" "}
                 {racer.lastName}
+                <div className="d-flex flex-column m-1">
+                  <button
+                    onClick={handleDeleteRacerClick(racer.id)}
+                    style={{ height: "50%", backgroundColor: "red" }}>
+                    DELETE
+                  </button>
+                  <button
+                    style={{
+                      height: "50%",
+                      backgroundColor: "blue",
+                      color: "white",
+                    }}>
+                    UPDATE
+                  </button>
+                </div>
               </div>
             ))}
           </div>
-          <div>Racer Edits Go here</div>
+          <div
+            style={{
+              width: "50%",
+              backgroundColor: "khaki",
+              border: "black solid 2px",
+              maxHeight: "40vh",
+              overflowY: "auto",
+            }}>
+            <form
+              className="d-flex flex-column align-items-center"
+              style={{ gap: "3px" }}>
+              <h5 style={{ textAlign: "center" }}>Add Racer</h5>
+              <div>
+                <label htmlFor="addRacerAthleteId">Athlete ID:</label>
+                <input
+                  type="text"
+                  name="addRacerAthleteId"
+                  id="addRacerAthleteId"
+                  className="form-control"
+                  value={racerAddData.athleteId}
+                  onChange={handleAddInputChange}
+                  placeholder="Enter id"
+                />
+              </div>
+              <div>
+                <label htmlFor="addRacerFirstName">First Name:</label>
+                <input
+                  type="text"
+                  name="addRacerFirstName"
+                  id="addRacerFirstName"
+                  className="form-control"
+                  value={racerAddData.firstName}
+                  onChange={handleAddInputChange}
+                  placeholder="Enter first name"
+                />
+              </div>
+              <div>
+                <label htmlFor="addRacerLastName">Last Name:</label>
+                <input
+                  type="text"
+                  name="addRacerLastName"
+                  id="addRacerLastName"
+                  className="form-control"
+                  value={racerAddData.lastName}
+                  onChange={handleAddInputChange}
+                  placeholder="Enter last name"
+                />
+              </div>
+              <div>
+                <label htmlFor="addRacerAge">Age:</label>
+                <input
+                  type="text"
+                  name="addRacerAge"
+                  id="addRacerAge"
+                  className="form-control"
+                  value={racerAddData.age}
+                  onChange={handleAddInputChange}
+                  placeholder="Enter age"
+                />
+              </div>
+              <div>
+                <label htmlFor="addRacerEmail">Email:</label>
+                <input
+                  type="text"
+                  name="addRacerEmail"
+                  id="addRacerEmail"
+                  className="form-control"
+                  value={racerAddData.email}
+                  onChange={handleAddInputChange}
+                  placeholder="Enter email"
+                />
+              </div>
+              <div>
+                <label htmlFor="addRacerPhone">Phone:</label>
+                <input
+                  type="text"
+                  name="addRacerPhone"
+                  id="addRacerPhone"
+                  className="form-control"
+                  value={racerAddData.phone}
+                  onChange={handleAddInputChange}
+                  placeholder="Enter phone number"
+                />
+              </div>
+              <div>
+                <label htmlFor="addRacerCategory">Category:</label>
+                <input
+                  type="text"
+                  name="addRacerCategory"
+                  id="addRacerCategory"
+                  className="form-control"
+                  value={racerAddData.category}
+                  onChange={handleAddInputChange}
+                  placeholder="Enter category"
+                />
+              </div>
+              <button
+                type="submit"
+                className="btn btn-primary"
+                onClick={handleSubmitUpdate}>
+                Add Racer
+              </button>
+            </form>
+          </div>
         </div>
       );
     }
     return null;
   }
-  useEffect(() => {
-    fetchRacesFeed();
-  }, []);
   return (
     <div className="d-flex flex-column">
-      <div>Welcome Back Admin {adminName}</div>
-      <div>
+      <div style={{ margin: "20px 30px", fontWeight: "bolder" }}>
+        Welcome Back Admin {adminName}
+      </div>
+      <div style={{ textAlign: "center", fontWeight: "bold", margin: "10px" }}>
         Use This dashboard to edit race information, racers, and to post
         results.
       </div>
       <div className="d-flex justify-content-center">
         <Dropdown>
-          <Dropdown.Toggle variant="success" id="dropdown-basic">
-            Select Race to Edit
-          </Dropdown.Toggle>
-          <h4> Currently selected race to edit: {selectedRace.name}</h4>
+          <div
+            className="d-flex m-3"
+            style={{ gap: "30px", border: "solid black 2px", padding: "2px" }}>
+            <Dropdown.Toggle variant="success" id="dropdown-basic">
+              Select Race to Edit
+            </Dropdown.Toggle>
+            <h4> Currently selected race to edit: {selectedRace.name}</h4>
+          </div>
           <Dropdown.Menu>
             {userctx.raceFeedItems.map((race, index) => (
               <Dropdown.Item key={index} onClick={() => handleRaceSelect(race)}>
@@ -192,7 +373,7 @@ const AdminDashboard = (props) => {
             ))}
           </Dropdown.Menu>
           <div>
-            <label>
+            <label style={{ marginRight: "100px" }}>
               <input
                 type="radio"
                 value="option1"

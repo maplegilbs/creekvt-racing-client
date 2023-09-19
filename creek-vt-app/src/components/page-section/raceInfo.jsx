@@ -7,7 +7,7 @@ import {
   RaceInfoContainer,
   RaceInfoHeader,
   ButtonGrid,
-  RaceDescription
+  RaceDescription,
 } from "../styles/raceInfo.styles";
 
 import { useNavigate, useParams } from "react-router-dom";
@@ -18,25 +18,24 @@ const RaceInfo = (props) => {
   const { raceName, raceYear, raceLocation, raceid } = useParams();
   const unURLName = raceName.replaceAll("-", " ");
   const titleizeName = userctx.titleize(unURLName);
-  console.log(raceid);
 
   function handleRegisterClick() {
     navigate("/raceRegistration");
   }
   function handleGalleryClick() {
-    // navigate("/photoGallery/" + urlBuilder(name) + "/all-photos");
+    navigate("/photoGallery/" + urlBuilder(raceName) + "/all-photos");
   }
   function handleRegisteredRacersClick() {
     navigate(`/registeredRacers/${raceid}/${raceYear}/${urlBuilder(raceName)}`);
   }
   function handleResultsClick(e) {
-    // navigate("/raceResults/" + urlBuilder(name))
+    navigate("/raceResults/" + urlBuilder(raceName));
   }
   function handleContactClick(e) {
     // navigate("/raceResults/" + urlBuilder(name))
   }
   function handleCourseClick(e) {
-    // navigate("/courseDetails" + urlBuilder(name))
+    navigate("/courseDetails" + urlBuilder(raceName));
   }
   function handleContactClick(){
     navigate(`/contact-us/${urlBuilder(raceName)}`)
@@ -50,10 +49,24 @@ const RaceInfo = (props) => {
           <h3>{raceLocation}</h3>
         </RaceInfoHeader>
         <RaceImage src="https://creekvt.com/wp-content/uploads/2023/07/All-American-Michael-from-NH-1024x603.jpg" />
-          <Button onClick={handleRegisterClick}>Register</Button>
-        <Button className="racers-btn" onClick={handleRegisteredRacersClick}>Racers</Button>
-        
-        <RaceDescription>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ad optio debitis ipsam perferendis accusantium quos, impedit omnis illum error molestias id pariatur aperiam sit nisi soluta! Odit libero, nemo eveniet dolor voluptas vero. Fugiat assumenda dolore autem, alias iure in, exercitationem corrupti et doloremque reiciendis possimus eveniet quibusdam nobis quis sit tenetur facere eum magnam unde esse, sed ab eligendi accusantium dolorum. Ullam nesciunt eligendi, a, voluptatum ad qui animi consectetur quibusdam fuga nam impedit perferendis veritatis facilis quo quia recusandae, quis dolorem unde aliquid laborum provident ratione exercitationem. Voluptas vel culpa voluptatem. Animi, fugit incidunt laboriosam nulla beatae explicabo?</RaceDescription>
+        <Button onClick={handleRegisterClick}>Register</Button>
+        <Button className="racers-btn" onClick={handleRegisteredRacersClick}>
+          Racers
+        </Button>
+
+        <RaceDescription>
+          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ad optio
+          debitis ipsam perferendis accusantium quos, impedit omnis illum error
+          molestias id pariatur aperiam sit nisi soluta! Odit libero, nemo
+          eveniet dolor voluptas vero. Fugiat assumenda dolore autem, alias iure
+          in, exercitationem corrupti et doloremque reiciendis possimus eveniet
+          quibusdam nobis quis sit tenetur facere eum magnam unde esse, sed ab
+          eligendi accusantium dolorum. Ullam nesciunt eligendi, a, voluptatum
+          ad qui animi consectetur quibusdam fuga nam impedit perferendis
+          veritatis facilis quo quia recusandae, quis dolorem unde aliquid
+          laborum provident ratione exercitationem. Voluptas vel culpa
+          voluptatem. Animi, fugit incidunt laboriosam nulla beatae explicabo?
+        </RaceDescription>
 
         <ButtonGrid>
           <Button onClick={handleCourseClick}>Course Details</Button>

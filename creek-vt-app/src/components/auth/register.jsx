@@ -12,6 +12,7 @@ const Register = (props) => {
   const [password, setPassword] = useState("");
   const [age, setAge] = useState("");
   const [gender, setGender] = useState("");
+  const [phone, setPhone] = useState("");
   const userctx = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -34,6 +35,7 @@ const Register = (props) => {
         password: password,
         age: age,
         gender: gender,
+        phone: phone,
       };
       //request options
       let requestOption = {
@@ -121,6 +123,17 @@ const Register = (props) => {
                 value={gender}
                 onChange={(e) => setGender(e.target.value)}
                 placeholder="Enter 1 character gender"
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="phone">Phone (for race results/statistics)</Label>
+              <Input
+                type="phone"
+                name="phone"
+                id="phone"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="Enter 1 character phone"
               />
             </FormGroup>
             <Button type="submit" onClick={handleSubmit}>
