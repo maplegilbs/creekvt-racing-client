@@ -2,7 +2,7 @@
 .hQUcLr nav navbar-brand, .hQUcLr nav navbar-brand, .hQUcLr img {
     height: 11vh !important;
     width: auto !important;
-    margin: auto !important;
+    /* margin: auto; */
     padding: 2px !important;
 }
 .iZCwLq {
@@ -29,6 +29,7 @@ img{
             height: 8vh !important;
             width: 100%;
             padding: 0px !important;
+            margin-bottom: -25px !important;
             
     }
 

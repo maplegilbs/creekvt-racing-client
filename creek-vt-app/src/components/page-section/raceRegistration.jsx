@@ -16,39 +16,53 @@ const RaceRegistration = (props) => {
     vessel: " ",
     acaNumber: " ",
   });
+  const [selectedVessel, setSelectedVessel] = useState("Select a Vessel");
+  const isFormValid = () => {
+    return (
+      userData.name.trim() !== "" &&
+      userData.dob.trim() !== "" &&
+      userData.email.trim() !== "" &&
+      userData.phoneNumber.trim() !== ""
+    );
+  };
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUserData({ ...userData, [name]: value });
   };
   async function handlePayButton(){
+    if (!isFormValid()) {
+      alert("Please fill out all required fields.");
+      return;
+    }
     const userDataJson = JSON.stringify(userData)
     localStorage.setItem("userInfo", userDataJson)
     console.log("DATA HERE", userDataJson)
     
-    fetch('http://localhost:3307/register/create-checkout-session', {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-          items: [
-              {id: 1, quantity: 1}
-          ]
-      })
-    })
-    .then(res => {
-      if(res.ok) return res.json()
-      return res.json().then(json => Promise.reject(json))
-    }).then(({ url }) =>{
-      window.location = url
-    })
-    .catch(e => {
-      console.error(e)
-    })
+    // fetch('http://localhost:3307/register/create-checkout-session', {
+    //   method: 'POST',
+    //   headers: {
+    //       'Content-Type': 'application/json'
+    //   },
+    //   body: JSON.stringify({
+    //       items: [
+    //           {id: 1, quantity: 1}
+    //       ]
+    //   })
+    // })
+    // .then(res => {
+    //   if(res.ok) return res.json()
+    //   return res.json().then(json => Promise.reject(json))
+    // }).then(({ url }) =>{
+    //   window.location = url
+    // })
+    // .catch(e => {
+    //   console.error(e)
+    // })
   };
   
   const handleDropdownSelect = (eventKey) => {
     setUserData({ ...userData, vessel: eventKey });
+    setSelectedVessel(eventKey);
   };
   return (
   <>
@@ -62,7 +76,7 @@ const RaceRegistration = (props) => {
     <Form.Group>
       <Form.Label className="all-lbls">First and Last Name</Form.Label>
       <Form.Control 
-      required="true"
+      required
       type="text"
       name="name"
       placeholder=""
@@ -76,7 +90,7 @@ const RaceRegistration = (props) => {
       type="date"
       name="dob"
       placeholder=""
-      value={userData.dob} // Add this line to populate the value from state
+      value={userData.dob} 
       onChange={handleInputChange}></Form.Control>
       
       <Form.Label className="all-lbls">Location</Form.Label>
@@ -109,7 +123,7 @@ const RaceRegistration = (props) => {
 
       <Dropdown name="vessel" onSelect={handleDropdownSelect}>
       <Dropdown.Toggle variant="success" id="dropdown-basic">
-        Select a Vessel
+      {selectedVessel}
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
@@ -125,7 +139,6 @@ const RaceRegistration = (props) => {
     
     <Form.Label className="all-lbls">ACA Number</Form.Label>
       <Form.Control 
-      required
       type="text"
       name="acaNumber"
       placeholder=""

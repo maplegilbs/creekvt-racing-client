@@ -186,7 +186,7 @@ const AdminDashboard = (props) => {
   async function addRacer() {
     try {
       const myHeaders = new Headers();
-      myHeaaders.append("Content-Type", "application/json");
+      myHeaders.append("Content-Type", "application/json");
       let requestOptions = {
         method: "POST",
         headers: myHeaders,
