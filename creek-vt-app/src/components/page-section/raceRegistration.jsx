@@ -1,11 +1,31 @@
-import React, { useContext } from "react";
+import React, { Component, useContext, useState } from "react";
 import { UserContext } from "../store/UserContext";
+import {Form} from "react-bootstrap"
+import { Dropdown } from "react-bootstrap";
+import "./raceRegistration.css"
 
 const RaceRegistration = (props) => {
   const userctx = useContext(UserContext);
   
+  const [userData, setUserData] = useState({
+    name: " ",
+    dob: " ",
+    location: " ",
+    email: " ",
+    phoneNumber: " ",
+    vessel: " ",
+    acaNumber: " ",
+  });
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setUserData({ ...userData, [name]: value });
+  };
   async function handlePayButton(){
-    fetch('http://localhost:3307/create-checkout-session', {
+    const userDataJson = JSON.stringify(userData)
+    localStorage.setItem("userInfo", userDataJson)
+    console.log("DATA HERE", userDataJson)
+    
+    fetch('http://localhost:3307/register/create-checkout-session', {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json'
@@ -23,12 +43,101 @@ const RaceRegistration = (props) => {
       window.location = url
     })
     .catch(e => {
-      console.error(e.error)
+      console.error(e)
     })
   };
   
+  const handleDropdownSelect = (eventKey) => {
+    setUserData({ ...userData, vessel: eventKey });
+  };
+  return (
+  <>
+  <h2 className="register-header">Register to Race</h2>
+  <div className="subhead-cont">
+    <h5 className="reg-subhead">Fill out every field as labeled, then hit "Pay and Complete" to pay.</h5>
+    </div>
+  
+  <div id="form-shadow" className="shadow-lg bg-white rounded w-50">
+  <Form className="form-cont" >
+    <Form.Group>
+      <Form.Label className="all-lbls">First and Last Name</Form.Label>
+      <Form.Control 
+      required="true"
+      type="text"
+      name="name"
+      placeholder=""
+      value={userData.name} 
+      onChange={handleInputChange}>
+      </Form.Control>
+      
+      <Form.Label className="all-lbls">Date of Birth</Form.Label>
+      <Form.Control
+      required
+      type="date"
+      name="dob"
+      placeholder=""
+      value={userData.dob} // Add this line to populate the value from state
+      onChange={handleInputChange}></Form.Control>
+      
+      <Form.Label className="all-lbls">Location</Form.Label>
+      <Form.Control
+       required
+       type="text"
+       name="location"
+       placeholder=""
+       value={userData.location} 
+       onChange={handleInputChange}></Form.Control>
+      
+      <Form.Label className="all-lbls">Email</Form.Label>
+      <Form.Control
+      required
+      type="text"
+      name="email"
+      placeholder=""
+      value={userData.email} 
+      onChange={handleInputChange}>
+      </Form.Control>
+      
+      <Form.Label className="all-lbls">Phone Number</Form.Label>
+      <Form.Control
+      required
+      type="text"
+      name="phoneNumber"
+      placeholder=""
+      value={userData.phoneNumber} 
+      onChange={handleInputChange}></Form.Control>
 
-  return <div><button onClick={handlePayButton}>PAY BUTTON</button></div>;
-};
+      <Dropdown name="vessel" onSelect={handleDropdownSelect}>
+      <Dropdown.Toggle variant="success" id="dropdown-basic">
+        Select a Vessel
+      </Dropdown.Toggle>
+
+      <Dropdown.Menu>
+        <Dropdown.Item eventKey="Canoe">Canoe</Dropdown.Item>
+        <Dropdown.Item eventKey="Sit-In Kayak">Sit-In Kayak</Dropdown.Item>
+        <Dropdown.Item eventKey="Sit-On Kayak">Sit-On Kayak</Dropdown.Item>
+        <Dropdown.Item eventKey="Paddleboard">Paddleboard</Dropdown.Item>
+        <Dropdown.Item eventKey="SS Ohio">SS Ohio</Dropdown.Item>
+        <Dropdown.Item eventKey="Other">Other</Dropdown.Item>
+      </Dropdown.Menu>
+      </Dropdown>
+    </Form.Group>
+    
+    <Form.Label className="all-lbls">ACA Number</Form.Label>
+      <Form.Control 
+      required
+      type="text"
+      name="acaNumber"
+      placeholder=""
+      value={userData.acaNumber} 
+      onChange={handleInputChange}></Form.Control>
+
+  </Form>
+  <div className="btn-cont">
+    <button className="pay-btn" onClick={handlePayButton}>Pay and Complete</button>
+  </div>
+    </div>
+</>
+)};
 
 export default RaceRegistration;

@@ -67,6 +67,11 @@ function App({ Component, pageProps }) {
               />
               <Route path="/adminDashboard" element={<AdminDashboard />} />
               <Route path="/successPage" element={<SuccessPage />} />
+              {/* add route for contact */}
+              <Route
+                path="/courseDetails/:raceName"
+                element={<CourseDetails />}
+              />
             </Routes>
           </div>
           <Footer />
