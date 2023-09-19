@@ -1,5 +1,4 @@
 import { CardText } from "reactstrap";
-
 const RegisteredRacersCards = (props) => {
   const { firstName, lastName } = props.registeredAthlete;
   return (
