@@ -73,12 +73,6 @@ const PhotoGallery = (props) => {
     navigate("/photoGallery/" + raceName + `/${raceYear}`);
   }
 
-<<<<<<< HEAD
-  let pulledYears = []
-  data?.photos?.forEach(item => {
-    if(!pulledYears.includes(item.raceYear)){
-        pulledYears.push(item.raceYear)
-=======
   // let uniqueYears = []; //[2022,2023]
 
   // returnedData.forEach(result => {
@@ -98,7 +92,6 @@ const PhotoGallery = (props) => {
   data?.photos?.forEach((item) => {
     if (!pulledYears.includes(item.raceYear)) {
       pulledYears.push(item.raceYear);
->>>>>>> b34a2f86ce56098603afff6e33f2ecb48a15349b
     }
   });
 
