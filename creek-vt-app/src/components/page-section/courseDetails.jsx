@@ -1,4 +1,10 @@
-import { CourseContainer } from '../styles/courseDetails.styles';
+import React, { useState } from 'react';
+import RaceMap from './raceMap';
+import {
+  CourseContainer,
+  CourseMap,
+  InfoBlurb,
+} from '../styles/courseDetails.styles';
 
 
 const CourseDetails = (props) => {
@@ -7,7 +13,10 @@ const CourseDetails = (props) => {
 
   return (<>
     <CourseContainer>
-      
+      <InfoBlurb>
+
+      </InfoBlurb>
+      <RaceMap />
   </CourseContainer>
   </>);
 }
