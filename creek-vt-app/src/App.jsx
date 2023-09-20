@@ -14,6 +14,7 @@ import RacesMain from "./components/page-section/racesMain";
 import Register from "./components/auth/register";
 import AdminDashboard from "./components/page-section/adminDashboard";
 import SuccessPage from "./components/page-section/successPage";
+import ContactUs from "./components/page-section/contactUs";
 import CourseDetails from "./components/page-section/courseDetails";
 import RaceMap from "./components/page-section/raceMap";
 
@@ -67,6 +68,7 @@ function App({ Component, pageProps }) {
               />
               <Route path="/adminDashboard" element={<AdminDashboard />} />
               <Route path="/successPage" element={<SuccessPage />} />
+              <Route path="/contact-us/:raceName" element={<ContactUs />} />
               {/* add route for contact */}
               <Route
                 path="/courseDetails/:raceName"

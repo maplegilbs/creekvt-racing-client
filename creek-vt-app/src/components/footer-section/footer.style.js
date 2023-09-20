@@ -15,8 +15,8 @@ export const FooterContainer = styled.nav`
   position: sticky;
   bottom: 0;
 
-  @media (min-width: 700px) {
-    height: 18vh;
+  @media (max-width: 700px) {
+    height: 12vh;
     padding: 3vh 4vh 7vh 0;
   }
 `;
