@@ -10,7 +10,7 @@ const Register = (props) => {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [age, setAge] = useState("");
+  const [DOB, setDOB] = useState("");
   const [gender, setGender] = useState("");
   const [phone, setPhone] = useState("");
   const userctx = useContext(UserContext);
@@ -33,7 +33,7 @@ const Register = (props) => {
         lastName: lastName,
         email: email,
         password: password,
-        age: age,
+        DOB: DOB,
         gender: gender,
         phone: phone,
       };
@@ -104,14 +104,14 @@ const Register = (props) => {
               />
             </FormGroup>
             <FormGroup>
-              <Label for="age">Age (for race results/statistics)</Label>
+              <Label for="DOB">DOB (for race results/statistics)</Label>
               <Input
-                type="age"
-                name="age"
-                id="age"
-                value={age}
-                onChange={(e) => setAge(e.target.value)}
-                placeholder="Enter Age"
+                type="DOB"
+                name="DOB"
+                id="DOB"
+                value={DOB}
+                onChange={(e) => setDOB(e.target.value)}
+                placeholder="Enter DOB"
               />
             </FormGroup>
             <FormGroup>

@@ -59,6 +59,10 @@ const AdminDashboard = (props) => {
   }
   function handleToggle(val) {
     setChecked(val);
+    setEditData((prevData) => ({
+      ...prevData,
+      regOpen: val,
+    }));
   }
   function handleRadioChange(event) {
     setSelectedEdit(event.target.value);
