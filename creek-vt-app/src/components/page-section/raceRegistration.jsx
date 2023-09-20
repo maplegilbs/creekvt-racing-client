@@ -8,13 +8,13 @@ const RaceRegistration = (props) => {
   const userctx = useContext(UserContext);
   
   const [userData, setUserData] = useState({
-    name: " ",
-    dob: " ",
-    location: " ",
-    email: " ",
-    phoneNumber: " ",
-    vessel: " ",
-    acaNumber: " ",
+    name: "test tester",
+    dob: "03/01/2000",
+    location: "test",
+    email: "test@test.com",
+    phoneNumber: "1234567899",
+    vessel: "Canoe",
+    acaNumber: "12345",
   });
   const [selectedVessel, setSelectedVessel] = useState("Select a Vessel");
   const isFormValid = () => {
@@ -38,26 +38,28 @@ const RaceRegistration = (props) => {
     localStorage.setItem("userInfo", userDataJson)
     console.log("DATA HERE", userDataJson)
     
-    // fetch('http://localhost:3307/register/create-checkout-session', {
-    //   method: 'POST',
-    //   headers: {
-    //       'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify({
-    //       items: [
-    //           {id: 1, quantity: 1}
-    //       ]
-    //   })
-    // })
-    // .then(res => {
-    //   if(res.ok) return res.json()
-    //   return res.json().then(json => Promise.reject(json))
-    // }).then(({ url }) =>{
-    //   window.location = url
-    // })
-    // .catch(e => {
-    //   console.error(e)
-    // })
+    fetch('http://localhost:3307/register/create-checkout-session/1', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+          items: [
+              {id: 1, quantity: 1}
+              
+          ],
+          email: userData.email
+      })
+    })
+    .then(res => {
+      if(res.ok) return res.json()
+      return res.json().then(json => Promise.reject(json))
+    }).then(({ url }) =>{
+      window.location = url
+    })
+    .catch(e => {
+      console.error(e)
+    })
   };
   
   const handleDropdownSelect = (eventKey) => {
