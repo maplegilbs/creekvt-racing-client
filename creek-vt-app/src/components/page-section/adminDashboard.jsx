@@ -9,12 +9,14 @@ import {
 } from "../../constants/endpoints";
 import { UserContext } from "../store/UserContext";
 import AdminRRCard from "../linkingComponents/adminRRCard";
+import ReactSwitch from "react-switch";
 
 const AdminDashboard = (props) => {
   const userctx = useContext(UserContext);
   const [selectedEdit, setSelectedEdit] = useState("");
   const [selectedRace, setSelectedRace] = useState("");
   const [registeredRacersItems, setRegisteredRacersItems] = useState([]);
+  const [checked, setChecked] = useState(true);
   let adminName = localStorage.getItem("firstName");
   const [racerUpdateData, setRacerUpdateData] = useState({
     firstName: "",
@@ -22,12 +24,16 @@ const AdminDashboard = (props) => {
     email: "",
     phone: "",
     category: "",
+    ACA: "",
+    location: "",
   });
   const [editData, setEditData] = useState({
     name: "",
     date: "",
     startTime: "",
     location: "",
+    regOpen: "",
+    price: "",
   });
   const [racerAddData, setRacerAddData] = useState({
     raceId: selectedRace.id,
@@ -37,6 +43,8 @@ const AdminDashboard = (props) => {
     email: "",
     phone: "",
     category: "",
+    ACA: "",
+    location: "",
   });
 
   //function section
@@ -47,7 +55,16 @@ const AdminDashboard = (props) => {
       date: selection.date,
       startTime: selection.startTime,
       location: selection.location,
+      regOpen: selection.regOpen,
+      price: selection.price,
     });
+  }
+  function handleToggle(val) {
+    setChecked(val);
+    setEditData((prevData) => ({
+      ...prevData,
+      regOpen: val,
+    }));
   }
   function handleRadioChange(event) {
     setSelectedEdit(event.target.value);
@@ -106,6 +123,8 @@ const AdminDashboard = (props) => {
         email: userctx.selectedUpdateAthlete.email,
         phone: userctx.selectedUpdateAthlete.phone,
         category: userctx.selectedUpdateAthlete.category,
+        ACA: userctx.selectedUpdateAthlete.ACA,
+        location: userctx.selectedUpdateAthlete.location,
       });
     }
   }, [userctx.selectedUpdateAthlete]);
@@ -192,19 +211,19 @@ const AdminDashboard = (props) => {
         method: "POST",
         headers: myHeaders,
         body: JSON.stringify({
-          raceID: selectedRace.id,
+          raceId: selectedRace.id,
+          raceId: selectedRace.id,
           firstName: racerAddData.firstName,
           lastName: racerAddData.lastName,
           DOB: racerAddData.DOB,
           email: racerAddData.email,
           phone: racerAddData.phone,
           category: racerAddData.category,
+          ACA: racerAddData.ACA,
+          location: racerAddData.location,
         }),
       };
-      const response = await fetch(
-        API_ADD_REGISTERED_RACER + selectedRace.id,
-        requestOptions
-      );
+      const response = await fetch(API_ADD_REGISTERED_RACER, requestOptions);
       const data = await response.json();
       fetchRegisteredRacers();
     } catch (error) {
@@ -217,7 +236,9 @@ const AdminDashboard = (props) => {
     if (selectedEdit === "option1") {
       return (
         <div>
-          <form>
+          <form
+            style={{ maxHeight: "40vh", overflowY: "auto" }}
+            className="d-flex flex-column">
             <label htmlFor="name" className="form-label">
               Name:
             </label>
@@ -262,7 +283,31 @@ const AdminDashboard = (props) => {
               value={editData.location}
               onChange={handleInputChange}
             />
+            <label htmlFor="price" className="form-label">
+              Price:
+            </label>
+            <input
+              type="text"
+              id="price"
+              name="price"
+              className="form-control"
+              value={editData.price}
+              onChange={handleInputChange}
+            />
+            <div>
+              <label htmlFor="regOpen" className="form-label">
+                registration open?
+              </label>
+              <ReactSwitch
+                checked={checked}
+                onChange={handleToggle}
+                id="regOpen"
+                name="regOpen"
+                value={editData.regOpen}
+              />
+            </div>
             <button
+              style={{ marginLeft: "auto", marginRight: "auto" }}
               type="submit"
               className="btn btn-primary"
               onClick={handleSubmitUpdate}>
@@ -366,6 +411,30 @@ const AdminDashboard = (props) => {
                   placeholder="Enter category"
                 />
               </div>
+              <div>
+                <label htmlFor="updateRacerACA">ACA:</label>
+                <input
+                  type="text"
+                  name="ACA"
+                  id="updateRacerACA"
+                  className="form-control"
+                  value={racerUpdateData.ACA}
+                  onChange={handleUpdateInputChange}
+                  placeholder="Enter ACA"
+                />
+              </div>
+              <div>
+                <label htmlFor="updateRacerlocation">Location:</label>
+                <input
+                  type="text"
+                  name="location"
+                  id="updateRacerlocation"
+                  className="form-control"
+                  value={racerUpdateData.location}
+                  onChange={handleUpdateInputChange}
+                  placeholder="Enter location"
+                />
+              </div>
               <button
                 type="submit"
                 className="btn btn-primary"
@@ -459,6 +528,30 @@ const AdminDashboard = (props) => {
                   value={racerAddData.category}
                   onChange={handleAddInputChange}
                   placeholder="Enter category"
+                />
+              </div>
+              <div>
+                <label htmlFor="updateRacerACA">ACA:</label>
+                <input
+                  type="text"
+                  name="ACA"
+                  id="updateRacerACA"
+                  className="form-control"
+                  value={racerUpdateData.ACA}
+                  onChange={handleAddInputChange}
+                  placeholder="Enter ACA"
+                />
+              </div>
+              <div>
+                <label htmlFor="updateRacerlocation">Location:</label>
+                <input
+                  type="text"
+                  name="location"
+                  id="updateRacerlocation"
+                  className="form-control"
+                  value={racerUpdateData.location}
+                  onChange={handleAddInputChange}
+                  placeholder="Enter location"
                 />
               </div>
               <button

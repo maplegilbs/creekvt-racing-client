@@ -7,11 +7,13 @@ import urlBuilder from "../util/urlBuilder";
 const RaceInfoCards = (props) => {
   const userctx = useContext(UserContext);
   const navigate = useNavigate();
-  let { name, year, id, location } = props.race;
+  let { name, year, id, location, regOpen } = props.race;
   function handleSubmit(e) {
     e.preventDefault();
     userctx.setRace(props.race);
-    navigate(`/raceInfo/${year}/${location}/${id}/${urlBuilder(name)}`);
+    navigate(
+      `/raceInfo/${year}/${location}/${id}/${urlBuilder(name)}/${regOpen}`
+    );
   }
   return (
     <>

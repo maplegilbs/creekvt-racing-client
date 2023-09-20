@@ -3,14 +3,19 @@ import { UserContext } from "../store/UserContext";
 import {Form} from "react-bootstrap"
 import { Dropdown } from "react-bootstrap";
 import "./raceRegistration.css"
+import { useParams } from "react-router-dom";
 
 const RaceRegistration = (props) => {
   const userctx = useContext(UserContext);
+
+  const { raceid } = useParams();
   
   const [userData, setUserData] = useState({
-    name: " ",
+    raceId: raceid,
+    firstName: " ",
+    lastName: " ",
     dob: " ",
-    location: " ",
+    location: "",
     email: " ",
     phoneNumber: " ",
     vessel: " ",
@@ -19,7 +24,8 @@ const RaceRegistration = (props) => {
   const [selectedVessel, setSelectedVessel] = useState("Select a Vessel");
   const isFormValid = () => {
     return (
-      userData.name.trim() !== "" &&
+      userData.firstName.trim() !== "" &&
+      userData.lastName.trim() !== "" &&
       userData.dob.trim() !== "" &&
       userData.email.trim() !== "" &&
       userData.phoneNumber.trim() !== ""
@@ -38,26 +44,28 @@ const RaceRegistration = (props) => {
     localStorage.setItem("userInfo", userDataJson)
     console.log("DATA HERE", userDataJson)
     
-    // fetch('http://localhost:3307/register/create-checkout-session', {
-    //   method: 'POST',
-    //   headers: {
-    //       'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify({
-    //       items: [
-    //           {id: 1, quantity: 1}
-    //       ]
-    //   })
-    // })
-    // .then(res => {
-    //   if(res.ok) return res.json()
-    //   return res.json().then(json => Promise.reject(json))
-    // }).then(({ url }) =>{
-    //   window.location = url
-    // })
-    // .catch(e => {
-    //   console.error(e)
-    // })
+    fetch('http://localhost:3307/register/create-checkout-session/1', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+          items: [
+              {id: 1, quantity: 1}
+              
+          ],
+          email: userData.email
+      })
+    })
+    .then(res => {
+      if(res.ok) return res.json()
+      return res.json().then(json => Promise.reject(json))
+    }).then(({ url }) =>{
+      window.location = url
+    })
+    .catch(e => {
+      console.error(e)
+    })
   };
   
   const handleDropdownSelect = (eventKey) => {
@@ -74,13 +82,23 @@ const RaceRegistration = (props) => {
   <div id="form-shadow" className="shadow-lg bg-white rounded w-50">
   <Form className="form-cont" >
     <Form.Group>
-      <Form.Label className="all-lbls">First and Last Name</Form.Label>
+      <Form.Label className="all-lbls">First Name</Form.Label>
       <Form.Control 
       required
       type="text"
-      name="name"
+      name="firstName"
       placeholder=""
-      value={userData.name} 
+      value={userData.fistName} 
+      onChange={handleInputChange}>
+      </Form.Control>
+
+      <Form.Label className="all-lbls">Last Name</Form.Label>
+      <Form.Control 
+      required
+      type="text"
+      name="lastName"
+      placeholder=""
+      value={userData.lastName} 
       onChange={handleInputChange}>
       </Form.Control>
       

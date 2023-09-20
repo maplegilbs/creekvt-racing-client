@@ -9,19 +9,19 @@ import {
   ButtonGrid,
   RaceDescription,
 } from "../styles/raceInfo.styles";
-import "./raceInfo.css"
+import "./raceInfo.css";
 
 import { useNavigate, useParams } from "react-router-dom";
 import { urlBuilder } from "../util/urlBuilder";
 const RaceInfo = (props) => {
   const userctx = useContext(UserContext);
   const navigate = useNavigate();
-  const { raceName, raceYear, raceLocation, raceid } = useParams();
+  const { raceName, raceYear, raceLocation, raceid, regOpen } = useParams();
   const unURLName = raceName.replaceAll("-", " ");
   const titleizeName = userctx.titleize(unURLName);
 
   function handleRegisterClick() {
-    navigate("/raceRegistration");
+    navigate(`/raceRegistration/${raceid}`);
   }
   function handleGalleryClick() {
     navigate("/photoGallery/" + urlBuilder(raceName) + "/all-photos");
@@ -38,8 +38,8 @@ const RaceInfo = (props) => {
   function handleCourseClick(e) {
     navigate("/courseDetails" + urlBuilder(raceName));
   }
-  function handleContactClick(){
-    navigate(`/contact-us/${urlBuilder(raceName)}`)
+  function handleContactClick() {
+    navigate(`/contact-us/${urlBuilder(raceName)}`);
   }
   return (
     <>
@@ -48,16 +48,19 @@ const RaceInfo = (props) => {
           <h2 className="title-txt">{titleizeName}</h2>
           <h3 className="location-txt">{raceLocation}</h3>
           <h3 className="year-txt">{raceYear}</h3>
-          
         </RaceInfoHeader>
         <RaceImage src="https://creekvt.com/wp-content/uploads/2023/07/All-American-Michael-from-NH-1024x603.jpg" />
-        <Button onClick={handleRegisterClick}>Register</Button>
+        {regOpen == 0 ? null : (
+          <Button onClick={handleRegisterClick}>Register</Button>
+        )}
         <Button className="racers-btn" onClick={handleRegisteredRacersClick}>
           Racers
         </Button>
-        
+
         <RaceDescription className="race-desc-txt">
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Fugit id, suscipit saepe maiores a consequuntur eum nostrum sit alias nisi rerum, explicabo harum excepturi earum?
+          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Fugit id,
+          suscipit saepe maiores a consequuntur eum nostrum sit alias nisi
+          rerum, explicabo harum excepturi earum?
         </RaceDescription>
 
         <ButtonGrid>
