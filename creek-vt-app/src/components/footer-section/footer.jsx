@@ -15,7 +15,7 @@ const Footer = (props) => {
   return (
     <>
       <FooterContainer>
-        <NavLink to="/signin" style={{ color: "#4e647b", fontSize: "10px" }}>
+        <NavLink to="/signin" style={{ color: "#4e647b", fontSize: "3px" }}>
           .
         </NavLink>
         <FooterBrand>
