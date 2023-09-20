@@ -21,7 +21,7 @@ const RaceInfo = (props) => {
   const titleizeName = userctx.titleize(unURLName);
 
   function handleRegisterClick() {
-    navigate("/raceRegistration");
+    navigate(`/raceRegistration/${raceid}`);
   }
   function handleGalleryClick() {
     navigate("/photoGallery/" + urlBuilder(raceName) + "/all-photos");

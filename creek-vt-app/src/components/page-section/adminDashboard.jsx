@@ -205,6 +205,7 @@ const AdminDashboard = (props) => {
         headers: myHeaders,
         body: JSON.stringify({
           raceId: selectedRace.id,
+          raceId: selectedRace.id,
           firstName: racerAddData.firstName,
           lastName: racerAddData.lastName,
           DOB: racerAddData.DOB,
