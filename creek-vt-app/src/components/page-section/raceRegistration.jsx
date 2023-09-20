@@ -44,7 +44,7 @@ const RaceRegistration = (props) => {
     localStorage.setItem("userInfo", userDataJson)
     console.log("DATA HERE", userDataJson)
     
-    fetch('http://localhost:3307/register/create-checkout-session', {
+    fetch('http://localhost:3307/register/create-checkout-session/1', {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json'
@@ -52,7 +52,9 @@ const RaceRegistration = (props) => {
       body: JSON.stringify({
           items: [
               {id: 1, quantity: 1}
-          ]
+              
+          ],
+          email: userData.email
       })
     })
     .then(res => {

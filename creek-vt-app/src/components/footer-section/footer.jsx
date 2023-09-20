@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import { FooterContainer, FooterBrand } from "./footer.style";
 import { useContext, useEffect } from "react";
 import { UserContext } from "../store/UserContext";
-import "./footer.css"
+import "./footer.css";
 
 const Footer = (props) => {
   const userctx = useContext(UserContext);
@@ -15,6 +15,9 @@ const Footer = (props) => {
   return (
     <>
       <FooterContainer>
+        <NavLink to="/signin" style={{ color: "#4e647b", fontSize: "3px" }}>
+          .
+        </NavLink>
         <FooterBrand>
           <img src="https://creekvt.com/wp-content/uploads/2020/05/CreekVTLogo150x150.png" />
         </FooterBrand>

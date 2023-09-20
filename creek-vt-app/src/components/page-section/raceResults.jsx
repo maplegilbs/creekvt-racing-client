@@ -4,7 +4,7 @@ import { API_VIEW_RESULTS_BY_RACENAME } from "../../constants/endpoints";
 import urlBuilder from "../util/urlBuilder";
 import { UserContext } from "../store/UserContext";
 import { useParams } from "react-router-dom";
-
+import "./raceResults.css"
 // race results filtered by race ID
 const RaceResults = (props) => {
   const [results, setResults] = useState([]);
@@ -86,9 +86,9 @@ const RaceResults = (props) => {
 
   return (
     <>
-      <h2>RACE RESULTS</h2>
+      <h2 className="main-txt">RACE RESULTS</h2>
       <div style={{ height: 300, width: "100%" }}>
-        <DataGrid rows={rows} columns={columns} />
+        <DataGrid  rows={rows} columns={columns} />
       </div>
     </>
   );
