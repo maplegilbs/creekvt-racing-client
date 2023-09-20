@@ -56,10 +56,13 @@ function App({ Component, pageProps }) {
               />
               <Route path="/raceRegistration/:raceid" element={<RaceRegistration />} />
               <Route
-                path="/raceInfo/:raceYear/:raceLocation/:raceid/:raceName"
+                path="/raceInfo/:raceYear/:raceLocation/:raceid/:raceName/:regOpen"
                 element={<RaceInfo />}
               />
-              <Route path="/raceInfo/:raceYear/:raceLocation/:raceid/:raceName/:courseDetails" element={<CourseDetails />} />
+              <Route
+                path="/raceInfo/:raceYear/:raceLocation/:raceid/:raceName/:courseDetails"
+                element={<CourseDetails />}
+              />
               <Route path="/map.html" />
               <Route path="/map/:raceName" element={<RaceMap />} />
               <Route
