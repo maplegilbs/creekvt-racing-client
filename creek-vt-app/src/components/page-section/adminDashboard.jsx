@@ -25,6 +25,7 @@ const AdminDashboard = (props) => {
     phone: "",
     category: "",
     ACA: "",
+    location: "",
   });
   const [editData, setEditData] = useState({
     name: "",
@@ -43,6 +44,7 @@ const AdminDashboard = (props) => {
     phone: "",
     category: "",
     ACA: "",
+    location: "",
   });
 
   //function section
@@ -122,6 +124,7 @@ const AdminDashboard = (props) => {
         phone: userctx.selectedUpdateAthlete.phone,
         category: userctx.selectedUpdateAthlete.category,
         ACA: userctx.selectedUpdateAthlete.ACA,
+        location: userctx.selectedUpdateAthlete.location,
       });
     }
   }, [userctx.selectedUpdateAthlete]);
@@ -217,6 +220,7 @@ const AdminDashboard = (props) => {
           phone: racerAddData.phone,
           category: racerAddData.category,
           ACA: racerAddData.ACA,
+          location: racerAddData.location,
         }),
       };
       const response = await fetch(API_ADD_REGISTERED_RACER, requestOptions);
@@ -419,6 +423,18 @@ const AdminDashboard = (props) => {
                   placeholder="Enter ACA"
                 />
               </div>
+              <div>
+                <label htmlFor="updateRacerlocation">Location:</label>
+                <input
+                  type="text"
+                  name="location"
+                  id="updateRacerlocation"
+                  className="form-control"
+                  value={racerUpdateData.location}
+                  onChange={handleUpdateInputChange}
+                  placeholder="Enter location"
+                />
+              </div>
               <button
                 type="submit"
                 className="btn btn-primary"
@@ -524,6 +540,18 @@ const AdminDashboard = (props) => {
                   value={racerUpdateData.ACA}
                   onChange={handleAddInputChange}
                   placeholder="Enter ACA"
+                />
+              </div>
+              <div>
+                <label htmlFor="updateRacerlocation">Location:</label>
+                <input
+                  type="text"
+                  name="location"
+                  id="updateRacerlocation"
+                  className="form-control"
+                  value={racerUpdateData.location}
+                  onChange={handleAddInputChange}
+                  placeholder="Enter location"
                 />
               </div>
               <button
