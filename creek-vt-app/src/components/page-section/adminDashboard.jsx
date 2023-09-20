@@ -192,7 +192,7 @@ const AdminDashboard = (props) => {
         method: "POST",
         headers: myHeaders,
         body: JSON.stringify({
-          raceID: selectedRace.id,
+          raceId: selectedRace.id,
           firstName: racerAddData.firstName,
           lastName: racerAddData.lastName,
           DOB: racerAddData.DOB,
@@ -202,7 +202,7 @@ const AdminDashboard = (props) => {
         }),
       };
       const response = await fetch(
-        API_ADD_REGISTERED_RACER + selectedRace.id,
+        API_ADD_REGISTERED_RACER,
         requestOptions
       );
       const data = await response.json();
