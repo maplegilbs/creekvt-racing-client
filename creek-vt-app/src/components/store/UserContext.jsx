@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect } from "react";
+import { API_VIEWALL_RACES } from "../../constants/endpoints";
 
 //autopopulates
 export const UserContext = createContext({
@@ -9,10 +10,13 @@ export const UserContext = createContext({
   raceFeedItems: "",
   selectedUpdateAthlete: "",
   loginInfo: "",
+  raceInfo: "",
   updateToken: () => {},
   setRace: () => {},
   updateFirstName: () => {},
   updateAdminCred: () => {},
+  setRaceInfo: () => {},
+  storeRaceInfo: () => {},
   setLoginInfo: () => {},
   storeLoginInfo: () => {},
   setRaceFeedItems: () => {},
@@ -30,6 +34,12 @@ const UserContextProvider = (props) => {
   const [raceFeedItems, setRaceFeedItems] = useState([]);
   const [selectedUpdateAthlete, setSelectedUpdateAthlete] = useState([]);
   const [loginInfo, setLoginInfo] = useState("");
+  const [raceInfo, setRaceInfo] = useState("");
+
+  function storeRaceInfo(raceInfo){
+    setRaceInfo(raceInfo);
+    localStorage.setItem("Race Info", raceInfo)
+  }
 
   function updateToken(newToken) {
     setToken(newToken);
@@ -65,8 +75,22 @@ const UserContextProvider = (props) => {
     if (token) {
       setToken(token);
     }
+    fetchRacesFeed()
   }, []);
-
+  
+  async function fetchRacesFeed() {
+    try {
+      let requestOptions = {
+        method: "GET",
+      };
+      const response = await fetch(API_VIEWALL_RACES, requestOptions);
+      const data = await response.json();
+      setRaceFeedItems(data.races);
+      console.log(data.races)
+    } catch (error) {
+      console.log(error);
+    }
+  }
   //values passed
   const value = {
     token: token,
@@ -76,6 +100,7 @@ const UserContextProvider = (props) => {
     raceFeedItems,
     selectedUpdateAthlete,
     loginInfo,
+    raceInfo,
     setRaceFeedItems,
     updateToken,
     setRace,
@@ -86,6 +111,8 @@ const UserContextProvider = (props) => {
     setSelectedUpdateAthlete,
     setLoginInfo,
     storeLoginInfo,
+    setRaceInfo,
+    storeRaceInfo,
   };
   return (
     <>
