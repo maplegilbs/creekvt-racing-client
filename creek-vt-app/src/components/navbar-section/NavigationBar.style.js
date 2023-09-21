@@ -1,7 +1,6 @@
-import styled from 'styled-components';
-import '../../App.css';
-import { Link } from 'react-router-dom';
-
+import styled from "styled-components";
+import "../../App.css";
+import { Link } from "react-router-dom";
 
 /*Header Nav Styles*/
 
@@ -158,9 +157,18 @@ export const DropdownItem = styled(Link)`
   text-decoration: none;
   border: 1.5px darkgray solid;
   padding: 10px;
-;`
-
-
+`;
+export const NavLink = styled(Link)`
+  color: "white",
+  fontFamily: "Montserrat, sans-serif",
+  textTransform: "uppercase",
+  fontWeight: 700,
+  fontSize: "medium",
+  textDecoration: "none",
+  margin: "10px 10px",
+  border: "1.5px darkgray solid",
+  padding: "5px",
+;`;
 
 // /* NavbarBrand */
 // .navbar-brand,

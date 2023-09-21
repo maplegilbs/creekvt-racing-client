@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   NavbarContainer,
   LeftContainer,
@@ -10,21 +10,40 @@ import {
   NavbarBrand,
   OpenLinksButton,
   NavbarLinkExtended,
+  DropdownContainer,
+  NavLink,
 } from "./NavigationBar.style.js";
 
-// let navLinkStyle = {
-//   color: "white",
-//   fontFamily: "Montserrat, sans-serif",
-//   textTransform: "uppercase",
-//   fontWeight: 700,
-//   fontSize: "medium",
-//   textDecoration: "none",
-//   margin: "10px 10px",
-//   border: "1.5px darkgray solid",
-//   padding: "5px",
-// };
+let navLinkStyle = {
+  color: "white",
+  fontFamily: "Montserrat, sans-serif",
+  textTransform: "uppercase",
+  fontWeight: 700,
+  fontSize: "medium",
+  textDecoration: "none",
+  margin: "10px 10px",
+  border: "1.5px darkgray solid",
+  padding: "5px",
+};
 
 const NavigationBar = (props) => {
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [firstName, setFirstName] = useState("");
+  const [showMobileDropDown, setShowMobileDropDown] = useState(false);
+
+  useEffect(() => {
+    const storedFirstName = localStorage.getItem("firstName");
+    if (storedFirstName) {
+      setFirstName(storedFirstName);
+    }
+  }, []);
+
+  function handleLogout() {
+    localStorage.removeItem("firstName");
+    localStorage.removeItem("token");
+    localStorage.removeItem("isAdmin");
+    window.location.reload();
+  }
   const [extendNavbar, setExtendNavbar] = useState(false);
 
   return (
@@ -55,6 +74,43 @@ const NavigationBar = (props) => {
                 {" "}
                 {extendNavbar ? <>&#10005;</> : <>&#8801;</>}
               </OpenLinksButton>
+              <div style={{ margin: "30px 5px" }}>
+                <NavbarLink onClick={(e) => setShowDropdown(!showDropdown)}>
+                  My Profile
+                </NavbarLink>
+                {showDropdown && (
+                  <DropdownContainer style={{ zIndex: 4 }}>
+                    {firstName ? (
+                      <span style={navLinkStyle}>Hello {firstName}</span>
+                    ) : (
+                      <NavLink style={navLinkStyle} to={"/signin"}>
+                        Signin Here
+                      </NavLink>
+                    )}
+                    {firstName ? (
+                      <button
+                        style={{
+                          fontFamily: "Montserrat, sans-serif",
+                          textTransform: "uppercase",
+                          fontWeight: 700,
+                          fontSize: "medium",
+                          textDecoration: "none",
+                          margin: "10px 10px",
+                          border: "1.5px darkgray solid",
+                          padding: "5px",
+                          backgroundColor: "silver",
+                        }}
+                        onClick={handleLogout}>
+                        Logout
+                      </button>
+                    ) : (
+                      <NavLink style={navLinkStyle} to={"/register"}>
+                        Register Here
+                      </NavLink>
+                    )}
+                  </DropdownContainer>
+                )}
+              </div>
             </NavbarLinkContainer>
           </RightContainer>
         </NavbarInnerContainer>
@@ -76,6 +132,47 @@ const NavigationBar = (props) => {
             <NavbarLinkExtended to="https://creekvt.com/about/">
               About
             </NavbarLinkExtended>
+            <NavbarLinkExtended
+              onClick={(e) =>
+                showMobileDropDown === false
+                  ? setShowMobileDropDown(true)
+                  : setShowMobileDropDown(false)
+              }>
+              <NavbarLinkExtended>My Profile</NavbarLinkExtended>
+              {showMobileDropDown && (
+                <DropdownContainer style={{ zIndex: 4 }}>
+                  {/* on dropdown items need to make showsignin/showregister as true and all else pages false */}
+                  {firstName ? (
+                    <span style={navLinkStyle}>Hello {firstName}</span>
+                  ) : (
+                    <NavLink style={navLinkStyle} to={"/signin"}>
+                      Signin Here
+                    </NavLink>
+                  )}
+                  {firstName ? (
+                    <button
+                      style={{
+                        fontFamily: "Montserrat, sans-serif",
+                        textTransform: "uppercase",
+                        fontWeight: 700,
+                        fontSize: "medium",
+                        textDecoration: "none",
+                        margin: "10px 10px",
+                        border: "1.5px darkgray solid",
+                        padding: "5px",
+                        backgroundColor: "silver",
+                      }}
+                      onClick={handleLogout}>
+                      Logout
+                    </button>
+                  ) : (
+                    <NavLink style={navLinkStyle} to={"/register"}>
+                      Register Here
+                    </NavLink>
+                  )}
+                </DropdownContainer>
+              )}
+            </NavbarLinkExtended>
           </NavbarExtendedContainer>
         )}
       </NavbarContainer>
@@ -84,69 +181,3 @@ const NavigationBar = (props) => {
 };
 
 export default NavigationBar;
-
-//* my profile dropdown incase we need it later
-// <NavbarLinkExtended
-//   onClick={(e) =>
-//     showDropdown === false
-//       ? setShowDropdown(true)
-//       : setShowDropdown(false)
-//   }>
-//   <NavbarLinkExtended>My Profile</NavbarLinkExtended>
-//   {showDropdown && (
-//     <DropdownContainer style={{ zIndex: 4 }}>
-//       {/* on dropdown items need to make showsignin/showregister as true and all else pages false */}
-//       <NavLink style={navLinkStyle} to={"/signin"}>
-//         Signin Here
-//       </NavLink>
-//       <NavLink style={navLinkStyle} to={"/register"}>
-//         Register Here
-//       </NavLink>
-//     </DropdownContainer>
-//   )}
-// </NavbarLinkExtended>
-
-//*my profile desktop dropdown incase we need later
-// <div style={{ margin: "30px 5px" }}>
-//   <NavbarLink onClick={(e) => setShowDropdown(!showDropdown)}>
-//     My Profile
-//   </NavbarLink>
-//   {showDropdown && (
-//     <DropdownContainer style={{ zIndex: 4 }}>
-//       {firstName ? (
-//         <span style={navLinkStyle}>Hello {firstName}</span>
-//       ) : (
-//         <NavLink style={navLinkStyle} to={"/signin"}>
-//           Signin Here
-//         </NavLink>
-//       )}
-//       {firstName ? (
-//         <button style={navLinkStyle} onClick={handleLogout}>
-//           Logout
-//         </button>
-//       ) : (
-//         <NavLink style={navLinkStyle} to={"/register"}>
-//           Register Here
-//         </NavLink>
-//       )}
-//     </DropdownContainer>
-//   )}
-// </div>
-
-//!stuff needed to change name functionallity with above login stuff
-// const [showDropdown, setShowDropdown] = useState(false);
-// const [firstName, setFirstName] = useState("");
-
-// useEffect(() => {
-//   const storedFirstName = localStorage.getItem("firstName");
-//   if (storedFirstName) {
-//     setFirstName(storedFirstName);
-//   }
-// }, []);
-
-// function handleLogout() {
-//   localStorage.removeItem("firstName");
-//   localStorage.removeItem("token");
-//   localStorage.removeItem("isAdmin");
-//   window.location.reload();
-// }
