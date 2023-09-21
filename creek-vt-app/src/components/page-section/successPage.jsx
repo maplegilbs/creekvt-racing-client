@@ -1,7 +1,7 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import { Button } from "reactstrap";
 import { useNavigate, useParams } from "react-router-dom";
-import "./successPage.css";
+import "../styles/successPage.css";
 import { API_ADD_REGISTERED_RACER } from "../../constants/endpoints";
 import { urlBuilder } from "../util/urlBuilder";
 import { UserContext } from "../store/UserContext";

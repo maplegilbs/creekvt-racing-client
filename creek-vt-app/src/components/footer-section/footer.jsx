@@ -1,8 +1,8 @@
 import { NavLink } from "react-router-dom";
-import { FooterContainer, FooterBrand } from "./footer.style";
+import { FooterContainer, FooterBrand } from "../styles/footer.styles";
 import { useContext, useEffect } from "react";
 import { UserContext } from "../store/UserContext";
-import "./footer.css";
+// import "./footer.css";
 
 const Footer = (props) => {
   const userctx = useContext(UserContext);

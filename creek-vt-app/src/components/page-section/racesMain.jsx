@@ -1,7 +1,9 @@
 import { API_VIEWALL_RACES } from "../../constants/endpoints";
 import RaceInfoCards from "../linkingComponents/raceInfoCards";
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from 'react-router-dom';
 import { UserContext } from "../store/UserContext";
+
 import {
   MainContainer,
   HeaderContainer,
@@ -10,9 +12,6 @@ import {
   LogoOverlay,
   OverlayText
 } from "../styles/racesMain.styles";
-import "./racesMain.css"
-import Signin from "../auth/signin";
-import { useNavigate } from "react-router-dom";
 const RacesMain = (props) => {
   const navigate = useNavigate();
   const userctx = useContext(UserContext);

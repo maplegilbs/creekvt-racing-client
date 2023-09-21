@@ -1,3 +1,4 @@
+import '../../App.css';
 import styled from 'styled-components';
 
 
@@ -20,7 +21,15 @@ export const CreekLogo = styled.img`
   object-fit: cover;
 
   @media (max-width: 700px) {
-    width: 100%;
+      width: 100%;
+  }
+
+
+  #main-img{
+      width: 100vw;
+      box-shadow: 0 11px 10px 0 rgba(0,0,0,.5);
+      height: auto;
+      padding: 0% !important;
   }
 `;
 
@@ -34,6 +43,10 @@ export const LogoOverlay = styled.div`
   width: 100%;
   height: 0;
   transition: .5s ease;
+
+  .overlay {
+    display: none;
+  }
 
   &:hover .overlay {
     height: 100%;
@@ -53,5 +66,10 @@ export const OverlayText = styled.p`
 `;
 
 export const Blurb = styled.p`
-
+.blurb-txt{
+    text-align: center;
+    font-family: 'Roboto Serif', serif;
+    padding: 20px;
+    width: 70vw;
+}
 `;

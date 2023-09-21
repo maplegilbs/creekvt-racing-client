@@ -2,7 +2,7 @@ import React, { Component, useContext, useState, useEffect } from "react";
 import { UserContext } from "../store/UserContext";
 import { Form } from "react-bootstrap";
 import { Dropdown } from "react-bootstrap";
-import "./raceRegistration.css";
+import "../styles/raceRegistration.css";
 import { useParams } from "react-router-dom";
 
 const RaceRegistration = (props) => {
