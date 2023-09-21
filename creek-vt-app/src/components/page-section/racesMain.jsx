@@ -11,7 +11,10 @@ import {
   OverlayText
 } from "../styles/racesMain.styles";
 import "./racesMain.css"
+import Signin from "../auth/signin";
+import { useNavigate } from "react-router-dom";
 const RacesMain = (props) => {
+  const navigate = useNavigate();
   const userctx = useContext(UserContext);
   useEffect(() => {
     fetchRacesFeed();
@@ -28,12 +31,15 @@ const RacesMain = (props) => {
       console.log(error);
     }
   }
+  function handleSignupClick(){
+    navigate("/signin")
+  }
   return (
     <MainContainer className="m-3">
 
       <HeaderContainer>
-      <Logo
-        src="https://creekvt.com/wp-content/uploads/2021/09/FrontPageE1600W_85.jpg"
+      <Logo id="main-img"
+        src="https://cdn.discordapp.com/attachments/1131315556243476591/1154190312143585330/RaceMainPage2.jpg"
         alt="hero-image"
         />
         <LogoOverlay className="overlay">
@@ -46,8 +52,8 @@ const RacesMain = (props) => {
        Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam placeat eos ea laudantium debitis itaque, non quos ut reiciendis, doloribus, doloremque iusto odio sed. Magnam tempore commodi culpa doloremque sit?
       </Blurb>
       <div
-        className="d-flex m-8 flex-wrap justify-content-center g-10"
-        style={{ maxWidth: "75%" }}>
+        className="d-flex m-8 flex-wrap g-20"
+        style={{ maxWidth: "75%", justifyContent:"space-between"}}>
         {userctx.raceFeedItems.map((race, index) => (
           <RaceInfoCards
             fetchRacesFeed={fetchRacesFeed}
@@ -56,6 +62,7 @@ const RacesMain = (props) => {
           />
         ))}
       </div>
+      <button onClick={handleSignupClick}>signup whatever button</button>
     </MainContainer>
   );
 };

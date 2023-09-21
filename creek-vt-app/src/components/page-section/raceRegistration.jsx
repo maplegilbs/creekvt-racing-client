@@ -7,20 +7,20 @@ import { useParams } from "react-router-dom";
 
 const RaceRegistration = (props) => {
   const userctx = useContext(UserContext);
-
   const { raceid } = useParams();
-  console.log(`http://localhost:3307/register/create-checkout-session/${parseInt(raceid)}`)
-  
+
+  const passedLogin = JSON.parse(localStorage.getItem("Login Info"))
+  console.log(passedLogin)
   const [userData, setUserData] = useState({
     raceId: raceid,
-    firstName: "",
-    lastName: "",
-    DOB: "",
-    location: "",
-    email: "",
-    phone: "",
+    firstName: passedLogin.firstName || "",
+    lastName: passedLogin.lastName || "",
+    DOB: passedLogin.DOB || "",
+    location: passedLogin.location || "",
+    email: passedLogin.email || "",
+    phone: passedLogin.phone || "",
     vessel: "",
-    ACA: "",
+    acaNumber: "",
   });
   const [selectedVessel, setSelectedVessel] = useState("Select a Vessel");
   const isFormValid = () => {
@@ -85,7 +85,7 @@ const RaceRegistration = (props) => {
     <Form.Group>
       <Form.Label className="all-lbls">First Name</Form.Label>
       <Form.Control 
-      required
+      // required
       type="text"
       name="firstName"
       placeholder=""
@@ -158,9 +158,11 @@ const RaceRegistration = (props) => {
     <Form.Label className="all-lbls">ACA Number</Form.Label>
       <Form.Control 
       type="text"
-      name="ACA"
-      placeholder=""
-      value={userData.ACA} 
+
+      name="acaNumber"
+      placeholder="Not Required"
+      value={userData.acaNumber} 
+
       onChange={handleInputChange}></Form.Control>
 
   </Form>
