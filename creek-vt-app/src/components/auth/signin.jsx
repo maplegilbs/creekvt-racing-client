@@ -48,6 +48,7 @@ const Signin = (props) => {
       userctx.updateFirstName(data.storedFirstName);
       userctx.updateAdminCred(data.storedAdminCred);
       userctx.storeLoginInfo(JSON.stringify(data.loginInfo))
+      
     } catch (error) {
       console.log(error);
     }
