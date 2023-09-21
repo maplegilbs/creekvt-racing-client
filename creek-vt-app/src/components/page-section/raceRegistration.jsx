@@ -8,6 +8,7 @@ import { useParams } from "react-router-dom";
 const RaceRegistration = (props) => {
   const userctx = useContext(UserContext);
   const { raceid } = useParams();
+
   const passedLogin = JSON.parse(localStorage.getItem("Login Info"))
   console.log(passedLogin)
   const [userData, setUserData] = useState({
@@ -44,7 +45,7 @@ const RaceRegistration = (props) => {
     localStorage.setItem("userInfo", userDataJson)
     console.log("DATA HERE", userDataJson)
     
-    fetch('http://localhost:3307/register/create-checkout-session/1', {
+    fetch(`http://localhost:3307/register/create-checkout-session/${parseInt(raceid)}`, {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json'
@@ -54,11 +55,11 @@ const RaceRegistration = (props) => {
               {id: 1, quantity: 1}
               
           ],
-          email: userData.email
+          email: userData.email,
       })
     })
     .then(res => {
-      if(res.ok) return res.json()
+      if(res.status !== 409) return res.json()
       return res.json().then(json => Promise.reject(json))
     }).then(({ url }) =>{
       window.location = url
@@ -157,9 +158,11 @@ const RaceRegistration = (props) => {
     <Form.Label className="all-lbls">ACA Number</Form.Label>
       <Form.Control 
       type="text"
+
       name="acaNumber"
       placeholder="Not Required"
       value={userData.acaNumber} 
+
       onChange={handleInputChange}></Form.Control>
 
   </Form>
