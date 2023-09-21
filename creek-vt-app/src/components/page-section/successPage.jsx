@@ -13,11 +13,11 @@ const SuccessPage = (props) => {
         raceId: parseInt(passedInfo.raceId),
         firstName: passedInfo.firstName,
         lastName: passedInfo.lastName,
-        DOB: passedInfo.dob,
+        DOB: passedInfo.DOB,
         email: passedInfo.email,
-        phone: passedInfo.phoneNumber,
+        phone: passedInfo.phone,
         category: passedInfo.vessel,
-        ACA: parseInt(passedInfo.acaNumber),
+        ACA: parseInt(passedInfo.ACA),
       };
       console.log(JSON.stringify(body));
       const requestOptions = {
