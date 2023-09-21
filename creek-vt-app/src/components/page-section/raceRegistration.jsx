@@ -9,26 +9,27 @@ const RaceRegistration = (props) => {
   const userctx = useContext(UserContext);
 
   const { raceid } = useParams();
+  console.log(`http://localhost:3307/register/create-checkout-session/${parseInt(raceid)}`)
   
   const [userData, setUserData] = useState({
     raceId: raceid,
-    firstName: " ",
-    lastName: " ",
-    dob: " ",
+    firstName: "",
+    lastName: "",
+    DOB: "",
     location: "",
-    email: " ",
-    phoneNumber: " ",
-    vessel: " ",
-    acaNumber: " ",
+    email: "",
+    phone: "",
+    vessel: "",
+    ACA: "",
   });
   const [selectedVessel, setSelectedVessel] = useState("Select a Vessel");
   const isFormValid = () => {
     return (
       userData.firstName.trim() !== "" &&
       userData.lastName.trim() !== "" &&
-      userData.dob.trim() !== "" &&
+      userData.DOB.trim() !== "" &&
       userData.email.trim() !== "" &&
-      userData.phoneNumber.trim() !== ""
+      userData.phone.trim() !== ""
     );
   };
   const handleInputChange = (e) => {
@@ -44,7 +45,7 @@ const RaceRegistration = (props) => {
     localStorage.setItem("userInfo", userDataJson)
     console.log("DATA HERE", userDataJson)
     
-    fetch('http://localhost:3307/register/create-checkout-session/1', {
+    fetch(`http://localhost:3307/register/create-checkout-session/${parseInt(raceid)}`, {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json'
@@ -54,11 +55,11 @@ const RaceRegistration = (props) => {
               {id: 1, quantity: 1}
               
           ],
-          email: userData.email
+          email: userData.email,
       })
     })
     .then(res => {
-      if(res.ok) return res.json()
+      if(res.status !== 409) return res.json()
       return res.json().then(json => Promise.reject(json))
     }).then(({ url }) =>{
       window.location = url
@@ -88,7 +89,7 @@ const RaceRegistration = (props) => {
       type="text"
       name="firstName"
       placeholder=""
-      value={userData.fistName} 
+      value={userData.firstName} 
       onChange={handleInputChange}>
       </Form.Control>
 
@@ -106,9 +107,9 @@ const RaceRegistration = (props) => {
       <Form.Control
       required
       type="date"
-      name="dob"
+      name="DOB"
       placeholder=""
-      value={userData.dob} 
+      value={userData.DOB} 
       onChange={handleInputChange}></Form.Control>
       
       <Form.Label className="all-lbls">Location</Form.Label>
@@ -133,9 +134,9 @@ const RaceRegistration = (props) => {
       <Form.Control
       required
       type="text"
-      name="phoneNumber"
+      name="phone"
       placeholder=""
-      value={userData.phoneNumber} 
+      value={userData.phone} 
       onChange={handleInputChange}></Form.Control>
 
       <Dropdown name="vessel" onSelect={handleDropdownSelect}>
@@ -157,9 +158,9 @@ const RaceRegistration = (props) => {
     <Form.Label className="all-lbls">ACA Number</Form.Label>
       <Form.Control 
       type="text"
-      name="acaNumber"
+      name="ACA"
       placeholder=""
-      value={userData.acaNumber} 
+      value={userData.ACA} 
       onChange={handleInputChange}></Form.Control>
 
   </Form>
