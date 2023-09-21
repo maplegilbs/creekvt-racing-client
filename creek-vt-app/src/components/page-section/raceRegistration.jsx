@@ -7,28 +7,28 @@ import { useParams } from "react-router-dom";
 
 const RaceRegistration = (props) => {
   const userctx = useContext(UserContext);
-
   const { raceid } = useParams();
-  
+  const passedLogin = JSON.parse(localStorage.getItem("Login Info"))
+  console.log(passedLogin)
   const [userData, setUserData] = useState({
     raceId: raceid,
-    firstName: " ",
-    lastName: " ",
-    dob: " ",
-    location: "",
-    email: " ",
-    phoneNumber: " ",
-    vessel: " ",
-    acaNumber: " ",
+    firstName: passedLogin.firstName || "",
+    lastName: passedLogin.lastName || "",
+    DOB: passedLogin.DOB || "",
+    location: passedLogin.location || "",
+    email: passedLogin.email || "",
+    phone: passedLogin.phone || "",
+    vessel: "",
+    acaNumber: "",
   });
   const [selectedVessel, setSelectedVessel] = useState("Select a Vessel");
   const isFormValid = () => {
     return (
       userData.firstName.trim() !== "" &&
       userData.lastName.trim() !== "" &&
-      userData.dob.trim() !== "" &&
+      userData.DOB.trim() !== "" &&
       userData.email.trim() !== "" &&
-      userData.phoneNumber.trim() !== ""
+      userData.phone.trim() !== ""
     );
   };
   const handleInputChange = (e) => {
@@ -84,11 +84,11 @@ const RaceRegistration = (props) => {
     <Form.Group>
       <Form.Label className="all-lbls">First Name</Form.Label>
       <Form.Control 
-      required
+      // required
       type="text"
       name="firstName"
       placeholder=""
-      value={userData.fistName} 
+      value={userData.firstName} 
       onChange={handleInputChange}>
       </Form.Control>
 
@@ -106,9 +106,9 @@ const RaceRegistration = (props) => {
       <Form.Control
       required
       type="date"
-      name="dob"
+      name="DOB"
       placeholder=""
-      value={userData.dob} 
+      value={userData.DOB} 
       onChange={handleInputChange}></Form.Control>
       
       <Form.Label className="all-lbls">Location</Form.Label>
@@ -133,9 +133,9 @@ const RaceRegistration = (props) => {
       <Form.Control
       required
       type="text"
-      name="phoneNumber"
+      name="phone"
       placeholder=""
-      value={userData.phoneNumber} 
+      value={userData.phone} 
       onChange={handleInputChange}></Form.Control>
 
       <Dropdown name="vessel" onSelect={handleDropdownSelect}>
@@ -158,7 +158,7 @@ const RaceRegistration = (props) => {
       <Form.Control 
       type="text"
       name="acaNumber"
-      placeholder=""
+      placeholder="Not Required"
       value={userData.acaNumber} 
       onChange={handleInputChange}></Form.Control>
 

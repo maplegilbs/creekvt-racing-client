@@ -43,9 +43,11 @@ const Signin = (props) => {
       const response = await fetch(API_SIGNIN_USER, requestOption);
       //get response
       const data = await response.json();
+      console.log(data.loginInfo)
       userctx.updateToken(data.token);
       userctx.updateFirstName(data.storedFirstName);
       userctx.updateAdminCred(data.storedAdminCred);
+      userctx.storeLoginInfo(JSON.stringify(data.loginInfo))
     } catch (error) {
       console.log(error);
     }

@@ -46,13 +46,16 @@ const RaceInfo = (props) => {
       <RaceInfoContainer>
         <RaceInfoHeader>
           <h2 className="title-txt">{titleizeName}</h2>
-          <h3 className="location-txt">{raceLocation}</h3>
-          <h3 className="year-txt">{raceYear}</h3>
+          <div>
+          <h3 className="location-txt">{raceLocation}, {raceYear}</h3>
+          {/* <h3 className="year-txt"></h3> */}
+          </div>
         </RaceInfoHeader>
         <RaceImage src="https://creekvt.com/wp-content/uploads/2023/07/All-American-Michael-from-NH-1024x603.jpg" />
         {regOpen == 0 ? null : (
-          <Button onClick={handleRegisterClick}>Register</Button>
+          <Button onClick={handleRegisterClick}>Register to Race</Button>
         )}
+       
         <Button className="racers-btn" onClick={handleRegisteredRacersClick}>
           Racers
         </Button>

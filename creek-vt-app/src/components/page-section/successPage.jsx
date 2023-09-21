@@ -15,7 +15,7 @@ const SuccessPage = (props) => {
         lastName: passedInfo.lastName,
         DOB: passedInfo.dob,
         email: passedInfo.email,
-        phone: passedInfo.phoneNumber,
+        phone: passedInfo.phone,
         category: passedInfo.vessel,
         ACA: parseInt(passedInfo.acaNumber),
       };

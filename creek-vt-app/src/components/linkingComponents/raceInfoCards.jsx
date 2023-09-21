@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { CardBody, CardTitle } from "reactstrap";
 import { UserContext } from "../store/UserContext";
 import urlBuilder from "../util/urlBuilder";
-
+import "./raceInfoCards.css"
 const RaceInfoCards = (props) => {
   const userctx = useContext(UserContext);
   const navigate = useNavigate();
@@ -17,26 +17,18 @@ const RaceInfoCards = (props) => {
   }
   return (
     <>
-      <div
+      <div className="kayak-container"
         style={{
-          margin: "8vh",
-          border: "solid black 1px",
-          padding: "3px",
-          maxWidth: "16vh",
+          background: "linear-gradient(45deg,#e1eaf4, #4d7288)",
         }}>
-        <CardBody onClick={handleSubmit}>
-          <img
-            src="https://freesvg.org/img/1400661325.png"
+        <CardBody onClick={handleSubmit} className={"d-flex"}>
+          <div className="kayak-sub">
+          <img className="kayaker-img"
+            src="https://cdn.discordapp.com/attachments/1131315556243476591/1154230860443304036/RacerIcon.png"
             alt="defaultKayak"
-            style={{ maxWidth: "12vh", maxHeight: "12vh" }}
-          />
-          <CardTitle
-            style={{
-              border: "solid black 1px",
-              textAlign: "center",
-            }}>
-            {name}
-          </CardTitle>
+            />
+          <CardTitle className="card-title">{name}</CardTitle>
+          </div>
         </CardBody>
       </div>
     </>

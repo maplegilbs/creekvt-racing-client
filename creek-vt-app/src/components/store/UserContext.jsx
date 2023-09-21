@@ -8,10 +8,13 @@ export const UserContext = createContext({
   adminCredentials: "",
   raceFeedItems: "",
   selectedUpdateAthlete: "",
+  loginInfo: "",
   updateToken: () => {},
   setRace: () => {},
   updateFirstName: () => {},
   updateAdminCred: () => {},
+  setLoginInfo: () => {},
+  storeLoginInfo: () => {},
   setRaceFeedItems: () => {},
   capitalize: () => {},
   titleize: () => {},
@@ -26,6 +29,7 @@ const UserContextProvider = (props) => {
   const [adminCredentials, setAdminCredentials] = useState("");
   const [raceFeedItems, setRaceFeedItems] = useState([]);
   const [selectedUpdateAthlete, setSelectedUpdateAthlete] = useState([]);
+  const [loginInfo, setLoginInfo] = useState("");
 
   function updateToken(newToken) {
     setToken(newToken);
@@ -52,6 +56,10 @@ const UserContextProvider = (props) => {
     setAdminCredentials(adminStored);
     localStorage.setItem("isAdmin", adminStored);
   }
+  function storeLoginInfo(loginInfo){
+    setLoginInfo(loginInfo);
+    localStorage.setItem("Login Info", loginInfo)
+  }
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -67,6 +75,7 @@ const UserContextProvider = (props) => {
     adminCredentials,
     raceFeedItems,
     selectedUpdateAthlete,
+    loginInfo,
     setRaceFeedItems,
     updateToken,
     setRace,
@@ -75,6 +84,8 @@ const UserContextProvider = (props) => {
     titleize,
     capitalize,
     setSelectedUpdateAthlete,
+    setLoginInfo,
+    storeLoginInfo,
   };
   return (
     <>
