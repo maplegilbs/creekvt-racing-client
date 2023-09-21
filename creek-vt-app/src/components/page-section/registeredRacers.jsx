@@ -29,6 +29,7 @@ const RegisteredRacers = (props) => {
   useEffect(() => {
     fetchRegisteredRacers();
   }, [raceid]);
+  if(registeredRacersItems.length == 0 )return
   return (
     <div className="d-flex justify-content-center align-items-center text-center">
       <div className="d-flex justify-content-center flex-column align-items-center border border-dark w-25">

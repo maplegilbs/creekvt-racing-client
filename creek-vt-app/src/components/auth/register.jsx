@@ -15,7 +15,7 @@ const Register = (props) => {
   const [phone, setPhone] = useState("");
   const userctx = useContext(UserContext);
   const navigate = useNavigate();
-
+  const [loginInfo, setLoginInfo] = useState({});
   function handleSubmit(e) {
     e.preventDefault();
     registerUser();
@@ -49,6 +49,7 @@ const Register = (props) => {
       const data = await response.json();
       userctx.updateToken(data.token);
       userctx.updateFirstName(firstName);
+      userctx.storeLoginInfo(body)
     } catch (error) {
       console.log(error);
     }

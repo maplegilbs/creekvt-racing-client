@@ -14,12 +14,12 @@ const Footer = (props) => {
   }, [localStorage.getItem("isAdmin")]);
   return (
     <>
-      <FooterContainer>
+      <FooterContainer className="footer-main">
         <NavLink to="/signin" style={{ color: "#4e647b", fontSize: "3px" }}>
           .
         </NavLink>
         <FooterBrand>
-          <img src="https://creekvt.com/wp-content/uploads/2020/05/CreekVTLogo150x150.png" />
+          <img className="logo-main" src="https://creekvt.com/wp-content/uploads/2020/05/CreekVTLogo150x150.png" />
         </FooterBrand>
         {localStorage.getItem("isAdmin") !== "1" ? null : (
           <NavLink

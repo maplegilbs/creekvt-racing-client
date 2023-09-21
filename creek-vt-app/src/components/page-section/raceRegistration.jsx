@@ -1,78 +1,97 @@
-import React, { Component, useContext, useState } from "react";
+import React, { Component, useContext, useState, useEffect } from "react";
 import { UserContext } from "../store/UserContext";
-import {Form} from "react-bootstrap"
+import { Form } from "react-bootstrap";
 import { Dropdown } from "react-bootstrap";
-import "./raceRegistration.css"
+import "./raceRegistration.css";
 import { useParams } from "react-router-dom";
 
 const RaceRegistration = (props) => {
   const userctx = useContext(UserContext);
-
   const { raceid } = useParams();
-  
+
   const [userData, setUserData] = useState({
     raceId: raceid,
-    firstName: " ",
-    lastName: " ",
-    dob: " ",
+    firstName: "",
+    lastName: "",
+    DOB: "",
     location: "",
-    email: " ",
-    phoneNumber: " ",
-    vessel: " ",
-    acaNumber: " ",
+    email: "",
+    phone: "",
+    vessel: "",
+    ACA: "",
   });
   const [selectedVessel, setSelectedVessel] = useState("Select a Vessel");
+
+  useEffect(() => {
+    let passedLogin = localStorage.getItem("Login Info");
+    console.log(passedLogin);
+    if (passedLogin) {
+      passedLogin = JSON.parse(passedLogin);
+      if (passedLogin.DOB) {
+        passedLogin.DOB = passedLogin.DOB.split("T")[0];
+      }
+      setUserData((previousUserData) => ({
+        ...previousUserData,
+        ...passedLogin,
+      }));
+    }
+  }, []);
+
   const isFormValid = () => {
     return (
       userData.firstName.trim() !== "" &&
       userData.lastName.trim() !== "" &&
-      userData.dob.trim() !== "" &&
+      userData.DOB.trim() !== "" &&
       userData.email.trim() !== "" &&
-      userData.phoneNumber.trim() !== ""
+      userData.phone.trim() !== ""
     );
   };
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUserData({ ...userData, [name]: value });
   };
-  async function handlePayButton(){
+  async function handlePayButton() {
     if (!isFormValid()) {
       alert("Please fill out all required fields.");
       return;
     }
-    const userDataJson = JSON.stringify(userData)
-    localStorage.setItem("userInfo", userDataJson)
-    console.log("DATA HERE", userDataJson)
-    
-    fetch('http://localhost:3307/register/create-checkout-session/1', {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-          items: [
-              {id: 1, quantity: 1}
-              
-          ],
-          email: userData.email
+    const userDataJson = JSON.stringify(userData);
+    localStorage.setItem("userInfo", userDataJson);
+    console.log("DATA HERE", userDataJson);
+
+    fetch(
+      `http://localhost:3307/register/create-checkout-session/${parseInt(
+        raceid
+      )}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          items: [{ id: 1, quantity: 1 }],
+          email: userData.email,
+        }),
+      }
+    )
+      .then((res) => {
+        if (res.status !== 409) return res.json();
+        return res.json().then((json) => Promise.reject(json));
       })
-    })
-    .then(res => {
-      if(res.ok) return res.json()
-      return res.json().then(json => Promise.reject(json))
-    }).then(({ url }) =>{
-      window.location = url
-    })
-    .catch(e => {
-      console.error(e)
-    })
-  };
-  
+      .then(({ url }) => {
+        window.location = url;
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  }
+
   const handleDropdownSelect = (eventKey) => {
     setUserData({ ...userData, vessel: eventKey });
     setSelectedVessel(eventKey);
   };
   return (
+
   <>
   <h2 className="register-header">Register to Race</h2>
   <div className="subhead-cont">
@@ -84,11 +103,11 @@ const RaceRegistration = (props) => {
     <Form.Group>
       <Form.Label className="all-lbls">First Name</Form.Label>
       <Form.Control 
-      required
+      // required
       type="text"
       name="firstName"
       placeholder=""
-      value={userData.fistName} 
+      value={userData.firstName} 
       onChange={handleInputChange}>
       </Form.Control>
 
@@ -106,9 +125,9 @@ const RaceRegistration = (props) => {
       <Form.Control
       required
       type="date"
-      name="dob"
+      name="DOB"
       placeholder=""
-      value={userData.dob} 
+      value={userData.DOB} 
       onChange={handleInputChange}></Form.Control>
       
       <Form.Label className="all-lbls">Location</Form.Label>
@@ -133,9 +152,9 @@ const RaceRegistration = (props) => {
       <Form.Control
       required
       type="text"
-      name="phoneNumber"
+      name="phone"
       placeholder=""
-      value={userData.phoneNumber} 
+      value={userData.phone} 
       onChange={handleInputChange}></Form.Control>
 
       <Dropdown name="vessel" onSelect={handleDropdownSelect}>
@@ -144,11 +163,12 @@ const RaceRegistration = (props) => {
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
-        <Dropdown.Item eventKey="Canoe">Canoe</Dropdown.Item>
-        <Dropdown.Item eventKey="Sit-In Kayak">Sit-In Kayak</Dropdown.Item>
-        <Dropdown.Item eventKey="Sit-On Kayak">Sit-On Kayak</Dropdown.Item>
+        <Dropdown.Item eventKey="Tandem Kayak">Tandem Kayak</Dropdown.Item>
+        <Dropdown.Item eventKey="Race Kayak">Race Kayak</Dropdown.Item>
+        <Dropdown.Item eventKey="Recreational Kayak">Recreational Kayak</Dropdown.Item>
+        <Dropdown.Item eventKey="Solo Canoe">Solo Canoe</Dropdown.Item>
+        <Dropdown.Item eventKey="Race Canoe">Race Canoe</Dropdown.Item>
         <Dropdown.Item eventKey="Paddleboard">Paddleboard</Dropdown.Item>
-        <Dropdown.Item eventKey="SS Ohio">SS Ohio</Dropdown.Item>
         <Dropdown.Item eventKey="Other">Other</Dropdown.Item>
       </Dropdown.Menu>
       </Dropdown>
@@ -157,9 +177,11 @@ const RaceRegistration = (props) => {
     <Form.Label className="all-lbls">ACA Number</Form.Label>
       <Form.Control 
       type="text"
+
       name="acaNumber"
-      placeholder=""
+      placeholder="Not Required"
       value={userData.acaNumber} 
+
       onChange={handleInputChange}></Form.Control>
 
   </Form>
@@ -169,5 +191,6 @@ const RaceRegistration = (props) => {
     </div>
 </>
 )};
+
 
 export default RaceRegistration;

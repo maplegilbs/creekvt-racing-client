@@ -4,6 +4,14 @@
     padding: 20px;
     width: 70vw;
 }
+
 .overlay{
     display: none;
+}
+
+#main-img{
+    width: 100vw;
+    box-shadow: 0 11px 10px 0 rgba(0,0,0,.5);
+    height: auto;
+    padding: 0% !important;
 }

@@ -10,6 +10,7 @@ import {
 import { UserContext } from "../store/UserContext";
 import AdminRRCard from "../linkingComponents/adminRRCard";
 import ReactSwitch from "react-switch";
+import { useNavigate } from "react-router-dom";
 
 const AdminDashboard = (props) => {
   const userctx = useContext(UserContext);
@@ -18,6 +19,7 @@ const AdminDashboard = (props) => {
   const [registeredRacersItems, setRegisteredRacersItems] = useState([]);
   const [checked, setChecked] = useState(true);
   let adminName = localStorage.getItem("firstName");
+  const navigate = useNavigate();
   const [racerUpdateData, setRacerUpdateData] = useState({
     firstName: "",
     lastName: "",
@@ -95,6 +97,9 @@ const AdminDashboard = (props) => {
     e.preventDefault();
     updateRace();
   }
+  function handleHomeClick() {
+    navigate(`/`);
+  }
 
   function handleSubmitAdd(e) {
     e.preventDefault();
@@ -112,9 +117,11 @@ const AdminDashboard = (props) => {
       fetchRegisteredRacers();
     }
   }, [selectedRace, updateRacers, addRacer]);
+
   useEffect(() => {
     fetchRacesFeed();
   }, []);
+
   useEffect(() => {
     if (selectedRace.id) {
       setRacerUpdateData({
@@ -531,25 +538,25 @@ const AdminDashboard = (props) => {
                 />
               </div>
               <div>
-                <label htmlFor="updateRacerACA">ACA:</label>
+                <label htmlFor="addRacerACA">ACA:</label>
                 <input
                   type="text"
                   name="ACA"
-                  id="updateRacerACA"
+                  id="addRacerACA"
                   className="form-control"
-                  value={racerUpdateData.ACA}
+                  value={racerAddData.ACA}
                   onChange={handleAddInputChange}
                   placeholder="Enter ACA"
                 />
               </div>
               <div>
-                <label htmlFor="updateRacerlocation">Location:</label>
+                <label htmlFor="addRacerlocation">Location:</label>
                 <input
                   type="text"
                   name="location"
-                  id="updateRacerlocation"
+                  id="addRacerlocation"
                   className="form-control"
-                  value={racerUpdateData.location}
+                  value={racerAddData.location}
                   onChange={handleAddInputChange}
                   placeholder="Enter location"
                 />
@@ -570,7 +577,8 @@ const AdminDashboard = (props) => {
   return (
     <div className="d-flex flex-column">
       <div style={{ margin: "20px 30px", fontWeight: "bolder" }}>
-        Welcome Back Admin {adminName}
+        <button onClick={handleHomeClick}>Return to Race Home</button>
+        <p>Welcome Back Admin {adminName} </p>
       </div>
       <div style={{ textAlign: "center", fontWeight: "bold", margin: "10px" }}>
         Use This dashboard to edit race information and add/update/delete

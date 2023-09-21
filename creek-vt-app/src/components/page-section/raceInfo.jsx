@@ -1,24 +1,18 @@
 import { useContext } from "react";
-// import { Button } from "reactstrap";
 import { UserContext } from "../store/UserContext";
-import {
-  Button,
-  RaceImage,
-  RaceInfoContainer,
-  RaceInfoHeader,
-  ButtonGrid,
-  RaceDescription,
-} from "../styles/raceInfo.styles";
 import "./raceInfo.css";
-
 import { useNavigate, useParams } from "react-router-dom";
 import { urlBuilder } from "../util/urlBuilder";
+
+
 const RaceInfo = (props) => {
   const userctx = useContext(UserContext);
   const navigate = useNavigate();
   const { raceName, raceYear, raceLocation, raceid, regOpen } = useParams();
   const unURLName = raceName.replaceAll("-", " ");
   const titleizeName = userctx.titleize(unURLName);
+  console.log(props.race)
+
 
   function handleRegisterClick() {
     navigate(`/raceRegistration/${raceid}`);
@@ -43,33 +37,38 @@ const RaceInfo = (props) => {
   }
   return (
     <>
-      <RaceInfoContainer>
-        <RaceInfoHeader>
+      
+       <div className="image-cont">
+        <img className="img-actual" src="https://creekvt.com/wp-content/uploads/2019/11/WideAngle3000wMiltonFallsSimone.jpg" />
+        </div>
+        <div className="race-info-container">
+        <h2>
           <h2 className="title-txt">{titleizeName}</h2>
-          <h3 className="location-txt">{raceLocation}</h3>
-          <h3 className="year-txt">{raceYear}</h3>
-        </RaceInfoHeader>
-        <RaceImage src="https://creekvt.com/wp-content/uploads/2023/07/All-American-Michael-from-NH-1024x603.jpg" />
+          <div>
+          <h3 className="location-txt">{raceLocation}, {raceYear}</h3>
+          {/* <h3 className="year-txt"></h3> */}
+          </div>
+        </h2>
         {regOpen == 0 ? null : (
-          <Button onClick={handleRegisterClick}>Register</Button>
+          <button className="regNrace-btns"onClick={handleRegisterClick}>Register to Race</button>
         )}
-        <Button className="racers-btn" onClick={handleRegisteredRacersClick}>
+       
+        <button className="regNrace-btns" onClick={handleRegisteredRacersClick}>
           Racers
-        </Button>
+        </button>
 
-        <RaceDescription className="race-desc-txt">
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Fugit id,
-          suscipit saepe maiores a consequuntur eum nostrum sit alias nisi
-          rerum, explicabo harum excepturi earum?
-        </RaceDescription>
+        <h4 className="race-desc-txt">
+          The races are super cool and this is a super cool description I cant stand lorem ipsum at all so this is my placeholder!
+        </h4>
+        </div>
 
-        <ButtonGrid>
-          <Button onClick={handleCourseClick}>Course Details</Button>
-          <Button onClick={handleGalleryClick}>Gallery</Button>
-          <Button onClick={handleResultsClick}>Results</Button>
-          <Button onClick={handleContactClick}>Contact</Button>
-        </ButtonGrid>
-      </RaceInfoContainer>
+        <div className="btn-xtra-cont">
+          <button className="btn-xtras" onClick={handleCourseClick}>Course Details</button>
+          <button className="btn-xtras" onClick={handleGalleryClick}>Gallery</button>
+          <button className="btn-xtras" onClick={handleResultsClick}>Results</button>
+          <button className="btn-xtras" onClick={handleContactClick}>Contact</button>
+        </div>
+      
     </>
   );
 };

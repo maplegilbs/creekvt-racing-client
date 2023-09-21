@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect } from "react";
+import { API_VIEWALL_RACES } from "../../constants/endpoints";
 
 //autopopulates
 export const UserContext = createContext({
@@ -8,10 +9,16 @@ export const UserContext = createContext({
   adminCredentials: "",
   raceFeedItems: "",
   selectedUpdateAthlete: "",
+  loginInfo: "",
+  raceInfo: "",
   updateToken: () => {},
   setRace: () => {},
   updateFirstName: () => {},
   updateAdminCred: () => {},
+  setRaceInfo: () => {},
+  storeRaceInfo: () => {},
+  setLoginInfo: () => {},
+  storeLoginInfo: () => {},
   setRaceFeedItems: () => {},
   capitalize: () => {},
   titleize: () => {},
@@ -26,6 +33,13 @@ const UserContextProvider = (props) => {
   const [adminCredentials, setAdminCredentials] = useState("");
   const [raceFeedItems, setRaceFeedItems] = useState([]);
   const [selectedUpdateAthlete, setSelectedUpdateAthlete] = useState([]);
+  const [loginInfo, setLoginInfo] = useState("");
+  const [raceInfo, setRaceInfo] = useState("");
+
+  function storeRaceInfo(raceInfo){
+    setRaceInfo(raceInfo);
+    localStorage.setItem("Race Info", raceInfo)
+  }
 
   function updateToken(newToken) {
     setToken(newToken);
@@ -52,13 +66,31 @@ const UserContextProvider = (props) => {
     setAdminCredentials(adminStored);
     localStorage.setItem("isAdmin", adminStored);
   }
+  function storeLoginInfo(loginInfo){
+    setLoginInfo(loginInfo);
+    localStorage.setItem("Login Info", loginInfo)
+  }
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
       setToken(token);
     }
+    fetchRacesFeed()
   }, []);
-
+  
+  async function fetchRacesFeed() {
+    try {
+      let requestOptions = {
+        method: "GET",
+      };
+      const response = await fetch(API_VIEWALL_RACES, requestOptions);
+      const data = await response.json();
+      setRaceFeedItems(data.races);
+      console.log(data.races)
+    } catch (error) {
+      console.log(error);
+    }
+  }
   //values passed
   const value = {
     token: token,
@@ -67,6 +99,8 @@ const UserContextProvider = (props) => {
     adminCredentials,
     raceFeedItems,
     selectedUpdateAthlete,
+    loginInfo,
+    raceInfo,
     setRaceFeedItems,
     updateToken,
     setRace,
@@ -75,6 +109,10 @@ const UserContextProvider = (props) => {
     titleize,
     capitalize,
     setSelectedUpdateAthlete,
+    setLoginInfo,
+    storeLoginInfo,
+    setRaceInfo,
+    storeRaceInfo,
   };
   return (
     <>
