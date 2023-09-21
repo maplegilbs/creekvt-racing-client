@@ -145,11 +145,12 @@ const RaceRegistration = (props) => {
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
-        <Dropdown.Item eventKey="Canoe">Canoe</Dropdown.Item>
-        <Dropdown.Item eventKey="Sit-In Kayak">Sit-In Kayak</Dropdown.Item>
-        <Dropdown.Item eventKey="Sit-On Kayak">Sit-On Kayak</Dropdown.Item>
+        <Dropdown.Item eventKey="Tandem Kayak">Tandem Kayak</Dropdown.Item>
+        <Dropdown.Item eventKey="Race Kayak">Race Kayak</Dropdown.Item>
+        <Dropdown.Item eventKey="Recreational Kayak">Recreational Kayak</Dropdown.Item>
+        <Dropdown.Item eventKey="Solo Canoe">Solo Canoe</Dropdown.Item>
+        <Dropdown.Item eventKey="Race Canoe">Race Canoe</Dropdown.Item>
         <Dropdown.Item eventKey="Paddleboard">Paddleboard</Dropdown.Item>
-        <Dropdown.Item eventKey="SS Ohio">SS Ohio</Dropdown.Item>
         <Dropdown.Item eventKey="Other">Other</Dropdown.Item>
       </Dropdown.Menu>
       </Dropdown>

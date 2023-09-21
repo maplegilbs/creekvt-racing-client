@@ -36,3 +36,7 @@
       border-radius: 5px;
       width: 30em;
 }
+.spinner-icon{
+    display: flex;
+    justify-content: center;
+}

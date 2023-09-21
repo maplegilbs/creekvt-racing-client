@@ -27,9 +27,13 @@ const RacesMain = (props) => {
       const response = await fetch(API_VIEWALL_RACES, requestOptions);
       const data = await response.json();
       userctx.setRaceFeedItems(data.races);
+      console.log(data.races)
     } catch (error) {
       console.log(error);
     }
+  }
+  function handleRaceClick(){
+    
   }
   function handleSignupClick(){
     navigate("/signin")
