@@ -62,7 +62,6 @@ const RacesMain = (props) => {
           />
         ))}
       </div>
-      <button onClick={handleSignupClick}>signup whatever button</button>
     </MainContainer>
   );
 };
