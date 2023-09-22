@@ -3,6 +3,11 @@ p {
   margin: 0;
 }
 
+/* COURSE INFO MAP */
+.leaflet-container {
+  width: 100%;
+  height: 50vh;
+}
 
 
 /*Header Nav Styles*/

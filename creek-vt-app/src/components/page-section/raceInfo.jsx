@@ -18,22 +18,19 @@ const RaceInfo = (props) => {
     navigate(`/raceRegistration/${raceid}`);
   }
   function handleGalleryClick() {
-    navigate("/photoGallery/" + urlBuilder(raceName) + "/all-photos");
+    navigate("/photoGallery/" + raceName + "/all-photos");
   }
   function handleRegisteredRacersClick() {
-    navigate(`/registeredRacers/${raceid}/${raceYear}/${urlBuilder(raceName)}`);
+    navigate(`/registeredRacers/${raceid}/${raceYear}/${raceName}`);
   }
   function handleResultsClick(e) {
-    navigate("/raceResults/" + urlBuilder(raceName));
-  }
-  function handleContactClick(e) {
-    // navigate("/raceResults/" + urlBuilder(name))
+    navigate("/raceResults/" + raceName);
   }
   function handleCourseClick(e) {
-    navigate("/courseDetails" + urlBuilder(raceName));
+    navigate("/courseDetails/" + raceName);
   }
   function handleContactClick() {
-    navigate(`/contact-us/${urlBuilder(raceName)}`);
+    navigate(`/contact-us/${raceName}}`);
   }
   return (
     <>
