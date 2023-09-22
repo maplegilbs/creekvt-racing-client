@@ -12,26 +12,31 @@ export const FooterContainer = styled.nav`
   align-items: center;
   justify-content: center;
   padding: 3vh 4vh 4vh 0;
-  position: fixed !important;
-  bottom: 0;
-  height: 10vh !important;
+  // position: fixed !important;
+  bottom: 0px;
+  height: auto !important;
+  flex-direction: column;
 
 .footer-main{
     bottom: 0px !important;
     justify-content: center;
+    
+    
+    
 }
 
   }
 
   @media screen and (max-width: 700px) {
     height: 12vh;
-    width: 100%;
+    width: 100vw;
     padding: 0px;
 .footer-main{
     padding: 5vh 0vh 5vh 0px !important;
 }
 .logo-main{
-        height: 8vh !important;
+        height: auto !important;
+        max-width: 100%
         box-shadow: 1px, 1.5px, 5px, 2px;
 
     }
@@ -42,8 +47,9 @@ export const FooterBrand = styled.div`
   .logo-main{
     text-align: center;
     margin: auto !important;
-    height: 10vh !important;
+    height: 12vh !important;
     padding: 3px;
+    max-width: 100%
 }
   @media (min-width: 700px) {
     height: 5px;

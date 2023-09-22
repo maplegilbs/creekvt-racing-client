@@ -3,6 +3,14 @@ import { UserContext } from "../store/UserContext";
 import { API_VIEW_REGISTERED_RACERS } from "../../constants/endpoints";
 import RegisteredRacersCards from "../linkingComponents/registeredRacersCard";
 import { useParams } from "react-router-dom";
+import{ 
+  CardContainer,
+  RaceTitle, 
+  YearFilter,
+  
+  
+} from "../styles/registeredRacers.styles";
+
 
 const RegisteredRacers = (props) => {
   const userctx = useContext(UserContext);
@@ -32,24 +40,24 @@ const RegisteredRacers = (props) => {
   if(registeredRacersItems.length == 0 )return
   return (
     <div className="d-flex justify-content-center align-items-center text-center">
-      <div className="d-flex justify-content-center flex-column align-items-center border border-dark w-25">
-        <h2>
+      <div className="d-flex justify-content-center flex-column align-items-center">
+        <RaceTitle>
           {titleizeName}
           <br />
           Registered Racers
-        </h2>
-        <div className="d-flex justify-content-between border border-dark bg-secondary text-light w-100">
-          <h4>year:{raceYear}</h4>
-          <button>Filter</button>
-        </div>
-        <div className="w-100">
+        </RaceTitle>
+        <YearFilter>
+          <h4>Year: {raceYear}</h4>
+          {/* <button>Filter</button> */}
+        </YearFilter>
+        <CardContainer>
           {registeredRacersItems.map((registeredAthlete, index) => (
             <RegisteredRacersCards
               key={index}
               registeredAthlete={registeredAthlete}
             />
           ))}
-        </div>
+        </CardContainer>
       </div>
     </div>
   );

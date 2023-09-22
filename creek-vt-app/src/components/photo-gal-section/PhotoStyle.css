@@ -13,7 +13,7 @@
    background-color: #565566;
    font-family: 'Roboto Serif', serif;
    color: white;
-   border: 1px solid black;
+   /* border: 1px solid black; */
    text-shadow: 1px 1px black;
 }
 #gallery-header{

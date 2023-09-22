@@ -10,7 +10,8 @@ import {
   CreekLogo as Logo,
   Blurb,
   LogoOverlay,
-  OverlayText
+  OverlayText,
+  RaceInfoCardsDiv
 } from "../styles/racesMain.styles";
 const RacesMain = (props) => {
   const navigate = useNavigate();
@@ -31,20 +32,17 @@ const RacesMain = (props) => {
       console.log(error);
     }
   }
-  function handleRaceClick(){
-    
-  }
-  function handleSignupClick(){
-    navigate("/signin")
-  }
+  
   return (
     <MainContainer className="m-3">
 
       <HeaderContainer>
+      <div className="img-container">
       <Logo id="main-img"
         src="https://cdn.discordapp.com/attachments/1131315556243476591/1154190312143585330/RaceMainPage2.jpg"
         alt="hero-image"
         />
+        </div>
         <LogoOverlay className="overlay">
           <OverlayText>RACES</OverlayText>
         </LogoOverlay>
@@ -54,9 +52,8 @@ const RacesMain = (props) => {
       <Blurb className="blurb-txt">
        Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam placeat eos ea laudantium debitis itaque, non quos ut reiciendis, doloribus, doloremque iusto odio sed. Magnam tempore commodi culpa doloremque sit?
       </Blurb>
-      <div
-        className="d-flex m-8 flex-wrap g-20"
-        style={{ maxWidth: "75%", justifyContent:"space-between"}}>
+      <RaceInfoCardsDiv
+       >
         {userctx.raceFeedItems.map((race, index) => (
           <RaceInfoCards
             fetchRacesFeed={fetchRacesFeed}
@@ -64,8 +61,8 @@ const RacesMain = (props) => {
             race={race}
           />
         ))}
-      </div>
-      <button onClick={handleSignupClick}>signup whatever button</button>
+      </RaceInfoCardsDiv>
+     
     </MainContainer>
   );
 };

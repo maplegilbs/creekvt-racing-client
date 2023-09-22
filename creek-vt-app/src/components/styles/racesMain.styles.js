@@ -13,15 +13,22 @@ export const HeaderContainer = styled.div`
 display: flex;
 width: 100%;
 justify-content: center;
+.img-container{
+  box-shadow: rgba(0, 0, 0, 0.5) 0px 11px 10px 0px;
+}
 `;
 
+
 export const CreekLogo = styled.img`
-  width: 90%;
-  height: 60vh;
+  width: 100vw;
+  height: auto;
   object-fit: cover;
 
   @media (max-width: 700px) {
-      width: 100%;
+      width: 100vw;
+      
+      // min-height: 80vh;
+    
   }
 
 
@@ -66,10 +73,17 @@ export const OverlayText = styled.p`
 `;
 
 export const Blurb = styled.p`
-.blurb-txt{
     text-align: center;
     font-family: 'Roboto Serif', serif;
     padding: 20px;
     width: 70vw;
-}
+
 `;
+
+export const RaceInfoCardsDiv = styled.div`
+display: flex;
+width: 60vw !important;
+flex-wrap: wrap;
+justify-content: center;
+margin: auto;
+`
