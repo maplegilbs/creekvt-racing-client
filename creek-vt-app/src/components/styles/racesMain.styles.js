@@ -80,7 +80,7 @@ export const Blurb = styled.p`
 
 export const RaceInfoCardsDiv = styled.div`
 display: flex;
-width: 60vw ;
+width: 30vw ;
 // flex-wrap: wrap;
 justify-content: center;
 margin: auto;
@@ -104,21 +104,23 @@ export const KayakContainer = styled.div`
 }`
 
 export const KayakSub = styled.div`
-  /* border: 2px solid red; */
+  
   display: flex;
   font-family: 'Roboto Serif', serif;
   text-align: center;
+  justify-content: center;
   color: white;
  padding: 10px;
  text-transform: uppercase;
  text-shadow: 1px 1px 5px #333;
- width: auto;
+ width: 12vw;
+ margin: auto;
 
 @media screen and (max-width: 1500px){
   width: 15vw;
 }
  @media screen and (max-width: 700px){
-  width: 80vw;
+  width: 60vw;
  }
  @media screen and (max-width: 400px){
   width: 60vw;
@@ -131,18 +133,3 @@ export const KayakSub = styled.div`
 
 
 
-// @media screen and (max-width: 700px) {
-//   .kayak-container{
-//       width: 80vw;
-//       height: 12vh;
-//   }
-//   .card-title{
-//      display: flex;
-//       align-items: center;
-//       text-align: center;
-//       padding: 15px;
-      
-//   }
-//   .kayak-sub{
-//       width: auto;
-//   }
