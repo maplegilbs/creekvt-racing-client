@@ -59,8 +59,9 @@ function App({ Component, pageProps }) {
                 path="/raceInfo/:raceYear/:raceLocation/:raceid/:raceName/:regOpen"
                 element={<RaceInfo />}
               />
+            
               <Route
-                path="/raceInfo/:raceYear/:raceLocation/:raceid/:raceName/:courseDetails"
+                path="/raceInfo/:raceYear/:raceLocation/:raceid/:raceName/courseDetails"
                 element={<CourseDetails />}
               />
               <Route path="/map.html" />
@@ -79,8 +80,8 @@ function App({ Component, pageProps }) {
               />
             </Routes>
           </div>
-          <Footer />
         </UserContextProvider>
+          <Footer />
       </Router>
     </div>
   );

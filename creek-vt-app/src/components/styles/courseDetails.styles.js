@@ -8,17 +8,17 @@ export const CourseContainer = styled.div`
   height 100vh;
   width: 200vh;
   margin: 2vh auto;
+
+
 `;
 
 export const CourseMap = styled.div``;
 
-export const InfoBlurb = styled.p``;
+
+export const InfoBlurb = styled.p`
+  color: black;
+`;
+
 
 export const Directions = styled.div``;
-
-// export default GoogleApiWrapper(
-//   (props) => ({
-//     apiKey: props.apiKey
-//   })
-// )(MapContainer)
 

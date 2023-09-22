@@ -1,24 +1,24 @@
-.race-info-container{
+/* .race-info-container{
     display: flex;
     flex-direction: column;
     padding: 20px;
-}
+} */
 
-.title-txt{
+/* .title-txt{
     text-align: center;
     font-family: 'Roboto Serif', serif;
     font-weight: 600;
     font-size: larger;
    
-}
-.year-txt{
+} */
+/* .year-txt{
     text-align: center;
     font-family: 'Roboto Serif', serif;
-}
-.location-txt{
+} */
+/* .location-txt{
     text-align: center;
     font-family: 'Roboto Serif', serif;
-}
+} */
 
 .race-desc-txt{
     text-align: center;
@@ -28,20 +28,20 @@
     margin-left: 5px;
     margin-right: 5px;
 }
-.image-cont{
+/* .image-cont{
     text-align: center;
     box-shadow: 0 11px 10px 0 rgba(0,0,0,.5);
-}
-.img-actual{
+} */
+/* .img-actual{
     width: 100vw;
     height: auto;
-}
+} */
 
-.regNrace-btns{
+/* .regNrace-btns{
     background: linear-gradient(45deg,#e1eaf4, #4d7288);
     color: white;
     padding: 10px;
-    margin: 5px auto;
+    margin: 1vh auto;
     border: 2px solid rgb(118,118,118);
     font-family: 'Montserrat';
     font-weight: 700;
@@ -52,7 +52,7 @@
     width: 30em;
     height: 8vh;
     
-}
+} */
 .btn-xtra-cont{
     display: grid;
     grid-template-columns: 1fr 1fr;
