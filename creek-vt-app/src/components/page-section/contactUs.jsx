@@ -3,7 +3,7 @@ import { UserContext } from "../store/UserContext";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { API_VIEW_RACES_BY_NAME } from "../../constants/endpoints";
-import "./contactUs.css"
+import "../styles/contactUs.css"
 const ContactUs = (props) => {
     const { raceName } = useParams();
     const [race, setRace] = useState({});
