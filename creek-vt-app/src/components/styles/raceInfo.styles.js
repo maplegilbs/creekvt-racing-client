@@ -48,21 +48,30 @@ text-align: center;
 export const ImageContainer = styled.div`
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
     text-align: center;
     box-shadow: 0 11px 10px 0 rgba(0,0,0,.5);
     margin: 15vh 0 0 0;
-    width: 80em;
+    max-width: 100%;
 
+    @media (max-width: 700px) {
+      width: 100%;
+    }
 `;
 
 export const RaceImage = styled.img`
-
+  display: flex;
+  justify-content: center;
   flex-direction: column;
-  width: 100%;
-  height: auto;
+  max-width: 100%;
+  height: 50vh;
+  object-fit: cover;
   margin: auto 0px;
-  padding: 10px;
+
+  @media (max-width: 800px) {
+    max-width: 100%;
+  }
  
 }
 `;
@@ -103,7 +112,7 @@ export const ButtonGrid = styled.div`
 
       @media (max-width: 700px) {
         width: 100em;
-        margin: -5px auto;
+        margin: auto auto;
       }
   }
 
@@ -137,8 +146,9 @@ export const RegRacerContainer = styled.div`
       border-radius: 5px;
       width: 30em;
       height: 8vh;
+      float: none;
       
-      @media (max-width: 700px) {
+      @media (max-width: 800px) {
         width: 100em;
         margin: 5px 0px;
       }

@@ -17,17 +17,16 @@ export const FooterContainer = styled.nav`
   height: auto !important;
   flex-direction: column;
 
+
 .footer-main{
     bottom: 0px !important;
     justify-content: center;
-    
-    
-    
+
 }
 
   }
 
-  @media screen and (max-width: 700px) {
+  @media screen and (max-width: 800px) {
     height: 12vh;
     width: 100vw;
     padding: 0px;
