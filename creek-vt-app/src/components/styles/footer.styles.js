@@ -15,15 +15,18 @@ export const FooterContainer = styled.nav`
   position: fixed !important;
   bottom: 0;
   height: 10vh !important;
+  zIndex: 1;
 
 .footer-main{
     bottom: 0px !important;
     justify-content: center;
+    z-index: 1 !important;
+    position: sticky;
 }
 
   }
 
-  @media screen and (max-width: 700px) {
+  @media screen and (max-width: 800px) {
     height: 12vh;
     width: 100%;
     padding: 0px;

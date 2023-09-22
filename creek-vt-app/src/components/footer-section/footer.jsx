@@ -3,6 +3,7 @@ import { FooterContainer, FooterBrand } from "../styles/footer.styles";
 import { useContext, useEffect } from "react";
 import { UserContext } from "../store/UserContext";
 // import "./footer.css";
+import '../styles/footer.styles';
 
 const Footer = (props) => {
   const userctx = useContext(UserContext);
