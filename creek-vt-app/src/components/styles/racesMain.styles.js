@@ -27,8 +27,6 @@ export const CreekLogo = styled.img`
   @media (max-width: 700px) {
       width: 100vw;
       
-      // min-height: 80vh;
-    
   }
 
 
@@ -83,7 +81,14 @@ export const Blurb = styled.p`
 export const RaceInfoCardsDiv = styled.div`
 display: flex;
 width: 60vw !important;
-flex-wrap: wrap;
+// flex-wrap: wrap;
 justify-content: center;
 margin: auto;
+padding: 20px;
+
+@media screen and (max-width: 1400px){
+  flex-wrap: wrap;
+  width: 40vw;
+  
+}
 `
