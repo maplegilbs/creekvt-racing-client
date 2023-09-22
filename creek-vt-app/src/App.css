@@ -285,10 +285,10 @@ hr.sectionHr {
     color: white;
   }
 
-  nav ul {
+  /* nav ul {
     width: 80%;
     margin: 0 20px;
-  }
+  } */
 
   nav hr {
     border-bottom: 2px solid white;

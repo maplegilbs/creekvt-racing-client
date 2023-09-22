@@ -1,56 +1,78 @@
 import styled from "styled-components";
 import "../../App.css";
 
+
 // footer section
 
 export const FooterContainer = styled.nav`
-  background-image: linear-gradient(110deg, #4e647b, #293b46);
-  box-shadow: 2px 3px 10px 4px;
-  margin: 0px 0px;
   width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 3vh 4vh 4vh 0;
-  // position: fixed !important;
-  bottom: 0px;
-  height: auto !important;
-  flex-direction: column;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
+	background-image: linear-gradient(180deg, #4e647b, #293b46);
+	padding-top: 30px;
+	padding-bottom: 30px;
 
-
-.footer-main{
-    bottom: 0px !important;
-    justify-content: center;
-
-}
-
-  }
-
-  @media screen and (max-width: 800px) {
-    height: 12vh;
-    width: 100vw;
-    padding: 0px;
-.footer-main{
-    padding: 5vh 0vh 5vh 0px !important;
-}
-.logo-main{
-        height: auto !important;
-        max-width: 100%
-        box-shadow: 1px, 1.5px, 5px, 2px;
-
-    }
-  }
+  @media screen and (max-width: 640px) {
+      flex-direction: column;
+    
 `;
 
 export const FooterBrand = styled.div`
-  .logo-main{
-    text-align: center;
-    margin: auto !important;
-    height: 12vh !important;
-    padding: 3px;
-    max-width: 100%
-}
-  @media (min-width: 700px) {
-    height: 5px;
-    margin-bottom: 9vh
-`;
+flex-basis: 33%;
+padding: 0;
+font-family: 'Montserrat';
+
+
+  img{
+  margin: 0 auto;
+	width: 100px;
+	height: 100px;
+	display: block;
+  }
+ p {
+  padding: 0;
+	list-style: none;
+	color: white;
+	font-family: "Montserrat", sans-serif;
+	font-size: 15px;
+	font-weight: 700;
+	line-height: 27px;
+	text-align: center;
+	text-transform: uppercase;
+  margin-bottom: 0px;
+ }
+ ul{
+  padding: 0;
+	list-style: none;
+	color: white;
+	font-family: "Montserrat", sans-serif;
+	font-size: 15px;
+	font-weight: 700;
+	line-height: 27px;
+	text-align: center;
+	text-transform: uppercase;
+ }
+ 
+ li a{
+  color: white;
+	line-height: 37px;
+  text-decoration: none;
+ }
+ 
+ li a:visited{
+  color: white;
+	line-height: 37px;
+ }
+@media screen and (max-width: 640px){
+		margin-top: 20px;
+		margin-bottom: 25px;
+  
+  li {
+    line-height: 37px;
+  }
+
+ 
+	
+	
+`

@@ -15,14 +15,14 @@ export const NavbarContainer = styled.nav`
   box-shadow: 2px 3px 10px 4px;
   margin-bottom: 15px;
   width: 100%;
-  height: ${(props) => (props.extendNavbar ? "100vh" : "80px")};
+  height: ${(props) => (props.extendNavbar ? "100vh" : "70px")};
   display: flex;
   flex-direction: column;
   padding: 2px 20px 4px 0;
   // position: fixed;
 
   @media (min-width: 700px) {
-    height: 80px;
+    height: 70px;
   }
   styled.navbar-dark,
   styled.navbar-toggler-icon {
@@ -34,54 +34,68 @@ export const NavbarContainer = styled.nav`
   }
 `;
 
+
+export const NavbarBrand = styled.div`
+nav navbar-brand,
+nav navbar-brand,
+img {
+  height: 8.2vh;
+  width: auto;
+  margin: auto;
+  padding: 2px 2px;
+}
+`;
+
+export const NavbarLink = styled(Link)`
+color: white;
+font-family: Montserrat, sans-serif;
+text-transform: uppercase;
+font-weight: 700;
+font-size: 14px;
+margin: 30px 5px;
+text-decoration: none;
+
+@media (max-width: 700px) {
+  display: none;
+}
+`;
+
+export const NavbarLinkExtended = styled(Link)`
+color: white;
+font-family: Montserrat, sans-serif;
+text-transform: uppercase;
+font-weight: 700;
+font-size: 14px;
+margin: 30px 5px;
+text-decoration: none;
+`;
 export const LeftContainer = styled.div` {
   flex: 40%;
   display: flex;
   align-items: center;
-  padding-left: 15%;
+  padding-left: 15px;
 
-`;
 
-export const NavbarBrand = styled.div`
-  nav navbar-brand,
-  nav navbar-brand,
-  img {
-    height: 8.2vh;
-    width: auto;
-    margin: auto;
-    padding: 2px 2px;
-  }
-`;
-
-export const NavbarLink = styled(Link)`
-  color: white;
-  font-family: Montserrat, sans-serif;
-  text-transform: uppercase;
-  font-weight: 700;
-  font-size: medium;
-  margin: 30px 20px;
-  text-decoration: none;
-
-  @media (max-width: 700px) {
-    display: none;
-  }
-`;
-
-export const NavbarLinkExtended = styled(Link)`
-  color: white;
-  font-family: Montserrat, sans-serif;
-  text-transform: uppercase;
-  font-weight: 700;
-  font-size: medium;
-  margin: 30px 20px;
-  text-decoration: none;
+  @media screen and (max-width: 700px){
+    height: 35px;
+    top: 20px;
+    right: 15px;
+    position: fixed;
+}
 `;
 
 export const RightContainer = styled.div`
   flex: 50%;
   display: flex;
-  justify-content: flex-column;
-  padding-right: 100px;
+  justify-content: flex-end;
+  
+
+  @media screen and (max-width: 700px){
+    height: 35px;
+    left: 15px;
+    position: fixed;
+  }
+ 
 `;
 export const NavbarLinkContainer = styled.div`
   display: flex;
@@ -108,7 +122,7 @@ export const NavDropdown = styled.div`
 
 export const NavbarInnerContainer = styled.div`
   width: 100%;
-  height: 80px;
+  height: 70px;
   display: flex;
 `;
 
@@ -121,7 +135,7 @@ export const OpenLinksButton = styled.button`
   font-size: 45px;
   cursor: pointer;
   display: inline-block;
-  margin-left: 200%;
+  margin-right: 100%;
   position: sticky;
 
   @media (min-width: 700px) {
@@ -164,7 +178,7 @@ export const NavLink = styled(Link)`
   fontFamily: "Montserrat, sans-serif",
   textTransform: "uppercase",
   fontWeight: 700,
-  fontSize: "medium",
+  fontSize: 14px,
   textDecoration: "none",
   margin: "10px 10px",
   border: "1.5px darkgray solid",

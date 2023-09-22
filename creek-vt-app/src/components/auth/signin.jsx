@@ -12,7 +12,6 @@ const Signin = (props) => {
   function handleSubmit(e) {
     e.preventDefault();
     signin();
-    navControl();
   }
 
   function navControl() {
@@ -42,15 +41,20 @@ const Signin = (props) => {
       //send request
       const response = await fetch(API_SIGNIN_USER, requestOption);
       //get response
+      
       const data = await response.json();
+      if (response.status == 401){
+        throw new Error (data.message)
+      }
       console.log(data.loginInfo)
       userctx.updateToken(data.token);
       userctx.updateFirstName(data.storedFirstName);
       userctx.updateAdminCred(data.storedAdminCred);
       userctx.storeLoginInfo(JSON.stringify(data.loginInfo))
-      
+      navControl()
     } catch (error) {
       console.log(error);
+      alert(error.message)
     }
   }
   return (

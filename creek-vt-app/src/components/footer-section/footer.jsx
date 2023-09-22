@@ -20,7 +20,7 @@ const Footer = (props) => {
           .
         </NavLink>
         <FooterBrand>
-          <img className="logo-main" src="https://creekvt.com/wp-content/uploads/2020/05/CreekVTLogo150x150.png" />
+          <img  src="https://creekvt.com/wp-content/uploads/2020/05/CreekVTLogo150x150.png" />
         </FooterBrand>
         {localStorage.getItem("isAdmin") !== "1" ? null : (
           <NavLink
@@ -30,8 +30,21 @@ const Footer = (props) => {
             Admin Dashboard
           </NavLink>
         )}
-        
-          
+        <FooterBrand>
+        <ul>
+                <li><a title="River Guide" href="https://creekvt.com/riverguide/">River Guide</a></li>
+                <li><a title="River Level Reporting" href="https://creekvt.com/river-level-reporting/">River Level
+                        Reporting</a></li>
+                <li><a href="https://creekvt.com/map.html">The Map</a></li>
+                <li><a href="https://creekvt.com/blog/">Blog</a></li>
+                <li><a href="https://creekvt.com/about/">About</a></li>
+                <li><a href="https://creekvt.com/contact/">Contact</a></li>
+            </ul>
+        </FooterBrand>
+        <FooterBrand>
+            <p>Creek VT 2023</p>
+            <p>Thanks For Visiting</p>
+        </FooterBrand>
       </FooterContainer>
     </>
   );
