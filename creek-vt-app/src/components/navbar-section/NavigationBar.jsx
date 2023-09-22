@@ -57,7 +57,7 @@ const NavigationBar = (props) => {
           </LeftContainer>
 
           <RightContainer>
-            <NavbarLinkContainer>
+           <NavbarLinkContainer>
               <NavbarLink to="https://creekvt.com/flows">
                 Flows & Forecasts
               </NavbarLink>

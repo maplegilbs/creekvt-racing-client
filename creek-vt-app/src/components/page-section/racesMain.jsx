@@ -50,7 +50,7 @@ const RacesMain = (props) => {
       </HeaderContainer>
 
       <Blurb className="blurb-txt">
-       Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam placeat eos ea laudantium debitis itaque, non quos ut reiciendis, doloribus, doloremque iusto odio sed. Magnam tempore commodi culpa doloremque sit?
+Welcome to the world of whitewater racing in the Green Mountains! On this site you can register to compete, find detailed information on each race, or relive prior years by browsing through our collection of race results and photo galleries. For the 2024 season we are looking forward to the return of the classic New Haven Ledges Race, as well as the 3rd annual Peavine Race.  Check the individual race pages for details and to sign up.  See you at the finish line.
       </Blurb>
       <RaceInfoCardsDiv
        >
