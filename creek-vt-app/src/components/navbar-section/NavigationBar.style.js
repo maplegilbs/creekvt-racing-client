@@ -19,7 +19,7 @@ export const NavbarContainer = styled.nav`
   display: flex;
   flex-direction: column;
   padding: 2px 20px 4px 0;
-  position: fixed;
+  // position: fixed;
 
   @media (min-width: 700px) {
     height: 80px;
