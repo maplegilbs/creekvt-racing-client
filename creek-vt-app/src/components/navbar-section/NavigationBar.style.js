@@ -34,13 +34,6 @@ export const NavbarContainer = styled.nav`
   }
 `;
 
-export const LeftContainer = styled.div` {
-  flex: 40%;
-  display: flex;
-  align-items: center;
-  padding-left: 15%;
-
-`;
 
 export const NavbarBrand = styled.div`
   nav navbar-brand,
@@ -75,6 +68,14 @@ export const NavbarLinkExtended = styled(Link)`
   font-size: medium;
   margin: 30px 20px;
   text-decoration: none;
+`;
+
+export const LeftContainer = styled.div` {
+  flex: 40%;
+  display: flex;
+  align-items: center;
+  padding-left: 15%;
+
 `;
 
 export const RightContainer = styled.div`

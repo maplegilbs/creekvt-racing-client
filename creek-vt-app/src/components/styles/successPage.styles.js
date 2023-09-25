@@ -1,4 +1,19 @@
-.thx-header{
+import styled from 'styled-components';
+
+
+export const SuccessPageContainer = styled.div`
+display: flex;
+flex-direction: column;
+justify-content: center;
+margin: 40vh auto;
+align-items: center;
+
+@media (max-width: 800px) {
+    margin: 30vh auto;
+}
+
+
+.thx - header{
     display: flex;
     justify-content: center;
     font-family: 'Roboto Serif', serif;
@@ -6,7 +21,7 @@
     font-size: 36px;
     font-weight: 500;
     /* padding: 5px; */
-    margin-bottom: 20px;
+    margin-bottom: 20vh;
 }
 .thx-txt{
     display: flex;
@@ -40,3 +55,4 @@
     display: flex;
     justify-content: center;
 }
+`;
