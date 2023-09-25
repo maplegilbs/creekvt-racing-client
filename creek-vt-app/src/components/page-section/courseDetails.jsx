@@ -57,7 +57,7 @@ const CourseDetails = (props) => {
         <h1>{raceInfo.name}</h1>
         <h3>Description</h3>
         {raceInfo?.description?.map((paragraph, index) => {
-          return <p key={index}>{paragraph}</p>
+          return <p key={index}>{paragraph}</p>;
         })}
         {position1.length > 0 && (
           <MapContainer center={position1} zoom={13} scrollWheelZoom={true}>
@@ -78,7 +78,7 @@ const CourseDetails = (props) => {
               </Popup>
             </Marker>
             <Marker position={position2}>
-            <Popup>
+              <Popup>
                 <h4>Take-Out</h4>
               </Popup>
             </Marker>
@@ -95,8 +95,6 @@ const CourseDetails = (props) => {
             <li>HIGH: {raceInfo?.gauges[2]}</li>
           </ul>
         )}
-
-        <Button>Main Races Page</Button>
       </CourseContainer>
     </>
   );

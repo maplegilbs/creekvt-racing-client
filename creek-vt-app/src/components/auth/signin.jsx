@@ -41,27 +41,26 @@ const Signin = (props) => {
       //send request
       const response = await fetch(API_SIGNIN_USER, requestOption);
       //get response
-      
+
       const data = await response.json();
-      if (response.status == 401){
-        throw new Error (data.message)
+      if (response.status === 401) {
+        throw new Error(data.message);
+      } else {
+        userctx.updateToken(data.token);
+        userctx.updateFirstName(data.storedFirstName);
+        userctx.updateAdminCred(data.storedAdminCred);
+        userctx.storeLoginInfo(JSON.stringify(data.loginInfo));
+        navControl();
       }
-      console.log(data.loginInfo)
-      userctx.updateToken(data.token);
-      userctx.updateFirstName(data.storedFirstName);
-      userctx.updateAdminCred(data.storedAdminCred);
-      userctx.storeLoginInfo(JSON.stringify(data.loginInfo))
-      navControl()
     } catch (error) {
       console.log(error);
-      alert(error.message)
     }
   }
   return (
     <>
       <div className="d-flex justify-content-center">
         <div className="w-45 border border-primary p-3 d-flex flex-column align-items-center">
-          <h2>Sign in</h2>
+          <h2>Sign In</h2>
           <Form className="d-flex align-items-center flex-column">
             {/*email group */}
             <FormGroup>
@@ -88,7 +87,7 @@ const Signin = (props) => {
               />
             </FormGroup>
             <Button type="submit" onClick={handleSubmit}>
-              LOGIN
+              SIGN IN
             </Button>
           </Form>
         </div>
