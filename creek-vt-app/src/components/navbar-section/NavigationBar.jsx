@@ -36,12 +36,14 @@ const NavigationBar = (props) => {
     if (storedFirstName) {
       setFirstName(storedFirstName);
     }
-  }, []);
+  }, [firstName]);
 
   function handleLogout() {
     localStorage.removeItem("firstName");
     localStorage.removeItem("token");
     localStorage.removeItem("isAdmin");
+    localStorage.removeItem("userInfo");
+    localStorage.removeItem("Login info");
     window.location.reload();
   }
   const [extendNavbar, setExtendNavbar] = useState(false);
@@ -57,7 +59,7 @@ const NavigationBar = (props) => {
           </LeftContainer>
 
           <RightContainer>
-           <NavbarLinkContainer>
+            <NavbarLinkContainer>
               <NavbarLink to="https://creekvt.com/flows">
                 Flows & Forecasts
               </NavbarLink>
@@ -84,7 +86,7 @@ const NavigationBar = (props) => {
                       <span style={navLinkStyle}>Hello {firstName}</span>
                     ) : (
                       <NavLink style={navLinkStyle} to={"/signin"}>
-                        Signin Here
+                        Sign In Here
                       </NavLink>
                     )}
                     {firstName ? (
@@ -146,7 +148,7 @@ const NavigationBar = (props) => {
                     <span style={navLinkStyle}>Hello {firstName}</span>
                   ) : (
                     <NavLink style={navLinkStyle} to={"/signin"}>
-                      Signin Here
+                      Sign In Here
                     </NavLink>
                   )}
                   {firstName ? (
