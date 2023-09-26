@@ -2,7 +2,11 @@ export function urlBuilder(str) {
   // let nameArray = str.trim().toLowerCase().split(" ")
   // let newString = nameArray.join("-")
   // return newString
-  return str.toLowerCase().replaceAll(" ", "-");
+  if (str.includes(",")) {
+    return str.toLowerCase().replaceAll(",", "").replaceAll(" ", "-");
+  } else {
+    return str.toLowerCase().replaceAll(" ", "-");
+  }
 }
-export default urlBuilder;
 
+export default urlBuilder;
