@@ -15,7 +15,6 @@ const Register = (props) => {
   const [phone, setPhone] = useState("");
   const userctx = useContext(UserContext);
   const navigate = useNavigate();
-  const [loginInfo, setLoginInfo] = useState({});
   function handleSubmit(e) {
     e.preventDefault();
     registerUser();
@@ -49,7 +48,7 @@ const Register = (props) => {
       const data = await response.json();
       userctx.updateToken(data.token);
       userctx.updateFirstName(firstName);
-      userctx.storeLoginInfo(body)
+      userctx.storeLoginInfo(body);
     } catch (error) {
       console.log(error);
     }
@@ -112,7 +111,7 @@ const Register = (props) => {
                 id="DOB"
                 value={DOB}
                 onChange={(e) => setDOB(e.target.value)}
-                placeholder="Enter DOB"
+                placeholder="YYYY-MM-DD"
               />
             </FormGroup>
             <FormGroup>
@@ -134,7 +133,7 @@ const Register = (props) => {
                 id="phone"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                placeholder="Enter 1 character phone"
+                placeholder="enter number here"
               />
             </FormGroup>
             <Button type="submit" onClick={handleSubmit}>

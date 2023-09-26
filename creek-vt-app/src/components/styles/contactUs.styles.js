@@ -1,3 +1,6 @@
+import styled from 'styled-components';
+
+export const ContactUsContainer = styled.div`
 .contact-txt-main{
     text-align: center;
     font-family: 'Roboto Serif', serif;
@@ -57,3 +60,4 @@
         font-size: 14px;
     }
 }
+`;

@@ -1,12 +1,12 @@
 import React, { useEffect, useContext } from "react";
 import { Button } from "reactstrap";
 import { useNavigate, useParams } from "react-router-dom";
-import "../styles/successPage.css";
+import "../styles/successPage.styles.js";
 import { API_ADD_REGISTERED_RACER } from "../../constants/endpoints";
 import { urlBuilder } from "../util/urlBuilder";
 import { UserContext } from "../store/UserContext";
 import Spinner from 'react-bootstrap/Spinner';
-
+import { SuccessPageContainer } from '../styles/successPage.styles.js';
 
 const SuccessPage = (props) => {
   let passedInfo = JSON.parse(localStorage.getItem("userInfo"));
@@ -65,7 +65,9 @@ const SuccessPage = (props) => {
 
   return (
     <>
-      <h2 className="thx-header">Thanks for registering!</h2>
+      <SuccessPageContainer>
+        <h2 className="thx-header">Thanks for registering!</h2>
+        <hr />
       <h5 className="thx-txt">
         Your reciept will be sent to the email address you provided shortly.
       </h5>
@@ -77,6 +79,7 @@ const SuccessPage = (props) => {
       <span className="visually-hidden">Loading...</span>
     </Spinner>
      </div>
+      </SuccessPageContainer>
     </>
   );
 };
