@@ -48,6 +48,7 @@ img {
 }
 `;
 
+
 export const NavbarLink = styled(Link)`
   color: white;
   font-family: Montserrat, sans-serif;
@@ -82,7 +83,7 @@ export const LeftContainer = styled.div` {
     height: 35px;
     top: 20px;
     right: 15px;
-    position: fixed;
+    position: absolute;
 }
 `;
 
@@ -94,7 +95,7 @@ export const RightContainer = styled.div`
   @media screen and (max-width: 700px) {
     height: 35px;
     left: 15px;
-    position: fixed;
+    position: absolute;
   }
 `;
 export const NavbarLinkContainer = styled.div`
