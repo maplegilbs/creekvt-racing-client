@@ -65,7 +65,7 @@ const AdminDashboard = (props) => {
     setChecked(val);
     setEditData((prevData) => ({
       ...prevData,
-      regOpen: val,
+      regOpen: val ? 1 : 0,
     }));
   }
   function handleRadioChange(event) {
@@ -244,7 +244,7 @@ const AdminDashboard = (props) => {
       return (
         <div>
           <form
-            style={{ maxHeight: "40vh", overflowY: "auto" }}
+            style={{ maxHeight: "40vh", overflowY: "auto", padding: "5px 5px" }}
             className="d-flex flex-column">
             <label htmlFor="name" className="form-label">
               Name:
@@ -301,9 +301,9 @@ const AdminDashboard = (props) => {
               value={editData.price}
               onChange={handleInputChange}
             />
-            <div>
+            <div className="d-flex" style={{ margin: "5px", gap: "15px" }}>
               <label htmlFor="regOpen" className="form-label">
-                registration open?
+                Registration Open?
               </label>
               <ReactSwitch
                 checked={checked}
@@ -314,7 +314,16 @@ const AdminDashboard = (props) => {
               />
             </div>
             <button
-              style={{ marginLeft: "auto", marginRight: "auto" }}
+              style={{
+                marginLeft: "auto",
+                marginRight: "auto",
+                background: "linear-gradient(45deg,#e1eaf4, #4d7288)",
+                fontFamily: "Montserrat",
+                fontWeight: "700",
+                fontSize: ".8em",
+                textShadow: "1px 1px 5px #333",
+                textTransform: "uppercase",
+              }}
               type="submit"
               className="btn btn-primary"
               onClick={handleSubmitUpdate}>
@@ -444,6 +453,14 @@ const AdminDashboard = (props) => {
               </div>
               <button
                 type="submit"
+                style={{
+                  background: "linear-gradient(45deg,#e1eaf4, #4d7288)",
+                  fontFamily: "Montserrat",
+                  fontWeight: "700",
+                  fontSize: ".8em",
+                  textShadow: "1px 1px 5px #333",
+                  textTransform: "uppercase",
+                }}
                 className="btn btn-primary"
                 onClick={handleUpdateRacerClick}>
                 update Racer
@@ -563,6 +580,14 @@ const AdminDashboard = (props) => {
               </div>
               <button
                 type="submit"
+                style={{
+                  background: "linear-gradient(45deg,#e1eaf4, #4d7288)",
+                  fontFamily: "Montserrat",
+                  fontWeight: "700",
+                  fontSize: ".8em",
+                  textShadow: "1px 1px 5px #333",
+                  textTransform: "uppercase",
+                }}
                 className="btn btn-primary"
                 onClick={handleSubmitAdd}>
                 Add Racer

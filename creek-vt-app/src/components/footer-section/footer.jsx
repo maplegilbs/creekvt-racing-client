@@ -24,7 +24,7 @@ const Footer = (props) => {
         </FooterBrand>
         {localStorage.getItem("isAdmin") !== "1" ? null : (
           <NavLink
-            style={{ color: "white", fontSize: "40px" }}
+            style={{ color: "white", fontSize: "35px", margin: "auto auto" }}
             to="/adminDashboard">
             {" "}
             Admin Dashboard

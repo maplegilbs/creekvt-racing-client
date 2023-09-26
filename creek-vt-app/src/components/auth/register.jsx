@@ -48,7 +48,6 @@ const Register = (props) => {
       const data = await response.json();
       userctx.updateToken(data.token);
       userctx.updateFirstName(firstName);
-      userctx.storeLoginInfo(body);
     } catch (error) {
       console.log(error);
     }
