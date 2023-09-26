@@ -65,7 +65,7 @@ const AdminDashboard = (props) => {
     setChecked(val);
     setEditData((prevData) => ({
       ...prevData,
-      regOpen: val,
+      regOpen: val ? 1 : 0,
     }));
   }
   function handleRadioChange(event) {
