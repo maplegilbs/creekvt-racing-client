@@ -34,40 +34,39 @@ export const NavbarContainer = styled.nav`
   }
 `;
 
-
 export const NavbarBrand = styled.div`
-nav navbar-brand,
-nav navbar-brand,
-img {
-  height: 8.2vh;
-  width: auto;
-  margin: auto;
-  padding: 2px 2px;
-}
+  nav navbar-brand,
+  nav navbar-brand,
+  img {
+    height: 8.2vh;
+    width: auto;
+    margin: auto;
+    padding: 2px 2px;
+  }
 `;
 
 export const NavbarLink = styled(Link)`
-color: white;
-font-family: Montserrat, sans-serif;
-text-transform: uppercase;
-font-weight: 700;
-font-size: 14px;
-margin: 30px 5px;
-text-decoration: none;
+  color: white;
+  font-family: Montserrat, sans-serif;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 14px;
+  margin: 30px 5px;
+  text-decoration: none;
 
-@media (max-width: 700px) {
-  display: none;
-}
+  @media (max-width: 700px) {
+    display: none;
+  }
 `;
 
 export const NavbarLinkExtended = styled(Link)`
-color: white;
-font-family: Montserrat, sans-serif;
-text-transform: uppercase;
-font-weight: 700;
-font-size: 14px;
-margin: 30px 5px;
-text-decoration: none;
+  color: white;
+  font-family: Montserrat, sans-serif;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 14px;
+  margin: 30px 5px;
+  text-decoration: none;
 `;
 export const LeftContainer = styled.div` {
   flex: 40%;
@@ -88,14 +87,12 @@ export const RightContainer = styled.div`
   flex: 50%;
   display: flex;
   justify-content: flex-end;
-  
 
-  @media screen and (max-width: 700px){
+  @media screen and (max-width: 700px) {
     height: 35px;
     left: 15px;
     position: fixed;
   }
- 
 `;
 export const NavbarLinkContainer = styled.div`
   display: flex;

@@ -60,6 +60,7 @@ const NavigationBar = (props) => {
 
           <RightContainer>
             <NavbarLinkContainer>
+              <NavbarLink to="/">Races</NavbarLink>
               <NavbarLink to="https://creekvt.com/flows">
                 Flows & Forecasts
               </NavbarLink>
@@ -118,9 +119,10 @@ const NavigationBar = (props) => {
         </NavbarInnerContainer>
         {extendNavbar && (
           <NavbarExtendedContainer>
-            <NavbarLink to="https://creekvt.com/flows">
+            <NavbarLinkExtended to="/">Races</NavbarLinkExtended>
+            <NavbarLinkExtended to="https://creekvt.com/flows">
               Flows & Forecasts
-            </NavbarLink>
+            </NavbarLinkExtended>
             <NavbarLinkExtended>Flows & Forecasts</NavbarLinkExtended>
             <NavbarLinkExtended to="https://creekvt.com/map.html">
               The Map
