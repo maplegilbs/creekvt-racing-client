@@ -1,7 +1,7 @@
 import { API_VIEWALL_RACES } from "../../constants/endpoints";
 import RaceInfoCards from "../linkingComponents/raceInfoCards";
 import React, { useState, useEffect, useContext } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import { UserContext } from "../store/UserContext";
 
 import {
@@ -11,7 +11,7 @@ import {
   Blurb,
   LogoOverlay,
   OverlayText,
-  RaceInfoCardsDiv
+  RaceInfoCardsDiv,
 } from "../styles/racesMain.styles";
 const RacesMain = (props) => {
   const navigate = useNavigate();
@@ -27,33 +27,39 @@ const RacesMain = (props) => {
       const response = await fetch(API_VIEWALL_RACES, requestOptions);
       const data = await response.json();
       userctx.setRaceFeedItems(data.races);
-      console.log(data.races)
+      console.log(data.races);
     } catch (error) {
       console.log(error);
     }
   }
-  
+
   return (
     <MainContainer className="m-3">
-
       <HeaderContainer>
-      <div className="img-container">
-      <Logo id="main-img"
-        src="https://cdn.discordapp.com/attachments/1131315556243476591/1154190312143585330/RaceMainPage2.jpg"
-        alt="hero-image"
-        />
+        <div className="img-container">
+          <Logo
+            id="main-img"
+            src="https://cdn.discordapp.com/attachments/1131315556243476591/1154190312143585330/RaceMainPage2.jpg"
+            alt="hero-image"
+          />
         </div>
         <LogoOverlay className="overlay">
           <OverlayText>RACES</OverlayText>
         </LogoOverlay>
-        
       </HeaderContainer>
 
-      <Blurb className="blurb-txt">
-Welcome to the world of whitewater racing in the Green Mountains! On this site you can register to compete, find detailed information on each race, or relive prior years by browsing through our collection of race results and photo galleries. For the 2024 season we are looking forward to the return of the classic New Haven Ledges Race, as well as the 3rd annual Peavine Race.  Check the individual race pages for details and to sign up.  See you at the finish line.
+      <Blurb
+        className="blurb-txt"
+        style={{ fontSize: "larger", marginTop: "15px", fontWeight: "bold" }}>
+        Welcome to the world of whitewater racing in the Green Mountains! On
+        this site you can register to compete, find detailed information on each
+        race, or relive prior years by browsing through our collection of race
+        results and photo galleries. For the 2024 season we are looking forward
+        to the return of the classic New Haven Ledges Race, as well as the 3rd
+        annual Peavine Race. Check the individual race pages for details and to
+        sign up. See you at the finish line.
       </Blurb>
-      <RaceInfoCardsDiv
-       >
+      <RaceInfoCardsDiv>
         {userctx.raceFeedItems.map((race, index) => (
           <RaceInfoCards
             fetchRacesFeed={fetchRacesFeed}
@@ -62,7 +68,6 @@ Welcome to the world of whitewater racing in the Green Mountains! On this site y
           />
         ))}
       </RaceInfoCardsDiv>
-     
     </MainContainer>
   );
 };
