@@ -18,7 +18,8 @@ import { urlBuilder } from "../util/urlBuilder";
 const RaceInfo = (props) => {
   const userctx = useContext(UserContext);
   const navigate = useNavigate();
-  const { raceName, raceYear, raceLocation, raceid, regOpen, price } = useParams();
+  const { raceName, raceYear, raceLocation, raceid, regOpen, price } =
+    useParams();
   const unURLName = raceName.replaceAll("-", " ");
   const unURLlocation = raceLocation.replaceAll("-", " ");
   const titleizeName = userctx.titleize(unURLName);
@@ -59,7 +60,7 @@ const RaceInfo = (props) => {
             <h3 className="location-txt">
               {titleizeLocation}, {raceYear}
             </h3>
-            <h3 className ="location-txt">Registration Fee: ${price}</h3>
+            <h3 className="location-txt">Registration Fee: ${price}</h3>
           </h2>
         </RaceInfoHeader>
 
@@ -75,10 +76,13 @@ const RaceInfo = (props) => {
         </RegRacerContainer>
 
         <RaceDescription className="race-desc-txt">
-          Here you can view all additional information and images before registration. Take a look around!
+          Here you can view all additional information and images before
+          registration. Take a look around!
         </RaceDescription>
 
-        <ButtonGrid className="btn-xtra-cont">
+        <ButtonGrid
+          className="btn-xtra-cont"
+          style={{ marginBottom: "15px", paddingBottom: "15px" }}>
           <Button className="btn-xtras" onClick={handleCourseClick}>
             Course Details
           </Button>

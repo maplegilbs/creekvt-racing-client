@@ -1,7 +1,7 @@
-.footer-main{
-    height: 10vh !important;
-    bottom: 0px !important;
-    justify-content: center;
+.footer-main {
+  height: 10vh !important;
+  bottom: 0px !important;
+  justify-content: center;
 }
 /* .logo-main{
     text-align: center;
@@ -11,15 +11,15 @@
 } */
 
 @media screen and (max-width: 700px) {
-    .hQUcLr nav navbar-brand, .hQUcLr nav navbar-brand, .hQUcLr img {
-            height: 8vh !important;
-            width: 100%;
-            padding: 0px !important;
-            margin-bottom: -25px !important;
-            
-    }
-.footer-main{
+  .hQUcLr nav navbar-brand,
+  .hQUcLr nav navbar-brand,
+  .hQUcLr img {
+    height: 8vh !important;
+    width: 100%;
+    padding: 0px !important;
+    margin-bottom: -25px !important;
+  }
+  .footer-main {
     padding: 5vh 0vh 5vh 0px !important;
-}
-    
+  }
 }

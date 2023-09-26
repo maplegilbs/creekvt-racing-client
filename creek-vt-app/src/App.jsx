@@ -43,7 +43,7 @@ function App({ Component, pageProps }) {
             token={token}
             updateToken={updateToken}
           />
-          <div>
+          <div style={{ marginBottom: "20px" }}>
             <Routes>
               <Route path="/" element={<RacesMain />} />
               <Route path="/racesMain" element={<RacesMain />} />
@@ -54,12 +54,15 @@ function App({ Component, pageProps }) {
                 path="/registeredRacers/:raceid/:raceYear/:raceName"
                 element={<RegisteredRacers />}
               />
-              <Route path="/raceRegistration/:raceid" element={<RaceRegistration />} />
+              <Route
+                path="/raceRegistration/:raceid"
+                element={<RaceRegistration />}
+              />
               <Route
                 path="/raceInfo/:raceYear/:raceLocation/:raceid/:raceName/:regOpen/:price"
                 element={<RaceInfo />}
               />
-            
+
               <Route
                 path="/raceInfo/:raceYear/:raceLocation/:raceid/:raceName/courseDetails"
                 element={<CourseDetails />}
@@ -81,7 +84,7 @@ function App({ Component, pageProps }) {
             </Routes>
           </div>
         </UserContextProvider>
-          <Footer />
+        <Footer />
       </Router>
     </div>
   );

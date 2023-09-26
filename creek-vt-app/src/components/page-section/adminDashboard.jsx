@@ -365,7 +365,7 @@ const AdminDashboard = (props) => {
               className="d-flex flex-column align-items-center"
               style={{ gap: "3px" }}>
               <h5 style={{ textAlign: "center" }}>
-                update Racer: {userctx?.selectedUpdateAthlete.email}
+                Update Racer: {userctx?.selectedUpdateAthlete.email}
               </h5>
               <div>
                 <label htmlFor="updateRacerFirstName">First Name:</label>
@@ -463,7 +463,7 @@ const AdminDashboard = (props) => {
                 }}
                 className="btn btn-primary"
                 onClick={handleUpdateRacerClick}>
-                update Racer
+                Update Racer
               </button>
             </form>
           </div>
@@ -602,11 +602,25 @@ const AdminDashboard = (props) => {
   return (
     <div className="d-flex flex-column">
       <div style={{ margin: "20px 30px", fontWeight: "bolder" }}>
-        <button onClick={handleHomeClick}>Return to Race Home</button>
+        <button
+          style={{
+            color: "white",
+            marginLeft: "auto",
+            marginRight: "auto",
+            background: "linear-gradient(45deg,#e1eaf4, #4d7288)",
+            fontFamily: "Montserrat",
+            fontWeight: "700",
+            fontSize: ".8em",
+            textShadow: "1px 1px 5px #333",
+            textTransform: "uppercase",
+          }}
+          onClick={handleHomeClick}>
+          Return to Race Home
+        </button>
         <p>Welcome Back Admin {adminName} </p>
       </div>
       <div style={{ textAlign: "center", fontWeight: "bold", margin: "10px" }}>
-        Use This dashboard to edit race information and add/update/delete
+        Use this dashboard to edit race information and add/update/delete
         racers.
       </div>
       <div className="d-flex justify-content-center">
