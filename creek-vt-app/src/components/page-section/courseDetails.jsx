@@ -7,7 +7,7 @@ import {
   useMap,
   Polyline,
 } from "react-leaflet";
-import { CourseContainer, InfoBlurb } from "../styles/courseDetails.styles";
+import { CourseContainer, InfoBlurb, FlowList, DirectionsDiv, } from "../styles/courseDetails.styles";
 import { useParams } from "react-router-dom";
 import { UserContext } from "../store/UserContext";
 import { Button } from "react-bootstrap";
@@ -55,7 +55,6 @@ const CourseDetails = (props) => {
     <>
       <CourseContainer>
         <h1>{raceInfo.name}</h1>
-        <h3>Description</h3>
         {raceInfo?.description?.map((paragraph, index) => {
           return <p key={index}>{paragraph}</p>;
         })}
@@ -84,16 +83,17 @@ const CourseDetails = (props) => {
             </Marker>
           </MapContainer>
         )}
-
+        <DirectionsDiv>
         <h3>Directions</h3>
         <p>{raceInfo.directions}</p>
+        </DirectionsDiv>
         <h3>Flows</h3>
         {raceInfo?.gauges?.length > 0 && (
-          <ul>
+          <FlowList>
             <li>LOW: {raceInfo?.gauges[0]}</li>
             <li>MED: {raceInfo?.gauges[1]}</li>
             <li>HIGH: {raceInfo?.gauges[2]}</li>
-          </ul>
+          </FlowList>
         )}
       </CourseContainer>
     </>

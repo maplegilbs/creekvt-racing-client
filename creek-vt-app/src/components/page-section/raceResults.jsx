@@ -88,8 +88,8 @@ const RaceResults = (props) => {
     <>
       <RaceResultContainer>
         
-      <h2 className="main-txt">RESULTS</h2>
-      <GridContainer className="grid-container" style={{ height: "60vh", width: "100%", backgroundColor: "gray" }}>
+      <h2 className="main-txt">RACE RESULTS</h2>
+      <GridContainer className="grid-container" style={{ height: "60vh", width: "100%"}}>
         <DataGrid className="data-grid"  rows={rows} columns={columns} />
       </GridContainer>
 

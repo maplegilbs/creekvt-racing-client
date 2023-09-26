@@ -39,10 +39,15 @@ export const NavbarBrand = styled.div`
 nav navbar-brand,
 nav navbar-brand,
 img {
-  height: 8.2vh;
+  height: 7vh;
   width: auto;
-  margin: auto;
+  margin-left: 20px;
   padding: 2px 2px;
+}
+
+@media screen and (max-width:700px){
+  
+  
 }
 `;
 
