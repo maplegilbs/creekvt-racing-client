@@ -56,7 +56,7 @@ function App({ Component, pageProps }) {
               />
               <Route path="/raceRegistration/:raceid" element={<RaceRegistration />} />
               <Route
-                path="/raceInfo/:raceYear/:raceLocation/:raceid/:raceName/:regOpen"
+                path="/raceInfo/:raceYear/:raceLocation/:raceid/:raceName/:regOpen/:price"
                 element={<RaceInfo />}
               />
             

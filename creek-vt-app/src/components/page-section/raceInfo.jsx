@@ -18,7 +18,7 @@ import { urlBuilder } from "../util/urlBuilder";
 const RaceInfo = (props) => {
   const userctx = useContext(UserContext);
   const navigate = useNavigate();
-  const { raceName, raceYear, raceLocation, raceid, regOpen } = useParams();
+  const { raceName, raceYear, raceLocation, raceid, regOpen, price } = useParams();
   const unURLName = raceName.replaceAll("-", " ");
   const unURLlocation = raceLocation.replaceAll("-", " ");
   const titleizeName = userctx.titleize(unURLName);
@@ -59,7 +59,7 @@ const RaceInfo = (props) => {
             <h3 className="location-txt">
               {titleizeLocation}, {raceYear}
             </h3>
-            {/* <h3 className="year-txt"></h3> */}
+            <h3 className ="location-txt">Registration Fee: ${price}</h3>
           </h2>
         </RaceInfoHeader>
 

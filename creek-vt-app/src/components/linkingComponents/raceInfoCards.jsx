@@ -7,14 +7,14 @@ import { KayakContainer, KayakSub } from "../styles/racesMain.styles";
 const RaceInfoCards = (props) => {
   const userctx = useContext(UserContext);
   const navigate = useNavigate();
-  let { name, year, id, location, regOpen } = props.race;
+  let { name, year, id, location, regOpen, price } = props.race;
   function handleSubmit(e) {
     e.preventDefault();
     userctx.setRace(props.race);
     navigate(
       `/raceInfo/${year}/${urlBuilder(location)}/${id}/${urlBuilder(
         name
-      )}/${regOpen}`
+      )}/${regOpen}/${price}`
     );
   }
   return (
