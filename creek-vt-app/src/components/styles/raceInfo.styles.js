@@ -6,14 +6,14 @@ export const RaceInfoContainer = styled.div`
 display: flex;
 flex-direction: column;
 align-items: center;
-height: 100rem;
+height: 70rem;
 width: 100%;
 margin: 10px auto 20px auto;
 
 
   @media (max-width: 700px) {
     width: 100%;
-    height: 200vh;
+    height: 90rem;
   }
 `;
 
@@ -52,7 +52,7 @@ export const ImageContainer = styled.div`
     align-items: center;
     text-align: center;
     box-shadow: 0 11px 10px 0 rgba(0,0,0,.5);
-    margin: 15vh 0 0 0;
+    margin: 5vh 0 0 0;
     max-width: 100%;
 
     @media (max-width: 700px) {
@@ -67,7 +67,7 @@ export const RaceImage = styled.img`
   max-width: 100%;
   height: 50vh;
   object-fit: cover;
-  margin: auto 0px;
+  margin: auto;
 
   @media (max-width: 800px) {
     max-width: 100%;
@@ -80,6 +80,7 @@ export const RaceDescription = styled.p`
   margin: 40px;
   font-size: x-large;
   font-weight: 400;
+  font-family: 'Montserrat',
   
   @media (max-width: 700px) {
     font-size: medium;
@@ -110,10 +111,7 @@ export const ButtonGrid = styled.div`
       width: 30em;
       height: 8vh;
 
-      @media (max-width: 700px) {
-        width: 100em;
-        margin: auto auto;
-      }
+  
   }
 
  
@@ -128,6 +126,7 @@ export const ButtonGrid = styled.div`
     display: flex;
     flex-direction: column;
   }
+  
 `;
 
 export const RegRacerContainer = styled.div`
@@ -135,8 +134,8 @@ export const RegRacerContainer = styled.div`
 .racers-btn {
     background: linear-gradient(45deg,#e1eaf4, #4d7288);
       color: white;
-      padding: 10px;
-      margin: 5px auto;
+      padding: 20px;
+      margin: 5px 15px;
       border: 2px solid rgb(118,118,118);
       font-family: 'Montserrat';
       font-weight: 700;
@@ -149,18 +148,17 @@ export const RegRacerContainer = styled.div`
       float: none;
       
       @media (max-width: 800px) {
-        width: 100em;
+        width: 50vw;
         margin: 5px 0px;
       }
 
   }
 
-
 `;
 
 
 export const Button = styled.button`
-
+ 
     &:hover {
       opacity: 80%;
     }

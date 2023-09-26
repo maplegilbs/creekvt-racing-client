@@ -75,8 +75,7 @@ const RaceInfo = (props) => {
         </RegRacerContainer>
 
         <RaceDescription className="race-desc-txt">
-          The races are super cool and this is a super cool description I cant
-          stand lorem ipsum at all so this is my placeholder!
+          Here you can view all additional information and images before registration. Take a look around!
         </RaceDescription>
 
         <ButtonGrid className="btn-xtra-cont">
