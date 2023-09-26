@@ -5,6 +5,7 @@ import urlBuilder from "../util/urlBuilder";
 import { UserContext } from "../store/UserContext";
 import { useParams } from "react-router-dom";
 import { RaceResultContainer, GridContainer } from "../styles/raceResults.styles";
+
 // race results filtered by race ID
 const RaceResults = (props) => {
   const [results, setResults] = useState([]);
@@ -89,7 +90,7 @@ const RaceResults = (props) => {
       <RaceResultContainer>
         
       <h2 className="main-txt">RESULTS</h2>
-      <GridContainer className="grid-container" style={{ height: "60vh", width: "100%", backgroundColor: "gray" }}>
+      <GridContainer className="data-grid MuiDataGrid-row" style={{ height: "60vh", width: "100%"}}>
         <DataGrid className="data-grid"  rows={rows} columns={columns} />
       </GridContainer>
 

@@ -57,8 +57,15 @@ nav .navbar-brand img {
 
 /*End Header Nav Styles*/
 
-
-
+/* Tables */
+.MuiDataGrid-columnHeaders {
+  background-image: linear-gradient(110deg, #4e647b, #293b46);
+  color: white;
+  font-family: Montserrat, sans-serif;
+}
+.MuiSvgIcon-root {
+  color: white;
+}
 
 /*Loader Animation Styles*/
 .loading,
