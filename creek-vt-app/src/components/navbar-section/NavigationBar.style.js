@@ -35,14 +35,17 @@ export const NavbarContainer = styled.nav`
 `;
 
 export const NavbarBrand = styled.div`
-  nav navbar-brand,
-  nav navbar-brand,
-  img {
-    height: 8.2vh;
-    width: auto;
-    margin: auto;
-    padding: 2px 2px;
-  }
+nav navbar-brand,
+nav navbar-brand,
+img {
+  height: 7vh;
+  width: auto;
+  margin-left: 20px;
+  padding: 2px 2px;
+}
+
+@media screen and (max-width:700px){
+}
 `;
 
 export const NavbarLink = styled(Link)`

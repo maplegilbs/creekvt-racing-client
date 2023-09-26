@@ -4,15 +4,22 @@ import "../../App.css";
 export const CourseContainer = styled.div`
   display: flex;
   flex-direction: column;
-  outline: 2px solid black;
+  
   height 100vh;
-  width: 200vh;
+  width: 80vw;
   margin: 2vh auto;
+  text-align: center;
+  font-family: 'Montserrat';
+  padding: 20px;
 
-
+  @media screen and (max-width: 700px){
+    height: auto;
+    outline: 2px solid black;
+  }
 `;
 
-export const CourseMap = styled.div``;
+export const MapContainer = styled.div`
+height: 40vh`
 
 
 export const InfoBlurb = styled.p`
@@ -20,5 +27,12 @@ export const InfoBlurb = styled.p`
 `;
 
 
-export const Directions = styled.div``;
+export const DirectionsDiv = styled.div`
 
+`;
+
+export const FlowList = styled.div`
+text-decoration: none;
+list-style-type: none;
+font-weight: 600;
+`

@@ -6,9 +6,11 @@ export const RaceResultContainer = styled.div`
     justify-content: center;
     color: black;
     height: 100%;
-    width: 80%;
-    margin: 20vh;
+    width: 80vw;
+    margin: auto;
+    margin-top: 15px;
     bottom: 0;
+    
 
     .h2 {
         
@@ -21,7 +23,9 @@ export const RaceResultContainer = styled.div`
     padding: 0px;
     height: 10vh;
 }
-
+@media screen and (max-width:700px){
+    height: 60vh;
+}
 `;
 
 export const GridContainer = styled.div`
@@ -33,5 +37,9 @@ color: black;
 
 .data-grid {
     
+}
+@media screen and (max-width:700px){
+    width: 80vw;
+    height: 80vh;
 }
 `;
