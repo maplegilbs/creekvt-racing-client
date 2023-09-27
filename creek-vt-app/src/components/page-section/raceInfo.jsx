@@ -21,11 +21,39 @@ const RaceInfo = (props) => {
   const { raceName, raceYear, raceLocation, raceid, regOpen, price } =
     useParams();
   const unURLName = raceName.replaceAll("-", " ");
-  const unURLlocation = raceLocation.replaceAll("-", " ");
+  let unURLlocation = raceLocation.replaceAll("-", " ");
   const titleizeName = userctx.titleize(unURLName);
-  const titleizeLocation = userctx.titleize(unURLlocation);
 
   console.log(props.race);
+
+  // Handle Race Name 
+  
+  if (raceName === "peavine-race") {
+    let locationArray = unURLlocation.split(" ");
+    locationArray.forEach((string, index) => {
+      if (index !== 0) {
+        locationArray[index] = string + ",";
+      }
+    });
+    unURLlocation = locationArray.join(" ");
+  }
+  if (raceName === "new-haven-ledges-race") {
+    let locationArray = unURLlocation.split(" ");
+    locationArray.forEach((string, index) => {
+      if (index !== 0 && index !== 1) {
+        locationArray[index] = string + ",";
+      }
+    });
+    unURLlocation = locationArray.join(" ");
+  }
+  let titleizeLocation = userctx.titleize(unURLlocation);
+  let upperVT = titleizeLocation.split(" ");
+  upperVT.forEach((string, index) => {
+    if (index === upperVT.length - 1) {
+      upperVT[index] = string.toUpperCase();
+    }
+  });
+  titleizeLocation = upperVT.join(" ");
 
   function handleRegisterClick() {
     navigate(`/raceRegistration/${raceid}`);
@@ -58,7 +86,7 @@ const RaceInfo = (props) => {
           <h2>
             <h2 className="title-txt">{titleizeName}</h2>
             <h3 className="location-txt">
-              {titleizeLocation}, {raceYear}
+              {titleizeLocation} {raceYear}
             </h3>
             <h3 className="location-txt">Registration Fee: ${price}</h3>
           </h2>
