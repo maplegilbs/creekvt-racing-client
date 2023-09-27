@@ -12,9 +12,11 @@ export const FooterContainer = styled.nav`
 	background-image: linear-gradient(180deg, #4e647b, #293b46);
 	padding-top: 30px;
 	padding-bottom: 30px;
+	margin-top: 30px;
 
   @media screen and (max-width: 640px) {
       flex-direction: column;
+	  margin-top: 100px;
     
 `;
 
