@@ -1,18 +1,23 @@
 import { PhotoAlbum } from "react-photo-album";
 import React from "react";
 import "./PhotoStyle.css"
-
+import { useEffect, useState } from "react";
 
 const PhotoList = (props) => {
 
   const galleryItems = props.galleryItems
 //  console.log(props.galleryItems, "RIGHT HERE")
 let photos = []
+const [showOverlay, setShowOverlay] = useState(false);
 galleryItems.map((item) => {
   let photo = {src: item.url, width: 400, height: 300, alt: item.raceYear}
   photos.push(photo)
  
 });
+useEffect(() => {
+  setShowOverlay(false)
+  setTimeout(() => setShowOverlay(true), 500)
+}, [galleryItems]);
 
 const styles = photos.length < 2 ? {maxWidth: "414px"} : {}
   return ( 
@@ -21,7 +26,7 @@ const styles = photos.length < 2 ? {maxWidth: "414px"} : {}
    photos={photos}
   renderPhoto={({ layout, layoutOptions, imageProps: { src, alt, style, raceYear, index, ...restImageProps } }) => (
     <div style={{
-      border: "2px solid #eee",
+      border: showOverlay ? "2px solid #eee": "0 solid #eee",
       borderRadius: "4px",
       boxSizing: "content-box",
       alignItems: "center",
@@ -33,7 +38,7 @@ const styles = photos.length < 2 ? {maxWidth: "414px"} : {}
   }}>
     
       <img src={src} alt={alt} style={{...style, width: "100%"}} {...restImageProps} />
-      <p className="overlay">Photo taken in {alt}</p>
+      {showOverlay && <p className="overlay">Photo taken in {alt}</p>} 
   </div>
 )}
   />
