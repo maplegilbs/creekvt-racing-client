@@ -4,7 +4,6 @@ import "../../App.css";
 export const CourseContainer = styled.div`
   display: flex;
   flex-direction: column;
-  
   height 100vh;
   width: 80vw;
   margin: 2vh auto;
@@ -19,7 +18,9 @@ export const CourseContainer = styled.div`
 `;
 
 export const MapContainer = styled.div`
-height: 40vh`
+height: 40vh
+
+`;
 
 
 export const InfoBlurb = styled.p`

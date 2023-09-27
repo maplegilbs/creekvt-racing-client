@@ -135,7 +135,7 @@ const Register = (props) => {
                 placeholder="enter number here"
               />
             </FormGroup>
-            <Button type="submit" onClick={handleSubmit}>
+            <Button type="submit" onClick={handleSubmit} style={{background: "linear-gradient(45deg,#e1eaf4, #4d7288)"}}>
               Register
             </Button>
           </Form>

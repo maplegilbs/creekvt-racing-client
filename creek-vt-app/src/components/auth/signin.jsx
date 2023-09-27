@@ -3,6 +3,8 @@ import { Form, FormGroup, Input, Label, Button } from "reactstrap";
 import { API_SIGNIN_USER } from "../../constants/endpoints";
 import { UserContext } from "../store/UserContext";
 import { useNavigate } from "react-router-dom";
+import '../styles/raceInfo.styles';
+
 require("bootstrap");
 const Signin = (props) => {
   const [email, setEmail] = useState("");
@@ -86,7 +88,7 @@ const Signin = (props) => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </FormGroup>
-            <Button type="submit" onClick={handleSubmit}>
+            <Button type="submit" onClick={handleSubmit} style={{background: "linear-gradient(45deg,#e1eaf4, #4d7288)"}}>
               SIGN IN
             </Button>
           </Form>
