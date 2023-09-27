@@ -24,7 +24,6 @@ const PhotoGallery = (props) => {
         requestOptions
       );
       const data = await response.json();
-      //  setGalleryItems(data.photos) ;
       setData(data);
     } catch (error) {
       console.log(error);
