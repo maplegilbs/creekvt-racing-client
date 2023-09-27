@@ -95,6 +95,7 @@ export const ButtonGrid = styled.div`
   grid-template-columns: 50vh 50vh;
   justify-content: center;
   gap: 20px;
+  
 
   .btn-xtras {
     background: linear-gradient(45deg,#e1eaf4, #4d7288);
@@ -135,7 +136,7 @@ export const RegRacerContainer = styled.div`
     background: linear-gradient(45deg,#e1eaf4, #4d7288);
       color: white;
       padding: 20px;
-      margin: 5px 15px;
+      margin: 5px 55px;
       border: 2px solid rgb(118,118,118);
       font-family: 'Montserrat';
       font-weight: 700;
