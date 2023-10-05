@@ -1,0 +1,26 @@
+body, p {
+	margin: 0;
+}
+
+a {
+    text-decoration: none !important;
+}
+
+.mobile-show {
+	display: none;
+}
+
+hr {
+    margin: 0 auto;
+}
+
+@media screen and (max-width: 640px) {
+	
+	.mobile-hide {
+		display: none;
+	}
+
+    .mobile-show{
+        display: block;
+    }
+}
