@@ -1,6 +1,8 @@
 //Components
-import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from "./pages/layout";
+//Pages
+import Races from "./pages/races";
 //Styles
 import "./App.css"
 
@@ -11,8 +13,8 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       {
-        path: "/",
-        element: <div></div>
+        path: "/races",
+        element: <Races />
       }
     ]
   },
