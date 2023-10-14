@@ -7,7 +7,11 @@ import styles from "./race.module.css"
 import { useEffect, useState } from "react";
 
 export async function loader({ params }) {
+    console.log(params.raceName)
     // Get data via api call to populate page here
+    const raceData = await fetch(`http://localhost:3000/races/${params.raceName}`);
+    const raceJSON = await raceData.json();
+    console.log(raceJSON)
     return params.raceName;
 }
 

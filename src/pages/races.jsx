@@ -1,7 +1,38 @@
+//Hooks
+import { useLoaderData } from "react-router-dom";
 //Styles
 import styles from "./races.module.css"
 
+export async function loader() {
+    //get data on all races from api here
+    let racesData = await fetch('http://localhost:3000/races');
+    let racesJSON = await racesData.json();
+    return racesJSON;
+}
+
 export default function Races() {
+    const racesData = useLoaderData();
+
+    const racesCards = racesData.map(raceData => {
+        return (
+            <div className={`card ${styles["card"]}`}>
+                <h5 className={`card-title ${styles["card-title"]}`}>{raceData.name}</h5>
+                <img src={raceData.primaryImageURL} className={`card-img`} alt="..." />
+                <div className={`card-body`}>
+                    <p className={`card-text ${styles["card-text"]}`}>
+                        {raceData.shortDescription}
+                    </p>
+                    <div className={`${styles["button__container"]}`}>
+                        <a href="#" className={`${styles["button"]} ${styles["disabled"]}`}>
+                            Register &nbsp;<img src="https://creekvt.com/races/RacerIcon.png" />
+                        </a>
+                        <a href="/races/newhavenrace" className={`${styles["button"]}`}>Information</a>
+                    </div>
+                </div>
+            </div>
+        )
+    })
+
     return (
         <main>
             <div className={`${styles["hero-image__container"]}`}>
@@ -23,33 +54,7 @@ export default function Races() {
                     <h2 className={`${styles["section-heading"]}`}>2024 Lineup</h2>
                     <hr />
                     <div className={`${styles["race-cards__container"]}`}>
-                        <div className={`card ${styles["card"]}`}>
-                            <h5 className={`card-title ${styles["card-title"]}`}>New Haven Race</h5>
-                            <img src="https://creekvt.com/races/newhaven/images/2016/002.jpg" className={`card-img`} alt="..." />
-                            <div className={`card-body`}>
-                                <p className={`card-text ${styles["card-text"]}`}>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                <div className={`${styles["button__container"]}`}>
-                                    <a href="#" className={`${styles["button"]} ${styles["disabled"]}`}>
-                                        Register &nbsp;<img src="https://creekvt.com/races/RacerIcon.png" />
-                                    </a>
-                                    <a href="/races/newhavenrace" className={`${styles["button"]}`}>Information</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div className={`card ${styles["card"]}`}>
-                            <h5 className={`card-title ${styles["card-title"]}`}>Peavine Race</h5>
-                            <img src="https://creekvt.com/races/peavine/images/2022/001.jpg" className={`card-img`} alt="..." />
-                            <div className={`card-body`}>
-                                <p className={`card-text ${styles["card-text"]}`}>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                <div className={`${styles["button__container"]}`}>
-                                    <a href="#" className={`${styles["button"]} ${styles["disabled"]}`}>
-                                        Register &nbsp;<img src="https://creekvt.com/races/RacerIcon.png" />
-                                    </a>
-                                    <a href="races/peavinerace" className={`${styles["button"]}`}>Information</a>
-                                </div>
-                            </div>
-                        </div>
-
+                        {racesCards}
                     </div>
                 </div>
             </div>

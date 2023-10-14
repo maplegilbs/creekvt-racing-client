@@ -2,7 +2,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from "./pages/layout";
 //Pages
-import Races from "./pages/races";
+import Races, {loader as racesLoader} from "./pages/races";
 import Race, {loader as raceLoader} from "./pages/race";
 //Styles
 import "./App.css"
@@ -15,6 +15,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/races",
+        loader: racesLoader,
         element: <Races />
       },
       {
