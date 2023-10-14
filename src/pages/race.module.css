@@ -1,7 +1,8 @@
 .section-container {
     box-sizing: border-box;
     width: 100%;
-    padding: .5rem;
+    padding: 1rem 1.5rem;
+    margin-bottom: 2rem;
 }
 
 .section-container:nth-child(odd) {
@@ -80,6 +81,16 @@ a.button:hover {
     border: 2px solid rgb(118, 118, 118);
 }
 
+#map-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.location-section {
+    display: flex;
+    flex-direction: column;
+}
+
 .location-container {
     padding: .5rem .25rem;
     position: relative;
@@ -101,7 +112,7 @@ a.button:hover {
 .location-details {
     display: flex;
     align-items: center;
-    justify-content: center;
+    /* justify-content: center; */
     padding: 0 2%;
     font-size: .85rem;
 }
@@ -121,4 +132,12 @@ a.button:hover {
     font-size: .7rem;
     text-transform: uppercase;
     text-shadow: 1px 1px 5px #333;
+}
+
+@media screen and (min-width: 640px) {
+
+    #map-section {
+        flex-direction: row;
+    }
+    
 }

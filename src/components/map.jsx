@@ -1,38 +1,85 @@
 //Google maps
 import { Wrapper } from "@googlemaps/react-wrapper";
 //Hooks
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 //Styles
 import styles from "./map.module.css"
 
-function MyMapComponent({ center, zoom, mapTypeId }) {
+function MyMapComponent({ center, zoom, mapTypeId, mapMarkerData }) {
+    const [myMap, setMyMap] = useState();
+    const [mapMarkers, setMapMarkers] = useState([])
     const ref = useRef();
 
     useEffect(() => {
-        const myMap = new window.google.maps.Map(ref.current, { center, zoom, mapTypeId, streetViewControl: false });
-        
-        const georssLayer = new window.google.maps.KmlLayer({
-            url: "https://creekvt.com/races/new_haven_race_course_2024.kml",
-        });
-        georssLayer.setMap(myMap);
-        const myMarker = new window.google.maps.Marker({
-            position: center,
-            myMap,
-            title: "Hello World!",
-          });
-          myMarker.setMap(myMap)
+        const newMap = new window.google.maps.Map(ref.current, { center, zoom, mapTypeId, streetViewControl: false });
+        // const georssLayer = new window.google.maps.KmlLayer({
+        //     url: "https://creekvt.com/races/new_haven_race_course_2024.kml",
+        // });
+        // georssLayer.setMap(newMap);
+        setMyMap(newMap)
+    }, []);
 
-    });
 
-    return <div className={`${styles["map"]}` } ref={ref} id="map">Hello~</div>;
+    useEffect(() => {
+        console.log(mapMarkerData.length, mapMarkers.length)
+        //if there is no mapMarkerData there should be no mapMrkers
+        if (mapMarkerData.length === 0) {
+            mapMarkers.forEach(marker => marker.setMap())
+            setMapMarkers([]);
+        }
+        //more markerData than markers means we need to add a marker to the map i.e. if a marker exists in the mapMarkerData but not in the mapMarkers, create a mapMarker and display it
+        else if (mapMarkerData.length > mapMarkers.length) {
+            //cycle through marker data
+            mapMarkerData.forEach(markerData => {
+                //for the current marker data see if a marker already exists
+                let indexOfMatchedMarker = mapMarkers.findIndex(marker => {
+                    return marker.position.lat() === markerData[0] && marker.position.lng() === markerData[1]
+                })
+                //if a marker doesn't exist for that marker data, create one and set it to the map
+                if (indexOfMatchedMarker === -1) {
+                    const myMarker = new window.google.maps.Marker({
+                        position: { lat: markerData[0], lng: markerData[1] },
+                        myMap,
+                        title: "Hello World!",
+                    });
+                    myMarker.setMap(myMap)
+                    setMapMarkers(prev => {
+                        prev.push(myMarker)
+                        return prev
+                    })
+                }
+            })
+        }
+        //less markerData than markers means we need to remove a marker from the map
+        else if (mapMarkerData.length < mapMarkers.length) {
+            //cycle through mapMarkers.  if a markers lat/lng is not found in the mapMarkerData, note it's index, then unset it from the map and update the mapMarkers array
+            mapMarkers.forEach((marker, i) => {
+                //determine if a marker can be found in the markerData (will give us back -1 if the marker is not found)
+                let isMarkerUnmatched = mapMarkerData.findIndex(markerData => {
+                    return marker.position.lat() === markerData[0] && marker.position.lng() === markerData[1]
+                })
+                //if the marker is not found remove it from the map, and update the mapMarkers array
+                if (isMarkerUnmatched === -1) {
+                    mapMarkers[i].setMap();
+                    setMapMarkers(prev => {
+                        prev.splice(i, 1)
+                        return prev
+                    })
+                }
+            })
+        }
+    }, [mapMarkerData])
+
+    return <div className={`${styles["map"]}`} ref={ref} id="map">Hello~</div>;
 }
 
-export default function Map() {
+export default function Map({ mapMarkerData }) {
+
     return (
         <div className={`${styles["map-container"]}`}>
             <Wrapper apiKey={"AIzaSyBBtqHKDrsiMp-7ldVkI6QEMoxjzggJ-J8"}>
-                <MyMapComponent center={{ lat: 44.123300, lng: -73.0343349 }} zoom={29} mapTypeId={'terrain'} />
+                <MyMapComponent center={{ lat: 44.126289325172344, lng: -73.04288798300998 }} zoom={15} mapTypeId={'terrain'} mapMarkerData={mapMarkerData} />
             </Wrapper>
         </div>
     )
-}
+    }

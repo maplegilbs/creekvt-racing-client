@@ -39,7 +39,7 @@ export default function Header() {
                     </li>
                     <hr className={`${"mobile-show"}`} />
                     <li className={`${"nav-item d-flex justify-content-start"}`}>
-                        <a className={`${"nav-link"} ${styles["nav-link"]}`} href="https://creekvt.com/races">Races</a>
+                        <a className={`${"nav-link"} ${styles["nav-link"]}`} href="/races">Races</a>
                     </li>
                     <hr className={`${"mobile-show"}`} />
                     <li className={`${"nav-item d-flex justify-content-start"}`}>
