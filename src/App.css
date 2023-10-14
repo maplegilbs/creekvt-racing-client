@@ -4,8 +4,76 @@ p {
 }
 
 a {
-    text-decoration: none !important;
+    text-decoration: none;
     cursor: pointer;
+    color: black;
+}
+
+a:visited {
+    text-decoration: none;
+}
+a.link-std{
+    color: black;
+}
+a.link-bold {
+    text-transform: uppercase;
+    font-weight: 600;
+    font-family: 'Montserrat', sans-serif;
+}
+
+
+a.button {
+    text-decoration: none;
+    margin: .5rem auto;
+    width: max-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(45deg, #e1eaf4, #4d7288);
+    color: white;
+    padding: 10px;
+    border: 2px solid rgb(118, 118, 118);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 5px #333;
+    border-radius: 5px;
+}
+
+a.button--large {
+    height: 3rem;
+    font-size: 1.25rem;
+    margin: 1rem auto;
+}
+
+a.button--medium {
+    height: 2rem;
+    font-size: .75rem;
+}
+
+a.button--small {
+    height: 1rem;
+    font-size: .5rem;
+}
+
+span.button__subtext {
+    display: block;
+    font-size: .75rem;
+    text-align: center;
+}
+
+.disabled {
+    opacity: .5;
+}
+
+a.button img {
+    height: 2rem;
+    width: auto;
+}
+
+a.button:hover {
+    text-shadow: 3px 3px 5px #333;
+    border: 2px solid rgb(118, 118, 118);
 }
 
 .mobile-show {
@@ -28,6 +96,7 @@ p {
     text-transform: none;
     color: #636363;
 }
+
 
 @media screen and (max-width: 640px) {
 

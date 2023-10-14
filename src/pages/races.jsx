@@ -23,10 +23,10 @@ export default function Races() {
                         {raceData.shortDescription}
                     </p>
                     <div className={`${styles["button__container"]}`}>
-                        <a href="#" className={`${styles["button"]} ${styles["disabled"]}`}>
+                        <a href="#" className={`button button--large disabled`}>
                             Register &nbsp;<img src="https://creekvt.com/races/RacerIcon.png" />
                         </a>
-                        <a href="/races/newhavenrace" className={`${styles["button"]}`}>Information</a>
+                        <a href="/races/newhavenrace" className={`button button--large`}>Information</a>
                     </div>
                 </div>
             </div>

@@ -2,21 +2,22 @@
 import Map from "../components/map";
 //Hooks
 import { useLoaderData } from "react-router-dom";
+//Libs
+import { formatDateTime } from "../utils/formatDateTime";
 //Styles
 import styles from "./race.module.css"
 import { useEffect, useState } from "react";
 
 export async function loader({ params }) {
-    console.log(params.raceName)
     // Get data via api call to populate page here
     const raceData = await fetch(`http://localhost:3000/races/${params.raceName}`);
     const raceJSON = await raceData.json();
-    console.log(raceJSON)
-    return params.raceName;
+    return raceJSON
 }
 
 export default function Race() {
-    const raceData = useLoaderData();
+    const raceData = useLoaderData()[0];
+    const formattedTime = formatDateTime(raceData.date)
     const [mapMarkerData, setMapMarkerData] = useState([]);
 
     function updateMarkers(lat, lng) {
@@ -48,28 +49,24 @@ export default function Race() {
             <div className={`${styles["section-container"]}`}>
                 <div className={`${styles["heading-container"]}`}>
                     <h2>
-                        {/* Name */}
-                        {raceData}
+                        {raceData.name}
                     </h2>
                     <h4>
-                        {/* Date */}
-                        Saturday, May 5th 2024
+                        {`${formattedTime.dow} ${formattedTime.monthString} ${formattedTime.day}, ${formattedTime.year}`}
                     </h4>
                     <h4>
-                        {/* Time */}
-                        10:00 AM
+                        {`${formattedTime.time} ${formattedTime.amPm}`}
                     </h4>
-                    <br />
                     {/* Registration Button */}
-                    <a href="#" className={`${styles["button"]} ${styles["button--large"]} ${styles["disabled"]}`}>
+                    <a href="#" className={`button button--large disabled`}>
                         Register &nbsp;<img src="https://creekvt.com/races/RacerIcon.png" />
                     </a>
-                    <a href="#">View Registered 2024 Athletes</a>
+                    <a href="#" className={`link-std link-bold`}>View Registered Athletes</a>
                 </div>
                 <p>
-                    {/* Blurb */}
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus, eum officiis. Corrupti accusantium sed labore nam veritatis deserunt distinctio architecto dignissimos minus in, harum ducimus!
+                    {raceData.shortDescription}
                 </p>
+
             </div>
             <div className={`${styles["section-container"]}`} id={`${styles["map-section"]}`}>
                 <div className={`${styles["location-section"]}`}>
