@@ -2,6 +2,7 @@ html {
     box-sizing: border-box;
     scroll-behavior: smooth;
 }
+
 body,
 p {
     margin: 0;
@@ -13,12 +14,23 @@ a {
     color: black;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    text-align: center;
+}
+
 a:visited {
     text-decoration: none;
 }
-a.link-std{
+
+a.link-std {
     color: black;
 }
+
 a.link-bold {
     text-transform: uppercase;
     font-weight: 600;
@@ -118,7 +130,8 @@ p {
     border-bottom: 2px solid #454545;
 }
 
-.section-heading, .primary-heading {
+.section-heading,
+.primary-heading {
     margin-top: 1rem;
     text-transform: uppercase;
     font-family: "Montserrat", sans-serif;
@@ -143,17 +156,21 @@ p {
 
 
 @media screen and (max-width: 640px) {
-    
+
     .mobile-hide {
         display: none;
     }
-    
+
     .mobile-show {
         display: block;
     }
-    
+
     .primary-heading {
         font-size: 2rem;
+    }
+
+    .section-container {
+        padding: 1rem 1.5rem;
     }
 
     .section-container hr {

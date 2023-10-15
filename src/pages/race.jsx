@@ -39,22 +39,28 @@ function LocationContainer({ location, handleShowHideToggle }) {
     )
 }
 
-function ScheduleItem({ scheduleItem }) {
+function ScheduleItem({ eventDetails }) {
     return (
-        <li>Time Start - Time End: Registration.  Where?</li>
+        <li>
+            <strong>{eventDetails.startTime} {eventDetails.endTime ? `- ${eventDetails.endTime}` : ""}</strong> {eventDetails.name}
+            <br />
+            Location: <a href="#directions-section" className={`link-std`}>{eventDetails.location}</a>
+        </li>
     )
 }
 
 export default function Race() {
     const raceData = useLoaderData()[0];
+    console.log(new Date(new Date(raceData.date).valueOf() - (1000*60*60*24)))
+    console.log(new Date(raceData.date))
     const [mapMarkerData, setMapMarkerData] = useState([]);
 
     const formattedTime = raceData.date ? formatDateTime(raceData.date) : null;
     const locations = JSON.parse(raceData.locations);
-    const mapOptions = JSON.parse(raceData.mapOptions)[0];
     const locationContainers = locations.map(location => <LocationContainer location={location} handleShowHideToggle={handleShowHideToggle} />)
-    // const schedule = JSON.parse(raceData.schedule)
-    // const scheduleItems = schedule.map
+    const mapOptions = JSON.parse(raceData.mapOptions)[0];
+    const schedule = JSON.parse(raceData.schedule)
+    const scheduleItems = schedule ? schedule.map(eventDetails => <ScheduleItem eventDetails={eventDetails} />) : null;
 
     function updateMarkers(lat, lng) {
         let tempArray = [];
@@ -97,31 +103,41 @@ export default function Race() {
                         <nav className={`${styles['race-nav']}`}>
                             <a href="#schedule-section" className={`link-std link-bold`}>Schedule</a>
                             <a href="#athletes-section" className={`link-std link-bold`}>Registered Athletes</a>
-                            <a href="#map-section" className={`link-std link-bold`}>Directions</a>
+                            <a href="#directions-section" className={`link-std link-bold`}>Directions</a>
                             <a href="#course-section" className={`link-std link-bold`}>Course Description</a>
-                            <a href="#contact-section" className={`link-std link-bold`}>Contact</a>
-                            <a href="#faq-section" className={`link-std link-bold`}>FAQ</a>
+                            <a href="#results-section" className={`link-std link-bold`}>Results</a>
+                            <a href="#faqcontact-section" className={`link-std link-bold`}>FAQ / Contact</a>
                         </nav>
+                        {
+                            new Date(raceData.date).valueOf()+(1000*60*60*24) < new Date().valueOf() ?
+                                <div className={`${styles["disclaimer-container"]}`}>
+                                    <h6>{`**The details on this page are for a race that has already occurred.  Be sure to check back for details on the ${formattedTime.year+1} race as the date approaches.**`}</h6>
+                                </div> :
+                                <></>
+                        }
                     </div>
                 </section>
                 <section className={`section-container`} id={`schedule-section`}>
                     <h2 className={`section-heading`}>Schedule</h2>
                     <hr />
-
-                    <ul>
-                        <ScheduleItem />
-                        <ScheduleItem />
-                        <ScheduleItem />
-                        <ScheduleItem />
-                        <ScheduleItem />
-                    </ul>
+                    {
+                        scheduleItems ?
+                            <ul>
+                                {scheduleItems}
+                            </ul>
+                            :
+                            <h4>Check back for race schedule</h4>
+                    }
                 </section>
                 <section className={`section-container`} id={`athletes-section`}>
                     <h2 className={`section-heading`}>Registered Athletes</h2>
                     <hr />
+                    {/* {
+                        registeredAthletes ? {registeredAthletes}: <h4> No athletes registered to race yet.  Be the first</h4>
+                    } */}
 
                 </section>
-                <section className={`section-container`} id={`map-section`}>
+                <section className={`section-container`} id={`directions-section`}>
                     <h2 className={`section-heading`}>Directions</h2>
                     <hr />
                     <div className={`${styles["directions-section"]}`}>
@@ -138,13 +154,16 @@ export default function Race() {
                     <hr />
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta cupiditate aliquid tenetur minus iusto facilis quidem rem officia cumque? Eligendi sint, reprehenderit asperiores eius harum excepturi laboriosam labore ipsum in quod fuga. Quos sit maiores atque soluta ut quae delectus commodi, quasi deserunt id repellendus labore ratione, dolore voluptatem recusandae impedit saepe vero hic harum perferendis, iusto excepturi inventore? Eveniet mollitia aut enim animi dignissimos inventore consequatur possimus ducimus provident excepturi illum nam quasi eligendi quaerat ullam fuga perspiciatis commodi sequi neque autem voluptatem, voluptatum maxime impedit. Recusandae dolore quis reprehenderit a aliquam magni, perferendis aspernatur odit! Enim, mollitia dicta.
                 </section>
-                <section className={`section-container`} id={`contact-section`}>
-                    <h2 className={`section-heading`}>Contact</h2>
+                <section className={`section-container`} id={`results-section`}>
+                    <h2 className={`section-heading`}>Results</h2>
                     <hr />
+                    <form>
+
+                    </form>
 
                 </section>
-                <section className={`section-container`} id={`faq-section`}>
-                    <h2 className={`section-heading`}>FAQ</h2>
+                <section className={`section-container`} id={`faqcontact-section`}>
+                    <h2 className={`section-heading`}>FAQ / Contact</h2>
                     <hr />
 
                 </section>

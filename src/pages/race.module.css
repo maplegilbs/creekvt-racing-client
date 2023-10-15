@@ -1,8 +1,11 @@
 .racepage-container>section {
     box-sizing: border-box;
     width: 100%;
-    /* padding: 0 1rem 1rem 1rem; */
     margin-bottom: 2rem;
+}
+
+section h4 {
+    margin: .5rem;
 }
 
 .heading-container {
@@ -10,18 +13,19 @@
     text-align: center;
     max-width: 100vw;
     padding: 0 2.5vw;
-    margin: 2rem auto;
+    /* margin: 2rem auto; */
     font-family: 'Roboto', sans-serif;
 }
 
 .heading-container h4 {
     text-transform: uppercase;
 }
+
 .race-nav{
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
-    margin: 3rem auto;
+    /* margin: 3rem auto; */
 }
 
 .race-nav a {
@@ -39,10 +43,20 @@
     border: 3px groove black;
     font-family: 'Montserrat', sans-serif;
 }
+
 .heading-container a.registration-button {
     margin: 2rem auto;
 }
 
+.disclaimer-container {
+    margin: 1rem auto;
+}
+
+
+li {
+    list-style: none;
+    margin: 1rem auto;
+}
 .directions-section {
     display: flex;
     flex-direction: column;
@@ -51,6 +65,7 @@
 .location-section {
     display: flex;
     flex-direction: column;
+    margin: .5rem .75%;
 }
 
 .location-container {
