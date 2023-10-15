@@ -1,12 +1,8 @@
-.section-container {
+.racepage-container>section {
     box-sizing: border-box;
     width: 100%;
-    padding: 1rem 1.5rem;
+    /* padding: 0 1rem 1rem 1rem; */
     margin-bottom: 2rem;
-}
-
-.section-container:nth-child(odd) {
-    background-color: #a5b7bf;
 }
 
 .heading-container {
@@ -18,22 +14,36 @@
     font-family: 'Roboto', sans-serif;
 }
 
-.heading-container h2,
-.section-heading {
-    text-align: center;
-    color: #333333;
-    font-family: "Montserrat", Sans-serif;
-    font-weight: bold;
+.heading-container h4 {
     text-transform: uppercase;
-    margin-bottom: 2rem;
+}
+.race-nav{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    margin: 3rem auto;
 }
 
-.heading-container h2 {
-    font-size: 3.25rem;
-    text-shadow: 3px 2px #a5b7bf;
+.race-nav a {
+    text-transform: uppercase;
+    font-weight: 600;
+    margin: 0.25rem;
+    width: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    height: 2.75rem;
+    font-size: .7rem;
+    border-radius: 2px;
+    border: 3px groove black;
+    font-family: 'Montserrat', sans-serif;
+}
+.heading-container a.registration-button {
+    margin: 2rem auto;
 }
 
-#map-section {
+.directions-section {
     display: flex;
     flex-direction: column;
 }
@@ -86,11 +96,17 @@
 
 @media screen and (min-width: 640px) {
 
-    .location-section{
-        width: 50%;
+
+    .section-container {
+        padding: 1rem 1.5rem
     }
 
-    #map-section {
+    .location-section{
+        width: 48%;
+        margin: 0 .75%;
+    }
+
+    .directions-section {
         flex-direction: row;
     }
     

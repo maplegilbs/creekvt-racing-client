@@ -39,13 +39,22 @@ function LocationContainer({ location, handleShowHideToggle }) {
     )
 }
 
+function ScheduleItem({ scheduleItem }) {
+    return (
+        <li>Time Start - Time End: Registration.  Where?</li>
+    )
+}
+
 export default function Race() {
     const raceData = useLoaderData()[0];
     const [mapMarkerData, setMapMarkerData] = useState([]);
-    const formattedTime = formatDateTime(raceData.date);
+
+    const formattedTime = raceData.date ? formatDateTime(raceData.date) : null;
     const locations = JSON.parse(raceData.locations);
     const mapOptions = JSON.parse(raceData.mapOptions)[0];
-    let locationContainers = locations.map(location => <LocationContainer location={location} handleShowHideToggle={handleShowHideToggle}/>)
+    const locationContainers = locations.map(location => <LocationContainer location={location} handleShowHideToggle={handleShowHideToggle} />)
+    // const schedule = JSON.parse(raceData.schedule)
+    // const scheduleItems = schedule.map
 
     function updateMarkers(lat, lng) {
         let tempArray = [];
@@ -70,50 +79,76 @@ export default function Race() {
         updateMarkers(lat, lng)
     }
 
-
-
     return (
         <>
-            <div className={`${styles["section-container"]}`}>
-                <div className={`${styles["heading-container"]}`}>
-                    <h2>
-                        {raceData.name}
-                    </h2>
-                    <h4>
-                        {`${formattedTime.dow} ${formattedTime.monthString} ${formattedTime.day}, ${formattedTime.year}`}
-                    </h4>
-                    <h4>
-                        {`${formattedTime.time} ${formattedTime.amPm}`}
-                    </h4>
-                    <a href="#" className={`button button--large disabled`}>
-                        Register &nbsp;<img src="https://creekvt.com/races/RacerIcon.png" />
-                    </a>
-                    <a href="#" className={`link-std link-bold`}>View Registered Athletes</a>
-                </div>
-                <p>
-                    {raceData.shortDescription}
-                </p>
-            </div>
-            <div className={`${styles["section-container"]}`} id={`${styles["map-section"]}`}>
-                <div className={`${styles["location-section"]}`}>
-                    {locationContainers}
-                </div>
-                < Map 
-                mapMarkerData={mapMarkerData} 
-                mapOptions = {mapOptions}/>
-            </div >
-            <div className={`${styles["section-container"]}`}>
-                {/* Full Description */}
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta cupiditate aliquid tenetur minus iusto facilis quidem rem officia cumque? Eligendi sint, reprehenderit asperiores eius harum excepturi laboriosam labore ipsum in quod fuga. Quos sit maiores atque soluta ut quae delectus commodi, quasi deserunt id repellendus labore ratione, dolore voluptatem recusandae impedit saepe vero hic harum perferendis, iusto excepturi inventore? Eveniet mollitia aut enim animi dignissimos inventore consequatur possimus ducimus provident excepturi illum nam quasi eligendi quaerat ullam fuga perspiciatis commodi sequi neque autem voluptatem, voluptatum maxime impedit. Recusandae dolore quis reprehenderit a aliquam magni, perferendis aspernatur odit! Enim, mollitia dicta.
-            </div>
-            <div className={`${styles["section-container"]}`}>
-                {/* Contact */}
+            <main className={`${styles["racepage-container"]}`}>
+                <section className={`section-container`}>
+                    <div className={`${styles["heading-container"]}`}>
+                        <h2 className={`primary-heading`}>{raceData.name}</h2>
+                        {formattedTime ?
+                            <>
+                                <h4>{`${formattedTime.dow} ${formattedTime.monthString} ${formattedTime.day}, ${formattedTime.year}`}</h4>
+                                <h4>{`${formattedTime.time} ${formattedTime.amPm}`}</h4>
+                            </> : <h4>CHECK BACK SOON FOR 2024 SCHEDULED RACE DATE</h4>
+                        }
+                        <a href="#" className={`button button--large disabled ${styles['registration-button']}`}>
+                            Register &nbsp;<img src="https://creekvt.com/races/RacerIcon.png" />
+                        </a>
+                        <nav className={`${styles['race-nav']}`}>
+                            <a href="#schedule-section" className={`link-std link-bold`}>Schedule</a>
+                            <a href="#athletes-section" className={`link-std link-bold`}>Registered Athletes</a>
+                            <a href="#map-section" className={`link-std link-bold`}>Directions</a>
+                            <a href="#course-section" className={`link-std link-bold`}>Course Description</a>
+                            <a href="#contact-section" className={`link-std link-bold`}>Contact</a>
+                            <a href="#faq-section" className={`link-std link-bold`}>FAQ</a>
+                        </nav>
+                    </div>
+                </section>
+                <section className={`section-container`} id={`schedule-section`}>
+                    <h2 className={`section-heading`}>Schedule</h2>
+                    <hr />
 
-            </div>
-            <div className={`${styles["section-container"]}`}>
-                {/* FAQ */}
+                    <ul>
+                        <ScheduleItem />
+                        <ScheduleItem />
+                        <ScheduleItem />
+                        <ScheduleItem />
+                        <ScheduleItem />
+                    </ul>
+                </section>
+                <section className={`section-container`} id={`athletes-section`}>
+                    <h2 className={`section-heading`}>Registered Athletes</h2>
+                    <hr />
 
-            </div>
+                </section>
+                <section className={`section-container`} id={`map-section`}>
+                    <h2 className={`section-heading`}>Directions</h2>
+                    <hr />
+                    <div className={`${styles["directions-section"]}`}>
+                        <div className={`${styles["location-section"]}`}>
+                            {locationContainers}
+                        </div>
+                        < Map
+                            mapMarkerData={mapMarkerData}
+                            mapOptions={mapOptions} />
+                    </div>
+                </section >
+                <section className={`section-container`} id={`course-section`}>
+                    <h2 className={`section-heading`}>Course Details</h2>
+                    <hr />
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta cupiditate aliquid tenetur minus iusto facilis quidem rem officia cumque? Eligendi sint, reprehenderit asperiores eius harum excepturi laboriosam labore ipsum in quod fuga. Quos sit maiores atque soluta ut quae delectus commodi, quasi deserunt id repellendus labore ratione, dolore voluptatem recusandae impedit saepe vero hic harum perferendis, iusto excepturi inventore? Eveniet mollitia aut enim animi dignissimos inventore consequatur possimus ducimus provident excepturi illum nam quasi eligendi quaerat ullam fuga perspiciatis commodi sequi neque autem voluptatem, voluptatum maxime impedit. Recusandae dolore quis reprehenderit a aliquam magni, perferendis aspernatur odit! Enim, mollitia dicta.
+                </section>
+                <section className={`section-container`} id={`contact-section`}>
+                    <h2 className={`section-heading`}>Contact</h2>
+                    <hr />
+
+                </section>
+                <section className={`section-container`} id={`faq-section`}>
+                    <h2 className={`section-heading`}>FAQ</h2>
+                    <hr />
+
+                </section>
+            </main>
         </>
     )
 }

@@ -7,16 +7,6 @@
     box-shadow: 0px 11px 10px 0px rgba(0, 0, 0, 0.5);
 }
 
-
-.section-container {
-    box-sizing: border-box;
-    width: 100%;
-}
-
-.section-container:nth-child(even) {
-    background-color: #a5b7bf;
-}
-
 .heading-container {
     box-sizing: border-box;
     text-align: center;
@@ -26,33 +16,6 @@
     font-family: 'Roboto', sans-serif;
 }
 
-.heading-container h2,
-.section-heading {
-    text-align: center;
-    color: #333333;
-    font-family: "Montserrat", Sans-serif;
-    font-weight: bold;
-    text-transform: uppercase;
-    margin-bottom: 2rem;
-}
-
-.section-heading {
-    text-align: center;
-    margin: 10px auto;
-    padding: 2rem 1rem 0 1rem;
-    text-transform: uppercase;
-    font-family: Montserrat, sans-serif;
-    font-weight: bold;
-    text-shadow: 2px 2px white;
-}
-
-.section-container hr {
-    opacity: 1;
-    margin: 0 auto;
-    width: 50%;
-    overflow: hidden;
-    border-bottom: 2px solid #454545;
-}
 
 .race-cards__container {
     display: flex;
@@ -109,16 +72,6 @@ div.card {
 
 @media screen and (min-width: 640px) {
 
-    .section-heading {
-        margin-top: 1rem;
-        margin-left: 1rem;
-        text-align: left;
-    }
-
-    .section-container hr {
-        width: 35%;
-        margin-left: 1rem;
-    }
 
     .race-cards__container {
         flex-direction: row;
