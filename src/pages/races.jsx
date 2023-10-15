@@ -26,7 +26,7 @@ export default function Races() {
                         <a href="#" className={`button button--large disabled`}>
                             Register &nbsp;<img src="https://creekvt.com/races/RacerIcon.png" />
                         </a>
-                        <a href="/races/newhavenrace" className={`button button--large`}>Information</a>
+                        <a href={`/races/${raceData.name.split(' ').join('').toLowerCase()}`} className={`button button--large`}>Information</a>
                     </div>
                 </div>
             </div>

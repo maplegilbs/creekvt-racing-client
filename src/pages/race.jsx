@@ -15,10 +15,37 @@ export async function loader({ params }) {
     return raceJSON
 }
 
+function LocationContainer({ location, handleShowHideToggle }) {
+    const [areDetailsVisible, setAreDetailsVisible] = useState(false)
+
+    return (
+        <div className={`${styles["location-container"]}`}>
+            <div className={`${styles["location-header"]}`}>
+                <h6>{location.name}</h6>
+                <div className={`${styles["location-buttons"]}`}>
+                    <a onClick={e => {
+                        setAreDetailsVisible(prev => !prev);
+                        handleShowHideToggle(e, Number(location.lat), Number(location.lng));
+                    }} className={`${styles["location-link"]}`}>SHOW</a>
+                    <a target="_blank" href={`https://www.google.com/maps/dir/?api=1&destination=${location.lat},${location.lng}`} className={`${styles["location-link"]}`}>Directions</a>
+                </div>
+            </div>
+            {areDetailsVisible &&
+                <div className={`${styles["location-details"]}`}>
+                    {location.description}
+                </div>
+            }
+        </div >
+    )
+}
+
 export default function Race() {
     const raceData = useLoaderData()[0];
-    const formattedTime = formatDateTime(raceData.date)
     const [mapMarkerData, setMapMarkerData] = useState([]);
+    const formattedTime = formatDateTime(raceData.date);
+    const locations = JSON.parse(raceData.locations);
+    const mapOptions = JSON.parse(raceData.mapOptions)[0];
+    let locationContainers = locations.map(location => <LocationContainer location={location} handleShowHideToggle={handleShowHideToggle}/>)
 
     function updateMarkers(lat, lng) {
         let tempArray = [];
@@ -39,10 +66,11 @@ export default function Race() {
     }
 
     function handleShowHideToggle(e, lat, lng) {
-        console.log(e.target.innerText)
-        e.target.innerText = e.target.innerText === "SHOW ON MAP" ? "REMOVE FROM MAP" : "SHOW ON MAP";
+        e.target.innerText = e.target.innerText === "SHOW" ? "HIDE" : "SHOW";
         updateMarkers(lat, lng)
     }
+
+
 
     return (
         <>
@@ -57,7 +85,6 @@ export default function Race() {
                     <h4>
                         {`${formattedTime.time} ${formattedTime.amPm}`}
                     </h4>
-                    {/* Registration Button */}
                     <a href="#" className={`button button--large disabled`}>
                         Register &nbsp;<img src="https://creekvt.com/races/RacerIcon.png" />
                     </a>
@@ -66,50 +93,14 @@ export default function Race() {
                 <p>
                     {raceData.shortDescription}
                 </p>
-
             </div>
             <div className={`${styles["section-container"]}`} id={`${styles["map-section"]}`}>
                 <div className={`${styles["location-section"]}`}>
-                    <div className={`${styles["location-container"]}`}>
-                        <div className={`${styles["location-header"]}`}>
-                            <h6>Parking</h6>
-                            <div className={`${styles["location-buttons"]}`}>
-                                <a onClick={e => handleShowHideToggle(e, 44.12329812997867, -73.03425648442942)} className={`${styles["location-link"]}`} >Show On Map</a>
-                                <a target="_blank" href="https://www.google.com/maps/dir/?api=1&destination=44.12336589880534,-73.03465347551882&waypoints=44.12938735908366,-73.05119217901516" className={`${styles["location-link"]}`}>Directions</a>
-                            </div>
-                        </div>
-                        <div className={`${styles["location-details"]}`}>
-                            Eagle Park is the normal Put-In for a full run of this stretch of river and has room for numerous cars.
-                        </div>
-                    </div >
-                    <div className={`${styles["location-container"]}`}>
-                        <div className={`${styles["location-header"]}`}>
-                            <h6>Registration / Start / Put-In</h6>
-                            <div className={`${styles["location-buttons"]}`}>
-                                <a onClick={e => handleShowHideToggle(e, 44.12539878205473, -73.03968185766988)} className={`${styles["location-link"]}`} >Show On Map</a>
-                                <a target="_blank" href="#" className={`${styles["location-link"]}`}>Directions</a>
-                            </div>
-                        </div>
-                        <div className={`${styles["location-details"]}`}>
-                            Just above the "Ledges" rapids there is a pull-off where you will find racer registration and the start line.  There will be minimal parking here, you may drop your boat here but then be sure to use Eagle Park or the pull off at the bottom of the hill to park.
-                        </div>
-                    </div >
-                    <div className={`${styles["location-container"]}`}>
-                        <div className={`${styles["location-header"]}`}>
-                            <h6>Finish / Take-Out</h6>
-                            <div className={`${styles["location-buttons"]}`}>
-                                <a onClick={e => handleShowHideToggle(e, 44.127394808598325, -73.04712846168192)} className={`${styles["location-link"]}`} >Show On Map</a>
-                                <a target="_blank" href="https://www.google.com/maps/dir/?api=1&destination=44.12336589880534,-73.03465347551882&waypoints=44.12938735908366,-73.05119217901516" className={`${styles["location-link"]}`}>Directions</a>
-                            </div>
-                        </div>
-                        <div className={`${styles["location-details"]}`}>
-                            Use the pull off by the side to park for the finish.  Be sure to have your vehicle completely off the side of the road.  Finish line is in the pool below "Toaster".  Shuttle vehicle will be picking up racer's boats from here, so take out by walking your boat up the path just before entering the next rapid.
-                        </div>
-                    </div >
+                    {locationContainers}
                 </div>
-
-                {/* Map */}
-                < Map mapMarkerData={mapMarkerData} />
+                < Map 
+                mapMarkerData={mapMarkerData} 
+                mapOptions = {mapOptions}/>
             </div >
             <div className={`${styles["section-container"]}`}>
                 {/* Full Description */}

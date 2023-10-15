@@ -11,7 +11,21 @@ function MyMapComponent({ center, zoom, mapTypeId, mapMarkerData }) {
     const ref = useRef();
 
     useEffect(() => {
-        const newMap = new window.google.maps.Map(ref.current, { center, zoom, mapTypeId, streetViewControl: false });
+        const newMap = new window.google.maps.Map(ref.current, {
+            center,
+            zoom,
+            mapTypeId,
+            streetViewControl: false,
+            styles: [{
+                "featureType": "poi",
+                "elementType": "labels",
+                "stylers": [
+                    {
+                        "visibility": "off"
+                    }
+                ]
+            }]
+        });
         // const georssLayer = new window.google.maps.KmlLayer({
         //     url: "https://creekvt.com/races/new_haven_race_course_2024.kml",
         // });
@@ -73,13 +87,18 @@ function MyMapComponent({ center, zoom, mapTypeId, mapMarkerData }) {
     return <div className={`${styles["map"]}`} ref={ref} id="map">Hello~</div>;
 }
 
-export default function Map({ mapMarkerData }) {
+export default function Map({ mapMarkerData, mapOptions }) {
 
     return (
         <div className={`${styles["map-container"]}`}>
             <Wrapper apiKey={"AIzaSyBBtqHKDrsiMp-7ldVkI6QEMoxjzggJ-J8"}>
-                <MyMapComponent center={{ lat: 44.126289325172344, lng: -73.04288798300998 }} zoom={15} mapTypeId={'terrain'} mapMarkerData={mapMarkerData} />
+                <MyMapComponent
+                    center={{ lat: Number(mapOptions.lat), lng: Number(mapOptions.lng) }}
+                    zoom={Number(mapOptions.zoom)}
+                    mapTypeId={'terrain'}
+                    mapMarkerData={mapMarkerData}
+                />
             </Wrapper>
         </div>
     )
-    }
+}
