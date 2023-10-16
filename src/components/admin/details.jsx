@@ -44,11 +44,20 @@ export default function Details({ racename }) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                "name": `${selectedRace}`
+                "name": `${selectedRace}`,
+                "shortDescription": `${formData.shortDescription}`
             })
         })
 
     }
+
+    function handleChange(e){
+        setFormData(prev => {
+            prev[e.target.name] = e.target.value;
+            return prev
+        })
+    }
+
     return (
         <div className="admin-edit__container">
             <h3>{selectedRace? `Editing details for the ${selectedRace}`: `Select a race to edit`}</h3>
@@ -71,8 +80,8 @@ export default function Details({ racename }) {
                 </div>
                 <div className="input-row">
                     <div className="input-group">
-                        <label htmlFor="summary">Short Description (max 300 characters)</label>
-                        <textarea rows="8" name="summary" id="summary" value={formData.shortDescription} />
+                        <label htmlFor="shortDescription">Short Description (max 300 characters)</label>
+                        <textarea rows="8" name="shortDescription" id="shortDescription" onChange={handleChange} defaultValue={formData.shortDescription} />
                     </div>
                 </div>
                 <div className="input-row">

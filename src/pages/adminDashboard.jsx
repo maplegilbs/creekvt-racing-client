@@ -70,12 +70,18 @@ export default function AdminDashboard() {
                     {userInfo && <AdminHeader userInfo={userInfo} editSelection={null} />}
                 </header>
                 <nav className={`${styles["sidebar-nav"]}`}>
-                    <AdminNavBar availableRaces={userInfo.races} infoSectionToEdit={infoSectionToEdit} setInfoSectionToEdit={setInfoSectionToEdit} />
+                    {userInfo &&
+                        <AdminNavBar availableRaces={userInfo.races} infoSectionToEdit={infoSectionToEdit} setInfoSectionToEdit={setInfoSectionToEdit} />
+                    }
                 </nav>
                 <main className={`${styles["content-wrapper"]}`}>
                     {
                         !userInfo ?
-                            <div>You do not have correct permissions to edit this race</div>
+                            <div className={`${styles["unauth-overlay"]}`}>
+                                <h3>You do not have the correct permissions to edit races</h3>
+                                <a href="/races/adminLogin" className="button button--medium">Organizer Login</a>
+                                <a href="/races" className="button button--medium">Back to Races</a>
+                            </div>
                             :
                             <>
                                 {editComponent}
