@@ -1,0 +1,30 @@
+.dashboard-wrapper {
+    margin-top: -20px;
+    z-index: 1000;
+    min-height: 85vh;
+    width: 100%;
+    background-color: white;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    grid-template-areas: 
+    "nav header header header header"
+    "nav content content content content"
+    "nav content content content content"
+    "nav content content content content"
+    "nav content content content content"
+    "nav content content content content";
+}
+
+.content-header {
+    grid-area: header;
+}
+
+.sidebar-nav {
+    grid-area: nav;
+    background-color: rgba(140,185,225,.15);
+}
+
+.content-wrapper {
+    grid-area: content;
+}

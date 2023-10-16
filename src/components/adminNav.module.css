@@ -1,0 +1,39 @@
+.admin-menu {
+    flex-direction: column;
+    display: flex;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    border-right: 2px solid #777;
+}
+
+.menu-option {
+    border: none;
+    border-bottom: 2px solid rgba(255, 255, 255, .7);
+    padding: 1rem;
+    background: transparent;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.menu-option:hover {
+    text-shadow: 1px 1px #333;
+}
+
+.menu-select {
+    padding: .5rem;
+    margin: 1rem;
+    background-color: white;
+    text-align: center;
+}
+
+.menu-select option {
+    border: none;
+    box-shadow: 1px 1px #333;
+    border-radius: 0px;
+}
+
+.menu-select:hover{
+    text-shadow: none;
+}

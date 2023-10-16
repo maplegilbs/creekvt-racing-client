@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from "./pages/layout";
 //Pages
 import AdminLogin, {loader as adminLoader} from "./pages/login";
+import AdminDashboard, {loader as adminDashboardLoader} from "./pages/adminDashboard";
 import Race, { loader as raceLoader } from "./pages/race";
 import Races, { loader as racesLoader } from "./pages/races";
 //Styles
@@ -17,12 +18,17 @@ const router = createBrowserRouter([
       {
         path: "/races/",
         loader: racesLoader,
-        element: <Races />,
+        element: <Races />
       },
       {
         path: "/races/adminLogin/",
         loader: adminLoader,
         element: <AdminLogin />
+      },
+      {
+        path: "/races/adminDashboard/",
+        loader: adminDashboardLoader,
+        element: <AdminDashboard />
       },
       {
         path: "races/:raceName",

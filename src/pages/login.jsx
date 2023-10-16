@@ -14,8 +14,7 @@ export default function AdminLogin() {
     const navigate = useNavigate();
     
     useEffect(()=>{
-        
-        if(isLoggedIn) navigate('/races')
+        if(isLoggedIn) navigate('/races/adminDashboard')
     },[isLoggedIn])
 
     async function adminLogin(e) {
@@ -28,6 +27,8 @@ export default function AdminLogin() {
             body: JSON.stringify(loginData)
         });
         if (loginResponse.status === 200) {
+            let loginInfo = await loginResponse.json();
+            localStorage.setItem("token", loginInfo)
             setIsLoggedIn(true);
         }
     }
