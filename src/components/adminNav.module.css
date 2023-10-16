@@ -21,6 +21,10 @@
     text-shadow: 1px 1px #333;
 }
 
+.menu-option.active {
+    background-color:  rgba(140,185,225,.55);
+}
+
 .menu-select {
     padding: .5rem;
     margin: 1rem;

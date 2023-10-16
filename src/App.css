@@ -154,10 +154,22 @@ p {
     text-align: left;
 }
 
+.input-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-bottom: 1rem;
+}
+
 .input-group {
     display: flex;
     justify-content: space-between;
     flex-direction: column;
+}
+
+
+.admin-edit__container {
+    padding: 1rem;
 }
 
 
