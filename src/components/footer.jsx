@@ -19,6 +19,7 @@ const Footer = (props) => {
                 <li><a href="https://creekvt.com/blog/">Blog</a></li>
                 <li><a href="https://creekvt.com/about/">About</a></li>
                 <li><a href="https://creekvt.com/contact/">Contact</a></li>
+                <li><a href="http://localhost:3001/races/adminLogin">Organizer Login</a></li>
             </ul>
         </div>
          <div className={styles["footer-items"]}>

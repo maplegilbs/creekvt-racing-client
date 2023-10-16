@@ -2,8 +2,9 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from "./pages/layout";
 //Pages
-import Races, {loader as racesLoader} from "./pages/races";
-import Race, {loader as raceLoader} from "./pages/race";
+import AdminLogin, {loader as adminLoader} from "./pages/login";
+import Race, { loader as raceLoader } from "./pages/race";
+import Races, { loader as racesLoader } from "./pages/races";
 //Styles
 import "./App.css"
 
@@ -14,9 +15,14 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       {
-        path: "/races",
+        path: "/races/",
         loader: racesLoader,
-        element: <Races />
+        element: <Races />,
+      },
+      {
+        path: "/races/adminLogin/",
+        loader: adminLoader,
+        element: <AdminLogin />
       },
       {
         path: "races/:raceName",

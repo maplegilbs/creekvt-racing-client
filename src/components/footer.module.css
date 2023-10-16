@@ -33,9 +33,14 @@
 	text-transform: uppercase;
 }
 
+.footer-items li {
+	margin: 0 auto;
+}
+
 .footer-items li a, .footer-items li a:visited {
 	color: white;
 	line-height: 37px;
+	text-decoration: none;
 }
 
 .footer-items p {

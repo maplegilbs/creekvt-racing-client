@@ -38,7 +38,7 @@ a.link-bold {
 }
 
 
-a.button {
+a.button, .button {
     text-decoration: none;
     margin: .5rem auto;
     width: max-content;
@@ -56,13 +56,13 @@ a.button {
     border-radius: 5px;
 }
 
-a.button--large {
+a.button--large, .button--large {
     height: 3rem;
     font-size: 1.25rem;
     margin: 1rem auto;
 }
 
-a.button--medium {
+a.button--medium, .button-medium {
     height: 2rem;
     font-size: .75rem;
 }
@@ -154,6 +154,12 @@ p {
     text-align: left;
 }
 
+.input-group {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
 
 @media screen and (max-width: 640px) {
 
@@ -182,4 +188,5 @@ p {
         margin: 10px auto;
         text-align: center;
     }
+
 }
