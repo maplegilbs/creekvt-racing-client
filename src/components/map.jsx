@@ -54,6 +54,7 @@ function MyMapComponent({ center, zoom, mapTypeId, mapMarkerData }) {
                     const myMarker = new window.google.maps.Marker({
                         position: { lat: markerData[0], lng: markerData[1] },
                         myMap,
+                        icon: "https://creekvt.com/races/RacerIcon.png",
                         title: "Hello World!",
                     });
                     myMarker.setMap(myMap)

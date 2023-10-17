@@ -43,6 +43,7 @@ export function formatDateTime(inputTime) {
             time: `${hour}:${minute}`,
             time24Hr: `${hour24}:${minute}`,
             amPm: amPM,
+            htmlDateTime: `${year}-${month}-${day}T${hour24}:${minute}`,
             inputTime: inputTime
         }
     )

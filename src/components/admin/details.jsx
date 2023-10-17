@@ -1,9 +1,11 @@
-//Styles
-import styles from "./details.module.css"
 //Contexts
 import { SelectedRaceContext } from "../../pages/adminDashboard";
 //Hooks
 import { useContext, useEffect, useState } from "react";
+//Libs
+import { formatDateTime } from "../../utils/formatDateTime";
+//Styles
+import styles from "./details.module.css"
 
 export default function Details({ racename }) {
     const [formData, setFormData] = useState({});
@@ -15,16 +17,17 @@ export default function Details({ racename }) {
                 const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
                 let raceData = await fetch(`http://localhost:3000/races/${raceToFetch}`)
                 let raceJSON = await raceData.json();
-                console.log(raceJSON)
                 setFormData({
-                    date: raceJSON[0].date.slice(0, -8),
-                    shortDescription: raceJSON[0].shortDescription
+                    date: formatDateTime(new Date(raceJSON[0].date)).htmlDateTime,
+                    shortDescription: raceJSON[0].shortDescription,
+                    notification: raceJSON[0].notification
                 })
             }
             catch (err) {
                 setFormData({
                     date: null,
-                    shortDescription: null
+                    shortDescription: '',
+                    notification: ''
                 })
 
             }
@@ -45,16 +48,18 @@ export default function Details({ racename }) {
             },
             body: JSON.stringify({
                 "name": `${selectedRace}`,
-                "shortDescription": `${formData.shortDescription}`
+                "date": `${formData.date}`,
+                "shortDescription": `${formData.shortDescription}`,
+                "notification": `${formData.notification}`
             })
         })
 
     }
 
     function handleChange(e){
-        setFormData(prev => {
-            prev[e.target.name] = e.target.value;
-            return prev
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
         })
     }
 
@@ -64,30 +69,20 @@ export default function Details({ racename }) {
             <form onSubmit={handleSubmit}>
                 <div className="input-row">
                     <div className="input-group">
-                        <label htmlFor="raceDate">Date</label>
-                        <input type="date" name="raceDate" id="raceDate" />
-                    </div>
-                    <div className="input-group">
-                        <label htmlFor="raceTime">Time</label>
-                        <input type="time" name="raceTime" id="raceTime" />
-                    </div>
-                </div>
-                <div className="input-row">
-                    <div className="input-group">
-                        <label htmlFor="raceDate">Date</label>
-                        <input type="datetime-local" name="raceDate" id="raceDate" value={formData.date} />
+                        <label htmlFor="date">Date & Time</label>
+                        <input type="datetime-local" name="date" id="date" onChange={handleChange} value={formData.date} />
                     </div>
                 </div>
                 <div className="input-row">
                     <div className="input-group">
                         <label htmlFor="shortDescription">Short Description (max 300 characters)</label>
-                        <textarea rows="8" name="shortDescription" id="shortDescription" onChange={handleChange} defaultValue={formData.shortDescription} />
+                        <textarea rows="8" name="shortDescription" id="shortDescription" onChange={handleChange} value={formData.shortDescription? formData.shortDescription : ''} />
                     </div>
                 </div>
                 <div className="input-row">
                     <div className="input-group">
-                        <label htmlFor="alert">Banner notfication (will appear as a banner at the top of the details section)</label>
-                        <input type="text" name="alert" id="alert" placeholder="Example: Only 5 spots left!" />
+                        <label htmlFor="notification">Banner notfication (will appear as a banner at the top of the details section)</label>
+                        <input type="text" name="notification" id="notification"  placeholder="Example: Only 5 spots left!" onChange={handleChange} value={formData.notification? formData.notification : ''}/>
                     </div>
                 </div>
                 <button type="submit">Save</button>
