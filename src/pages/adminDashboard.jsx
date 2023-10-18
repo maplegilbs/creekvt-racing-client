@@ -14,6 +14,8 @@ import styles from "./adminDashboard.module.css"
 
 
 export const SelectedRaceContext = createContext()
+export const LastSavedContext = createContext();
+export const UserInfoContext = createContext();
 
 export async function loader() {
     let token = localStorage.getItem('token');
@@ -34,6 +36,7 @@ export default function AdminDashboard() {
     const [infoSectionToEdit, setInfoSectionToEdit] = useState(null)
     const [editComponent, setEditComponent] = useState(<>Hi</>)
     const [selectedRace, setSelectedRace] = useState()
+    const [lastSaved, setLastSaved] = useState(null)
 
     useEffect(() => {
         switch (infoSectionToEdit) {
@@ -64,31 +67,34 @@ export default function AdminDashboard() {
 
     return (
         <div className={`${styles["dashboard-wrapper"]}`}>
-
-            <SelectedRaceContext.Provider value={[selectedRace, setSelectedRace]}>
-                <header className={`${styles["content-header"]}`}>
-                    {userInfo && <AdminHeader userInfo={userInfo} editSelection={null} />}
-                </header>
-                <nav className={`${styles["sidebar-nav"]}`}>
-                    {userInfo &&
-                        <AdminNavBar availableRaces={userInfo.races} infoSectionToEdit={infoSectionToEdit} setInfoSectionToEdit={setInfoSectionToEdit} />
-                    }
-                </nav>
-                <main className={`${styles["content-wrapper"]}`}>
-                    {
-                        !userInfo ?
-                            <div className={`${styles["unauth-overlay"]}`}>
-                                <h3>You do not have the correct permissions to edit races</h3>
-                                <a href="/races/adminLogin" className="button button--medium">Organizer Login</a>
-                                <a href="/races" className="button button--medium">Back to Races</a>
-                            </div>
-                            :
-                            <>
-                                {editComponent}
-                            </>
-                    }
-                </main>
-            </SelectedRaceContext.Provider>
+            <UserInfoContext.Provider value={userInfo}>
+                <SelectedRaceContext.Provider value={[selectedRace, setSelectedRace]}>
+                    <LastSavedContext.Provider value={[lastSaved, setLastSaved]}>
+                        <header className={`${styles["content-header"]}`}>
+                            {userInfo && <AdminHeader userInfo={userInfo} editSelection={null} />}
+                        </header>
+                        <nav className={`${styles["sidebar-nav"]}`}>
+                            {userInfo &&
+                                <AdminNavBar availableRaces={userInfo.races} infoSectionToEdit={infoSectionToEdit} setInfoSectionToEdit={setInfoSectionToEdit} />
+                            }
+                        </nav>
+                        <main className={`${styles["content-wrapper"]}`}>
+                            {
+                                !userInfo ?
+                                    <div className={`${styles["unauth-overlay"]}`}>
+                                        <h3>You do not have the correct permissions to edit races</h3>
+                                        <a href="/races/adminLogin" className="button button--medium">Organizer Login</a>
+                                        <a href="/races" className="button button--medium">Back to Races</a>
+                                    </div>
+                                    :
+                                    <>
+                                        {editComponent}
+                                    </>
+                            }
+                        </main>
+                    </LastSavedContext.Provider>
+                </SelectedRaceContext.Provider>
+            </UserInfoContext.Provider>
         </div>
     )
 }

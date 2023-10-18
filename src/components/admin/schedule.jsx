@@ -1,11 +1,12 @@
 //Contexts
-import { SelectedRaceContext } from "../../pages/adminDashboard";
+import { SelectedRaceContext, LastSavedContext, UserInfoContext } from "../../pages/adminDashboard";
 //Hooks
 import { useContext, useEffect, useState } from "react";
 //Libs
 import { formatDateTime } from "../../utils/formatDateTime";
 //Styles
 import styles from "./schedule.module.css"
+import Default from "./default";
 
 function ScheduleInput({ i, handleChange, handleRemove, formData }) {
     return (
@@ -41,7 +42,9 @@ function ScheduleInput({ i, handleChange, handleRemove, formData }) {
 export default function Schedule() {
     const [formData, setFormData] = useState({});
     const [scheduleInputs, setScheduleInputs] = useState([])
-    const [selectedRace, setSelectedRace] = useContext(SelectedRaceContext)
+    const selectedRace = useContext(SelectedRaceContext)[0]
+    const [lastSaved, setLastSaved] = useContext(LastSavedContext)
+    const userInfo = useContext(UserInfoContext)
 
 
     useEffect(() => {
@@ -64,12 +67,13 @@ export default function Schedule() {
             }
         }
         getRaceData()
+        setLastSaved(null)
     }, [selectedRace])
 
     useEffect(() => {
         setScheduleInputs(formData.schedule ? formData.schedule.map((scheduleItem, i) => {
             return (
-                <ScheduleInput i={i} handleChange={handleChange} formData={formData} handleRemove={handleRemove}/>
+                <ScheduleInput key={i} i={i} handleChange={handleChange} formData={formData} handleRemove={handleRemove} />
             )
         }) : [])
     }, [formData])
@@ -90,7 +94,11 @@ export default function Schedule() {
                 "schedule": formData.schedule
             })
         })
-
+        if (updatedRace.status == 200) {
+            let now = new Date();
+            let timeSaved = `${formatDateTime(now).time} ${formatDateTime(now).amPm}`
+            setLastSaved(timeSaved)
+        }
     }
 
     function handleChange(e) {
@@ -106,39 +114,46 @@ export default function Schedule() {
             })
             return { ...prev, schedule: updatedSchedule }
         })
+        setLastSaved('edited')
     }
 
-    function handleRemove(e){
+    function handleRemove(e) {
         console.log(e.target.parentElement)
         setFormData(prev => {
-            let updatedSchedule = prev.schedule.filter((item,i)=>{
+            let updatedSchedule = prev.schedule.filter((item, i) => {
                 return i !== Number(e.target.parentElement.id.split('-')[1])
             })
-            return {...prev, schedule: updatedSchedule}
+            return { ...prev, schedule: updatedSchedule }
         })
-
+        setLastSaved('edited')
     }
 
     //By adding a new element to our schedule array in the form data our useEffect above will run and create a new list of our schedule inputs
     function addScheduleInput() {
         setFormData(prev => {
-            let updatedSchedule = prev.schedule? prev.schedule.map(item => item) : [];
+            let updatedSchedule = prev.schedule ? prev.schedule.map(item => item) : [];
             updatedSchedule[updatedSchedule.length] = { "startTime": "", "endTime": "", "name": "", "location": "" }
             return { ...prev, schedule: updatedSchedule }
         })
     }
 
-    return (
-        <div className="admin-edit__container">
-            <h3>{selectedRace ? `Editing Schedule For The ${selectedRace}` : `Select a race to edit`}</h3>
-            <form onSubmit={handleSubmit}>
-                <div class={`${styles["schedule-inputs"]}`}>
-                    {scheduleInputs}
-                </div>
-                <button type="button" onClick={addScheduleInput}>Add</button>
-                <button type="submit">Save</button>
-            </form>
-        </div>
-    )
+    if (selectedRace) {
+
+        return (
+            <div className="admin-edit__container">
+                <h2 className="section-heading">{selectedRace ? `${selectedRace} Schedule` : `Select a race to edit`}</h2>
+                <form onSubmit={handleSubmit}>
+                    <div className={`${styles["schedule-inputs"]}`}>
+                        {scheduleInputs}
+                    </div>
+                    <section className={`${styles["schedule-input__section"]}`}>
+                        <button type="button" onClick={addScheduleInput}>Add New</button>
+                    </section>
+                    <button type="submit">Save</button>
+                </form>
+            </div>
+        )
+    }
+    else return <Default userInfo={userInfo} />
 
 }

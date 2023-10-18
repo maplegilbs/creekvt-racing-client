@@ -8,7 +8,7 @@ import styles from './adminNav.module.css'
 export default function AdminNavBar({availableRaces, infoSectionToEdit, setInfoSectionToEdit}) {
     const [selectedRace, setSelectedRace] = useContext(SelectedRaceContext)
 
-    const raceOptions = availableRaces.map (race =>  <option value={race}>{race}</option>)
+    const raceOptions = availableRaces.map (race =>  <option key={race} value={race}>{race}</option>)
 
     function handleChange (e) {
         setSelectedRace(e.target.value)
