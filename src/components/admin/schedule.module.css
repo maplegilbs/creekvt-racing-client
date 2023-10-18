@@ -1,0 +1,7 @@
+.schedule-input__section {
+    margin: 2rem auto;
+    padding: 2rem;
+    max-width: 85%;
+    border-radius: 5px;
+    background-color: rgba(220,220,220,.5);
+}

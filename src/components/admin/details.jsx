@@ -7,7 +7,7 @@ import { formatDateTime } from "../../utils/formatDateTime";
 //Styles
 import styles from "./details.module.css"
 
-export default function Details({ racename }) {
+export default function Details() {
     const [formData, setFormData] = useState({});
     const [selectedRace, setSelectedRace] = useContext(SelectedRaceContext)
 
@@ -35,8 +35,6 @@ export default function Details({ racename }) {
         getRaceData()
     }, [selectedRace])
 
-    console.log(formData)
-
     async function handleSubmit(e) {
         e.preventDefault();
         let token = localStorage.getItem('token')
@@ -53,7 +51,6 @@ export default function Details({ racename }) {
                 "notification": `${formData.notification}`
             })
         })
-
     }
 
     function handleChange(e){
@@ -89,5 +86,4 @@ export default function Details({ racename }) {
             </form>
         </div>
     )
-
 }

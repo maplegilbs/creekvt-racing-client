@@ -2,6 +2,7 @@
 import AdminNavBar from "../components/adminNav";
 import AdminHeader from "../components/adminHeader";
 import Details from "../components/admin/details";
+import Schedule from "../components/admin/schedule";
 //Contexts
 import { useContext, createContext } from "react";
 //Hooks
@@ -23,11 +24,9 @@ export async function loader() {
     if (currentUser.status !== 200) return null;
     else {
         let currentUserInfo = await currentUser.json();
-        console.log(currentUserInfo)
         return currentUserInfo
     }
 }
-
 
 export default function AdminDashboard() {
     const userInfo = useLoaderData();
@@ -38,10 +37,10 @@ export default function AdminDashboard() {
     useEffect(() => {
         switch (infoSectionToEdit) {
             case "details":
-                setEditComponent(<Details racename={'Race Name'} />);
+                setEditComponent(<Details />);
                 break;
             case "schedule":
-                setEditComponent(<div>Schedule</div>);
+                setEditComponent(<Schedule />);
                 break;
             case "athletes":
                 setEditComponent(<div>Athletes</div>);
@@ -56,7 +55,7 @@ export default function AdminDashboard() {
                 setEditComponent(<div>FAQS</div>);
                 break;
             default:
-                setEditComponent(<Details racename={'Race Name'} />);
+                setEditComponent(<Details />);
 
         }
     }, [infoSectionToEdit])
