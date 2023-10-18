@@ -122,7 +122,7 @@ export default function Schedule() {
     //By adding a new element to our schedule array in the form data our useEffect above will run and create a new list of our schedule inputs
     function addScheduleInput() {
         setFormData(prev => {
-            let updatedSchedule = prev.schedule.map(item => item)
+            let updatedSchedule = prev.schedule? prev.schedule.map(item => item) : [];
             updatedSchedule[updatedSchedule.length] = { "startTime": "", "endTime": "", "name": "", "location": "" }
             return { ...prev, schedule: updatedSchedule }
         })

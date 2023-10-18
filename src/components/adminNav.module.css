@@ -7,6 +7,10 @@
     border-right: 2px solid #777;
 }
 
+.admin-menu > label {
+    margin: 1rem auto 0 auto;;
+}
+
 .menu-option {
     border: none;
     border-bottom: 2px solid rgba(255, 255, 255, .7);

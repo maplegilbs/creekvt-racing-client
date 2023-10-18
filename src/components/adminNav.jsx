@@ -16,9 +16,9 @@ export default function AdminNavBar({availableRaces, infoSectionToEdit, setInfoS
     
     return (
         <menu className={`${styles["admin-menu"]}`}>
-            <label htmlFor="raceSelect">Select A Race To Edit</label>
+            {/* <label htmlFor="raceSelect">Select A Race To Edit</label> */}
             <select onChange={handleChange} className={`${styles["menu-option"]} ${styles["menu-select"]}`} id="raceSelect">
-                <option>Select Race</option>
+                <option value={''}>Select Race</option>
                 {raceOptions}
             </select>
             <button onClick={()=>setInfoSectionToEdit("details")}  className={`${styles["menu-option"]} ${infoSectionToEdit === 'details' ? styles["active"]:""}`}>Details</button>

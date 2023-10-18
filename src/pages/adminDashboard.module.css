@@ -27,6 +27,7 @@
 
 .content-wrapper {
     grid-area: content;
+    padding: 1rem;
 }
 
 .unauth-overlay {

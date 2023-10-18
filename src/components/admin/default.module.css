@@ -1,0 +1,13 @@
+.welcome-wrapper {
+    margin: 5% 10%
+}
+
+.welcome-wrapper h2 {
+    margin: 2rem 0;
+    text-align: left;
+}
+
+.welcome-wrapper p {
+    color: black;
+    font-weight: 600;
+}

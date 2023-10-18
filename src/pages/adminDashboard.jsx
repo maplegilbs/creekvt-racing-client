@@ -1,6 +1,7 @@
 //Components
 import AdminNavBar from "../components/adminNav";
 import AdminHeader from "../components/adminHeader";
+import Default from "../components/admin/default";
 import Details from "../components/admin/details";
 import Schedule from "../components/admin/schedule";
 //Contexts
@@ -55,7 +56,7 @@ export default function AdminDashboard() {
                 setEditComponent(<div>FAQS</div>);
                 break;
             default:
-                setEditComponent(<Details />);
+                setEditComponent(<Default userInfo={userInfo} />);
 
         }
     }, [infoSectionToEdit])
