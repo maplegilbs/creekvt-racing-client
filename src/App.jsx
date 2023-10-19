@@ -6,6 +6,7 @@ import AdminLogin, {loader as adminLoader} from "./pages/login";
 import AdminDashboard, {loader as adminDashboardLoader} from "./pages/adminDashboard";
 import Race, { loader as raceLoader } from "./pages/race";
 import Races, { loader as racesLoader } from "./pages/races";
+import Register, {loader as registerLoader} from "./pages/register";
 //Styles
 import "./App.css"
 
@@ -34,6 +35,11 @@ const router = createBrowserRouter([
         path: "races/:raceName",
         loader: raceLoader,
         element: <Race />
+      },
+      {
+        path: "races/:raceName/register",
+        loader: registerLoader,
+        element: <Register />
       }
     ]
   },
