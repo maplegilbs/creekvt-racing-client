@@ -1,6 +1,7 @@
 //Components
 import AdminNavBar from "../components/adminNav";
 import AdminHeader from "../components/adminHeader";
+import Athletes from "../components/admin/athletes";
 import Default from "../components/admin/default";
 import Details from "../components/admin/details";
 import Schedule from "../components/admin/schedule";
@@ -47,7 +48,7 @@ export default function AdminDashboard() {
                 setEditComponent(<Schedule />);
                 break;
             case "athletes":
-                setEditComponent(<div>Athletes</div>);
+                setEditComponent(<Athletes />);
                 break;
             case "directions":
                 setEditComponent(<div>Directions</div>);
