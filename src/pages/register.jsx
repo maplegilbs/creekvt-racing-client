@@ -21,15 +21,15 @@ export default function Register() {
     const registrationInfo = useLoaderData();
     const [registrationFormData, setRegistrationFormData] = useState({});
     const raceNameParam = useParams()
-    console.log(registrationFormData)
+    console.log(registrationInfo)
 
-    useEffect(()=>{
+    useEffect(() => {
         setRegistrationFormData(
             {
                 year: formatDateTime(new Date(registrationInfo.raceInfo.date)).year,
                 raceName: registrationInfo.raceInfo.name
             })
-    },[])
+    }, [])
 
     let racerCategoryOptions =
         registrationInfo.raceInfo.racerCategories ? JSON.parse(registrationInfo.raceInfo.racerCategories).map(category => <option value={category}>{category}</option>)
@@ -37,23 +37,47 @@ export default function Register() {
             null;
 
     function handleChange(e) {
-        setRegistrationFormData(prev => {
-            let updatedData = {
-                ...prev,
-                [e.target.name]: e.target.value
-            }
-            return updatedData
-        })
+        if (e.target.id.split('-')[0] === "partner") {
+            let partnerId = Number(e.target.id.split('-')[2]);
+            console.log(e.target.id)
+            setRegistrationFormData(prev => {
+                let updatedPartners = prev.partners.map((partner, i) => {
+                    console.log(i, partnerId)
+                    return i !== partnerId ? partner : { ...partner, [e.target.name.split('-')[1]]: e.target.value }
+                })
+                let updatedData = {
+                    ...prev,
+                    partners: updatedPartners
+                }
+                return updatedData
+            })
+        }
+        else {
+            setRegistrationFormData(prev => {
+                let updatedData = {
+                    ...prev,
+                    [e.target.name]: e.target.value
+                }
+                return updatedData
+            })
+        }
     }
 
-    async function handleSubmit(e){
+    function addPartner() {
+        setRegistrationFormData(prev => {
+            let updatedPartners = prev.partners ? prev.partners.map(partner => partner) : [];
+            updatedPartners.push({ firstName: '', lastName: '' })
+            return { ...prev, partners: updatedPartners }
+        })
+    }
+    async function handleSubmit(e) {
         e.preventDefault();
         let registerResponse = await fetch(`http://localhost:3000/racers/${raceNameParam}`, {
             method: 'POST',
             headers: {
                 'Content-Type': "application/json"
             },
-            body: JSON.stringify(registrationFormData) 
+            body: JSON.stringify(registrationFormData)
         })
         let registerResponseJSON = await registerResponse.json();
         console.log(registerResponseJSON)
@@ -70,17 +94,17 @@ export default function Register() {
                     <div className={"input-row"}>
                         <div className={`input-group`}>
                             <label htmlFor="firstName">First Name</label>
-                            <input onChange={handleChange} required type="text" name="firstName" id="firstName" value={registrationFormData.firstName}/>
+                            <input onChange={handleChange} required type="text" name="firstName" id="firstName" value={registrationFormData.firstName} />
                         </div>
                         <div className={`input-group`}>
                             <label htmlFor="lastName">Last Name</label>
-                            <input onChange={handleChange} required type="text" name="lastName" id="lastName" value={registrationFormData.lastName}/>
+                            <input onChange={handleChange} required type="text" name="lastName" id="lastName" value={registrationFormData.lastName} />
                         </div>
                     </div>
                     <div className={"input-row"}>
                         <div className={`input-group`}>
                             <label htmlFor="email">Email</label>
-                            <input onChange={handleChange} required type="email" name="email" id="email" value={registrationFormData.email}/>
+                            <input onChange={handleChange} required type="email" name="email" id="email" value={registrationFormData.email} />
                         </div>
                     </div>
                     {racerCategoryOptions &&
@@ -93,16 +117,31 @@ export default function Register() {
                             </div>
                         </div>
                     }
-                    {/* <div className={"input-row"}>
-                        <div className={`input-group`}>
-                            <label htmlFor="firstName">First Name</label>
-                            <input onChange={handleChange} type="text" name="firstName" id="firstName" />
+                    {(
+                        registrationFormData.category === "Canoe Tandem" ||
+                        registrationFormData.category === "Kayak Tandem" ||
+                        registrationFormData.category === "Raft"
+                    ) &&
+
+                        <div>
+                            <h5>Partners</h5>
+                            <button type="button" onClick={addPartner}>Add</button>
+                            {registrationFormData.partners && registrationFormData.partners.map((partner, i) => {
+                                return (
+                                    <div className={"input-row"}>
+                                        <div className={`input-group`}>
+                                            <label htmlFor={`partner-firstName-${i}`}>First Name</label>
+                                            <input onChange={handleChange} type="text" name="partner-firstName" id={`partner-firstName-${i}`} value={registrationFormData.partners[i].firstName} />
+                                        </div>
+                                        <div className={`input-group`}>
+                                            <label htmlFor={`partner-lastName-${i}`}>Last Name</label>
+                                            <input onChange={handleChange} type="text" name="partner-lastName" id={`partner-lastName-${i}`} value={registrationFormData.partners[i].lastName} />
+                                        </div>
+                                    </div>
+                                )
+                            })}
                         </div>
-                        <div className={`input-group`}>
-                            <label htmlFor="lastName">Last Name</label>
-                            <input onChange={handleChange} type="text" name="lastName" id="lastName" />
-                        </div>
-                    </div> */}
+                    }
                     <button className={`button button--medium`} type="submit">Continue to Payment</button>
                 </form>
             </div>
