@@ -35,7 +35,7 @@ export async function loader() {
 export default function AdminDashboard() {
     const userInfo = useLoaderData();
     const [infoSectionToEdit, setInfoSectionToEdit] = useState(null)
-    const [editComponent, setEditComponent] = useState(<>Hi</>)
+    const [editComponent, setEditComponent] = useState(<></>)
     const [selectedRace, setSelectedRace] = useState()
     const [lastSaved, setLastSaved] = useState(null)
 

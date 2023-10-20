@@ -1,7 +1,7 @@
 //Components
 import Map from "../components/map";
 //Hooks
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useParams } from "react-router-dom";
 //Libs
 import { formatDateTime } from "../utils/formatDateTime";
 //Styles
@@ -51,10 +51,8 @@ function ScheduleItem({ eventDetails }) {
 
 export default function Race() {
     const raceData = useLoaderData()[0];
-    console.log(new Date(new Date(raceData.date).valueOf() - (1000*60*60*24)))
-    console.log(new Date(raceData.date))
     const [mapMarkerData, setMapMarkerData] = useState([]);
-
+    const {raceName} = useParams()
     const formattedTime = raceData.date ? formatDateTime(raceData.date) : null;
     const locations = JSON.parse(raceData.locations);
     const locationContainers = locations.map(location => <LocationContainer location={location} handleShowHideToggle={handleShowHideToggle} />)
@@ -97,7 +95,7 @@ export default function Race() {
                                 <h4>{`${formattedTime.time} ${formattedTime.amPm}`}</h4>
                             </> : <h4>CHECK BACK SOON FOR 2024 SCHEDULED RACE DATE</h4>
                         }
-                        <a href="#" className={`button button--large disabled ${styles['registration-button']}`}>
+                        <a href={`./${raceName}/register`} className={`button button--large disabled ${styles['registration-button']}`}>
                             Register &nbsp;<img src="https://creekvt.com/races/RacerIcon.png" />
                         </a>
                         <nav className={`${styles['race-nav']}`}>

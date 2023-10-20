@@ -62,12 +62,12 @@ a.button--large, .button--large {
     margin: 1rem auto;
 }
 
-a.button--medium, .button-medium {
+a.button--medium, .button--medium {
     height: 2rem;
     font-size: .75rem;
 }
 
-a.button--small {
+a.button--small, .button--small {
     height: 1rem;
     font-size: .5rem;
 }

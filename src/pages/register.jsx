@@ -42,7 +42,6 @@ export default function Register() {
             console.log(e.target.id)
             setRegistrationFormData(prev => {
                 let updatedPartners = prev.partners.map((partner, i) => {
-                    console.log(i, partnerId)
                     return i !== partnerId ? partner : { ...partner, [e.target.name.split('-')[1]]: e.target.value }
                 })
                 let updatedData = {

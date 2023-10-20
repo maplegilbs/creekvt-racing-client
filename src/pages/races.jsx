@@ -23,7 +23,7 @@ export default function Races() {
                         {raceData.shortDescription}
                     </p>
                     <div className={`${styles["button__container"]}`}>
-                        <a href="#" className={`button button--large disabled`}>
+                        <a href={`./races/${raceData.name.split(' ').join('').toLowerCase()}/register`} className={`button button--large disabled`}>
                             Register &nbsp;<img src="https://creekvt.com/races/RacerIcon.png" />
                         </a>
                         <a href={`/races/${raceData.name.split(' ').join('').toLowerCase()}`} className={`button button--large`}>Information</a>
