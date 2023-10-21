@@ -118,6 +118,7 @@
     margin: 1.5rem auto;
     display: flex;
     justify-content: space-evenly;
+    align-items: center;
 }
 
 div[data-lastpass-icon-root="true"] {

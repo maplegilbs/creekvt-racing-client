@@ -62,7 +62,7 @@ function EditRow({ i, registeredRacers, saveRacer, handleChange, deletePartner, 
                             </div>
                         </>
                     )}
-                    <FontAwesomeIcon className={`${styles["action-icon"]}`} icon={faCirclePlus} onClick={()=>addPartner(registeredRacers[i].id)}/>
+                    <FontAwesomeIcon className={`${styles["action-icon"]}`} icon={faCirclePlus} onClick={() => addPartner(registeredRacers[i].id)} />
                 </div>
             }
         </div>
@@ -96,6 +96,7 @@ export default function Athletes() {
     const [registeredRacers, setRegisteredRacers] = useState(null)
     const [selectedAction, setSelectedAction] = useState(null)
     const [selectedRacer, setSelectedRacer] = useState(null)
+    const [addedRacerID, setAddedRacerID] = useState(null)
 
     console.log(`Selected racer: `, selectedRacer, ` All Racers `, registeredRacers)
 
@@ -112,6 +113,10 @@ export default function Athletes() {
         }
         getRacerData()
     }, [selectedRace])
+
+    useEffect(() => {
+        if(addedRacerID) {editRacer(addedRacerID)}
+    },[addedRacerID])
 
     function editRacer(racerId) {
         setSelectedRacer(registeredRacers.find(racer => Number(racer.id) === Number(racerId)))
@@ -162,27 +167,37 @@ export default function Athletes() {
         }
     }
 
-    function deletePartner(partnerIndex, racerId) {
+
+    //CREATE FUNCTIONS
+    async function addRacer() {
+        const blankRacer = {};
+        const token = localStorage.getItem('token')
+        for (let propertyName in registeredRacers[0]) {
+            if (['year', 'raceName', 'category'].includes(propertyName)) blankRacer[propertyName] = registeredRacers[0][propertyName]
+            else blankRacer[propertyName] = null;
+        }
+        const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
+        let addedRacer = await fetch(`http://localhost:3000/racers/${raceToFetch}`, {
+            method: "POST",
+            headers: {
+                authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(blankRacer)
+        })
+        let addedRacerJSON = await addedRacer.json()
+        setRegisteredRacers(prev => {
+            let updatedRacers = prev.concat({...blankRacer, id: addedRacerJSON.insertId})
+            return updatedRacers
+        })
+        setAddedRacerID(addedRacerJSON.insertId)
+    }
+
+    function addPartner(racerId) {
         setRegisteredRacers(prev => {
             let updatedRacers = prev.map(racer => {
                 if (Number(racer.id) === Number(racerId)) {
-                    let updatedPartners = JSON.parse(racer.partners).toSpliced(partnerIndex, 1)
-                    return {
-                        ...racer,
-                        partners: JSON.stringify(updatedPartners)
-                    }
-                }
-                else return racer
-            })
-            return updatedRacers
-        })
-    }
-
-    function addPartner(racerId){
-        setRegisteredRacers(prev => {
-            let updatedRacers = prev.map(racer => {
-                if(Number(racer.id)===Number(racerId)){
-                    let updatedPartners = JSON.parse(racer.partners).concat({firstName: null, lastName: null})
+                    let updatedPartners = JSON.parse(racer.partners).concat({ firstName: null, lastName: null })
                     return {
                         ...racer,
                         partners: JSON.stringify(updatedPartners)
@@ -192,11 +207,11 @@ export default function Athletes() {
                     return racer
                 }
             })
-            console.log(updatedRacers)
             return updatedRacers
         })
     }
 
+    //UPDATE FUNCTIONS
     async function saveRacer(racerId) {
         let racerInfoToSave = registeredRacers.find(racer => Number(racer.id) === Number(racerId))
         const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
@@ -213,6 +228,24 @@ export default function Athletes() {
         console.log(updateRacerJSON)
         setSelectedRacer(null)
         setSelectedAction(null)
+    }
+
+
+    //DELETE FUNCTIONS
+    function deletePartner(partnerIndex, racerId) {
+        setRegisteredRacers(prev => {
+            let updatedRacers = prev.map(racer => {
+                if (Number(racer.id) === Number(racerId)) {
+                    let updatedPartners = JSON.parse(racer.partners).toSpliced(partnerIndex, 1)
+                    return {
+                        ...racer,
+                        partners: JSON.stringify(updatedPartners)
+                    }
+                }
+                else return racer
+            })
+            return updatedRacers
+        })
     }
 
     function askDeleteRacer(racerId) {
@@ -242,6 +275,15 @@ export default function Athletes() {
         getRacerData()
         setSelectedAction(null)
     }
+
+    
+
+
+
+
+
+
+
 
 
     if (selectedRace) {
@@ -279,6 +321,10 @@ export default function Athletes() {
                         }
 
                     </div>
+                    <br />
+                    <button className="button button--medium" onClick={() => addRacer()}>
+                        <FontAwesomeIcon className={`${styles["action-icon"]}`} icon={faCirclePlus} style={{ color: "#000000", }} /> &nbsp;&nbsp;Add Racer
+                    </button>
                 </div>
             </>
         )
