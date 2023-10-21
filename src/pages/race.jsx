@@ -52,7 +52,7 @@ function ScheduleItem({ eventDetails }) {
 export default function Race() {
     const raceData = useLoaderData()[0];
     const [mapMarkerData, setMapMarkerData] = useState([]);
-    const {raceName} = useParams()
+    const { raceName } = useParams()
     const formattedTime = raceData.date ? formatDateTime(raceData.date) : null;
     const locations = JSON.parse(raceData.locations);
     const locationContainers = locations.map(location => <LocationContainer location={location} handleShowHideToggle={handleShowHideToggle} />)
@@ -60,6 +60,7 @@ export default function Race() {
     const schedule = JSON.parse(raceData.schedule)
     const scheduleItems = schedule ? schedule.map(eventDetails => <ScheduleItem eventDetails={eventDetails} />) : null;
 
+    console.log(raceData)
     function updateMarkers(lat, lng) {
         let tempArray = [];
         //go through mapMarkerData.  If passed lat/lng match one already in the array, set our flag isMarkerInArray to note it already exists in the array
@@ -85,6 +86,10 @@ export default function Race() {
 
     return (
         <>
+            {
+                raceData.notification &&
+                <div className={`${styles["notification-banner"]}`}>{raceData.notification}</div>
+            }
             <main className={`${styles["racepage-container"]}`}>
                 <section className={`section-container`}>
                     <div className={`${styles["heading-container"]}`}>
@@ -95,9 +100,20 @@ export default function Race() {
                                 <h4>{`${formattedTime.time} ${formattedTime.amPm}`}</h4>
                             </> : <h4>CHECK BACK SOON FOR 2024 SCHEDULED RACE DATE</h4>
                         }
-                        <a href={`./${raceName}/register`} className={`button button--large disabled ${styles['registration-button']}`}>
-                            Register &nbsp;<img src="https://creekvt.com/races/RacerIcon.png" />
-                        </a>
+                        <div className={`${styles["registration-button__container"]}`}>
+                            {!raceData.isRegOpen &&
+                                <h5 className={`${styles["registration-notice__heading"]}`}>
+                                    {new Date(raceData.date) > new Date() ?
+                                        "Registration Currently Closed - Check Back Soon To Register"
+                                        :
+                                        "Registration For This Event Is Closed"
+                                    }
+                                </h5>
+                            }
+                            <a href={`./${raceName}/register`} className={`button button--large disabled ${styles['registration-button']}`}>
+                                Register &nbsp;<img src="https://creekvt.com/races/RacerIcon.png" />
+                            </a>
+                        </div>
                         <nav className={`${styles['race-nav']}`}>
                             <a href="#schedule-section" className={`link-std link-bold`}>Schedule</a>
                             <a href="#athletes-section" className={`link-std link-bold`}>Registered Athletes</a>
@@ -106,13 +122,13 @@ export default function Race() {
                             <a href="#results-section" className={`link-std link-bold`}>Results</a>
                             <a href="#faqcontact-section" className={`link-std link-bold`}>FAQ / Contact</a>
                         </nav>
-                        {
-                            new Date(raceData.date).valueOf()+(1000*60*60*24) < new Date().valueOf() ?
+                        {/* {
+                            new Date(raceData.date).valueOf() + (1000 * 60 * 60 * 24) < new Date().valueOf() ?
                                 <div className={`${styles["disclaimer-container"]}`}>
-                                    <h6>{`**The details on this page are for a race that has already occurred.  Be sure to check back for details on the ${formattedTime.year+1} race as the date approaches.**`}</h6>
+                                    <h6>{`**The details on this page are for a race that has already occurred.  Be sure to check back for details on the ${formattedTime.year + 1} race as the date approaches.**`}</h6>
                                 </div> :
                                 <></>
-                        }
+                        } */}
                     </div>
                 </section>
                 <section className={`section-container`} id={`schedule-section`}>
