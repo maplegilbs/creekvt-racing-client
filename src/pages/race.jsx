@@ -84,6 +84,8 @@ export default function Race() {
         updateMarkers(lat, lng)
     }
 
+    console.log(new Date(raceData.date) > new Date())
+
     return (
         <>
             {
@@ -101,16 +103,17 @@ export default function Race() {
                             </> : <h4>CHECK BACK SOON FOR 2024 SCHEDULED RACE DATE</h4>
                         }
                         <div className={`${styles["registration-button__container"]}`}>
-                            {!raceData.isRegOpen &&
+                            {new Date(raceData.date) < new Date() ?
                                 <h5 className={`${styles["registration-notice__heading"]}`}>
-                                    {new Date(raceData.date) > new Date() ?
-                                        "Registration Currently Closed - Check Back Soon To Register"
-                                        :
-                                        "Registration For This Event Is Closed"
-                                    }
+                                    Registration For This Event Is Closed
+                                </h5>
+                                :
+                                !raceData.isRegOpen &&
+                                <h5 className={`${styles["registration-notice__heading"]}`}>
+                                    Registration Currently Closed - Check Back Soon To Register
                                 </h5>
                             }
-                            <a href={`./${raceName}/register`} className={`button button--large disabled ${styles['registration-button']}`}>
+                            <a href={`./${raceName}/register`} className={`button button--large ${raceData.isRegOpen === 0? "disabled": ""} ${styles['registration-button']}`}>
                                 Register &nbsp;<img src="https://creekvt.com/races/RacerIcon.png" />
                             </a>
                         </div>

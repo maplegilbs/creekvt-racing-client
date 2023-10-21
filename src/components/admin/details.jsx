@@ -24,16 +24,17 @@ export default function Details() {
                 setFormData({
                     date: formatDateTime(new Date(raceJSON[0].date)).htmlDateTime,
                     shortDescription: raceJSON[0].shortDescription,
-                    notification: raceJSON[0].notification
+                    notification: raceJSON[0].notification,
+                    isRegOpen: raceJSON[0].isRegOpen
                 })
             }
             catch (err) {
                 setFormData({
                     date: null,
                     shortDescription: '',
-                    notification: ''
+                    notification: '',
+                    isRegOpen: false
                 })
-
             }
         }
         getRaceData()
@@ -53,7 +54,8 @@ export default function Details() {
                 "name": `${selectedRace}`,
                 "date": `${formData.date}`,
                 "shortDescription": `${formData.shortDescription}`,
-                "notification": `${formData.notification}`
+                "notification": `${formData.notification}`,
+                "isRegOpen": `${formData.isRegOpen}`
             })
         })
         if (updatedRace.status == 200) {
@@ -64,12 +66,23 @@ export default function Details() {
     }
 
     function handleChange(e) {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        })
+        if(e.target.type === "checkbox"){
+            let isRegOpen = e.target.checked ? 1 : 0;
+            setFormData({
+                ...formData,
+                isRegOpen: isRegOpen
+            })
+        }
+        else {
+            setFormData({
+                ...formData,
+                [e.target.name]: e.target.value
+            })
+        }
         setLastSaved('edited')
     }
+
+    console.log(formData)
 
     if (selectedRace) {
 
@@ -93,6 +106,12 @@ export default function Details() {
                         <div className="input-group">
                             <label htmlFor="notification">Banner notfication (will appear as a banner at the top of the details section)</label>
                             <input type="text" name="notification" id="notification" placeholder="Example: Only 5 spots left!" onChange={handleChange} value={formData.notification ? formData.notification : ''} />
+                        </div>
+                    </div>
+                    <div className="input-row">
+                        <div className={`input-group ${styles["checkbox-group"]}`}>
+                            <label htmlFor="isRegOpen">Is Registration Open?</label>
+                            <input type="checkbox" name="isRegOpen" id="isRegOpen" onChange={handleChange} checked={formData.isRegOpen ? true : false} />
                         </div>
                     </div>
                     <button type="submit">Save</button>

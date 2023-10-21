@@ -1,0 +1,7 @@
+div.checkbox-group {
+    flex-direction: row;
+    justify-content: start;
+}
+.checkbox-group label {
+    margin: 0 1rem 0 0;
+}
