@@ -38,7 +38,7 @@ function AthleteRow({ i, registeredRacers, askDeleteRacer, editRacer }) {
 
 
 //Component for editing individual racer information
-function EditRow({ i, registeredRacers, saveRacer, handleChange, deletePartner, addPartner }) {
+function EditRow({ i, registeredRacers, selectedRaceInfo, saveRacer, handleChange, deletePartner, addPartner }) {
     return (
         <div className={`${styles["racer-row"]}`}>
             <div className={`${styles["row-icons"]}`}>
@@ -48,23 +48,27 @@ function EditRow({ i, registeredRacers, saveRacer, handleChange, deletePartner, 
             <input type="text" name="firstName" id={`firstName-${i}`} onChange={(e) => handleChange(e, registeredRacers[i].id)} value={registeredRacers[i].firstName} />
             <input type="text" name="lastName" id={`lastName-${i}`} onChange={(e) => handleChange(e, registeredRacers[i].id)} value={registeredRacers[i].lastName} />
             <input type="text" name="email" id={`email-${i}`} onChange={(e) => handleChange(e, registeredRacers[i].id)} value={registeredRacers[i].email} />
-            <p>{registeredRacers[i].category}</p>
-            {
-                JSON.parse(registeredRacers[i].partners) &&
-                <div className={`${styles["edit-partners-block"]}`}>
-                    <p>Partners:</p>
-                    {JSON.parse(registeredRacers[i].partners).map((partner, partnerIndex) =>
-                        <>
-                            <div className={`${styles["edit-partners-row"]}`}>
-                                <input type="text" name="partner-firstName" id={`partner-firstName-${partnerIndex}`} onChange={(e) => handleChange(e, registeredRacers[i].id)} value={partner.firstName} />
-                                <input type="text" name="partner-lastName" id={`partner-lastName-${partnerIndex}`} onChange={(e) => handleChange(e, registeredRacers[i].id)} value={partner.lastName} />
-                                <FontAwesomeIcon onClick={() => deletePartner(partnerIndex, registeredRacers[i].id)} className={`${styles["action-icon"]}`} icon={faCircleMinus} style={{ color: "#af2323", }} />
-                            </div>
-                        </>
-                    )}
-                    <FontAwesomeIcon className={`${styles["action-icon"]}`} icon={faCirclePlus} onClick={() => addPartner(registeredRacers[i].id)} />
-                </div>
-            }
+            <select name="category" id={`category-${i}`} onChange={(e) => handleChange(e, registeredRacers[i].id)} value={registeredRacers[i].category} >
+                <option> -- </option>
+                {
+                    JSON.parse(selectedRaceInfo.racerCategories).map(category => {
+                        return <option value={category}>{category}</option>
+                    })
+                }
+            </select>
+            <div className={`${styles["edit-partners-block"]}`}>
+                <p>Partners:</p>
+                {JSON.parse(registeredRacers[i].partners) &&
+                    JSON.parse(registeredRacers[i].partners).map((partner, partnerIndex) =>
+                        <div className={`${styles["edit-partners-row"]}`}>
+                            <input type="text" name="partner-firstName" id={`partner-firstName-${partnerIndex}`} onChange={(e) => handleChange(e, registeredRacers[i].id)} value={partner.firstName} />
+                            <input type="text" name="partner-lastName" id={`partner-lastName-${partnerIndex}`} onChange={(e) => handleChange(e, registeredRacers[i].id)} value={partner.lastName} />
+                            <FontAwesomeIcon onClick={() => deletePartner(partnerIndex, registeredRacers[i].id)} className={`${styles["action-icon"]}`} icon={faCircleMinus} style={{ color: "#af2323", }} />
+                        </div>
+                    )
+                }
+                < FontAwesomeIcon className={`${styles["action-icon"]}`} icon={faCirclePlus} onClick={() => addPartner(registeredRacers[i].id)} />
+            </div>
         </div>
     )
 }
@@ -92,19 +96,25 @@ function DeleteConfirmation({ selectedRacer, setSelectedRacer, setSelectedAction
 
 export default function Athletes() {
     const selectedRace = useContext(SelectedRaceContext)[0];
+    const [selectedRaceInfo, setSelectedRaceInfo] = useState()
     const userInfo = useContext(UserInfoContext)
     const [registeredRacers, setRegisteredRacers] = useState(null)
     const [selectedAction, setSelectedAction] = useState(null)
     const [selectedRacer, setSelectedRacer] = useState(null)
     const [addedRacerID, setAddedRacerID] = useState(null)
 
-    console.log(`Selected racer: `, selectedRacer, ` All Racers `, registeredRacers)
+    console.log(`Selected racer: `, selectedRacer, 'Selected race info: ', selectedRaceInfo, ` All Racers `, registeredRacers)
 
     useEffect(() => {
         const getRacerData = async () => {
             try {
+                const token = localStorage.getItem("token")
                 const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
-                let fetchedRacerData = await fetch(`http://localhost:3000/racers/${raceToFetch}`)
+                let fetchedRacerData = await fetch(`http://localhost:3000/racers/admin/${raceToFetch}`, {
+                    headers: {
+                        authorization: `Bearer ${token}`
+                    }
+                })
                 let fetchedRacerJSON = await fetchedRacerData.json();
                 setRegisteredRacers(fetchedRacerJSON[0])
             } catch (error) {
@@ -112,11 +122,22 @@ export default function Athletes() {
             }
         }
         getRacerData()
+        const getRaceData = async () => {
+            try {
+                const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
+                let fetchedRaceData = await fetch(`http://localhost:3000/races/${raceToFetch}`)
+                let fetchedRaceJSON = await fetchedRaceData.json();
+                setSelectedRaceInfo(fetchedRaceJSON[0])
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        getRaceData()
     }, [selectedRace])
 
     useEffect(() => {
-        if(addedRacerID) {editRacer(addedRacerID)}
-    },[addedRacerID])
+        if (addedRacerID) { editRacer(addedRacerID) }
+    }, [addedRacerID])
 
     function editRacer(racerId) {
         setSelectedRacer(registeredRacers.find(racer => Number(racer.id) === Number(racerId)))
@@ -187,7 +208,7 @@ export default function Athletes() {
         })
         let addedRacerJSON = await addedRacer.json()
         setRegisteredRacers(prev => {
-            let updatedRacers = prev.concat({...blankRacer, id: addedRacerJSON.insertId})
+            let updatedRacers = prev.concat({ ...blankRacer, id: addedRacerJSON.insertId })
             return updatedRacers
         })
         setAddedRacerID(addedRacerJSON.insertId)
@@ -197,7 +218,7 @@ export default function Athletes() {
         setRegisteredRacers(prev => {
             let updatedRacers = prev.map(racer => {
                 if (Number(racer.id) === Number(racerId)) {
-                    let updatedPartners = JSON.parse(racer.partners).concat({ firstName: null, lastName: null })
+                    let updatedPartners = JSON.parse(racer.partners)? JSON.parse(racer.partners).concat({ firstName: null, lastName: null }) : [{ firstName: null, lastName: null }] 
                     return {
                         ...racer,
                         partners: JSON.stringify(updatedPartners)
@@ -276,7 +297,7 @@ export default function Athletes() {
         setSelectedAction(null)
     }
 
-    
+
 
 
 
@@ -313,7 +334,7 @@ export default function Athletes() {
                         {selectedAction === 'edit' &&
                             (registeredRacers ? registeredRacers.map((racer, i) => {
                                 return Number(racer.id) === Number(selectedRacer.id) ?
-                                    <EditRow i={i} registeredRacers={registeredRacers} saveRacer={saveRacer} handleChange={handleChange} deletePartner={deletePartner} addPartner={addPartner} />
+                                    <EditRow i={i} registeredRacers={registeredRacers} selectedRaceInfo={selectedRaceInfo} saveRacer={saveRacer} handleChange={handleChange} deletePartner={deletePartner} addPartner={addPartner} />
                                     :
                                     <AthleteRow i={i} registeredRacers={registeredRacers} askDeleteRacer={askDeleteRacer} editRacer={editRacer} />
                             })

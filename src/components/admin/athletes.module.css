@@ -33,6 +33,7 @@
 .racer-headers h6,
 .racer-row > p,
 .racer-row > input,
+.racer-row > select,
 .row-icons,
 .partners-block h6 {
     grid-row: 1;
