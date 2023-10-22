@@ -1,5 +1,6 @@
 //Components
 import Map from "../components/map";
+import RegisteredRacers from "../components/registeredRacers";
 //Hooks
 import { useLoaderData, useParams } from "react-router-dom";
 //Libs
@@ -149,9 +150,7 @@ export default function Race() {
                 <section className={`section-container`} id={`athletes-section`}>
                     <h2 className={`section-heading`}>Registered Athletes</h2>
                     <hr />
-                    {/* {
-                        registeredAthletes ? {registeredAthletes}: <h4> No athletes registered to race yet.  Be the first</h4>
-                    } */}
+                    <RegisteredRacers raceData={raceData}/>
 
                 </section>
                 <section className={`section-container`} id={`directions-section`}>
