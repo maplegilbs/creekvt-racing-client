@@ -2,35 +2,42 @@
 import { Wrapper } from "@googlemaps/react-wrapper";
 //Hooks
 import { useRef, useEffect, useState } from "react";
+import { useParams } from "react-router";
 //Styles
 import styles from "./map.module.css"
 
-function MyMapComponent({ center, zoom, mapTypeId, mapMarkerData }) {
+function MyMapComponent({mapMarkerData }) {
+    const raceToFetch = useParams().raceName;
     const [myMap, setMyMap] = useState();
     const [mapMarkers, setMapMarkers] = useState([])
     const ref = useRef();
 
+
     useEffect(() => {
-        const newMap = new window.google.maps.Map(ref.current, {
-            center,
-            zoom,
-            mapTypeId,
-            streetViewControl: false,
-            styles: [{
-                "featureType": "poi",
-                "elementType": "labels",
-                "stylers": [
-                    {
-                        "visibility": "off"
-                    }
-                ]
-            }]
-        });
-        // const georssLayer = new window.google.maps.KmlLayer({
-        //     url: "https://creekvt.com/races/new_haven_race_course_2024.kml",
-        // });
-        // georssLayer.setMap(newMap);
-        setMyMap(newMap)
+        const buildMap = async () => {
+            let mapOptionsResponse = await fetch(`http://localhost:3000/geoInfo/mapOptions/${raceToFetch}`)
+            let mapOptionsData = await mapOptionsResponse.json();
+            console.log(mapOptionsData)
+            mapOptionsData = mapOptionsData[0][0];
+            const newMap = new window.google.maps.Map(ref.current, {
+                center: {lat: Number(mapOptionsData.centerLat), lng: Number(mapOptionsData.centerLng)},
+                zoom: Number(mapOptionsData.zoom),
+                mapTypeId: mapOptionsData.mapTypeId,
+                streetViewControl: false,
+                styles: [{
+                    "featureType": "poi",
+                    "elementType": "labels",
+                    "stylers": [
+                        {
+                            "visibility": "off"
+                        }
+                    ]
+                }]
+            });
+            newMap.addListener('click', (e) => console.log(e.latLng.lat(), e.latLng.lng()))
+            setMyMap(newMap)
+        }
+        buildMap()
     }, []);
 
 
@@ -94,9 +101,6 @@ export default function Map({ mapMarkerData, mapOptions }) {
         <div className={`${styles["map-container"]}`}>
             <Wrapper apiKey={"AIzaSyBBtqHKDrsiMp-7ldVkI6QEMoxjzggJ-J8"}>
                 <MyMapComponent
-                    center={{ lat: Number(mapOptions.lat), lng: Number(mapOptions.lng) }}
-                    zoom={Number(mapOptions.zoom)}
-                    mapTypeId={'terrain'}
                     mapMarkerData={mapMarkerData}
                 />
             </Wrapper>

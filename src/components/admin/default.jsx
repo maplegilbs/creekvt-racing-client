@@ -1,5 +1,6 @@
 //Styles
 import styles from "./default.module.css"
+
 export default function Default({ userInfo }) {
     return (
         <div className={`${styles["welcome-wrapper"]}`}>

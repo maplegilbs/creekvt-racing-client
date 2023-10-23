@@ -120,7 +120,8 @@ p {
 }
 
 .section-container:nth-child(even) {
-    background-color: #a5b7bf;
+    /* background-color: #a5b7bf; */
+    background-color: rgba(140,170,190,.35);
 }
 
 .section-container hr {

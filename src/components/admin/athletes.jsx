@@ -50,7 +50,7 @@ function EditRow({ i, registeredRacers, selectedRaceInfo, saveRacer, handleChang
             <input type="text" name="email" id={`email-${i}`} onChange={(e) => handleChange(e, registeredRacers[i].id)} value={registeredRacers[i].email} />
             <select name="category" id={`category-${i}`} onChange={(e) => handleChange(e, registeredRacers[i].id)} value={registeredRacers[i].category} >
                 <option> -- </option>
-                {
+                {selectedRaceInfo.racerCategores &&
                     JSON.parse(selectedRaceInfo.racerCategories).map(category => {
                         return <option value={category}>{category}</option>
                     })
@@ -95,7 +95,7 @@ function DeleteConfirmation({ selectedRacer, setSelectedRacer, setSelectedAction
 }
 
 export default function Athletes() {
-    const selectedRace = useContext(SelectedRaceContext)[0];
+    const selectedRace = useContext(SelectedRaceContext)[0]; //Name of race with spaces i.e. "Test Race"
     const [selectedRaceInfo, setSelectedRaceInfo] = useState()
     const userInfo = useContext(UserInfoContext)
     const [registeredRacers, setRegisteredRacers] = useState(null)
@@ -246,7 +246,6 @@ export default function Athletes() {
             body: JSON.stringify(racerInfoToSave)
         })
         const updateRacerJSON = await updateRacerResponse.json();
-        console.log(updateRacerJSON)
         setSelectedRacer(null)
         setSelectedAction(null)
     }
@@ -283,6 +282,7 @@ export default function Athletes() {
                 authorization: `Bearer ${token}`
             }
         })
+        console.log(deletedRacerResponse)
         const getRacerData = async () => {
             try {
                 const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
@@ -311,7 +311,6 @@ export default function Athletes() {
         return (
             <>
                 <div className={`${styles["registered-racers__container"]}`}>
-
                     <div className={`${styles["racer-headers"]}`}>
                         <h6></h6><h6>ID</h6><h6>First Name</h6><h6>Last Name</h6><h6>Email</h6><h6>Category</h6>
                     </div>
@@ -325,7 +324,6 @@ export default function Athletes() {
                                 confirmDeleteRacer={confirmDeleteRacer}
                             />
                         </>
-
                     }
                     <div>
                         {!selectedAction &&
@@ -340,10 +338,9 @@ export default function Athletes() {
                             })
                                 : 'No edit')
                         }
-
                     </div>
                     <br />
-                    <button className="button button--medium" onClick={() => addRacer()}>
+                    <button className={`${"button button--medium"} ${styles["add-racer__button"]}`} onClick={() => addRacer()}>
                         <FontAwesomeIcon className={`${styles["action-icon"]}`} icon={faCirclePlus} style={{ color: "#000000", }} /> &nbsp;&nbsp;Add Racer
                     </button>
                 </div>

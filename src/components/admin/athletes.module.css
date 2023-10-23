@@ -121,6 +121,12 @@
     justify-content: space-evenly;
     align-items: center;
 }
+button.add-racer__button {
+    margin: .5rem;
+    background: white;
+    color: black;
+    text-shadow: none;
+}
 
 div[data-lastpass-icon-root="true"] {
     display: none;

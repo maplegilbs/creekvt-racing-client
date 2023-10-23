@@ -10,8 +10,8 @@ import { formatDateTime } from "../../utils/formatDateTime";
 import styles from "./details.module.css"
 
 export default function Details() {
+    const selectedRace = useContext(SelectedRaceContext)[0]; //Name of race with spaces i.e. "Test Race"
     const [formData, setFormData] = useState({});
-    const selectedRace = useContext(SelectedRaceContext)[0]
     const [lastSaved, setLastSaved] = useContext(LastSavedContext)
     const userInfo = useContext(UserInfoContext)
 

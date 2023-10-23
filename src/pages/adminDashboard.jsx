@@ -4,6 +4,7 @@ import AdminHeader from "../components/adminHeader";
 import Athletes from "../components/admin/athletes";
 import Default from "../components/admin/default";
 import Details from "../components/admin/details";
+import Directions from "../components/admin/directions";
 import Schedule from "../components/admin/schedule";
 //Contexts
 import { useContext, createContext } from "react";
@@ -51,7 +52,7 @@ export default function AdminDashboard() {
                 setEditComponent(<Athletes />);
                 break;
             case "directions":
-                setEditComponent(<div>Directions</div>);
+                setEditComponent(<Directions />);
                 break;
             case "results":
                 setEditComponent(<div>Results</div>);

@@ -40,9 +40,9 @@ function ScheduleInput({ i, handleChange, handleRemove, formData }) {
 
 
 export default function Schedule() {
+    const selectedRace = useContext(SelectedRaceContext)[0]; //Name of race with spaces i.e. "Test Race"
     const [formData, setFormData] = useState({});
     const [scheduleInputs, setScheduleInputs] = useState([])
-    const selectedRace = useContext(SelectedRaceContext)[0]
     const [lastSaved, setLastSaved] = useContext(LastSavedContext)
     const userInfo = useContext(UserInfoContext)
 

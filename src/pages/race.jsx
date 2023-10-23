@@ -57,7 +57,6 @@ export default function Race() {
     const formattedTime = raceData.date ? formatDateTime(raceData.date) : null;
     const locations = JSON.parse(raceData.locations);
     const locationContainers = locations.map(location => <LocationContainer location={location} handleShowHideToggle={handleShowHideToggle} />)
-    const mapOptions = JSON.parse(raceData.mapOptions)[0];
     const schedule = JSON.parse(raceData.schedule)
     const scheduleItems = schedule ? schedule.map(eventDetails => <ScheduleItem eventDetails={eventDetails} />) : null;
 
@@ -160,9 +159,7 @@ export default function Race() {
                         <div className={`${styles["location-section"]}`}>
                             {locationContainers}
                         </div>
-                        < Map
-                            mapMarkerData={mapMarkerData}
-                            mapOptions={mapOptions} />
+                        < Map mapMarkerData={mapMarkerData} />
                     </div>
                 </section >
                 <section className={`section-container`} id={`course-section`}>
