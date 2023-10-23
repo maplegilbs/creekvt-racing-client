@@ -48,3 +48,11 @@ export function formatDateTime(inputTime) {
         }
     )
 }
+
+export function convertTime (inputTime) {
+    let date = new Date();
+    date.setHours(inputTime.slice(0,2))
+    date.setMinutes(inputTime.slice(3,5))
+    let outputTime = `${formatDateTime(date).time} ${formatDateTime(date).amPm}`
+    return outputTime;
+}

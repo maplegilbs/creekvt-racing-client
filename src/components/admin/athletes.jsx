@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare, faCircleMinus, faCirclePlus, faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 //Styles
 import styles from "./athletes.module.css"
+import adminStyles from "./adminGlobalStyles.module.css"
 
 
 //Component for informational row only.  Buttons to edit or delete racers.
@@ -310,7 +311,7 @@ export default function Athletes() {
     if (selectedRace) {
         return (
             <>
-                <div className={`${styles["registered-racers__container"]}`}>
+                <div className={`${adminStyles["info__container"]}`}>
                     <div className={`${styles["racer-headers"]}`}>
                         <h6></h6><h6>ID</h6><h6>First Name</h6><h6>Last Name</h6><h6>Email</h6><h6>Category</h6>
                     </div>

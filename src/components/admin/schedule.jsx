@@ -1,39 +1,91 @@
+//Components
+import Default from "./default";
 //Contexts
 import { SelectedRaceContext, LastSavedContext, UserInfoContext } from "../../pages/adminDashboard";
 //Hooks
 import { useContext, useEffect, useState } from "react";
+//Icons
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPenToSquare, faCircleMinus, faCirclePlus, faFloppyDisk, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 //Libs
-import { formatDateTime } from "../../utils/formatDateTime";
+import { formatDateTime, convertTime } from "../../utils/formatDateTime";
 //Styles
 import styles from "./schedule.module.css"
-import Default from "./default";
+import adminStyles from "./adminGlobalStyles.module.css"
 
-function ScheduleInput({ i, handleChange, handleRemove, formData }) {
+
+// Component for informational row only.  Buttons to edit or delete items.
+function ScheduleItemRow({ itemID, itemData, askDeleteItem, editItem }) {
     return (
-        <section className={`${styles["schedule-input__section"]}`} id={`event-${i}`}>
-            <div className={"input-row"}>
-                <div className="input-group">
-                    <label htmlFor={`name-${i}`}>Name</label>
-                    <input type="text" name="name" id={`name-${i}`} onChange={handleChange} value={formData.schedule[i].name} />
-                </div>
-                <div className="input-group">
-                    <label htmlFor={`location-${i}`}>Location</label>
-                    <input type="text" name="location" id={`location-${i}`} onChange={handleChange} value={formData.schedule[i].location} />
-                </div>
+        <div className={`${adminStyles["info-row"]} ${styles["schedule-row"]}`}>
+            <div className={`${styles["row-icons"]}`}>
+                <FontAwesomeIcon className={`${adminStyles["action-icon"]}`} onClick={() => editItem(itemID)} icon={faPenToSquare} style={{ color: "#000000", }} />
+                <FontAwesomeIcon className={`${adminStyles["action-icon"]}`} onClick={() => askDeleteItem(itemID)} icon={faCircleMinus} style={{ color: "#af2323", }} />
             </div>
+            <p>{itemData.startTime ? convertTime(itemData.startTime) : ""}</p>
+            <p>{itemData.endTime ? convertTime(itemData.endTime) : ""}</p>
+            <p>{itemData.name ? itemData.name : ""}</p>
+            <p>{itemData.location ? itemData.location : ""}</p>
+        </div>
+    )
+}
 
-            <div className="input-row">
-                <div className={"input-group"}>
-                    <label htmlFor={`startTime-${i}`}>Start Time</label>
-                    <input type="time" name="startTime" id={`startTime-${i}`} onChange={handleChange} value={formData.schedule[i].startTime} />
+//Component with input elements to update selected schedule item.  Button to save or cancel edited data.
+function EditScheduleItemRow({ itemID, itemData, handleChange, saveItem }) {
+    return (
+        <>
+            <div className={`${adminStyles["info-row"]} ${styles["edit-row"]} ${adminStyles["edit-row"]}`}>
+                <div className="input-row">
+                    <div className={`input-group`}>
+                        <label htmlFor={`schedule-startTime-${itemID}`}>Start Time</label>
+                        <input type="time" name="startTime" id={`schedule-startTime-${itemID}`} onChange={(e) => handleChange(e, itemID)} value={itemData.startTime} />
+                    </div>
+                    <div className={`input-group`}>
+                        <label htmlFor={`schedule-endTime-${itemID}`}>End Time</label>
+                        <input type="time" name="endTime" id={`schedule-endTime-${itemID}`} onChange={(e) => handleChange(e, itemID)} value={itemData.endTime} />
+                    </div>
                 </div>
-                <div className="input-group">
-                    <label htmlFor={`endTime-${i}`}>End Time</label>
-                    <input type="time" name="endTime" id={`endTime-${i}`} onChange={handleChange} value={formData.schedule[i].endTime} />
+                <div className="input-row">
+                    <div className={`input-group`}>
+                        <label htmlFor={`schedule-name-${itemID}`}>Name</label>
+                        <input type="text" name="name" id={`schedule-name-${itemID}`} onChange={(e) => handleChange(e, itemID)} value={itemData.name} />
+                    </div>
+                </div>
+                <div className="input-row">
+                    <div className={`input-group`}>
+                        <label htmlFor={`schedule-location-${itemID}`}>Location</label>
+                        <input type="text" name="location" id={`schedule-location-${itemID}`} onChange={(e) => handleChange(e, itemID)} value={itemData.location} />
+                    </div>
+                </div>
+                <div className={`${adminStyles["button-row"]} ${adminStyles["final-row"]} `}>
+                    <button className={`${"button button--medium"} ${adminStyles["icon__button"]}`} onClick={() => saveItem(itemID)}>
+                        <FontAwesomeIcon className={`${styles["action-icon"]}`} icon={faFloppyDisk} style={{ color: "#016014", }} /> &nbsp;&nbsp;Save
+                    </button>
+                    <button className={`${"button button--medium"} ${adminStyles["icon__button"]}`} onClick={() => saveItem(itemID)}>
+                        <FontAwesomeIcon className={`${styles["action-icon"]}`} icon={faCircleXmark} style={{ color: "#af2323", }} /> &nbsp;&nbsp;Cancel
+                    </button>
                 </div>
             </div>
-            <button type="button" onClick={handleRemove}>Remove</button>
-        </section>
+        </>
+    )
+}
+
+function DeleteConfirmation({ itemID, setSelectedItemID, setSelectedAction, confirmDeleteItem }) {
+    return (
+        <div className={`${adminStyles["delete-confirm__container"]}`}>
+            <div>
+                {`Are you sure you want to delete this item?`}<br />
+                This action cannot be undone.
+                <div className={`${adminStyles["button-row"]} ${adminStyles["button-row--even-space"]}`}>
+                    <button type="button" className="button button--medium" onClick={() => confirmDeleteItem(itemID)}>
+                        Confirm
+                    </button>
+                    <button type="button" className="button button--medium" onClick={() => { setSelectedItemID(null); setSelectedAction(null); }}>
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
     )
 }
 
@@ -41,119 +93,171 @@ function ScheduleInput({ i, handleChange, handleRemove, formData }) {
 
 export default function Schedule() {
     const selectedRace = useContext(SelectedRaceContext)[0]; //Name of race with spaces i.e. "Test Race"
-    const [formData, setFormData] = useState({});
-    const [scheduleInputs, setScheduleInputs] = useState([])
-    const [lastSaved, setLastSaved] = useContext(LastSavedContext)
-    const userInfo = useContext(UserInfoContext)
+    const userInfo = useContext(UserInfoContext) //Logged in user info contianed in token
+    const [scheduleData, setScheduleData] = useState(null);  //Array of objectes each containing data about specific schedule item
+    const [selectedItemID, setSelectedItemID] = useState(null);  //The ID of a selected location  
+    const [selectedAction, setSelectedAction] = useState(null); //Null, 'delete' or 'edit' to be used to determine if Edit components allowing for input should be displayed or not
 
-
+    //Set our initial state based on any changes in the selected race
     useEffect(() => {
-        const getRaceData = async () => {
-            try {
-                const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
-                let raceData = await fetch(`http://localhost:3000/races/${raceToFetch}`)
-                let raceJSON = await raceData.json();
-                setFormData({
-                    date: formatDateTime(new Date(raceJSON[0].date)).htmlDateTime,
-                    schedule: JSON.parse(raceJSON[0].schedule)
-                })
-            }
-            catch (err) {
-                setFormData({
-                    date: null,
-                    schedule: null
-                })
-
-            }
-        }
-        getRaceData()
-        setLastSaved(null)
+        getScheduleData()
     }, [selectedRace])
 
-    useEffect(() => {
-        setScheduleInputs(formData.schedule ? formData.schedule.map((scheduleItem, i) => {
-            return (
-                <ScheduleInput key={i} i={i} handleChange={handleChange} formData={formData} handleRemove={handleRemove} />
-            )
-        }) : [])
-    }, [formData])
 
-    console.log(formData)
+    //Basic fetch of schedule data
+    async function getScheduleData() {
+        try {
+            const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
+            let response = await fetch(`http://localhost:3000/schedule/${raceToFetch}`)
+            let responseJSON = await response.json();
+            let cleanedResponseJSON = responseJSON.map(item => {
+                for (let propertyName of Object.keys(item)) {
+                    if (item[propertyName] === 'null' || item[propertyName] === "00:00:00") item[propertyName] = null
+                }
+                return item;
+            })
+            setScheduleData(cleanedResponseJSON)
+        }
+        catch (err) {
+            console.error(err)
+            setScheduleData([])
+        }
+    }
 
-    async function handleSubmit(e) {
-        e.preventDefault();
-        let token = localStorage.getItem('token')
-        let updatedRace = await fetch('http://localhost:3000/races/testrace', {
+    //Add a blank item with corresponding race name and id to the DB and repopulate the scheduleData state
+    async function addItem() {
+        const token = localStorage.getItem('token')
+        let tableInfoResponse = await fetch(`http://localhost:3000/schedule/tableInfo`, {
+            headers: { authorization: `Bearer ${token}` }
+        })
+        let tableInfo = await tableInfoResponse.json()
+        const blankItem = { raceName: selectedRace };
+        tableInfo.forEach(column => {
+            if (column.Field !== 'id' && column.Field !== 'raceName') blankItem[column.Field] = null
+        })
+        const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
+        let addedItem = await fetch(`http://localhost:3000/schedule/${raceToFetch}`, {
+            method: "POST",
+            headers: {
+                authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(blankItem)
+        })
+        let addedItemJSON = await addedItem.json()
+        setScheduleData(prev => {
+            let updatedSchedule = prev.concat({ ...blankItem, id: addedItemJSON.insertId })
+            return updatedSchedule
+        })
+        setSelectedItemID(addedItemJSON.insertId)
+        setSelectedAction('edit')
+    }
+
+    //Set the selected action state to edit and the selected item id to the id of the item selected -- this will render a component with input fields for the selected item
+    function editItem(itemID) {
+        setSelectedItemID(itemID)
+        setSelectedAction('edit')
+    }
+
+    //Update the selected item in the database by way of its ID
+    async function saveItem(itemID) {
+        let itemDataToSave = scheduleData.find(item => item.id === itemID);
+        const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
+        const token = localStorage.getItem("token")
+        let updatedScheduleResponse = await fetch(`http://localhost:3000/schedule/${raceToFetch}/${itemID}`, {
             method: 'PATCH',
             headers: {
                 authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                "name": `${selectedRace}`,
-                "schedule": formData.schedule
-            })
+            body: JSON.stringify(itemDataToSave)
         })
-        if (updatedRace.status == 200) {
-            let now = new Date();
-            let timeSaved = `${formatDateTime(now).time} ${formatDateTime(now).amPm}`
-            setLastSaved(timeSaved)
+        const updatedLocationJSON = await updatedScheduleResponse.json();
+        setSelectedItemID(null)
+        setSelectedAction(null)
+    }
+
+    //Set the selected action state to delete and the selected item id to the id of the item selected -- this will render the delete confirmation component with the ability to confirm or cancel deletion
+    function askDeleteItem(itemID) {
+        setSelectedItemID(itemID)
+        setSelectedAction('delete')
+    }
+
+
+    //Display a modal to ask user to confirm deleting the item - if confirmed delete item from the database
+    async function confirmDeleteItem(itemID) {
+        try {
+            const token = localStorage.getItem("token");
+            const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
+            const deletedItem = await fetch(`http://localhost:3000/schedule/${raceToFetch}/${itemID}`, {
+                method: 'DELETE',
+                headers: { authorization: `Bearer ${token}` }
+            })
+            const deletedItemInfo = await deletedItem.json();
+            console.log(deletedItemInfo)
+            getScheduleData();
         }
+        catch (err) {
+            console.log(err)
+        }
+        setSelectedItemID(null)
+        setSelectedAction(null)
     }
 
-    function handleChange(e) {
-        let itemIndex = Number(e.target.id.split('-')[1]);
-        let propertyName = e.target.name;
-        setFormData(prev => {
-            let updatedSchedule = prev.schedule.map((item, i) => {
-                if (i === itemIndex) {
-                    item[propertyName] = e.target.value
-                    return item
-                }
-                else return item
+
+    function handleChange(e, itemID) {
+        let itemToEdit = scheduleData.find(item => Number(item.id) === Number(itemID))
+        setScheduleData(prev => {
+            let updatedItem = {
+                ...itemToEdit,
+                [e.target.name]: e.target.value
+            }
+            let updatedSchedule = prev.map(item => {
+                return item.id !== itemID ?
+                    item
+                    :
+                    updatedItem
             })
-            return { ...prev, schedule: updatedSchedule }
-        })
-        setLastSaved('edited')
-    }
-
-    function handleRemove(e) {
-        console.log(e.target.parentElement)
-        setFormData(prev => {
-            let updatedSchedule = prev.schedule.filter((item, i) => {
-                return i !== Number(e.target.parentElement.id.split('-')[1])
-            })
-            return { ...prev, schedule: updatedSchedule }
-        })
-        setLastSaved('edited')
-    }
-
-    //By adding a new element to our schedule array in the form data our useEffect above will run and create a new list of our schedule inputs
-    function addScheduleInput() {
-        setFormData(prev => {
-            let updatedSchedule = prev.schedule ? prev.schedule.map(item => item) : [];
-            updatedSchedule[updatedSchedule.length] = { "startTime": "", "endTime": "", "name": "", "location": "" }
-            return { ...prev, schedule: updatedSchedule }
+            return updatedSchedule
         })
     }
 
-    if (selectedRace) {
-
+    if (selectedRace && scheduleData) {
         return (
-            <div className="admin-edit__container">
+            <div className={`${adminStyles["info__container"]}`}>
                 <h2 className="section-heading">{selectedRace ? `${selectedRace} Schedule` : `Select a race to edit`}</h2>
-                <form onSubmit={handleSubmit}>
-                    <div className={`${styles["schedule-inputs"]}`}>
-                        {scheduleInputs}
-                    </div>
-                    <section className={`${styles["schedule-input__section"]}`}>
-                        <button type="button" onClick={addScheduleInput}>Add New</button>
-                    </section>
-                    <button type="submit">Save</button>
-                </form>
+                <div className={`${adminStyles["info-headers"]} ${styles['schedule-headers']}`}>
+                    <h6></h6><h6>Start</h6><h6>End</h6><h6>What</h6><h6>Where</h6>
+                </div>
+                {selectedAction === 'delete' &&
+                    <>
+                        {scheduleData.map(scheduleItem => <ScheduleItemRow key={scheduleItem.id} itemID={scheduleItem.id} itemData={scheduleItem} editItem={editItem} askDeleteItem={askDeleteItem} />)}
+                        <DeleteConfirmation
+                            itemID={selectedItemID}
+                            setSelectedItemID={setSelectedItemID}
+                            setSelectedAction={setSelectedAction}
+                            confirmDeleteItem={confirmDeleteItem}
+                        />
+                    </>
+                }
+                {!selectedAction &&
+                    scheduleData.map(scheduleItem => <ScheduleItemRow key={scheduleItem.id} itemID={scheduleItem.id} itemData={scheduleItem} editItem={editItem} askDeleteItem={askDeleteItem} />)
+                }
+                {selectedAction === 'edit' &&
+                    scheduleData.map(scheduleItem => {
+                        return selectedItemID === scheduleItem.id ?
+                            <EditScheduleItemRow key={scheduleItem.id} itemID={scheduleItem.id} itemData={scheduleItem} handleChange={handleChange} saveItem={saveItem} />
+                            :
+                            <ScheduleItemRow key={scheduleItem.id} itemID={scheduleItem.id} itemData={scheduleItem} askDeleteItem={askDeleteItem} editItem={editItem} />
+                    })
+                }
+                {selectedAction !== 'edit' &&
+                    <button className={`${"button button--medium"} ${adminStyles["icon__button"]}`} onClick={() => addItem()}>
+                        <FontAwesomeIcon className={`${styles["action-icon"]}`} icon={faCirclePlus} style={{ color: "#000000", }} /> &nbsp;&nbsp;Add Schedule Item
+                    </button>
+                }
             </div>
         )
     }
     else return <Default userInfo={userInfo} />
-
 }

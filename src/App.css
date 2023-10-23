@@ -169,11 +169,6 @@ p {
 }
 
 
-.admin-edit__container {
-    padding: 1rem;
-}
-
-
 @media screen and (max-width: 640px) {
 
     .mobile-hide {

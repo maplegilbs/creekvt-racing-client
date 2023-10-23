@@ -10,57 +10,58 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare, faCircleMinus, faCirclePlus, faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 //Styles
 import styles from "./directions.module.css"
+import adminStyles from "./adminGlobalStyles.module.css"
+
 
 // Component for informational row only.  Buttons to edit or delete racers.
-function LocationRow({ locationId, locationInfo, askDeleteLocation, editLocation }) {
+function LocationRow({ itemID, itemData, askDeleteItem, editItem }) {
     return (
-        <div className={`${styles["location-row"]}`}>
+        <div className={`${adminStyles["info-row"]} ${styles["location-row"]}`}>
             <div className={`${styles["row-icons"]}`}>
-                <FontAwesomeIcon className={`${styles["action-icon"]}`} onClick={() => editLocation(locationId)} icon={faPenToSquare} style={{ color: "#000000", }} />
-                <FontAwesomeIcon className={`${styles["action-icon"]}`} onClick={() => askDeleteLocation(locationId)} icon={faCircleMinus} style={{ color: "#af2323", }} />
+                <FontAwesomeIcon className={`${styles["action-icon"]}`} onClick={() => editItem(itemID)} icon={faPenToSquare} style={{ color: "#000000", }} />
+                <FontAwesomeIcon className={`${styles["action-icon"]}`} onClick={() => askDeleteItem(itemID)} icon={faCircleMinus} style={{ color: "#af2323", }} />
             </div>
-            <p>{locationInfo.name}</p>
-            <p>{locationInfo.description}</p>
-            <p className={`${styles['latlng-col']}`}>{Number(locationInfo.lat).toFixed(3)}</p>
-            <p className={`${styles['latlng-col']}`}>{Number(locationInfo.lng).toFixed(3)}</p>
+            <p>{itemData.name}</p>
+            <p>{itemData.description}</p>
+            <p className={`${styles['latlng-col']}`}>{Number(itemData.lat).toFixed(3)}</p>
+            <p className={`${styles['latlng-col']}`}>{Number(itemData.lng).toFixed(3)}</p>
         </div>
     )
 }
 
 
 // //Component for editing individual racer information
-function EditLocationRow({ locationId, locationInfo, handleChange, saveLocation }) {
+function EditLocationRow({ itemID, itemData, handleChange, saveLocation }) {
     return (
         <>
-            <div className={`${styles["edit-row"]}`}>
+            <div className={`${adminStyles["info-row"]} ${styles["edit-row"]}`}>
                 <div className="input-row">
                     <div className={`input-group`}>
-                        <label htmlFor={`location-name-${locationId}`}>Name</label>
-                        <input type="text" name="name" id={`location-name-${locationId}`} onChange={(e) => handleChange(e, locationId)} value={locationInfo.name} />
+                        <label htmlFor={`location-name-${itemID}`}>Name</label>
+                        <input type="text" name="name" id={`location-name-${itemID}`} onChange={(e) => handleChange(e, itemID)} value={itemData.name} />
                     </div>
                 </div>
                 <div className="input-row">
                     <div className={`input-group`}>
-                        <label htmlFor={`location-lat-${locationId}`}>Latitude</label>
-                        <input type="num" name="lat" id={`location-lat-${locationId}`} onChange={(e) => handleChange(e, locationId)} value={locationInfo.lat} />
+                        <label htmlFor={`location-lat-${itemID}`}>Latitude</label>
+                        <input type="num" name="lat" id={`location-lat-${itemID}`} onChange={(e) => handleChange(e, itemID)} value={itemData.lat} />
                     </div>
                     <div className={`input-group`}>
-                        <label htmlFor={`location-lng-${locationId}`}>Longitude</label>
-                        <input type="num" name="lng" id={`location-lng-${locationId}`} onChange={(e) => handleChange(e, locationId)} value={locationInfo.lng} />
+                        <label htmlFor={`location-lng-${itemID}`}>Longitude</label>
+                        <input type="num" name="lng" id={`location-lng-${itemID}`} onChange={(e) => handleChange(e, itemID)} value={itemData.lng} />
                     </div>
                 </div>
                 <div className="input-row">
                     <div className={`input-group`}>
-                        <label htmlFor={`location-description-${locationId}`}>Description</label>
-                        <textarea rows={8} name="description" id={`location-description-${locationId}`} onChange={(e) => handleChange(e, locationId)} value={locationInfo.desciption} />
+                        <label htmlFor={`location-description-${itemID}`}>Description</label>
+                        <textarea rows={8} name="description" id={`location-description-${itemID}`} onChange={(e) => handleChange(e, itemID)} value={itemData.desciption} />
                     </div>
                 </div>
             </div>
             {/* <div className={`${styles["save-icon-row"]}`}> */}
-            <button className={`${"button button--medium"} ${styles["icon__button"]}`} onClick={() => saveLocation(locationId)}>
+            <button className={`${"button button--medium"} ${styles["icon__button"]}`} onClick={() => saveLocation(itemID)}>
                 <FontAwesomeIcon className={`${styles["action-icon"]}`} icon={faFloppyDisk} style={{ color: "#016014", }} /> &nbsp;&nbsp;Save Location
             </button>
-            {/* </div> */}
         </>
     )
 }
@@ -89,10 +90,11 @@ function DeleteConfirmation({ selectedLocation, setSelectedLocation, setSelected
 
 export default function Directions() {
     const selectedRace = useContext(SelectedRaceContext)[0]; //Name of race with spaces i.e. "Test Race"
+    const userInfo = useContext(UserInfoContext);  //Logged in user info contianed in token
+
     const [locations, setLocations] = useState({});  //Object of all location information being used on the page
     const [selectedAction, setSelectedAction] = useState(null); //Null, 'delete' or 'edit' to be used to determine if Edit components allowing for input should be displayed or not
     const [selectedLocation, setSelectedLocation] = useState(null);  //The ID of a selected location  
-    const userInfo = useContext(UserInfoContext);  //Logged in user info contianed in token
 
     console.log(userInfo)
 
@@ -115,12 +117,12 @@ export default function Directions() {
 
 
     //Create Functions
-    async function addLocation() {
-        const blankLocation = {};
+    async function addItem() {
+        const blankItem = {};
         const token = localStorage.getItem('token')
         for (let propertyName in locations[0]) {
-            if (propertyName === 'raceName') blankLocation[propertyName] = locations[0][propertyName]
-            else blankLocation[propertyName] = null;
+            if (propertyName === 'raceName') blankItem[propertyName] = locations[0][propertyName]
+            else blankItem[propertyName] = null;
         }
         const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
         let addedLocation = await fetch(`http://localhost:3000/geoInfo/${raceToFetch}`, {
@@ -129,11 +131,11 @@ export default function Directions() {
                 authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(blankLocation)
+            body: JSON.stringify(blankItem)
         })
         let addedLocationJSON = await addedLocation.json()
         setLocations(prev => {
-            let updatedLocations = prev.concat({ ...blankLocation, id: addedLocationJSON[0].insertId })
+            let updatedLocations = prev.concat({ ...blankItem, id: addedLocationJSON[0].insertId })
             return updatedLocations
         })
         setSelectedLocation(addedLocationJSON[0].insertId)
@@ -141,15 +143,15 @@ export default function Directions() {
     }
 
     //Update Functions
-    function editLocation() {
+    function editItem() {
         console.log('editing')
     }
 
-    async function saveLocation(locationId) {
-        let locationToSave = locations.find(location => location.id === locationId);
+    async function saveLocation(itemID) {
+        let locationToSave = locations.find(location => location.id === itemID);
         const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
         const token = localStorage.getItem("token")
-        let updatedLocationResponse = await fetch(`http://localhost:3000/geoInfo/${raceToFetch}/${locationId}`, {
+        let updatedLocationResponse = await fetch(`http://localhost:3000/geoInfo/${raceToFetch}/${itemID}`, {
             method: 'PATCH',
             headers: {
                 authorization: `Bearer ${token}`,
@@ -164,10 +166,10 @@ export default function Directions() {
     }
 
 
-    function handleChange(e, locationId) {
+    function handleChange(e, itemID) {
         setLocations(prev => {
             let updatedLocations = prev.map(location => {
-                if (location.id !== locationId) return location
+                if (location.id !== itemID) return location
                 else {
                     let updatedLocation = {
                         ...location,
@@ -182,18 +184,18 @@ export default function Directions() {
 
 
     //Delete Functions
-    function askDeleteLocation(locationId) {
-        console.log(locationId)
-        setSelectedLocation(locationId)
+    function askDeleteItem(itemID) {
+        console.log(itemID)
+        setSelectedLocation(itemID)
         setSelectedAction('delete')
     }
 
-    async function confirmDeleteLocation(locationId) {
-        console.log(locationId)
+    async function confirmDeleteLocation(itemID) {
+        console.log(itemID)
         try {
             const token = localStorage.getItem("token");
             const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
-            const deletedLocation = await fetch(`http://localhost:3000/geoInfo/${raceToFetch}/${locationId}`, {
+            const deletedLocation = await fetch(`http://localhost:3000/geoInfo/${raceToFetch}/${itemID}`, {
                 method: 'DELETE',
                 headers: {
                     authorization: `Bearer ${token}`
@@ -228,15 +230,15 @@ export default function Directions() {
 
     if (selectedRace && locations.length > 0) {
         return (
-            <div className="admin-edit__container">
+            <div className={`${adminStyles["info__container"]}`}>
                 <h2 className="section-heading">{selectedRace ? `${selectedRace} Directions / Map Information` : `Select a race to edit`}</h2>
                 <div className={`${styles["locations__container"]}`}>
-                    <div className={`${styles["locations-headers"]}`}>
+                    <div className={`${adminStyles["info-headers"]} ${styles["location-headers"]}`}>
                         <h6></h6><h6>Name</h6><h6>Description</h6><h6>Lat</h6><h6>Lng</h6>
                     </div>
                     {selectedAction === 'delete' &&
                         <>
-                            {locations.map(location => <LocationRow locationId={location.id} locationInfo={location} editLocation={editLocation} askDeleteLocation={askDeleteLocation} />)}
+                            {locations.map(location => <LocationRow itemID={location.id} itemData={location} editItem={editItem} askDeleteItem={askDeleteItem} />)}
                             <DeleteConfirmation
                                 selectedLocation={selectedLocation}
                                 setSelectedLocation={setSelectedLocation}
@@ -248,16 +250,16 @@ export default function Directions() {
                     {selectedAction === 'edit' &&
                         locations.map(location =>
                             selectedLocation === location.id ?
-                                <EditLocationRow locationId={location.id} locationInfo={location} handleChange={handleChange} saveLocation={saveLocation} />
+                                <EditLocationRow itemID={location.id} itemData={location} handleChange={handleChange} saveLocation={saveLocation} />
                                 :
-                                <LocationRow locationId={location.id} locationInfo={location} editLocation={editLocation} askDeleteLocation={askDeleteLocation} />
+                                <LocationRow itemID={location.id} itemData={location} editItem={editItem} askDeleteItem={askDeleteItem} />
                         )}
                     {!selectedAction &&
-                        locations.map(location => <LocationRow locationId={location.id} locationInfo={location} editLocation={editLocation} askDeleteLocation={askDeleteLocation} />)
+                        locations.map(location => <LocationRow itemID={location.id} itemData={location} editItem={editItem} askDeleteItem={askDeleteItem} />)
                     }
                 </div>
                 {selectedAction !== 'edit' &&
-                    <button className={`${"button button--medium"} ${styles["icon__button"]}`} onClick={() => addLocation()}>
+                    <button className={`${"button button--medium"} ${adminStyles["icon__button"]}`} onClick={() => addItem()}>
                         <FontAwesomeIcon className={`${styles["action-icon"]}`} icon={faCirclePlus} style={{ color: "#000000", }} /> &nbsp;&nbsp;Add Location
                     </button>
                 }
