@@ -2,7 +2,7 @@ div.racer-headers,
 div.racer-row {
     grid-template-columns: 5rem 3rem;
     grid-auto-columns: 1fr;
-    grid-template-rows: max-content;
+    grid-auto-rows: max-content;
     row-gap: 0rem;
 }
 

@@ -2,12 +2,12 @@
 import Default from "./default";
 import AdminMap from './adminMap'
 //Contexts
-import { SelectedRaceContext, LastSavedContext, UserInfoContext } from "../../pages/adminDashboard";
+import { SelectedRaceContext, UserInfoContext } from "../../pages/adminDashboard";
 //Hooks
 import { useContext, useEffect, useState } from "react";
 //Icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPenToSquare, faCircleMinus, faCirclePlus, faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare, faCircleMinus, faCirclePlus, faCircleXmark, faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 //Styles
 import styles from "./directions.module.css"
 import adminStyles from "./adminGlobalStyles.module.css"
@@ -17,12 +17,12 @@ import adminStyles from "./adminGlobalStyles.module.css"
 function LocationRow({ itemID, itemData, askDeleteItem, editItem }) {
     return (
         <div className={`${adminStyles["info-row"]} ${styles["location-row"]}`}>
-            <div className={`${styles["row-icons"]}`}>
-                <FontAwesomeIcon className={`${styles["action-icon"]}`} onClick={() => editItem(itemID)} icon={faPenToSquare} style={{ color: "#000000", }} />
-                <FontAwesomeIcon className={`${styles["action-icon"]}`} onClick={() => askDeleteItem(itemID)} icon={faCircleMinus} style={{ color: "#af2323", }} />
+            <div className={`${adminStyles["row-icons"]}`}>
+                <FontAwesomeIcon className={`${adminStyles["action-icon"]}`} onClick={() => editItem(itemID)} icon={faPenToSquare} style={{ color: "#000000", }} />
+                <FontAwesomeIcon className={`${adminStyles["action-icon"]}`} onClick={() => askDeleteItem(itemID)} icon={faCircleMinus} style={{ color: "#af2323", }} />
             </div>
-            <p>{itemData.name}</p>
-            <p>{itemData.description}</p>
+            <p>{itemData.name ? itemData.name : ""}</p>
+            <p>{itemData.description ? itemData.description : ""}</p>
             <p className={`${styles['latlng-col']}`}>{Number(itemData.lat).toFixed(3)}</p>
             <p className={`${styles['latlng-col']}`}>{Number(itemData.lng).toFixed(3)}</p>
         </div>
@@ -30,11 +30,11 @@ function LocationRow({ itemID, itemData, askDeleteItem, editItem }) {
 }
 
 
-// //Component for editing individual racer information
-function EditLocationRow({ itemID, itemData, handleChange, saveLocation }) {
+//Component for editing individual racer information
+function EditLocationRow({ itemID, itemData, handleChange, saveItem, cancelAction }) {
     return (
         <>
-            <div className={`${adminStyles["info-row"]} ${styles["edit-row"]}`}>
+            <div className={`${adminStyles["info-row"]} ${adminStyles["edit-row"]} ${styles["edit-row"]}`}>
                 <div className="input-row">
                     <div className={`input-group`}>
                         <label htmlFor={`location-name-${itemID}`}>Name</label>
@@ -51,36 +51,39 @@ function EditLocationRow({ itemID, itemData, handleChange, saveLocation }) {
                         <input type="num" name="lng" id={`location-lng-${itemID}`} onChange={(e) => handleChange(e, itemID)} value={itemData.lng} />
                     </div>
                 </div>
-                <div className="input-row">
+                <div className={`input-row ${styles["second-row"]}`}>
                     <div className={`input-group`}>
                         <label htmlFor={`location-description-${itemID}`}>Description</label>
-                        <textarea rows={8} name="description" id={`location-description-${itemID}`} onChange={(e) => handleChange(e, itemID)} value={itemData.desciption} />
+                        <textarea rows={8} name="description" id={`location-description-${itemID}`} onChange={(e) => handleChange(e, itemID)} value={itemData.description ? itemData.description : ""} />
                     </div>
                 </div>
+                <div className={`${adminStyles["button-row"]} ${styles["save-icon-row"]}`}>
+                    <button className={`${"button button--medium"} ${adminStyles["icon__button"]}`} onClick={() => saveItem(itemID)}>
+                        <FontAwesomeIcon className={`${adminStyles["action-icon"]}`} icon={faFloppyDisk} style={{ color: "#016014", }} /> &nbsp;&nbsp;Save
+                    </button>
+                    <button className={`${"button button--medium"} ${adminStyles["icon__button"]}`} onClick={cancelAction}>
+                        <FontAwesomeIcon className={`${adminStyles["action-icon"]}`} icon={faCircleXmark} style={{ color: "#af2323", }} /> &nbsp;&nbsp;Cancel
+                    </button>
+                </div>
             </div>
-            {/* <div className={`${styles["save-icon-row"]}`}> */}
-            <button className={`${"button button--medium"} ${styles["icon__button"]}`} onClick={() => saveLocation(itemID)}>
-                <FontAwesomeIcon className={`${styles["action-icon"]}`} icon={faFloppyDisk} style={{ color: "#016014", }} /> &nbsp;&nbsp;Save Location
-            </button>
+
         </>
     )
 }
 
-function DeleteConfirmation({ selectedLocation, setSelectedLocation, setSelectedAction, confirmDeleteLocation }) {
+function DeleteConfirmation({ selectedItemID, confirmDeleteItem, cancelAction }) {
     return (
-        <div className={`${styles["delete-confirm__container"]}`}>
+        <div className={`${adminStyles["delete-confirm__container"]}`}>
             <div>
-                {`Are you sure you want to delete this ${selectedLocation} location?`}<br />
+                {`Are you sure you want to delete this item?`}<br />
                 This action cannot be undone.
-                <div className={`${styles["button__row"]}`}>
-                    <button type="button" className="button button--medium"
-                        onClick={() => {
-                            confirmDeleteLocation(selectedLocation)
-                        }}>Confirm</button>
-                    <button type="button" className="button button--medium" onClick={() => {
-                        setSelectedLocation(null);
-                        setSelectedAction(null);
-                    }}>Cancel</button>
+                <div className={`${adminStyles["button-row"]} ${adminStyles["button-row--even-space"]}`}>
+                    <button type="button" className="button button--medium" onClick={() => confirmDeleteItem(selectedItemID)}>
+                        Confirm
+                    </button>
+                    <button type="button" className="button button--medium" onClick={cancelAction}>
+                        Cancel
+                    </button>
                 </div>
             </div>
         </div>
@@ -91,41 +94,50 @@ function DeleteConfirmation({ selectedLocation, setSelectedLocation, setSelected
 export default function Directions() {
     const selectedRace = useContext(SelectedRaceContext)[0]; //Name of race with spaces i.e. "Test Race"
     const userInfo = useContext(UserInfoContext);  //Logged in user info contianed in token
-
-    const [locations, setLocations] = useState({});  //Object of all location information being used on the page
+    const [locations, setLocations] = useState(null);  //Object of all location information being used on the page
+    const [selectedItemID, setSelectedItemID] = useState(null);  //The ID of a selected location  
     const [selectedAction, setSelectedAction] = useState(null); //Null, 'delete' or 'edit' to be used to determine if Edit components allowing for input should be displayed or not
-    const [selectedLocation, setSelectedLocation] = useState(null);  //The ID of a selected location  
 
-    console.log(userInfo)
+    console.log(userInfo, locations)
 
     useEffect(() => {
-        const getMapInfo = async () => {
-            try {
-                const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
-                let locationResponse = await fetch(`http://localhost:3000/geoInfo/${raceToFetch}`)
-                let locationData = await locationResponse.json();
-                locationData = locationData[0]
-                setLocations(locationData)
-            }
-            catch (err) {
-                console.log(err)
-            }
-        }
-        getMapInfo()
+        getLocationsData()
     }, [selectedRace])
 
-
-
-    //Create Functions
-    async function addItem() {
-        const blankItem = {};
-        const token = localStorage.getItem('token')
-        for (let propertyName in locations[0]) {
-            if (propertyName === 'raceName') blankItem[propertyName] = locations[0][propertyName]
-            else blankItem[propertyName] = null;
+    //Basic fetch of locations data
+    async function getLocationsData() {
+        try {
+            const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
+            let response = await fetch(`http://localhost:3000/geoInfo/${raceToFetch}`)
+            let responseJSON = await response.json();
+            let cleanedResponseJSON = responseJSON.map(item => {
+                for (let propertyName of Object.keys(item)) {
+                    if (item[propertyName] === 'null' || item[propertyName] === "00:00:00") item[propertyName] = null
+                }
+                return item;
+            })
+            console.log(cleanedResponseJSON)
+            setLocations(cleanedResponseJSON)
         }
+        catch (err) {
+            console.log(err)
+        }
+    }
+
+
+    //Add a blank item with corresponding race name and id to the DB and repopulate the scheduleData state
+    async function addItem() {
+        const token = localStorage.getItem('token')
+        let tableInfoResponse = await fetch(`http://localhost:3000/geoInfo/tableInfo`, {
+            headers: { authorization: `Bearer ${token}` }
+        })
+        let tableInfo = await tableInfoResponse.json()
+        const blankItem = { raceName: selectedRace };
+        tableInfo.forEach(column => {
+            if (column.Field !== 'id' && column.Field !== 'raceName') blankItem[column.Field] = null
+        })
         const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
-        let addedLocation = await fetch(`http://localhost:3000/geoInfo/${raceToFetch}`, {
+        let addedItem = await fetch(`http://localhost:3000/geoInfo/${raceToFetch}`, {
             method: "POST",
             headers: {
                 authorization: `Bearer ${token}`,
@@ -133,22 +145,30 @@ export default function Directions() {
             },
             body: JSON.stringify(blankItem)
         })
-        let addedLocationJSON = await addedLocation.json()
+        let addedItemJSON = await addedItem.json()
         setLocations(prev => {
-            let updatedLocations = prev.concat({ ...blankItem, id: addedLocationJSON[0].insertId })
+            let updatedLocations = prev.concat({ ...blankItem, id: addedItemJSON.insertId })
             return updatedLocations
         })
-        setSelectedLocation(addedLocationJSON[0].insertId)
+        setSelectedItemID(addedItemJSON.insertId)
         setSelectedAction('edit')
     }
 
-    //Update Functions
-    function editItem() {
-        console.log('editing')
+    //Set the selected action state to edit and the selected item id to the id of the item selected -- this will render a component with input fields for the selected item
+    function editItem(itemID) {
+        setSelectedItemID(itemID)
+        setSelectedAction('edit')
     }
 
-    async function saveLocation(itemID) {
-        let locationToSave = locations.find(location => location.id === itemID);
+    //Action for when cancel button is selected
+    function cancelAction() {
+        setSelectedItemID(null);
+        setSelectedAction(null);
+    }
+
+    //Update the selected item in the database by way of its ID
+    async function saveItem(itemID) {
+        let itemDataToSave = locations.find(item => item.id === itemID);
         const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
         const token = localStorage.getItem("token")
         let updatedLocationResponse = await fetch(`http://localhost:3000/geoInfo/${raceToFetch}/${itemID}`, {
@@ -157,15 +177,40 @@ export default function Directions() {
                 authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(locationToSave)
+            body: JSON.stringify(itemDataToSave)
         })
         const updatedLocationJSON = await updatedLocationResponse.json();
-        console.log(updatedLocationJSON)
-        setSelectedLocation(null)
+        setSelectedItemID(null)
         setSelectedAction(null)
     }
 
+    //Set the selected action state to delete and the selected item id to the id of the item selected -- this will render the delete confirmation component with the ability to confirm or cancel deletion
+    function askDeleteItem(itemID) {
+        setSelectedItemID(itemID)
+        setSelectedAction('delete')
+    }
 
+    //Display a modal to ask user to confirm deleting the item - if confirmed delete item from the database
+    async function confirmDeleteItem(itemID) {
+        try {
+            const token = localStorage.getItem("token");
+            const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
+            const deletedItem = await fetch(`http://localhost:3000/geoInfo/${raceToFetch}/${itemID}`, {
+                method: 'DELETE',
+                headers: { authorization: `Bearer ${token}` }
+            })
+            const deletedItemInfo = await deletedItem.json();
+            console.log(deletedItemInfo)
+            getLocationsData();
+        }
+        catch (err) {
+            console.log(err)
+        }
+        setSelectedItemID(null)
+        setSelectedAction(null)
+    }
+
+    //Update the location data when an input value field is being changed
     function handleChange(e, itemID) {
         setLocations(prev => {
             let updatedLocations = prev.map(location => {
@@ -183,88 +228,44 @@ export default function Directions() {
     }
 
 
-    //Delete Functions
-    function askDeleteItem(itemID) {
-        console.log(itemID)
-        setSelectedLocation(itemID)
-        setSelectedAction('delete')
-    }
-
-    async function confirmDeleteLocation(itemID) {
-        console.log(itemID)
-        try {
-            const token = localStorage.getItem("token");
-            const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
-            const deletedLocation = await fetch(`http://localhost:3000/geoInfo/${raceToFetch}/${itemID}`, {
-                method: 'DELETE',
-                headers: {
-                    authorization: `Bearer ${token}`
-                }
-            })
-            const deletedLocationInfo = await deletedLocation.json();
-            const getMapInfo = async () => {
-                try {
-                    const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
-                    let locationResponse = await fetch(`http://localhost:3000/geoInfo/${raceToFetch}`)
-                    let locationData = await locationResponse.json();
-                    locationData = locationData[0]
-                    setLocations(locationData)
-                }
-                catch (err) {
-                    console.log(err)
-                }
-            }
-            getMapInfo()
-            setSelectedLocation(null);
-            setSelectedAction(null);
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-
-
-
-
-
-
-    if (selectedRace && locations.length > 0) {
+    if (selectedRace && locations) {
         return (
-            <div className={`${adminStyles["info__container"]}`}>
-                <h2 className="section-heading">{selectedRace ? `${selectedRace} Directions / Map Information` : `Select a race to edit`}</h2>
-                <div className={`${styles["locations__container"]}`}>
+            <>
+                <div className={`${adminStyles["info__container"]}`}>
+                    <h2 className="section-heading">{selectedRace ? `${selectedRace} Event Locations` : `Select a race to edit`}</h2>
                     <div className={`${adminStyles["info-headers"]} ${styles["location-headers"]}`}>
                         <h6></h6><h6>Name</h6><h6>Description</h6><h6>Lat</h6><h6>Lng</h6>
                     </div>
                     {selectedAction === 'delete' &&
                         <>
-                            {locations.map(location => <LocationRow itemID={location.id} itemData={location} editItem={editItem} askDeleteItem={askDeleteItem} />)}
+                            {locations.map(location => <LocationRow key={location.id} itemID={location.id} itemData={location} editItem={editItem} askDeleteItem={askDeleteItem} />)}
                             <DeleteConfirmation
-                                selectedLocation={selectedLocation}
-                                setSelectedLocation={setSelectedLocation}
+                                selectedItemID={selectedItemID}
+                                setSelectedItemID={setSelectedItemID}
                                 setSelectedAction={setSelectedAction}
-                                confirmDeleteLocation={confirmDeleteLocation}
+                                confirmDeleteItem={confirmDeleteItem}
+                                cancelAction={cancelAction}
                             />
                         </>
                     }
                     {selectedAction === 'edit' &&
                         locations.map(location =>
-                            selectedLocation === location.id ?
-                                <EditLocationRow itemID={location.id} itemData={location} handleChange={handleChange} saveLocation={saveLocation} />
+                            selectedItemID === location.id ?
+                                <EditLocationRow key={location.id} itemID={location.id} itemData={location} handleChange={handleChange} saveItem={saveItem} cancelAction={cancelAction} />
                                 :
-                                <LocationRow itemID={location.id} itemData={location} editItem={editItem} askDeleteItem={askDeleteItem} />
+                                <LocationRow key={location.id} itemID={location.id} itemData={location} editItem={editItem} askDeleteItem={askDeleteItem} />
                         )}
                     {!selectedAction &&
-                        locations.map(location => <LocationRow itemID={location.id} itemData={location} editItem={editItem} askDeleteItem={askDeleteItem} />)
+                        locations.map(location => <LocationRow key={location.id} itemID={location.id} itemData={location} editItem={editItem} askDeleteItem={askDeleteItem} />)
+                    }
+                    {selectedAction !== 'edit' &&
+                        <button className={`${"button button--medium"} ${adminStyles["icon__button"]}`} onClick={() => addItem()}>
+                            <FontAwesomeIcon className={`${styles["action-icon"]}`} icon={faCirclePlus} style={{ color: "#000000", }} /> &nbsp;&nbsp;Add Location
+                        </button>
                     }
                 </div>
-                {selectedAction !== 'edit' &&
-                    <button className={`${"button button--medium"} ${adminStyles["icon__button"]}`} onClick={() => addItem()}>
-                        <FontAwesomeIcon className={`${styles["action-icon"]}`} icon={faCirclePlus} style={{ color: "#000000", }} /> &nbsp;&nbsp;Add Location
-                    </button>
-                }
-                <AdminMap mapMarkerData={locations} />
-            </div>
+                {/* <AdminMap mapMarkerData={locations} /> */}
+            </>
         )
     }
     else return <Default userInfo={userInfo} />

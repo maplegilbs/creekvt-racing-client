@@ -1,3 +1,5 @@
+//! INCORPORATE LOCATION SELECTION
+
 //Components
 import Default from "./default";
 //Contexts
@@ -160,8 +162,8 @@ export default function Schedule() {
     }
 
     //Action for when cancel button is selected
-    function cancelAction (){
-        setSelectedItemID(null); 
+    function cancelAction() {
+        setSelectedItemID(null);
         setSelectedAction(null);
     }
 
@@ -189,7 +191,6 @@ export default function Schedule() {
         setSelectedAction('delete')
     }
 
-
     //Display a modal to ask user to confirm deleting the item - if confirmed delete item from the database
     async function confirmDeleteItem(itemID) {
         try {
@@ -200,7 +201,6 @@ export default function Schedule() {
                 headers: { authorization: `Bearer ${token}` }
             })
             const deletedItemInfo = await deletedItem.json();
-            console.log(deletedItemInfo)
             getScheduleData();
         }
         catch (err) {
@@ -210,23 +210,23 @@ export default function Schedule() {
         setSelectedAction(null)
     }
 
-
+    //Update the schedule data when an input value field is being changed
     function handleChange(e, itemID) {
-        let itemToEdit = scheduleData.find(item => Number(item.id) === Number(itemID))
         setScheduleData(prev => {
-            let updatedItem = {
-                ...itemToEdit,
-                [e.target.name]: e.target.value
-            }
-            let updatedSchedule = prev.map(item => {
-                return item.id !== itemID ?
-                    item
-                    :
-                    updatedItem
+            let updatedSchedule = prev.map(scheduleItem => {
+                if (scheduleItem.id !== itemID) return scheduleItem
+                else {
+                    let updatedScheduleItem = {
+                        ...scheduleItem,
+                        [e.target.name]: e.target.value
+                    }
+                    return updatedScheduleItem
+                }
             })
             return updatedSchedule
         })
     }
+
 
     if (selectedRace && scheduleData) {
         return (
@@ -253,7 +253,7 @@ export default function Schedule() {
                 {selectedAction === 'edit' &&
                     scheduleData.map(scheduleItem => {
                         return selectedItemID === scheduleItem.id ?
-                            <EditScheduleItemRow key={scheduleItem.id} itemID={scheduleItem.id} itemData={scheduleItem} handleChange={handleChange} saveItem={saveItem} cancelAction={cancelAction}/>
+                            <EditScheduleItemRow key={scheduleItem.id} itemID={scheduleItem.id} itemData={scheduleItem} handleChange={handleChange} saveItem={saveItem} cancelAction={cancelAction} />
                             :
                             <ScheduleItemRow key={scheduleItem.id} itemID={scheduleItem.id} itemData={scheduleItem} askDeleteItem={askDeleteItem} editItem={editItem} />
                     })

@@ -1,3 +1,5 @@
+//!Need to pull in categories, birthday, gender, and year
+
 //Components
 import Default from "./default.jsx";
 //Contexts
@@ -26,7 +28,7 @@ function AthleteRow({ itemID, itemData, askDeleteItem, editItem }) {
             <p>{itemData.email ? itemData.email : ""}</p>
             <p>{itemData.category ? itemData.category : ""}</p>
             {
-                JSON.parse(itemData.partners) &&
+                (JSON.parse(itemData.partners) && JSON.parse(itemData.partners).length > 0) &&
                 <div className={`${styles["partners-block"]}`}>
                     <div className={`${styles["partners-row"]}`}>
                         <p><strong>Partners:</strong> {JSON.parse(itemData.partners).map(partner => `${partner.firstName} ${partner.lastName}`).join(', ')}</p>
@@ -42,7 +44,7 @@ function AthleteRow({ itemID, itemData, askDeleteItem, editItem }) {
 // function EditScheduleItemRow({ itemID, itemData, handleChange, saveItem }) {
 function EditAthleteRow({ itemID, itemData, handleChange, saveItem, deletePartner, addPartner, cancelAction }) {
     return (
-        <div className={`${adminStyles["info-row"]} ${styles["racer-row"]}`}>
+        <div className={`${adminStyles["info-row"]} ${adminStyles["edit-row"]} ${styles["racer-row"]}`}>
             <div className={`${adminStyles["row-icons"]}`}>
             </div>
             <p>{itemID}</p>
