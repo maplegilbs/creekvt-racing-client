@@ -27,6 +27,7 @@ grid-template-columns: 1fr;
     grid-row: 1;
     margin: .25rem;
     text-align: left;
+    align-self: center;
     color: black;
 }
 

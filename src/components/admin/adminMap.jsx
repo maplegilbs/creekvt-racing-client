@@ -7,15 +7,17 @@ import { useRef, useEffect, useState, useContext } from "react";
 //Styles
 import styles from "./adminMap.module.css"
 
-function MyMapComponent({ mapMarkerData }) {
+function MyMapComponent({ mapMarkerData, updateLocationFromMapClick, selectedItemID, editRowRef }) {
     const selectedRace = useContext(SelectedRaceContext)[0] //Name of race with spaces i.e. "Test Race"
     const [myMap, setMyMap] = useState();
+    const [mapListener, setMapListener] = useState();
+    const [mapMarkers, setMapMarkers] = useState([])
     const [isMapBuilt, setIsMapBuilt] = useState(false);
     const ref = useRef();
-    const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
 
     useEffect(() => {
         const buildMap = async () => {
+            const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
             let mapOptionsResponse = await fetch(`http://localhost:3000/geoInfo/mapOptions/${raceToFetch}`)
             let mapOptionsData = await mapOptionsResponse.json();
             mapOptionsData = mapOptionsData[0][0];
@@ -34,40 +36,64 @@ function MyMapComponent({ mapMarkerData }) {
                     ]
                 }]
             });
-            newMap.addListener('click', (e) => console.log(e.latLng.lat(), e.latLng.lng()))
             setMyMap(newMap)
             setIsMapBuilt(true)
         }
         buildMap()
 
-    }, []);
+    }, [selectedRace]);
 
-
-
+    //Should stop listening unless set loation on map button clicked
     useEffect(() => {
-        mapMarkerData.forEach(markerData => {
-            // console.log(markerData, myMap)
-            const myMarker = new window.google.maps.Marker({
-                position: { lat: Number(markerData.lat), lng: Number(markerData.lng) },
-                myMap,
-                icon: "https://creekvt.com/races/RacerIcon.png",
-                title: "Hello World!",
-            });
-            myMarker.setMap(myMap)
-        })
-    }, [isMapBuilt, mapMarkerData])
+        function mapClickAction(e) {
+            updateLocationFromMapClick(e, selectedItemID)
+            if (editRowRef.current) editRowRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        }
+        if (selectedItemID && myMap) {
+            let listenerID = myMap.addListener('click', mapClickAction)
+            setMapListener(listenerID)
+        }
+        else if (myMap) mapListener.remove(); 
+    }, [selectedItemID])
 
+
+    //Cycle through the previous marker.  Any that aren't in the marker data remove from the map
+    //Cycle through the marker data and if a marker does not exist in the markers, add it to the map.
+    useEffect(() => {
+        if (isMapBuilt) {
+            setMapMarkers(prev => {
+                let filteredMarkers = prev.filter(marker => {
+                    let foundMarker = mapMarkerData.findIndex(markerData => marker.position.lat() === Number(markerData.lat) && marker.position.lng() === Number(markerData.lng))
+                    if (foundMarker === -1) { marker.setMap(null) }
+                    else return true
+                })
+                mapMarkerData.forEach(markerData => {
+                    let foundMarker = filteredMarkers.findIndex(marker => marker.position.lat() === Number(markerData.lat) && marker.position.lng() === Number(markerData.lng))
+                    if (foundMarker === -1) {
+                        const newMarker = new window.google.maps.Marker({
+                            position: { lat: Number(markerData.lat), lng: Number(markerData.lng) },
+                            myMap,
+                            icon: "https://creekvt.com/races/RacerIcon.png",
+                            title: "Hello World!",
+                        });
+                        newMarker.setMap(myMap)
+                        filteredMarkers.push(newMarker)
+                    }
+                })
+                return filteredMarkers
+            })
+        }
+    }, [isMapBuilt, mapMarkerData])
 
 
     return <div className={`${styles["map"]}`} ref={ref} id="map">Hello~</div>;
 }
 
-export default function AdminMap({ mapMarkerData }) {
-
+export default function AdminMap({ mapMarkerData, updateLocationFromMapClick, selectedItemID, editRowRef }) {
     return (
         <div className={`${styles["map-container"]}`} >
             <Wrapper apiKey={"AIzaSyBBtqHKDrsiMp-7ldVkI6QEMoxjzggJ-J8"}>
-                <MyMapComponent mapMarkerData={mapMarkerData} />
+                <MyMapComponent mapMarkerData={mapMarkerData} selectedItemID={selectedItemID} updateLocationFromMapClick={updateLocationFromMapClick} editRowRef={editRowRef} />
             </Wrapper>
         </div>
     )

@@ -4,10 +4,10 @@ import AdminMap from './adminMap'
 //Contexts
 import { SelectedRaceContext, UserInfoContext } from "../../pages/adminDashboard";
 //Hooks
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 //Icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPenToSquare, faCircleMinus, faCirclePlus, faCircleXmark, faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare, faCircleMinus, faCirclePlus, faCircleXmark, faFloppyDisk, faLocationCrosshairs } from "@fortawesome/free-solid-svg-icons";
 //Styles
 import styles from "./directions.module.css"
 import adminStyles from "./adminGlobalStyles.module.css"
@@ -31,10 +31,10 @@ function LocationRow({ itemID, itemData, askDeleteItem, editItem }) {
 
 
 //Component for editing individual racer information
-function EditLocationRow({ itemID, itemData, handleChange, saveItem, cancelAction }) {
+function EditLocationRow({ editRowRef, itemID, itemData, handleChange, selectLocation, saveItem, cancelAction }) {
     return (
         <>
-            <div className={`${adminStyles["info-row"]} ${adminStyles["edit-row"]} ${styles["edit-row"]}`}>
+            <div ref={editRowRef} className={`${adminStyles["info-row"]} ${adminStyles["edit-row"]} ${styles["edit-row"]}`}>
                 <div className="input-row">
                     <div className={`input-group`}>
                         <label htmlFor={`location-name-${itemID}`}>Name</label>
@@ -56,6 +56,11 @@ function EditLocationRow({ itemID, itemData, handleChange, saveItem, cancelActio
                         <label htmlFor={`location-description-${itemID}`}>Description</label>
                         <textarea rows={8} name="description" id={`location-description-${itemID}`} onChange={(e) => handleChange(e, itemID)} value={itemData.description ? itemData.description : ""} />
                     </div>
+                </div>
+                <div className={`input-row ${styles["second-row"]} ${adminStyles["button-row--even-space"]}`}>
+                    <button className={`${"button button--medium"} ${adminStyles["icon__button"]}`} onClick={() => selectLocation()}>
+                        <FontAwesomeIcon className={`${adminStyles["action-icon"]}`} icon={faLocationCrosshairs} style={{ color: "#016014", }} /> &nbsp;&nbsp;Select Location On Map
+                    </button>
                 </div>
                 <div className={`${adminStyles["button-row"]} ${styles["save-icon-row"]}`}>
                     <button className={`${"button button--medium"} ${adminStyles["icon__button"]}`} onClick={() => saveItem(itemID)}>
@@ -97,13 +102,22 @@ export default function Directions() {
     const [locations, setLocations] = useState(null);  //Object of all location information being used on the page
     const [selectedItemID, setSelectedItemID] = useState(null);  //The ID of a selected location  
     const [selectedAction, setSelectedAction] = useState(null); //Null, 'delete' or 'edit' to be used to determine if Edit components allowing for input should be displayed or not
+    const [mapClickAction, setMapClickAction] = useState(null);  //Null, or 'setPosition' - deteremines what action happens when a map click occurs
+    const mapRef = useRef(null)
+    const editRowRef = useRef(null)
 
-    console.log(userInfo, locations)
+    console.log(selectedItemID, mapClickAction, editRowRef.current)
 
+    //Set our initial state based on any changes in the selected race
     useEffect(() => {
         getLocationsData()
     }, [selectedRace])
-
+    
+    //Scroll the currently selected edit row into view
+    useEffect(()=>{
+        if(editRowRef.current) editRowRef.current.scrollIntoView({behavior: 'smooth', block: 'center'})
+    },[selectedAction, selectedItemID])
+    
     //Basic fetch of locations data
     async function getLocationsData() {
         try {
@@ -123,7 +137,6 @@ export default function Directions() {
             console.log(err)
         }
     }
-
 
     //Add a blank item with corresponding race name and id to the DB and repopulate the scheduleData state
     async function addItem() {
@@ -146,6 +159,7 @@ export default function Directions() {
             body: JSON.stringify(blankItem)
         })
         let addedItemJSON = await addedItem.json()
+        console.log(addedItemJSON)
         setLocations(prev => {
             let updatedLocations = prev.concat({ ...blankItem, id: addedItemJSON.insertId })
             return updatedLocations
@@ -160,8 +174,35 @@ export default function Directions() {
         setSelectedAction('edit')
     }
 
+
+    function selectLocation() {
+        mapRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        setMapClickAction('setPostion')
+    }
+    
+    //Update the current item's lat/lng based on a map click
+    function updateLocationFromMapClick(e, itemID){
+        console.log(itemID, mapClickAction)
+            setLocations(prev => {
+                let updatedLocations = prev.map(location => {
+                    if (location.id !== itemID) return location
+                    else {
+                        let updatedLocation = {
+                            ...location,
+                            lat: e.latLng.lat(),
+                            lng: e.latLng.lng(),
+                        }
+                        return updatedLocation
+                    }
+                })
+                return updatedLocations
+            })
+            // setMapClickAction(null)
+    }
+
     //Action for when cancel button is selected
     function cancelAction() {
+        setMapClickAction(null)
         setSelectedItemID(null);
         setSelectedAction(null);
     }
@@ -241,8 +282,6 @@ export default function Directions() {
                             {locations.map(location => <LocationRow key={location.id} itemID={location.id} itemData={location} editItem={editItem} askDeleteItem={askDeleteItem} />)}
                             <DeleteConfirmation
                                 selectedItemID={selectedItemID}
-                                setSelectedItemID={setSelectedItemID}
-                                setSelectedAction={setSelectedAction}
                                 confirmDeleteItem={confirmDeleteItem}
                                 cancelAction={cancelAction}
                             />
@@ -251,7 +290,7 @@ export default function Directions() {
                     {selectedAction === 'edit' &&
                         locations.map(location =>
                             selectedItemID === location.id ?
-                                <EditLocationRow key={location.id} itemID={location.id} itemData={location} handleChange={handleChange} saveItem={saveItem} cancelAction={cancelAction} />
+                                <EditLocationRow editRowRef={editRowRef} key={location.id} itemID={location.id} itemData={location} handleChange={handleChange} selectLocation={selectLocation} saveItem={saveItem} cancelAction={cancelAction} />
                                 :
                                 <LocationRow key={location.id} itemID={location.id} itemData={location} editItem={editItem} askDeleteItem={askDeleteItem} />
                         )}
@@ -264,7 +303,9 @@ export default function Directions() {
                         </button>
                     }
                 </div>
-                {/* <AdminMap mapMarkerData={locations} /> */}
+                <div ref={mapRef} className={`${styles["map-container"]}`}>
+                    <AdminMap mapMarkerData={locations} selectedItemID={selectedItemID} updateLocationFromMapClick={updateLocationFromMapClick} editRowRef={editRowRef}/>
+                </div>
             </>
         )
     }
