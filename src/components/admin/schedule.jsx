@@ -1,14 +1,14 @@
 //Components
 import Default from "./default";
 //Contexts
-import { SelectedRaceContext, LastSavedContext, UserInfoContext } from "../../pages/adminDashboard";
+import { SelectedRaceContext, UserInfoContext } from "../../pages/adminDashboard";
 //Hooks
 import { useContext, useEffect, useState } from "react";
 //Icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare, faCircleMinus, faCirclePlus, faFloppyDisk, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 //Libs
-import { formatDateTime, convertTime } from "../../utils/formatDateTime";
+import { convertTime } from "../../utils/formatDateTime";
 //Styles
 import styles from "./schedule.module.css"
 import adminStyles from "./adminGlobalStyles.module.css"
@@ -18,7 +18,7 @@ import adminStyles from "./adminGlobalStyles.module.css"
 function ScheduleItemRow({ itemID, itemData, askDeleteItem, editItem }) {
     return (
         <div className={`${adminStyles["info-row"]} ${styles["schedule-row"]}`}>
-            <div className={`${styles["row-icons"]}`}>
+            <div className={`${adminStyles["row-icons"]}`}>
                 <FontAwesomeIcon className={`${adminStyles["action-icon"]}`} onClick={() => editItem(itemID)} icon={faPenToSquare} style={{ color: "#000000", }} />
                 <FontAwesomeIcon className={`${adminStyles["action-icon"]}`} onClick={() => askDeleteItem(itemID)} icon={faCircleMinus} style={{ color: "#af2323", }} />
             </div>
@@ -31,7 +31,7 @@ function ScheduleItemRow({ itemID, itemData, askDeleteItem, editItem }) {
 }
 
 //Component with input elements to update selected schedule item.  Button to save or cancel edited data.
-function EditScheduleItemRow({ itemID, itemData, handleChange, saveItem }) {
+function EditScheduleItemRow({ itemID, itemData, handleChange, saveItem, cancelAction }) {
     return (
         <>
             <div className={`${adminStyles["info-row"]} ${styles["edit-row"]} ${adminStyles["edit-row"]}`}>
@@ -59,10 +59,10 @@ function EditScheduleItemRow({ itemID, itemData, handleChange, saveItem }) {
                 </div>
                 <div className={`${adminStyles["button-row"]} ${adminStyles["final-row"]} `}>
                     <button className={`${"button button--medium"} ${adminStyles["icon__button"]}`} onClick={() => saveItem(itemID)}>
-                        <FontAwesomeIcon className={`${styles["action-icon"]}`} icon={faFloppyDisk} style={{ color: "#016014", }} /> &nbsp;&nbsp;Save
+                        <FontAwesomeIcon className={`${adminStyles["action-icon"]}`} icon={faFloppyDisk} style={{ color: "#016014", }} /> &nbsp;&nbsp;Save
                     </button>
-                    <button className={`${"button button--medium"} ${adminStyles["icon__button"]}`} onClick={() => saveItem(itemID)}>
-                        <FontAwesomeIcon className={`${styles["action-icon"]}`} icon={faCircleXmark} style={{ color: "#af2323", }} /> &nbsp;&nbsp;Cancel
+                    <button className={`${"button button--medium"} ${adminStyles["icon__button"]}`} onClick={cancelAction}>
+                        <FontAwesomeIcon className={`${adminStyles["action-icon"]}`} icon={faCircleXmark} style={{ color: "#af2323", }} /> &nbsp;&nbsp;Cancel
                     </button>
                 </div>
             </div>
@@ -70,7 +70,7 @@ function EditScheduleItemRow({ itemID, itemData, handleChange, saveItem }) {
     )
 }
 
-function DeleteConfirmation({ itemID, setSelectedItemID, setSelectedAction, confirmDeleteItem }) {
+function DeleteConfirmation({ itemID, confirmDeleteItem, cancelAction }) {
     return (
         <div className={`${adminStyles["delete-confirm__container"]}`}>
             <div>
@@ -80,7 +80,7 @@ function DeleteConfirmation({ itemID, setSelectedItemID, setSelectedAction, conf
                     <button type="button" className="button button--medium" onClick={() => confirmDeleteItem(itemID)}>
                         Confirm
                     </button>
-                    <button type="button" className="button button--medium" onClick={() => { setSelectedItemID(null); setSelectedAction(null); }}>
+                    <button type="button" className="button button--medium" onClick={cancelAction}>
                         Cancel
                     </button>
                 </div>
@@ -95,8 +95,8 @@ export default function Schedule() {
     const selectedRace = useContext(SelectedRaceContext)[0]; //Name of race with spaces i.e. "Test Race"
     const userInfo = useContext(UserInfoContext) //Logged in user info contianed in token
     const [scheduleData, setScheduleData] = useState(null);  //Array of objectes each containing data about specific schedule item
-    const [selectedItemID, setSelectedItemID] = useState(null);  //The ID of a selected location  
-    const [selectedAction, setSelectedAction] = useState(null); //Null, 'delete' or 'edit' to be used to determine if Edit components allowing for input should be displayed or not
+    const [selectedItemID, setSelectedItemID] = useState(null);  //The ID of a selected schedule item  
+    const [selectedAction, setSelectedAction] = useState(null);  //Null, 'delete' or 'edit' to be used to determine if Edit components allowing for input should be displayed or not
 
     //Set our initial state based on any changes in the selected race
     useEffect(() => {
@@ -159,6 +159,12 @@ export default function Schedule() {
         setSelectedAction('edit')
     }
 
+    //Action for when cancel button is selected
+    function cancelAction (){
+        setSelectedItemID(null); 
+        setSelectedAction(null);
+    }
+
     //Update the selected item in the database by way of its ID
     async function saveItem(itemID) {
         let itemDataToSave = scheduleData.find(item => item.id === itemID);
@@ -172,7 +178,7 @@ export default function Schedule() {
             },
             body: JSON.stringify(itemDataToSave)
         })
-        const updatedLocationJSON = await updatedScheduleResponse.json();
+        const updatedScheduleJSON = await updatedScheduleResponse.json();
         setSelectedItemID(null)
         setSelectedAction(null)
     }
@@ -237,6 +243,7 @@ export default function Schedule() {
                             setSelectedItemID={setSelectedItemID}
                             setSelectedAction={setSelectedAction}
                             confirmDeleteItem={confirmDeleteItem}
+                            cancelAction={cancelAction}
                         />
                     </>
                 }
@@ -246,7 +253,7 @@ export default function Schedule() {
                 {selectedAction === 'edit' &&
                     scheduleData.map(scheduleItem => {
                         return selectedItemID === scheduleItem.id ?
-                            <EditScheduleItemRow key={scheduleItem.id} itemID={scheduleItem.id} itemData={scheduleItem} handleChange={handleChange} saveItem={saveItem} />
+                            <EditScheduleItemRow key={scheduleItem.id} itemID={scheduleItem.id} itemData={scheduleItem} handleChange={handleChange} saveItem={saveItem} cancelAction={cancelAction}/>
                             :
                             <ScheduleItemRow key={scheduleItem.id} itemID={scheduleItem.id} itemData={scheduleItem} askDeleteItem={askDeleteItem} editItem={editItem} />
                     })
