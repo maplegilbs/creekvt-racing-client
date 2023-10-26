@@ -12,8 +12,16 @@ function MyMapComponent({ mapMarkerData, updateLocationFromMapClick, selectedIte
     const [myMap, setMyMap] = useState();
     const [mapListener, setMapListener] = useState();
     const [mapMarkers, setMapMarkers] = useState([])
-    const [isMapBuilt, setIsMapBuilt] = useState(false);
     const ref = useRef();
+   
+
+    
+
+    //When the map is updated (via a new selected race) two things change - our first useEffect fires to build a new map
+    //But also the component will have been passed new mapMaker data and so the second useEffect will also run
+    //If the new map has not been built yet the map markers will have been set to the old map
+    //So what we want to happen is for the mapMarkers to refresh after a new map has been built
+
 
     useEffect(() => {
         const buildMap = async () => {
@@ -37,7 +45,6 @@ function MyMapComponent({ mapMarkerData, updateLocationFromMapClick, selectedIte
                 }]
             });
             setMyMap(newMap)
-            setIsMapBuilt(true)
         }
         buildMap()
 
@@ -53,23 +60,47 @@ function MyMapComponent({ mapMarkerData, updateLocationFromMapClick, selectedIte
             let listenerID = myMap.addListener('click', mapClickAction)
             setMapListener(listenerID)
         }
-        else if (myMap) mapListener.remove(); 
+        else if (myMap) mapListener.remove();
     }, [selectedItemID])
 
+
+    //If a new map is loaded, clear the old markers and display new ones
+    useEffect(() => {
+        if (myMap) {
+            // console.log('Clearing all markers')
+            mapMarkers.forEach(marker => marker.setMap())
+            setMapMarkers(() => {
+                // console.log('Setting markers')
+                let markers = mapMarkerData.map(markerData => {
+                    const newMarker = new window.google.maps.Marker({
+                        position: { lat: Number(markerData.lat), lng: Number(markerData.lng) },
+                        myMap,
+                        icon: "https://creekvt.com/races/RacerIcon.png",
+                        title: "Hello World!",
+                    });
+                    newMarker.setMap(myMap)
+                    return newMarker
+                })
+                return markers
+            })
+        }
+    }, [myMap])
 
     //Cycle through the previous marker.  Any that aren't in the marker data remove from the map
     //Cycle through the marker data and if a marker does not exist in the markers, add it to the map.
     useEffect(() => {
-        if (isMapBuilt) {
+        if (myMap) {
+            // console.log('Updating Markers - this should only run when you have changed the marker data directly, not via a new map render by way of selcting a different race')
             setMapMarkers(prev => {
                 let filteredMarkers = prev.filter(marker => {
                     let foundMarker = mapMarkerData.findIndex(markerData => marker.position.lat() === Number(markerData.lat) && marker.position.lng() === Number(markerData.lng))
-                    if (foundMarker === -1) { marker.setMap(null) }
+                    if (foundMarker === -1) { console.log('Filtering out old marker'); marker.setMap(null) }
                     else return true
                 })
                 mapMarkerData.forEach(markerData => {
                     let foundMarker = filteredMarkers.findIndex(marker => marker.position.lat() === Number(markerData.lat) && marker.position.lng() === Number(markerData.lng))
                     if (foundMarker === -1) {
+                        // console.log('Adding a new marker')
                         const newMarker = new window.google.maps.Marker({
                             position: { lat: Number(markerData.lat), lng: Number(markerData.lng) },
                             myMap,
@@ -83,7 +114,7 @@ function MyMapComponent({ mapMarkerData, updateLocationFromMapClick, selectedIte
                 return filteredMarkers
             })
         }
-    }, [isMapBuilt, mapMarkerData])
+    }, [mapMarkerData])
 
 
     return <div className={`${styles["map"]}`} ref={ref} id="map">Hello~</div>;

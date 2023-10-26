@@ -106,8 +106,6 @@ export default function Directions() {
     const mapRef = useRef(null)
     const editRowRef = useRef(null)
 
-    console.log(selectedItemID, mapClickAction, editRowRef.current)
-
     //Set our initial state based on any changes in the selected race
     useEffect(() => {
         getLocationsData()
@@ -130,7 +128,6 @@ export default function Directions() {
                 }
                 return item;
             })
-            console.log(cleanedResponseJSON)
             setLocations(cleanedResponseJSON)
         }
         catch (err) {

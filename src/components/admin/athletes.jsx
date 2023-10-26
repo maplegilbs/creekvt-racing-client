@@ -53,8 +53,8 @@ function EditAthleteRow({ itemID, itemData, handleChange, saveItem, deletePartne
             <input type="text" name="email" id={`email-${itemID}`} onChange={(e) => handleChange(e, itemID)} value={itemData.email} />
             <select name="category" id={`category-${itemID}`} onChange={(e) => handleChange(e, itemID)} value={itemData.category} >
                 <option> -- </option>
-                {itemData.racerCategores &&
-                    JSON.parse(itemData.racerCategories).map(category => {
+                {itemData.categoryOpts &&
+                    itemData.categoryOpts.split(", ").map(category => {
                         return <option value={category}>{category}</option>
                     })
                 }
@@ -110,6 +110,7 @@ export default function Athletes() {
     const [selectedAction, setSelectedAction] = useState(null);  //Null, 'delete' or 'edit' to be used to determine if Edit components allowing for input should be displayed or not
     const [selectedItemID, setSelectedItemID] = useState(null);  //The ID of a selected racer  
 
+console.log(registeredRacerData)
 
     //Set our initial state based on any changes in the selected race
     useEffect(() => {
@@ -209,6 +210,7 @@ export default function Athletes() {
     //Update the selected item in the database by way of its ID
     async function saveItem(itemID) {
         let itemDataToSave = registeredRacerData.find(item => item.id === itemID);
+        delete itemDataToSave.categoryOpts;
         const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
         const token = localStorage.getItem("token")
         let updatedRacerResponse = await fetch(`http://localhost:3000/racers/${raceToFetch}/${itemID}`, {
@@ -224,7 +226,7 @@ export default function Athletes() {
         setSelectedAction(null)
     }
 
-    //Add a blank item with corresponding race name and id to the DB and repopulate the scheduleData state
+    //Add a blank item with corresponding race name and id to the DB and repopulate the scheduleData state -- need to get race year
     async function addItem() {
             const token = localStorage.getItem('token')
             let tableInfoResponse = await fetch(`http://localhost:3000/racers/tableInfo`, {

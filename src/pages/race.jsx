@@ -4,16 +4,18 @@ import RegisteredRacers from "../components/registeredRacers";
 //Hooks
 import { useLoaderData, useParams } from "react-router-dom";
 //Libs
-import { formatDateTime } from "../utils/formatDateTime";
+import { formatDateTime, convertTime } from "../utils/formatDateTime";
 //Styles
 import styles from "./race.module.css"
 import { useEffect, useState } from "react";
 
 export async function loader({ params }) {
     // Get data via api call to populate page here
+    const scheduleData = await fetch(`http://localhost:3000/schedule/${params.raceName}`);
+    const scheduleJSON = await scheduleData.json()
     const raceData = await fetch(`http://localhost:3000/races/${params.raceName}`);
     const raceJSON = await raceData.json();
-    return raceJSON
+    return {raceJSON, scheduleJSON}
 }
 
 function LocationContainer({ location, handleShowHideToggle }) {
@@ -43,7 +45,7 @@ function LocationContainer({ location, handleShowHideToggle }) {
 function ScheduleItem({ eventDetails }) {
     return (
         <li>
-            <strong>{eventDetails.startTime} {eventDetails.endTime ? `- ${eventDetails.endTime}` : ""}</strong> {eventDetails.name}
+            <strong>{convertTime(eventDetails.startTime)} {eventDetails.endTime && eventDetails.endTime !== '00:00:00' ? `- ${convertTime(eventDetails.endTime)}` : ""}</strong> {eventDetails.name}
             <br />
             Location: <a href="#directions-section" className={`link-std`}>{eventDetails.location}</a>
         </li>
@@ -51,14 +53,15 @@ function ScheduleItem({ eventDetails }) {
 }
 
 export default function Race() {
-    const raceData = useLoaderData()[0];
+    console.log(useLoaderData())
+    const raceData = useLoaderData().raceJSON[0];
+    const scheduleData = useLoaderData().scheduleJSON;
     const [mapMarkerData, setMapMarkerData] = useState([]);
     const { raceName } = useParams()
     const formattedTime = raceData.date ? formatDateTime(raceData.date) : null;
     const locations = JSON.parse(raceData.locations);
     const locationContainers = locations.map(location => <LocationContainer location={location} handleShowHideToggle={handleShowHideToggle} />)
-    const schedule = JSON.parse(raceData.schedule)
-    const scheduleItems = schedule ? schedule.map(eventDetails => <ScheduleItem eventDetails={eventDetails} />) : null;
+    const scheduleItems = scheduleData ? scheduleData.map(eventDetails => <ScheduleItem eventDetails={eventDetails} />) : null;
 
     console.log(raceData)
     function updateMarkers(lat, lng) {
