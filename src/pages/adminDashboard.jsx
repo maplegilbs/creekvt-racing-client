@@ -5,9 +5,10 @@ import Athletes from "../components/admin/athletes";
 import Default from "../components/admin/default";
 import Details from "../components/admin/details";
 import Directions from "../components/admin/directions";
+import Results from "../components/admin/results";
 import Schedule from "../components/admin/schedule";
 //Contexts
-import { useContext, createContext } from "react";
+import { createContext } from "react";
 //Hooks
 import { useEffect, useState } from "react";
 import { useLoaderData } from "react-router";
@@ -55,7 +56,7 @@ export default function AdminDashboard() {
                 setEditComponent(<Directions />);
                 break;
             case "results":
-                setEditComponent(<div>Results</div>);
+                setEditComponent(<Results />);
                 break;
             case "faqs":
                 setEditComponent(<div>FAQS</div>);
