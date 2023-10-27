@@ -105,6 +105,7 @@ function DeleteConfirmation({ itemID, confirmDeleteItem, cancelAction }) {
 
 export default function Athletes() {
     const selectedRace = useContext(SelectedRaceContext)[0]; //Name of race with spaces i.e. "Test Race"
+    const selectedRaceYear = useContext(SelectedRaceContext)[2] //Year of race as a string
     const userInfo = useContext(UserInfoContext) //Logged in user info contianed in token
     const [registeredRacerData, setRegisteredRacerData] = useState(null) //Array of objectes each containing data about specific racer
     const [selectedAction, setSelectedAction] = useState(null);  //Null, 'delete' or 'edit' to be used to determine if Edit components allowing for input should be displayed or not
@@ -123,7 +124,7 @@ console.log(registeredRacerData)
         try {
             const token = localStorage.getItem("token")
             const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
-            let response = await fetch(`http://localhost:3000/racers/admin/${raceToFetch}`, {
+            let response = await fetch(`http://localhost:3000/racers/admin/${raceToFetch}/${selectedRaceYear}`, {
                 headers: { authorization: `Bearer ${token}` }
             })
             let responseJSON = await response.json();
@@ -226,18 +227,19 @@ console.log(registeredRacerData)
         setSelectedAction(null)
     }
 
+    console.log(registeredRacerData)
     //Add a blank item with corresponding race name and id to the DB and repopulate the scheduleData state -- need to get race year
     async function addItem() {
             const token = localStorage.getItem('token')
+            const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
             let tableInfoResponse = await fetch(`http://localhost:3000/racers/tableInfo`, {
                 headers: { authorization: `Bearer ${token}` }
             })
             let tableInfo = await tableInfoResponse.json()
-            const blankItem = { raceName: selectedRace };
+            const blankItem = { raceName: selectedRace, year: selectedRaceYear};
             tableInfo.forEach(column => {
-                if (column.Field !== 'id' && column.Field !== 'raceName') blankItem[column.Field] = null
+                if (column.Field !== 'id' && column.Field !== 'raceName' && column.Field !== 'year') blankItem[column.Field] = null
             })
-            const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
             let addedItem = await fetch(`http://localhost:3000/racers/${raceToFetch}`, {
                 method: "POST",
                 headers: {
@@ -247,9 +249,12 @@ console.log(registeredRacerData)
                 body: JSON.stringify(blankItem)
             })
             let addedItemJSON = await addedItem.json()
+            let categoryResponse = await fetch(`http://localhost:3000/races/categories/${raceToFetch}`)
+            let categoryJSON = await categoryResponse.json()
+            let categoryOpts = categoryJSON[0].categoryOpts;
             setRegisteredRacerData(prev => {
-                let updatedSchedule = prev.concat({ ...blankItem, id: addedItemJSON.insertId })
-                return updatedSchedule
+                let updatedRacers = prev.concat({ ...blankItem, id: addedItemJSON.insertId, categoryOpts: categoryOpts })
+                return updatedRacers
             })
             setSelectedItemID(addedItemJSON.insertId)
             setSelectedAction('edit')
@@ -337,7 +342,7 @@ console.log(registeredRacerData)
                             (registeredRacerData ? registeredRacerData.map(racer => <AthleteRow key={racer.id} itemID={racer.id} itemData={racer} askDeleteItem={askDeleteItem} editItem={editItem} />) : 'No data')
                         }
                         {selectedAction === 'edit' &&
-                            (registeredRacerData ? registeredRacerData.map((racer, i) => {
+                            (registeredRacerData ? registeredRacerData.map(racer => {
                                 return Number(racer.id) === Number(selectedItemID) ?
                                     <EditAthleteRow key={racer.id} itemID={racer.id} itemData={racer} saveItem={saveItem} handleChange={handleChange} deletePartner={deletePartner} addPartner={addPartner} cancelAction={cancelAction} />
                                     :
