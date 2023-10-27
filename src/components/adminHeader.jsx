@@ -6,13 +6,13 @@ import { useContext } from "react"
 import styles from "./adminHeader.module.css"
 
 export default function AdminHeader({ userInfo }) {
-    const [selectedRace, setSelectedRace] = useContext(SelectedRaceContext)
+    const [selectedRace, setSelectedRace, selectedRaceYear, setSelectedRaceYear] = useContext(SelectedRaceContext)
     const lastSaved = useContext(LastSavedContext)[0]
 
     return (
         <>
             <div className={`${styles["welcome-heading"]}`}>
-                <h4>{`${selectedRace ? `Currently Editing: ${selectedRace}` : "Select a race to edit"}`} </h4>
+                <h4>{`${selectedRace ? `Currently Editing: ${selectedRace} - ${selectedRaceYear}` : "Select a race to edit"}`} </h4>
                 <h4 className={`${lastSaved === 'edited'? styles["unsaved-heading"]: styles["saved-heading"]}`}>{
                 lastSaved === 'edited'? 
                 `You have unsaved edits`

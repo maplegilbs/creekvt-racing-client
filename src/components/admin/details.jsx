@@ -11,9 +11,12 @@ import styles from "./details.module.css"
 
 export default function Details() {
     const selectedRace = useContext(SelectedRaceContext)[0]; //Name of race with spaces i.e. "Test Race"
+    const setSelectedRaceYear = useContext(SelectedRaceContext)[3] //Setter function for the selected race's year
     const [formData, setFormData] = useState({});
     const [lastSaved, setLastSaved] = useContext(LastSavedContext)
     const userInfo = useContext(UserInfoContext)
+
+    formData.date ? console.log(formatDateTime(formData.date).fullDate) : console.log("")
 
     useEffect(() => {
         const getRaceData = async () => {
@@ -62,11 +65,12 @@ export default function Details() {
             let now = new Date();
             let timeSaved = `${formatDateTime(now).time} ${formatDateTime(now).amPm}`
             setLastSaved(timeSaved)
+            setSelectedRaceYear(formatDateTime(formData.date).year)
         }
     }
 
     function handleChange(e) {
-        if(e.target.type === "checkbox"){
+        if (e.target.type === "checkbox") {
             let isRegOpen = e.target.checked ? 1 : 0;
             setFormData({
                 ...formData,
@@ -82,10 +86,8 @@ export default function Details() {
         setLastSaved('edited')
     }
 
-    console.log(formData)
 
     if (selectedRace) {
-
         return (
             <div className="admin-edit__container">
                 <h2 className="section-heading">{selectedRace ? `${selectedRace} Details` : `Select a race to edit`}</h2>
@@ -119,5 +121,5 @@ export default function Details() {
             </div>
         )
     }
-    else return <Default userInfo={userInfo}/>
+    else return <Default userInfo={userInfo} />
 }

@@ -12,6 +12,8 @@ import { createContext } from "react";
 //Hooks
 import { useEffect, useState } from "react";
 import { useLoaderData } from "react-router";
+//Libraries
+import { formatDateTime } from "../utils/formatDateTime";
 //Styles
 import styles from "./adminDashboard.module.css"
 
@@ -21,25 +23,45 @@ export const LastSavedContext = createContext();
 export const UserInfoContext = createContext();
 
 export async function loader() {
+    let loaderInfo = {}
     let token = localStorage.getItem('token');
+    let raceInfo = await fetch(`http://localhost:3000/races`)
+    if (raceInfo.status !== 200) loaderInfo.raceInfo = null;
+    else {
+        let raceJSON = await raceInfo.json()
+        loaderInfo.raceInfo = raceJSON;
+    }
     let currentUser = await fetch("http://localhost:3000/users/userInfo", {
         headers: {
             authorization: `Bearer ${token}`
         }
     });
-    if (currentUser.status !== 200) return null;
+    if (currentUser.status !== 200) loaderInfo.currentUser = null;
     else {
         let currentUserInfo = await currentUser.json();
-        return currentUserInfo
+        loaderInfo.currentUser = currentUserInfo
     }
+    return loaderInfo;
 }
 
 export default function AdminDashboard() {
-    const userInfo = useLoaderData();
+    const userInfo = useLoaderData().currentUser;
+    const allRacesInfo = useLoaderData().raceInfo;
     const [infoSectionToEdit, setInfoSectionToEdit] = useState(null)
     const [editComponent, setEditComponent] = useState(<></>)
     const [selectedRace, setSelectedRace] = useState()
+    const [selectedRaceYear, setSelectedRaceYear] = useState()
     const [lastSaved, setLastSaved] = useState(null)
+    console.log(allRacesInfo, selectedRaceYear)
+
+    useEffect(() => {
+        if (selectedRace) {
+            let selectedRaceInfo = allRacesInfo.filter(race => race.name === selectedRace)[0]
+            let selectedRaceRawDate = selectedRaceInfo.date;
+            let selectedRaceDateString = `${formatDateTime(selectedRaceRawDate).year}`
+            setSelectedRaceYear(selectedRaceDateString)
+        }
+    }, [selectedRace])
 
     useEffect(() => {
         switch (infoSectionToEdit) {
@@ -71,7 +93,7 @@ export default function AdminDashboard() {
     return (
         <div className={`${styles["dashboard-wrapper"]}`}>
             <UserInfoContext.Provider value={userInfo}>
-                <SelectedRaceContext.Provider value={[selectedRace, setSelectedRace]}>
+                <SelectedRaceContext.Provider value={[selectedRace, setSelectedRace, selectedRaceYear, setSelectedRaceYear]}>
                     <LastSavedContext.Provider value={[lastSaved, setLastSaved]}>
                         <header className={`${styles["content-header"]}`}>
                             {userInfo && <AdminHeader userInfo={userInfo} editSelection={null} />}
