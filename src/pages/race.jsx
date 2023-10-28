@@ -15,25 +15,26 @@ export async function loader({ params }) {
     const scheduleJSON = await scheduleData.json()
     const raceData = await fetch(`http://localhost:3000/races/${params.raceName}`);
     const raceJSON = await raceData.json();
-    return {raceJSON, scheduleJSON}
+    const locationsData = await fetch(`http://localhost:3000/geoInfo/${params.raceName}`);
+    const locationsJSON = await locationsData.json();
+    return { raceJSON, scheduleJSON, locationsJSON }
 }
 
-function LocationContainer({ location, handleShowHideToggle }) {
-    const [areDetailsVisible, setAreDetailsVisible] = useState(false)
+function LocationContainer({ location }) {
+    
 
     return (
         <div className={`${styles["location-container"]}`}>
             <div className={`${styles["location-header"]}`}>
-                <h6>{location.name}</h6>
+                <div className={`${styles["location-name"]}`}>
+                    <h6>{location.name}</h6>
+                    <img src={location.iconUrl} />
+                </div>
                 <div className={`${styles["location-buttons"]}`}>
-                    <a onClick={e => {
-                        setAreDetailsVisible(prev => !prev);
-                        handleShowHideToggle(e, Number(location.lat), Number(location.lng));
-                    }} className={`${styles["location-link"]}`}>SHOW</a>
                     <a target="_blank" href={`https://www.google.com/maps/dir/?api=1&destination=${location.lat},${location.lng}`} className={`${styles["location-link"]}`}>Directions</a>
                 </div>
             </div>
-            {areDetailsVisible &&
+            {(location.description && location.description !== 'null') &&
                 <div className={`${styles["location-details"]}`}>
                     {location.description}
                 </div>
@@ -43,12 +44,19 @@ function LocationContainer({ location, handleShowHideToggle }) {
 }
 
 function ScheduleItem({ eventDetails }) {
+    console.log(eventDetails)
     return (
-        <li>
-            <strong>{convertTime(eventDetails.startTime)} {eventDetails.endTime && eventDetails.endTime !== '00:00:00' ? `- ${convertTime(eventDetails.endTime)}` : ""}</strong> {eventDetails.name}
-            <br />
-            Location: <a href="#directions-section" className={`link-std`}>{eventDetails.location}</a>
-        </li>
+        <>
+            {
+                eventDetails.startTime &&
+                <li className={`${styles["events-listItem"]}`}>
+                    <strong>{convertTime(eventDetails.startTime)} {eventDetails.endTime && eventDetails.endTime !== '00:00:00' ? `- ${convertTime(eventDetails.endTime)}` : ""}</strong> {eventDetails.name}
+                    <br />
+                    Location: <a href="#directions-section" className={`link-std`}>{eventDetails.location}</a>
+                </li>
+
+            }
+        </>
     )
 }
 
@@ -56,44 +64,21 @@ export default function Race() {
     console.log(useLoaderData())
     const raceData = useLoaderData().raceJSON[0];
     const scheduleData = useLoaderData().scheduleJSON;
-    const [mapMarkerData, setMapMarkerData] = useState([]);
+    const locations = useLoaderData().locationsJSON;
+    // const [mapMarkerData, setMapMarkerData] = useState([])
+    const [mapMarkerData, setMapMarkerData] = useState(locations.map(location => [Number(location.lat), Number(location.lng), location.iconUrl]));
     const { raceName } = useParams()
     const formattedTime = raceData.date ? formatDateTime(raceData.date) : null;
-    const locations = JSON.parse(raceData.locations);
-    const locationContainers = locations.map(location => <LocationContainer location={location} handleShowHideToggle={handleShowHideToggle} />)
+    const locationContainers = locations.map(location => <LocationContainer location={location} />)
     const scheduleItems = scheduleData ? scheduleData.map(eventDetails => <ScheduleItem eventDetails={eventDetails} />) : null;
-
-    console.log(raceData)
-    function updateMarkers(lat, lng) {
-        let tempArray = [];
-        //go through mapMarkerData.  If passed lat/lng match one already in the array, set our flag isMarkerInArray to note it already exists in the array
-        //for any lat/lng in mapMarkerData that do not match the passed in lat/lng push them into our temp array
-        //once loop is finsihed, if our flag isMarkerInArray is still false also push the passed in lat/lng into the array
-        let isMarkerInArray = false;
-        for (let i in mapMarkerData) {
-            if (mapMarkerData[i][0] === lat || mapMarkerData[i][1] === lng) {
-                isMarkerInArray = true;
-            }
-            else {
-                tempArray.push([mapMarkerData[i][0], mapMarkerData[i][1]])
-            }
-        }
-        if (!isMarkerInArray) tempArray.push([lat, lng])
-        setMapMarkerData(tempArray)
-    }
-
-    function handleShowHideToggle(e, lat, lng) {
-        e.target.innerText = e.target.innerText === "SHOW" ? "HIDE" : "SHOW";
-        updateMarkers(lat, lng)
-    }
-
-    console.log(new Date(raceData.date) > new Date())
 
     return (
         <>
             {
-                raceData.notification &&
-                <div className={`${styles["notification-banner"]}`}>{raceData.notification}</div>
+                (raceData.notification && raceData.notification !== 'null') &&
+                <div className={`${styles["notification-banner"]}`}>{
+                    raceData.notification
+                }</div>
             }
             <main className={`${styles["racepage-container"]}`}>
                 <section className={`section-container`}>
@@ -116,7 +101,7 @@ export default function Race() {
                                     Registration Currently Closed - Check Back Soon To Register
                                 </h5>
                             }
-                            <a href={`./${raceName}/register`} className={`button button--large ${raceData.isRegOpen === 0? "disabled": ""} ${styles['registration-button']}`}>
+                            <a href={`./${raceName}/register`} className={`button button--large ${raceData.isRegOpen === 0 ? "disabled" : ""} ${styles['registration-button']}`}>
                                 Register &nbsp;<img src="https://creekvt.com/races/RacerIcon.png" />
                             </a>
                         </div>
@@ -152,7 +137,7 @@ export default function Race() {
                 <section className={`section-container`} id={`athletes-section`}>
                     <h2 className={`section-heading`}>Registered Athletes</h2>
                     <hr />
-                    <RegisteredRacers raceData={raceData}/>
+                    <RegisteredRacers raceData={raceData} />
 
                 </section>
                 <section className={`section-container`} id={`directions-section`}>
