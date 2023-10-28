@@ -227,7 +227,7 @@ console.log(registeredRacerData)
         setSelectedAction(null)
     }
 
-    console.log(registeredRacerData)
+    
     //Add a blank item with corresponding race name and id to the DB and repopulate the scheduleData state -- need to get race year
     async function addItem() {
             const token = localStorage.getItem('token')

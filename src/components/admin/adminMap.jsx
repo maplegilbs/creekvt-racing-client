@@ -13,9 +13,9 @@ function MyMapComponent({ mapMarkerData, updateLocationFromMapClick, selectedIte
     const [mapListener, setMapListener] = useState();
     const [mapMarkers, setMapMarkers] = useState([])
     const ref = useRef();
-   
 
-    
+
+
 
     //When the map is updated (via a new selected race) two things change - our first useEffect fires to build a new map
     //But also the component will have been passed new mapMaker data and so the second useEffect will also run
@@ -54,7 +54,7 @@ function MyMapComponent({ mapMarkerData, updateLocationFromMapClick, selectedIte
     useEffect(() => {
         function mapClickAction(e) {
             updateLocationFromMapClick(e, selectedItemID)
-            if (editRowRef.current) editRowRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+            if (editRowRef.current) {setTimeout(()=> editRowRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' }), 1000)}
         }
         if (selectedItemID && myMap) {
             let listenerID = myMap.addListener('click', mapClickAction)
@@ -72,11 +72,16 @@ function MyMapComponent({ mapMarkerData, updateLocationFromMapClick, selectedIte
             setMapMarkers(() => {
                 // console.log('Setting markers')
                 let markers = mapMarkerData.map(markerData => {
+                    console.log(markerData)
+                    const markerIcon = {
+                        url: markerData.iconUrl ? markerData.iconUrl : "https://creekvt.com/races/RacerIcon.png",
+                        scaledSize: new window.google.maps.Size(25, 25)
+                    }
                     const newMarker = new window.google.maps.Marker({
                         position: { lat: Number(markerData.lat), lng: Number(markerData.lng) },
                         myMap,
-                        icon: "https://creekvt.com/races/RacerIcon.png",
-                        title: "Hello World!",
+                        icon: markerIcon,
+                        title: markerData.name,
                     });
                     newMarker.setMap(myMap)
                     return newMarker
@@ -101,10 +106,15 @@ function MyMapComponent({ mapMarkerData, updateLocationFromMapClick, selectedIte
                     let foundMarker = filteredMarkers.findIndex(marker => marker.position.lat() === Number(markerData.lat) && marker.position.lng() === Number(markerData.lng))
                     if (foundMarker === -1) {
                         // console.log('Adding a new marker')
+                        console.log(markerData)
+                        const markerIcon = {
+                            url: markerData.iconUrl ? markerData.iconUrl : "https://creekvt.com/races/RacerIcon.png",
+                            scaledSize: new window.google.maps.Size(25, 25)
+                        }
                         const newMarker = new window.google.maps.Marker({
                             position: { lat: Number(markerData.lat), lng: Number(markerData.lng) },
                             myMap,
-                            icon: "https://creekvt.com/races/RacerIcon.png",
+                            icon: markerIcon,
                             title: "Hello World!",
                         });
                         newMarker.setMap(myMap)
