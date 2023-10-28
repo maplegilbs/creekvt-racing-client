@@ -141,6 +141,8 @@ li.events-listItem {
 .location-name {
     display: flex;
     align-items: center;
+    cursor: pointer;
+    text-decoration: underline;
 }
 
 .location-name img {

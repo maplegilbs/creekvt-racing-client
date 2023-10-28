@@ -6,13 +6,13 @@ import { useParams } from "react-router";
 //Styles
 import styles from "./map.module.css"
 
-function MyMapComponent({ mapMarkerData }) {
+function MyMapComponent({ mapMarkerData, selectedMapLocation }) {
     const raceToFetch = useParams().raceName;
     const [myMap, setMyMap] = useState();
     const [mapMarkers, setMapMarkers] = useState([])
     const ref = useRef();
 
-    
+
 
     useEffect(() => {
         const buildMap = async () => {
@@ -36,11 +36,11 @@ function MyMapComponent({ mapMarkerData }) {
             });
             newMap.addListener('click', (e) => console.log(e.latLng.lat(), e.latLng.lng()))
             let bounds = new window.google.maps.LatLngBounds()
-            mapMarkerData.forEach( markerData => {
+            mapMarkerData.forEach(markerData => {
                 let location = new window.google.maps.LatLng(Number(markerData[0]), Number(markerData[1]))
                 bounds.extend(location)
             })
-            if(!bounds.isEmpty()) newMap.fitBounds(bounds)
+            if (!bounds.isEmpty()) newMap.fitBounds(bounds)
             mapMarkerData.forEach(markerData => {
                 const markerIcon = {
                     url: markerData[2] ? markerData[2] : "https://creekvt.com/races/RacerIcon.png",
@@ -63,20 +63,32 @@ function MyMapComponent({ mapMarkerData }) {
         buildMap()
     }, []);
 
-    
+    useEffect(() => {
+        console.log(selectedMapLocation, myMap);
+        if (selectedMapLocation && myMap) {
+            let bounds = new window.google.maps.LatLngBounds()
+            let location = new window.google.maps.LatLng(selectedMapLocation[0], selectedMapLocation[1])
+            bounds.extend(location)
+            myMap.fitBounds(bounds)
+        }
+    }, [selectedMapLocation])
 
 
-    
+
+
+
     return <div className={`${styles["map"]}`} ref={ref} id="map"></div>;
 }
 
-export default function Map({ mapMarkerData}) {
+export default function Map({ mapMarkerData, selectedMapLocation }) {
+    console.log(selectedMapLocation)
 
     return (
         <div className={`${styles["map-container"]}`}>
             <Wrapper apiKey={"AIzaSyBBtqHKDrsiMp-7ldVkI6QEMoxjzggJ-J8"}>
                 <MyMapComponent
                     mapMarkerData={mapMarkerData}
+                    selectedMapLocation={selectedMapLocation}
                 />
             </Wrapper>
         </div>

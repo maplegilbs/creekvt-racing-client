@@ -20,13 +20,15 @@ export async function loader({ params }) {
     return { raceJSON, scheduleJSON, locationsJSON }
 }
 
-function LocationContainer({ location }) {
-    
+function LocationContainer({ location, setSelectedMapLocation }) {
 
     return (
         <div className={`${styles["location-container"]}`}>
             <div className={`${styles["location-header"]}`}>
-                <div className={`${styles["location-name"]}`}>
+                <div className={`${styles["location-name"]}`} 
+                onClick={()=>{
+                    setSelectedMapLocation([Number(location.lat), Number(location.lng)])
+                }}>
                     <h6>{location.name}</h6>
                     <img src={location.iconUrl} />
                 </div>
@@ -44,7 +46,6 @@ function LocationContainer({ location }) {
 }
 
 function ScheduleItem({ eventDetails }) {
-    console.log(eventDetails)
     return (
         <>
             {
@@ -61,17 +62,18 @@ function ScheduleItem({ eventDetails }) {
 }
 
 export default function Race() {
-    console.log(useLoaderData())
     const raceData = useLoaderData().raceJSON[0];
     const scheduleData = useLoaderData().scheduleJSON;
     const locations = useLoaderData().locationsJSON;
-    // const [mapMarkerData, setMapMarkerData] = useState([])
+    const [selectedMapLocation, setSelectedMapLocation] = useState(null);
     const [mapMarkerData, setMapMarkerData] = useState(locations.map(location => [Number(location.lat), Number(location.lng), location.iconUrl]));
     const { raceName } = useParams()
+    
     const formattedTime = raceData.date ? formatDateTime(raceData.date) : null;
-    const locationContainers = locations.map(location => <LocationContainer location={location} />)
+    const locationContainers = locations.map(location => <LocationContainer location={location} setSelectedMapLocation={setSelectedMapLocation}/>)
     const scheduleItems = scheduleData ? scheduleData.map(eventDetails => <ScheduleItem eventDetails={eventDetails} />) : null;
 
+    console.log(selectedMapLocation)
     return (
         <>
             {
@@ -147,7 +149,7 @@ export default function Race() {
                         <div className={`${styles["location-section"]}`}>
                             {locationContainers}
                         </div>
-                        < Map mapMarkerData={mapMarkerData} />
+                        < Map mapMarkerData={mapMarkerData} selectedMapLocation={selectedMapLocation}/>
                     </div>
                 </section >
                 <section className={`section-container`} id={`course-section`}>
