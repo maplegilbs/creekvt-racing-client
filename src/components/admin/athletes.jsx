@@ -15,26 +15,29 @@ import adminStyles from "./adminGlobalStyles.module.css"
 
 
 //Component for informational row only.  Buttons to edit or delete racers.
-function AthleteRow({ itemID, itemData, askDeleteItem, editItem }) {
+function GroupRow({ itemID, itemData, askDeleteItem, editItem }) {
+    console.log(itemData[1])
     return (
-        <div className={`${adminStyles["info-row"]} ${styles["racer-row"]}`}>
+        <div className={`${adminStyles["info-row"]} ${styles["group-row"]}`}>
             <div className={`${adminStyles["row-icons"]}`}>
                 <FontAwesomeIcon className={`${adminStyles["action-icon"]}`} onClick={() => editItem(itemID)} icon={faPenToSquare} style={{ color: "#000000", }} />
                 <FontAwesomeIcon className={`${adminStyles["action-icon"]}`} onClick={() => askDeleteItem(itemID)} icon={faCircleMinus} style={{ color: "#af2323", }} />
             </div>
-            <p>{itemData.id ? itemData.id : ""}</p>
+            <p>{itemID ? itemID : ""}</p>
+            <div className={`${styles["racer-rows"]}`}>
+                {itemData[1].map(item => <AthleteRow key={item.id} itemData={item} />)}
+            </div>
+            <p>{itemData[1][0].category ? itemData[1][0].category : ""}</p>
+        </div>
+    )
+}
+function AthleteRow({ itemData }) {
+    console.log(itemData)
+    return (
+        <div className={`${styles["racer-row"]}`}>
             <p>{itemData.firstName ? itemData.firstName : ""}</p>
             <p>{itemData.lastName ? itemData.lastName : ""}</p>
             <p>{itemData.email ? itemData.email : ""}</p>
-            <p>{itemData.category ? itemData.category : ""}</p>
-            {
-                (JSON.parse(itemData.partners) && JSON.parse(itemData.partners).length > 0) &&
-                <div className={`${styles["partners-block"]}`}>
-                    <div className={`${styles["partners-row"]}`}>
-                        <p><strong>Partners:</strong> {JSON.parse(itemData.partners).map(partner => `${partner.firstName} ${partner.lastName}`).join(', ')}</p>
-                    </div>
-                </div>
-            }
         </div>
     )
 }
@@ -111,7 +114,7 @@ export default function Athletes() {
     const [selectedAction, setSelectedAction] = useState(null);  //Null, 'delete' or 'edit' to be used to determine if Edit components allowing for input should be displayed or not
     const [selectedItemID, setSelectedItemID] = useState(null);  //The ID of a selected racer  
 
-console.log(registeredRacerData)
+    console.log(registeredRacerData)
 
     //Set our initial state based on any changes in the selected race
     useEffect(() => {
@@ -119,7 +122,7 @@ console.log(registeredRacerData)
     }, [selectedRace])
 
 
-    //Basic fetch of schedule data
+    //Fetching and fomatting racer data
     async function getRacerData() {
         try {
             const token = localStorage.getItem("token")
@@ -128,14 +131,26 @@ console.log(registeredRacerData)
                 headers: { authorization: `Bearer ${token}` }
             })
             let responseJSON = await response.json();
-            console.log(responseJSON)
             let cleanedResponseJSON = responseJSON.map(item => {
                 for (let propertyName of Object.keys(item)) {
-                    if (item[propertyName] === 'null' || item[propertyName] === "00:00:00") item[propertyName] = null
+                    if (item[propertyName] === 'null') item[propertyName] = null
                 }
                 return item;
             })
-            setRegisteredRacerData(cleanedResponseJSON)
+            //cycle through the response json.  if selected racer has an id that matches any other entity ids, add those to the current racers "group" (array)
+            //end with an object {id: [racer1Obj, racer2Obj], id: [racer1Obj]}
+            let groupedRacers = cleanedResponseJSON.reduce((accum, racer) => {
+                let updatedRacerEntity = accum[racer.racerEntityID] ? accum[racer.racerEntityID].concat(racer) : [racer]
+                accum[racer.racerEntityID] = updatedRacerEntity
+                return accum
+            }, {})
+            //take the above formatted object and turn it into an array [ [id, [racer1Obj, racer2Obj]], [id, [racer1Obj]] ] that will be easier to map through later
+            let groupedRacersArray = []
+            Object.keys(groupedRacers).forEach(racerEntityID => {
+                groupedRacersArray.push([racerEntityID, groupedRacers[racerEntityID]])
+            })
+            console.log(groupedRacersArray)
+            setRegisteredRacerData(groupedRacersArray)
         }
         catch (err) {
             console.error(err)
@@ -227,37 +242,37 @@ console.log(registeredRacerData)
         setSelectedAction(null)
     }
 
-    
+
     //Add a blank item with corresponding race name and id to the DB and repopulate the scheduleData state -- need to get race year
     async function addItem() {
-            const token = localStorage.getItem('token')
-            const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
-            let tableInfoResponse = await fetch(`http://localhost:3000/racers/tableInfo`, {
-                headers: { authorization: `Bearer ${token}` }
-            })
-            let tableInfo = await tableInfoResponse.json()
-            const blankItem = { raceName: selectedRace, year: selectedRaceYear};
-            tableInfo.forEach(column => {
-                if (column.Field !== 'id' && column.Field !== 'raceName' && column.Field !== 'year') blankItem[column.Field] = null
-            })
-            let addedItem = await fetch(`http://localhost:3000/racers/${raceToFetch}`, {
-                method: "POST",
-                headers: {
-                    authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(blankItem)
-            })
-            let addedItemJSON = await addedItem.json()
-            let categoryResponse = await fetch(`http://localhost:3000/races/categories/${raceToFetch}`)
-            let categoryJSON = await categoryResponse.json()
-            let categoryOpts = categoryJSON[0].categoryOpts;
-            setRegisteredRacerData(prev => {
-                let updatedRacers = prev.concat({ ...blankItem, id: addedItemJSON.insertId, categoryOpts: categoryOpts })
-                return updatedRacers
-            })
-            setSelectedItemID(addedItemJSON.insertId)
-            setSelectedAction('edit')
+        const token = localStorage.getItem('token')
+        const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
+        let tableInfoResponse = await fetch(`http://localhost:3000/racers/tableInfo`, {
+            headers: { authorization: `Bearer ${token}` }
+        })
+        let tableInfo = await tableInfoResponse.json()
+        const blankItem = { raceName: selectedRace, year: selectedRaceYear };
+        tableInfo.forEach(column => {
+            if (column.Field !== 'id' && column.Field !== 'raceName' && column.Field !== 'year') blankItem[column.Field] = null
+        })
+        let addedItem = await fetch(`http://localhost:3000/racers/${raceToFetch}`, {
+            method: "POST",
+            headers: {
+                authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(blankItem)
+        })
+        let addedItemJSON = await addedItem.json()
+        let categoryResponse = await fetch(`http://localhost:3000/races/categories/${raceToFetch}`)
+        let categoryJSON = await categoryResponse.json()
+        let categoryOpts = categoryJSON[0].categoryOpts;
+        setRegisteredRacerData(prev => {
+            let updatedRacers = prev.concat({ ...blankItem, id: addedItemJSON.insertId, categoryOpts: categoryOpts })
+            return updatedRacers
+        })
+        setSelectedItemID(addedItemJSON.insertId)
+        setSelectedAction('edit')
     }
 
 
@@ -339,7 +354,7 @@ console.log(registeredRacerData)
                     }
                     <div>
                         {!selectedAction &&
-                            (registeredRacerData ? registeredRacerData.map(racer => <AthleteRow key={racer.id} itemID={racer.id} itemData={racer} askDeleteItem={askDeleteItem} editItem={editItem} />) : 'No data')
+                            (registeredRacerData ? registeredRacerData.map(racerEntity => <GroupRow key={racerEntity[0]} itemID={racerEntity[0]} itemData={racerEntity} askDeleteItem={askDeleteItem} editItem={editItem} />) : 'No data')
                         }
                         {selectedAction === 'edit' &&
                             (registeredRacerData ? registeredRacerData.map(racer => {
