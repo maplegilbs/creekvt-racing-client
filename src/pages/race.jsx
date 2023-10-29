@@ -109,11 +109,11 @@ export default function Race() {
                         </div>
                         <nav className={`${styles['race-nav']}`}>
                             <a href="#schedule-section" className={`link-std link-bold`}>Schedule</a>
-                            <a href="#athletes-section" className={`link-std link-bold`}>Registered Athletes</a>
+                            <a href="#athletes-section" className={`link-std link-bold`}>Athletes</a>
                             <a href="#directions-section" className={`link-std link-bold`}>Directions</a>
-                            <a href="#course-section" className={`link-std link-bold`}>Course Description</a>
+                            <a href="#course-section" className={`link-std link-bold`}>Course</a>
                             <a href="#results-section" className={`link-std link-bold`}>Results</a>
-                            <a href="#faqcontact-section" className={`link-std link-bold`}>FAQ / Contact</a>
+                            <a href="#faqcontact-section" className={`link-std link-bold`}>FAQ</a>
                         </nav>
                         {/* {
                             new Date(raceData.date).valueOf() + (1000 * 60 * 60 * 24) < new Date().valueOf() ?
