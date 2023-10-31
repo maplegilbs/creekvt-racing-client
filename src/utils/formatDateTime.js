@@ -45,6 +45,7 @@ export function formatDateTime(inputTime) {
             amPm: amPM,
             fullDate: `${monthString} ${day}, ${year}`,
             htmlDateTime: `${year}-${month}-${day}T${hour24}:${minute}`,
+            htmlDate: `${year}-${month}-${day}`,
             inputTime: inputTime
         }
     )
