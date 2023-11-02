@@ -1,10 +1,10 @@
 //Contexts
-import { SelectedRaceContext, UserInfoContext } from "../../pages/adminDashboard"
+import { SelectedRaceContext } from "../../pages/adminDashboard"
 //Hooks
-import { useEffect, useState, useContext } from "react"
+import { useState, useContext } from "react"
 //Icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPenToSquare, faCircleMinus, faCirclePlus, faCircleXmark, faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
+import { faCircleXmark, faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 //Libraries
 import { formatDateTime } from "../../utils/formatDateTime.js";
 //Styles
@@ -27,50 +27,55 @@ export default function EditAthleteRow({ itemData, setSelectedRacer, currentGrou
         })
     }
 
+    function cancelAthleteEdit() {
+        // setCurrentGroupInfo()
+    }
+
     async function saveRacer() {
         console.log(`Saving, `, currentGroupInfo, racerData)
         const token = localStorage.getItem("token")
         const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
         let wasSaveSuccess = false;
-        //If this is not a new group
-        if (Number(currentGroupInfo.racerEntityID) !== 0) {
-            //If this is a new racer being added
-            if (Number(racerData.id) == 0) {
-                let savedRacerResponse = await fetch(`http://localhost:3000/racers/addRacer/${raceToFetch}`, {
-                    method: 'POST',
-                    headers: {
-                        authorization: `Bearer ${token}`,
-                        "Content-Type": 'application/json'
-                    },
-                    body: JSON.stringify({
-                        ...racerData
-                    })
+        let savedRacerID = racerData.id;
+        //If this is a new racer being added
+        if (Number(racerData.id) == 0) {
+            console.log('adding new racer')
+            let savedRacerResponse = await fetch(`http://localhost:3000/racers/addRacer/${raceToFetch}`, {
+                method: 'POST',
+                headers: {
+                    authorization: `Bearer ${token}`,
+                    "Content-Type": 'application/json'
+                },
+                body: JSON.stringify({
+                    ...racerData
                 })
-                if (savedRacerResponse.status === 200) wasSaveSuccess = true;
-            }
-            //If this is a racer being updated
-            else {
-                let token = localStorage.getItem('token')
-                let tableFieldsResponse = await fetch("http://localhost:3000/racers/tableInfo/racers", {
-                    headers: { authorization: `Bearer ${token}` }
-                })
-                let tableFields = await tableFieldsResponse.json()
-                let filteredRacerData = tableFields.reduce((accum, field) => {
-                    return {
-                        ...accum,
-                        [field.Field]: racerData[field.Field]
-                    }
-                }, {})
-                let editedRacerResponse = await fetch(`http://localhost:3000/racers/editRacer/${raceToFetch}/${racerData.id}`, {
-                    method: 'PATCH',
-                    headers: {
-                        authorization: `Bearer ${token}`,
-                        "Content-Type": 'application/json'
-                    },
-                    body: JSON.stringify(filteredRacerData)
-                })
-                if (editedRacerResponse.status === 200) wasSaveSuccess = true;
-            }
+            })
+            if (savedRacerResponse.status === 200) wasSaveSuccess = true;
+            let savedRacer = await savedRacerResponse.json();
+            savedRacerID = savedRacer.insertId
+        }
+        //If this is a racer being updated
+        else {
+            let token = localStorage.getItem('token')
+            let tableFieldsResponse = await fetch("http://localhost:3000/racers/tableInfo/racers", {
+                headers: { authorization: `Bearer ${token}` }
+            })
+            let tableFields = await tableFieldsResponse.json()
+            let filteredRacerData = tableFields.reduce((accum, field) => {
+                return {
+                    ...accum,
+                    [field.Field]: racerData[field.Field]
+                }
+            }, {})
+            let editedRacerResponse = await fetch(`http://localhost:3000/racers/editRacer/${raceToFetch}/${racerData.id}`, {
+                method: 'PATCH',
+                headers: {
+                    authorization: `Bearer ${token}`,
+                    "Content-Type": 'application/json'
+                },
+                body: JSON.stringify(filteredRacerData)
+            })
+            if (editedRacerResponse.status === 200) wasSaveSuccess = true;
         }
         if (wasSaveSuccess) {
             setCurrentGroupInfo(prev => {
@@ -78,6 +83,10 @@ export default function EditAthleteRow({ itemData, setSelectedRacer, currentGrou
                     if (Number(racer.id) === Number(racerData.id)) return racerData
                     else return racer
                 })
+                let foundIndex = updatedRacers.findIndex(racer => Number(racer.id) === 0)
+                console.log(foundIndex)
+                if (foundIndex >= 0) updatedRacers[foundIndex].id = savedRacerID;
+                console.log(updatedRacers)
                 let updatedGroup = {
                     ...prev,
                     racers: updatedRacers
