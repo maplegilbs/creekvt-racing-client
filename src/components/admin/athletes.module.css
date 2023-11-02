@@ -72,7 +72,7 @@ select:disabled,
 div.disable-overlay div.racer-row p,
 div.disable-overlay.racers-row,
 div.disable-overlay .select-group {
-    color: rgba(200,200,200,.7);
+    color: rgba(100,100,100,.8);
 }
 
 div.disable-overlay .select-group {
@@ -107,11 +107,13 @@ div.checkbox-group {
     column-gap: .5rem;
 }
 
-div.final-row {
+div.final-row,
+div.add-racer__button-row {
     grid-row: 3;
     grid-column: 1/7;
 }
 
+div.edit-racer-group__button-row,
 .edit-racer__button-row{
     grid-row: 4;
 }

@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare, faCircleMinus, faCirclePlus, faCircleXmark, faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 //Libraries
 import { formatDateTime } from "../../utils/formatDateTime.js";
+import { v4 as uuidv4 } from "uuid"
 //Styles
 import adminStyles from "./adminGlobalStyles.module.css"
 import styles from "./athletes.module.css"
@@ -25,9 +26,9 @@ function GroupRow({ itemID, itemData, askDeleteItem, editItem }) {
             </div>
             <p>{itemID ? itemID : ""}</p>
             <div className={`${styles["racer-rows"]}`}>
-                {itemData[1].map(item => <AthleteRow key={item.id} itemData={item} />)}
+                {itemData.racers.map(item => <AthleteRow key={item.id} itemData={item} />)}
             </div>
-            <p>{itemData[1][0].category ? itemData[1][0].category : ""}</p>
+            <p>{itemData.category ? itemData.category : ""}</p>
         </div>
     )
 }
@@ -70,8 +71,9 @@ export default function Athletes() {
     const [registeredRacerData, setRegisteredRacerData] = useState(null) //Array of objectes each containing data about specific racer
     const [selectedAction, setSelectedAction] = useState(null);  //Null, 'delete' or 'edit' to be used to determine if Edit components allowing for input should be displayed or not
     const [selectedItemID, setSelectedItemID] = useState(null);  //The ID of a selected racer  
+    const [categoryOpts, setCategoryOpts] = useState(null)
 
-    console.log(registeredRacerData)
+    console.log(registeredRacerData, selectedAction, selectedItemID)
 
     //Set our initial state based on any changes in the selected race
     useEffect(() => {
@@ -104,17 +106,20 @@ export default function Athletes() {
             //take the above formatted object and turn it into an array [ [id, [racer1Obj, racer2Obj]], [id, [racer1Obj]] ] that will be easier to map through later
             let groupedRacersArray = []
             Object.keys(groupedRacers).forEach(racerEntityID => {
-                groupedRacersArray.push([racerEntityID, groupedRacers[racerEntityID]])
+                groupedRacersArray.push({
+                    racerEntityID: racerEntityID,
+                    category: groupedRacers[racerEntityID][0].category,
+                    racers: groupedRacers[racerEntityID],
+                })
             })
             setRegisteredRacerData(groupedRacersArray)
+            setCategoryOpts(groupedRacers[Object.keys(groupedRacers)[1]][0].categoryOpts)
         }
         catch (err) {
             console.error(err)
             setRegisteredRacerData([])
         }
     }
-
-
 
     function handleRacerChange(e, itemID) {
         console.log(e.target, itemID)
@@ -129,17 +134,29 @@ export default function Athletes() {
                     }
                     else return racer
                 })
-                return[racerEntity[0], updatedRacerEntity]
+                return [racerEntity[0], updatedRacerEntity]
             })
             return updatedRacerEntities
         })
     }
 
-    function handleCategoryChange(e, itemID) {
-        console.log('category change')
+
+    //Action for when add racer (racer entity) button is selected
+    function addRacer() {
+        let newRacer = {
+            category: null,
+            racerEntityID: 0,
+            racers: []
+        }
+        console.log(newRacer)
+        console.log(categoryOpts)
+        setRegisteredRacerData(prev=>{
+            let updatedRacerData = prev.concat(newRacer)
+            return updatedRacerData
+        })
+        editItem(newRacer.racerEntityID)
+
     }
-
-
 
     //Action for when cancel button is selected
     function cancelAction() {
@@ -159,7 +176,7 @@ export default function Athletes() {
         setSelectedAction('delete')
     }
 
-    
+
     if (selectedRace) {
         return (
             <>
@@ -169,7 +186,7 @@ export default function Athletes() {
                     </div>
                     {selectedAction === 'delete' &&
                         <>
-                            {registeredRacerData ? registeredRacerData.map(racerEntity => <GroupRow key={racerEntity[0]} itemID={racerEntity[0]} itemData={racerEntity} askDeleteItem={askDeleteItem} editItem={editItem} />) : 'No data'}
+                            {registeredRacerData ? registeredRacerData.map(racerEntity => <GroupRow key={racerEntity.racerEntityID} itemID={racerEntity.racerEntityID} itemData={racerEntity} askDeleteItem={askDeleteItem} editItem={editItem} />) : 'No data'}
                             <DeleteConfirmation
                                 itemID={selectedItemID}
                                 setSelectedItemID={setSelectedItemID}
@@ -180,21 +197,21 @@ export default function Athletes() {
                     }
                     <div>
                         {!selectedAction &&
-                            (registeredRacerData ? registeredRacerData.map(racerEntity => <GroupRow key={racerEntity[0]} itemID={racerEntity[0]} itemData={racerEntity} askDeleteItem={askDeleteItem} editItem={editItem} />) : 'No data')
+                            (registeredRacerData ? registeredRacerData.map(racerEntity => <GroupRow key={racerEntity.racerEntityID} itemID={racerEntity.racerEntityID} itemData={racerEntity} askDeleteItem={askDeleteItem} editItem={editItem} />) : 'No data')
                         }
                         {selectedAction === 'edit' &&
                             (registeredRacerData ? registeredRacerData.map(racerEntity => {
-                                return Number(racerEntity[0]) === Number(selectedItemID) ?
-                                    <EditGroupRow key={racerEntity[0]} itemID={racerEntity[0]} itemData={racerEntity} handleRacerChange={handleRacerChange} handleCategoryChange={handleCategoryChange} cancelAction={cancelAction} />
+                                return Number(racerEntity.racerEntityID) === Number(selectedItemID) ?
+                                    <EditGroupRow key={racerEntity.racerEntityID} itemID={racerEntity.racerEntityID} itemData={racerEntity} categoryOpts={categoryOpts} handleRacerChange={handleRacerChange} cancelAction={cancelAction} />
                                     :
-                                    <GroupRow key={racerEntity[0]} itemID={racerEntity[0]} itemData={racerEntity} askDeleteItem={askDeleteItem} editItem={editItem} />
+                                    <GroupRow key={racerEntity.racerEntityID} itemID={racerEntity.racerEntityID} itemData={racerEntity} askDeleteItem={askDeleteItem} editItem={editItem} />
                             })
                                 : 'No edit')
                         }
                     </div>
                     <br />
                     {selectedAction !== 'edit' &&
-                        <button className={`${"button button--medium"} ${adminStyles["icon__button"]}`}>
+                        <button className={`${"button button--medium"} ${adminStyles["icon__button"]}`} onClick={addRacer}>
                             <FontAwesomeIcon className={`${styles["action-icon"]}`} icon={faCirclePlus} style={{ color: "#000000", }} /> &nbsp;&nbsp;Add Racer
                         </button>
                     }
