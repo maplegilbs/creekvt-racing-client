@@ -12,12 +12,11 @@ import adminStyles from "./adminGlobalStyles.module.css"
 import styles from "./athletes.module.css"
 
 
-export default function EditAthleteRow({ itemData, setSelectedRacer, currentGroupInfo, setCurrentGroupInfo }) {
+export default function EditAthleteRow({ itemData, setSelectedRacer, setErrorState, setCurrentGroupInfo }) {
     const selectedRace = useContext(SelectedRaceContext)[0]; //Name of race with spaces i.e. "Test Race"
     const [racerData, setRacerData] = useState(itemData)
 
     function handleRacerChange(e, itemID) {
-        console.log(e.target, itemID)
         setRacerData(prev => {
             let updatedRacerData = {
                 ...prev,
@@ -27,77 +26,77 @@ export default function EditAthleteRow({ itemData, setSelectedRacer, currentGrou
         })
     }
 
-    function cancelAthleteEdit() {
-        // setCurrentGroupInfo()
-    }
-
     async function saveRacer() {
-        console.log(`Saving, `, currentGroupInfo, racerData)
-        const token = localStorage.getItem("token")
-        const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
-        let wasSaveSuccess = false;
-        let savedRacerID = racerData.id;
-        //If this is a new racer being added
-        if (Number(racerData.id) == 0) {
-            console.log('adding new racer')
-            let savedRacerResponse = await fetch(`http://localhost:3000/racers/addRacer/${raceToFetch}`, {
-                method: 'POST',
-                headers: {
-                    authorization: `Bearer ${token}`,
-                    "Content-Type": 'application/json'
-                },
-                body: JSON.stringify({
-                    ...racerData
+        try {
+            const token = localStorage.getItem("token")
+            const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
+            let wasSaveSuccess = false;
+            let savedRacerID = racerData.id;
+            //If this is a new racer being added
+            if (Number(racerData.id) == 0) {
+                let savedRacerResponse = await fetch(`http://localhost:3000/racers/admin/addRacer/${raceToFetch}`, {
+                    method: 'POST',
+                    headers: {
+                        authorization: `Bearer ${token}`,
+                        "Content-Type": 'application/json'
+                    },
+                    body: JSON.stringify({
+                        ...racerData
+                    })
                 })
-            })
-            if (savedRacerResponse.status === 200) wasSaveSuccess = true;
-            let savedRacer = await savedRacerResponse.json();
-            savedRacerID = savedRacer.insertId
-        }
-        //If this is a racer being updated
-        else {
-            let token = localStorage.getItem('token')
-            let tableFieldsResponse = await fetch("http://localhost:3000/racers/tableInfo/racers", {
-                headers: { authorization: `Bearer ${token}` }
-            })
-            let tableFields = await tableFieldsResponse.json()
-            let filteredRacerData = tableFields.reduce((accum, field) => {
-                return {
-                    ...accum,
-                    [field.Field]: racerData[field.Field]
-                }
-            }, {})
-            let editedRacerResponse = await fetch(`http://localhost:3000/racers/editRacer/${raceToFetch}/${racerData.id}`, {
-                method: 'PATCH',
-                headers: {
-                    authorization: `Bearer ${token}`,
-                    "Content-Type": 'application/json'
-                },
-                body: JSON.stringify(filteredRacerData)
-            })
-            if (editedRacerResponse.status === 200) wasSaveSuccess = true;
-        }
-        if (wasSaveSuccess) {
-            setCurrentGroupInfo(prev => {
-                let updatedRacers = prev.racers.map(racer => {
-                    if (Number(racer.id) === Number(racerData.id)) return racerData
-                    else return racer
+                let savedRacer = await savedRacerResponse.json()
+                if (savedRacerResponse.status === 200) wasSaveSuccess = true;
+                else {throw new Error(saveRacer.message)}
+                savedRacerID = savedRacer.insertId
+            }
+            //If this is a racer being updated
+            else {
+                let token = localStorage.getItem('token')
+                let tableFieldsResponse = await fetch("http://localhost:3000/racers/tableInfo/racers", {
+                    headers: { authorization: `Bearer ${token}` }
                 })
-                let foundIndex = updatedRacers.findIndex(racer => Number(racer.id) === 0)
-                console.log(foundIndex)
-                if (foundIndex >= 0) updatedRacers[foundIndex].id = savedRacerID;
-                console.log(updatedRacers)
-                let updatedGroup = {
-                    ...prev,
-                    racers: updatedRacers
-                }
-                return updatedGroup
-            })
-            setSelectedRacer(null)
+                let tableFields = await tableFieldsResponse.json()
+                let filteredRacerData = tableFields.reduce((accum, field) => {
+                    return {
+                        ...accum,
+                        [field.Field]: racerData[field.Field]
+                    }
+                }, {})
+                let editedRacerResponse = await fetch(`http://localhost:3000/racers/admin/editRacer/${raceToFetch}/${racerData.id}`, {
+                    method: 'PATCH',
+                    headers: {
+                        authorization: `Bearer ${token}`,
+                        "Content-Type": 'application/json'
+                    },
+                    body: JSON.stringify(filteredRacerData)
+                })
+                let editedRacer = await editedRacerResponse.json()
+                if (editedRacerResponse.status === 200) wasSaveSuccess = true;
+                else {throw new Error(editedRacer.message)}
+            }
+            if (wasSaveSuccess) {
+                setCurrentGroupInfo(prev => {
+                    let updatedRacers = prev.racers.map(racer => {
+                        if (Number(racer.id) === Number(racerData.id)) return racerData
+                        else return racer
+                    })
+                    let foundIndex = updatedRacers.findIndex(racer => Number(racer.id) === 0)
+                    console.log(foundIndex)
+                    if (foundIndex >= 0) updatedRacers[foundIndex].id = savedRacerID;
+                    console.log(updatedRacers)
+                    let updatedGroup = {
+                        ...prev,
+                        racers: updatedRacers
+                    }
+                    return updatedGroup
+                })
+                setSelectedRacer(null)
+            }
+        } catch (error) {
+            setErrorState({ isInErrorState: true, message: `${error}` })
         }
     }
 
-    console.log("Edit athlete row: ", racerData)
     return (
         // <div className={`${styles["edit-racer__row"]}`}>
         <div className={`${styles["edit-racer-inputs__container"]}`}>

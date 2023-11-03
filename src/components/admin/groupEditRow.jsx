@@ -13,7 +13,7 @@ import adminStyles from "./adminGlobalStyles.module.css"
 import styles from "./athletes.module.css"
 
 //Component for editing individual racer entity information
-export default function EditGroupRow({ itemID, itemData, categoryOpts, setRegisteredRacerData, askDeleteItem, cancelAction }) {
+export default function EditGroupRow({ itemID, itemData, categoryOpts, setRegisteredRacerData, askDeleteItem, cancelAction, setErrorState }) {
     const selectedRace = useContext(SelectedRaceContext)[0]; //Name of race with spaces i.e. "Test Race"
     const [selectedRacer, setSelectedRacer] = useState(null)
     const [currentGroupInfo, setCurrentGroupInfo] = useState(itemData)
@@ -21,50 +21,71 @@ export default function EditGroupRow({ itemID, itemData, categoryOpts, setRegist
 
     console.log("Edit group row: ", itemID, currentGroupInfo, selectedRacer)
 
-    //Add a teammate.  If the group ID is not 0 we can set our teammate ID to 0
+    //Add a racer to the boat.
     async function addRacer() {
-        if(isNoticeDisplayed) setIsNoticeDisplayed(false)
-        //create new blank racer
-        let token = localStorage.getItem('token')
-        //get the fields we will need to create a blank racer and generate an object with those keys and values set to null
-        let tableFieldsResponse = await fetch("http://localhost:3000/racers/tableInfo/racers", {
-            headers: { authorization: `Bearer ${token}` }
-        })
-        let tableFields = await tableFieldsResponse.json()
-        let blankRacer = {};
-        for (let field of tableFields) { blankRacer[field.Field] = null }
-        //set the racer's racerEntityID equal to the current group's id
-        blankRacer.racerEntityID = itemID;
-        blankRacer.id = 0;
-        setCurrentGroupInfo(prev => {
-            let updatedRacers = prev.racers.concat(blankRacer)
-            let updatedGroupInfo = {
-                ...prev,
-                racers: updatedRacers
-            }
-            return updatedGroupInfo
-        })
-        setSelectedRacer(blankRacer)
+        try {
+            if (isNoticeDisplayed) setIsNoticeDisplayed(false)
+            //create new blank racer
+            let token = localStorage.getItem('token')
+            //get the fields we will need to create a blank racer and generate an object with those keys and values set to null
+            let tableFieldsResponse = await fetch("http://localhost:3000/racers/tableInfo/racers", {
+                headers: { authorization: `Bearer ${token}` }
+            })
+            let tableFields = await tableFieldsResponse.json()
+            let blankRacer = {};
+            for (let field of tableFields) { blankRacer[field.Field] = null }
+            //set the racer's racerEntityID equal to the current group's id
+            blankRacer.racerEntityID = itemID;
+            blankRacer.id = 0;
+            setCurrentGroupInfo(prev => {
+                let updatedRacers = prev.racers.concat(blankRacer)
+                let updatedGroupInfo = {
+                    ...prev,
+                    racers: updatedRacers
+                }
+                return updatedGroupInfo
+            })
+            setSelectedRacer(blankRacer)
+        } catch (err) {
+            setErrorState({ isInErrorState: true, message: `${err}` })
+        }
     }
 
+    //Updating the racer entity and saving to DB
     async function updateEntity(e) {
-        const token = localStorage.getItem("token")
-        const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
-        let wasUpdateeSuccess = false;
-        let updatedEntityResponse = await fetch(`http://localhost:3000/racers/editRacerEntity/${raceToFetch}/${itemID}`, {
-            method: 'PATCH',
-            headers: {
-                authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                [e.target.name]: e.target.value
+        try {
+            let updatedValue = e.target.value;
+            const token = localStorage.getItem("token")
+            const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
+            let wasUpdateSuccess = false;
+            let updatedEntityResponse = await fetch(`http://localhost:3000/racers/admin/editRacerEntity/${raceToFetch}/${itemID}`, {
+                method: 'PATCH',
+                headers: {
+                    authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    [e.target.name]: e.target.value
+                })
             })
-        })
+            let updatedEntityData = await updatedEntityResponse.json()
+            wasUpdateSuccess = updatedEntityResponse.status === 200
+            if (!wasUpdateSuccess) throw new Error(updatedEntityData.message)
+            else {
+                setCurrentGroupInfo(prev => {
+                    let updatedGroupInfo = {
+                        ...prev,
+                        [e.target.name]: updatedValue
+                    }
+                    return updatedGroupInfo
+                })
+            }
+        } catch (err) {
+            setErrorState({ isInErrorState: true, message: `${err}` })
+        }
     }
 
     function handleDoneButtonClick() {
-        console.log(currentGroupInfo)
         if (currentGroupInfo && currentGroupInfo.racers.length > 0) {
             setRegisteredRacerData(prev => {
                 let updatedRacerEntities = prev.map(racerEntity => Number(racerEntity.racerEntityID) !== Number(itemID) ? racerEntity : currentGroupInfo)
@@ -92,7 +113,7 @@ export default function EditGroupRow({ itemID, itemData, categoryOpts, setRegist
             <div className={`${styles["racer-rows"]} ${styles["expanded-racer-rows"]}`}>
                 {currentGroupInfo.racers.map(item => {
                     return (selectedRacer && item.id === selectedRacer.id) ?
-                        <EditAthleteRow key={selectedRacer.id} itemData={item} currentGroupInfo={currentGroupInfo} setCurrentGroupInfo={setCurrentGroupInfo} setSelectedRacer={setSelectedRacer} />
+                        <EditAthleteRow key={selectedRacer.id} itemData={item} setErrorState={setErrorState} setCurrentGroupInfo={setCurrentGroupInfo} setSelectedRacer={setSelectedRacer} />
                         :
                         <>
                             {!selectedRacer &&
