@@ -16,16 +16,20 @@ export default function EditAthleteRow({ itemData, setSelectedRacer, setErrorSta
     const selectedRace = useContext(SelectedRaceContext)[0]; //Name of race with spaces i.e. "Test Race"
     const [racerData, setRacerData] = useState(itemData)
 
-    function handleRacerChange(e, itemID) {
+
+    function handleRacerChange(e) {
+        let updatedValue = e.target.type === 'date' ? formatDateTime(new Date(`${e.target.value}T00:00`)).htmlDate : e.target.value;
+        console.log(updatedValue)
         setRacerData(prev => {
             let updatedRacerData = {
                 ...prev,
-                [e.target.name]: e.target.value
+                [e.target.name]: updatedValue
             }
             return updatedRacerData
         })
     }
 
+    //Send the racer data to the database
     async function saveRacer() {
         try {
             const token = localStorage.getItem("token")
@@ -46,7 +50,7 @@ export default function EditAthleteRow({ itemData, setSelectedRacer, setErrorSta
                 })
                 let savedRacer = await savedRacerResponse.json()
                 if (savedRacerResponse.status === 200) wasSaveSuccess = true;
-                else {throw new Error(saveRacer.message)}
+                else { throw new Error(saveRacer.message) }
                 savedRacerID = savedRacer.insertId
             }
             //If this is a racer being updated
@@ -72,7 +76,7 @@ export default function EditAthleteRow({ itemData, setSelectedRacer, setErrorSta
                 })
                 let editedRacer = await editedRacerResponse.json()
                 if (editedRacerResponse.status === 200) wasSaveSuccess = true;
-                else {throw new Error(editedRacer.message)}
+                else { throw new Error(editedRacer.message) }
             }
             if (wasSaveSuccess) {
                 setCurrentGroupInfo(prev => {
@@ -97,8 +101,30 @@ export default function EditAthleteRow({ itemData, setSelectedRacer, setErrorSta
         }
     }
 
+    function handleChecked() {
+        setRacerData(prev => {
+            return {
+                ...prev,
+                isPaid: Number(prev.isPaid) === 0? 1 : 0
+            }
+        })
+    }
+
+    function cancel() {
+        if (Number(itemData.id) === 0) {
+            setCurrentGroupInfo(prev => {
+                let updatedRacers = prev.racers.filter(racer => Number(racer.id) !== Number(itemData.id))
+                let updatedGroup = {
+                    ...prev,
+                    racers: updatedRacers
+                }
+                return updatedGroup
+            })
+        }
+        setSelectedRacer(null)
+    }
+
     return (
-        // <div className={`${styles["edit-racer__row"]}`}>
         <div className={`${styles["edit-racer-inputs__container"]}`}>
             <div className={`input-group`}>
                 <label htmlFor="firstName">First Name</label>
@@ -118,7 +144,7 @@ export default function EditAthleteRow({ itemData, setSelectedRacer, setErrorSta
             </div>
             <div className={`input-group`}>
                 <label htmlFor="birthdate">Birthdate</label>
-                <input type="date" name="birthdate" id="birthdate" onChange={(e) => handleRacerChange(e, racerData.id)} value={formatDateTime(new Date(racerData.birthdate)).htmlDate} />
+                <input type="date" name="birthdate" id="birthdate" onChange={(e) => handleRacerChange(e, racerData.id)} value={racerData.birthdate} />
             </div>
             <div className={`input-group`}>
                 <label htmlFor="gender">Gender</label>
@@ -132,17 +158,16 @@ export default function EditAthleteRow({ itemData, setSelectedRacer, setErrorSta
             </div>
             <div className={`input-group ${styles["checkbox-group"]}`}>
                 <label htmlFor="isPaid">Paid?</label>
-                <input type="checkbox" name="isPaid" id="isPaid" checked={racerData.isPaid ? true : false} />
+                <input type="checkbox" name="isPaid" id="isPaid" onClick={handleChecked} checked={Number(racerData.isPaid) === 1 ? true : false} />
             </div>
             <div className={`${adminStyles["button-row"]} ${styles["edit-racer__button-row"]} `}>
                 <button className={`${"button button--medium"} ${adminStyles["icon__button"]}`} onClick={saveRacer}>
                     <FontAwesomeIcon className={`${adminStyles["action-icon"]}`} icon={faFloppyDisk} style={{ color: "#016014", }} /> &nbsp;&nbsp;Save
                 </button>
-                <button className={`${"button button--medium"} ${adminStyles["icon__button"]}`} onClick={() => setSelectedRacer(null)} >
+                <button className={`${"button button--medium"} ${adminStyles["icon__button"]}`} onClick={() => cancel()} >
                     <FontAwesomeIcon className={`${adminStyles["action-icon"]}`} icon={faCircleXmark} style={{ color: "#af2323", }} /> &nbsp;&nbsp;Cancel
                 </button>
             </div>
         </div>
-        // </div>
     )
 }
