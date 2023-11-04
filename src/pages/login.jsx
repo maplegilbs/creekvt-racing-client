@@ -18,6 +18,10 @@ export default function AdminLogin() {
     const navigate = useNavigate();
 
     useEffect(() => {
+        if (userInfo) navigate('/races/adminDashboard')
+    }, [])
+
+    useEffect(() => {
         const getUserDataAndNavigate = async () => {
             if (isLoggedIn) {
                 let token = localStorage.getItem('token')
@@ -27,7 +31,7 @@ export default function AdminLogin() {
                     }
                 });
                 //need to give error notice here
-                if (currentUser.status !== 200)  setUserInfo(null);
+                if (currentUser.status !== 200) setUserInfo(null);
                 else {
                     let currentUserInfo = await currentUser.json();
                     setUserInfo(currentUserInfo)
