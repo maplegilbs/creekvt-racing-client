@@ -1,9 +1,5 @@
 //Components
 import AthleteRow from "./athleteRow";
-//Contexts
-import { SelectedRaceContext } from "../../pages/adminDashboard"
-//Hooks
-import { useContext } from "react"
 //Icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare, faCircleMinus} from "@fortawesome/free-solid-svg-icons";

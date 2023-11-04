@@ -1,6 +1,6 @@
 //Components
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Layout from "./pages/layout";
+import Layout, {loader as layoutLoader} from "./pages/layout";
 //Pages
 import AdminLogin, {loader as adminLoader} from "./pages/login";
 import AdminDashboard, {loader as adminDashboardLoader} from "./pages/adminDashboard";
@@ -14,6 +14,7 @@ import "./App.css"
 const router = createBrowserRouter([
   {
     path: "/",
+    loader: layoutLoader,
     element: <Layout />,
     children: [
       {

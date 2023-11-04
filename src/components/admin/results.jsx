@@ -1,6 +1,8 @@
 //Components
 //Contexts
-import {SelectedRaceContext, UserInfoContext} from "../../pages/adminDashboard"
+import {SelectedRaceContext} from "../../pages/adminDashboard"
+import { UserInfoContext } from "../../pages/layout.jsx";
+
 //Hooks
 import { useContext } from "react"
 //Styles
@@ -18,7 +20,7 @@ function EditResultsTableRow(){
 
 export default function Results() {
     const selectedRace = useContext(SelectedRaceContext)[0]; //Name of race with spaces i.e. "Test Race"
-    const userInfo = useContext(UserInfoContext);  //Logged in user info contianed in token
+    const userInfo = useContext(UserInfoContext)[0];  //Logged in user info contianed in token
 
     return (
         <div className={`${adminStyles["info__container"]}`}>

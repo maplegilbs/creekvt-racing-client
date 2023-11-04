@@ -3,7 +3,9 @@
 //Components
 import Default from "./default";
 //Contexts
-import { SelectedRaceContext, UserInfoContext } from "../../pages/adminDashboard";
+import { SelectedRaceContext} from "../../pages/adminDashboard";
+import { UserInfoContext } from "../../pages/layout.jsx";
+
 //Hooks
 import { useContext, useEffect, useState } from "react";
 //Icons
@@ -95,7 +97,7 @@ function DeleteConfirmation({ itemID, confirmDeleteItem, cancelAction }) {
 
 export default function Schedule() {
     const selectedRace = useContext(SelectedRaceContext)[0]; //Name of race with spaces i.e. "Test Race"
-    const userInfo = useContext(UserInfoContext) //Logged in user info contianed in token
+    const userInfo = useContext(UserInfoContext)[0] //Logged in user info contianed in token
     const [scheduleData, setScheduleData] = useState(null);  //Array of objectes each containing data about specific schedule item
     const [selectedItemID, setSelectedItemID] = useState(null);  //The ID of a selected schedule item  
     const [selectedAction, setSelectedAction] = useState(null);  //Null, 'delete' or 'edit' to be used to determine if Edit components allowing for input should be displayed or not

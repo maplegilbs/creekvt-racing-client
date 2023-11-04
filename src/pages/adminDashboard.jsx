@@ -8,8 +8,9 @@ import Directions from "../components/admin/directions";
 import Results from "../components/admin/results";
 import Schedule from "../components/admin/schedule";
 //Contexts
-import { createContext } from "react";
+import { UserInfoContext } from "./layout";
 //Hooks
+import { createContext, useContext } from "react";
 import { useEffect, useState } from "react";
 import { useLoaderData } from "react-router";
 //Libraries
@@ -20,7 +21,6 @@ import styles from "./adminDashboard.module.css"
 
 export const SelectedRaceContext = createContext()
 export const LastSavedContext = createContext();
-export const UserInfoContext = createContext();
 
 export async function loader() {
     let loaderInfo = {}
@@ -45,14 +45,13 @@ export async function loader() {
 }
 
 export default function AdminDashboard() {
-    const userInfo = useLoaderData().currentUser;
+    const userInfo = useContext(UserInfoContext)[0];
     const allRacesInfo = useLoaderData().raceInfo;
     const [infoSectionToEdit, setInfoSectionToEdit] = useState(null)
     const [editComponent, setEditComponent] = useState(<></>)
     const [selectedRace, setSelectedRace] = useState()
     const [selectedRaceYear, setSelectedRaceYear] = useState()
     const [lastSaved, setLastSaved] = useState(null)
-    console.log(allRacesInfo, selectedRaceYear)
 
     useEffect(() => {
         if (selectedRace) {
@@ -92,7 +91,6 @@ export default function AdminDashboard() {
 
     return (
         <div className={`${styles["dashboard-wrapper"]}`}>
-            <UserInfoContext.Provider value={userInfo}>
                 <SelectedRaceContext.Provider value={[selectedRace, setSelectedRace, selectedRaceYear, setSelectedRaceYear]}>
                     <LastSavedContext.Provider value={[lastSaved, setLastSaved]}>
                         <header className={`${styles["content-header"]}`}>
@@ -119,7 +117,6 @@ export default function AdminDashboard() {
                         </main>
                     </LastSavedContext.Provider>
                 </SelectedRaceContext.Provider>
-            </UserInfoContext.Provider>
         </div>
     )
 }

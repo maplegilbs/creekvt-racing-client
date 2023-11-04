@@ -15,6 +15,6 @@ label {
     margin: .5rem 0;
 }
 
-button[type="submit"]{
-margin: 1rem auto;
+button[type="submit"].login-button{
+margin: 2rem auto;
 }

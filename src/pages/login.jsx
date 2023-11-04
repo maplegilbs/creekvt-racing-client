@@ -1,5 +1,7 @@
+//Contexts
+import { UserInfoContext } from "./layout";
 //Hooks
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 //Styles
 import styles from "./login.module.css"
@@ -9,13 +11,33 @@ export function loader() {
 }
 
 export default function AdminLogin() {
+    const userInfo = useContext(UserInfoContext)[0];
+    const setUserInfo = useContext(UserInfoContext)[1]
     const [loginData, setLoginData] = useState({})
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const navigate = useNavigate();
-    
-    useEffect(()=>{
-        if(isLoggedIn) navigate('/races/adminDashboard')
-    },[isLoggedIn])
+
+    useEffect(() => {
+        const getUserDataAndNavigate = async () => {
+            if (isLoggedIn) {
+                let token = localStorage.getItem('token')
+                let currentUser = await fetch("http://localhost:3000/users/userInfo", {
+                    headers: {
+                        authorization: `Bearer ${token}`
+                    }
+                });
+                //need to give error notice here
+                if (currentUser.status !== 200)  setUserInfo(null);
+                else {
+                    let currentUserInfo = await currentUser.json();
+                    setUserInfo(currentUserInfo)
+                    navigate('/races/adminDashboard')
+                }
+            }
+        }
+        getUserDataAndNavigate()
+    }, [isLoggedIn])
+
 
     async function adminLogin(e) {
         e.preventDefault();
@@ -54,7 +76,7 @@ export default function AdminLogin() {
                         <label htmlFor="password">Password</label>
                         <input onChange={handleChange} type="password" name="password" id="password" />
                     </div>
-                    <button className={`button button--medium`} type="submit">Login</button>
+                    <button className={`button button--medium ${styles["login-button"]}`} type="submit">Login</button>
                 </form>
             </div>
         </>

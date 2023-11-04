@@ -5,7 +5,8 @@ import EditGroupRow from "./groupEditRow.jsx";
 import ErrorNotice from "./errorNotice.jsx";
 import GroupRow from "./groupRow.jsx";
 //Contexts
-import { SelectedRaceContext, UserInfoContext } from "../../pages/adminDashboard"
+import { SelectedRaceContext } from "../../pages/adminDashboard"
+import { UserInfoContext } from "../../pages/layout.jsx";
 //Hooks
 import { useContext, useEffect, useState } from "react"
 //Icons
@@ -22,7 +23,7 @@ import styles from "./athletes.module.css"
 export default function Athletes() {
     const selectedRace = useContext(SelectedRaceContext)[0]; //Name of race with spaces i.e. "Test Race"
     const selectedRaceYear = useContext(SelectedRaceContext)[2] //Year of race as a string
-    const userInfo = useContext(UserInfoContext) //Logged in user info contianed in token
+    const userInfo = useContext(UserInfoContext)[0] //Logged in user info contianed in token
     const [registeredRacerData, setRegisteredRacerData] = useState(null) //Array of objectes each containing data about specific racer
     const [selectedAction, setSelectedAction] = useState("");  //Null, 'delete' or 'edit' to be used to determine if Edit components allowing for input should be displayed or not
     const [selectedItemID, setSelectedItemID] = useState(null);  //The ID of a selected racer  

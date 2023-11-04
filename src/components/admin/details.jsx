@@ -1,7 +1,8 @@
 //Components
 import Default from "./default";
 //Contexts
-import { SelectedRaceContext, LastSavedContext, UserInfoContext } from "../../pages/adminDashboard";
+import { SelectedRaceContext, LastSavedContext } from "../../pages/adminDashboard";
+import { UserInfoContext } from "../../pages/layout.jsx";
 //Hooks
 import { useContext, useEffect, useState } from "react";
 //Libs
@@ -12,9 +13,9 @@ import styles from "./details.module.css"
 export default function Details() {
     const selectedRace = useContext(SelectedRaceContext)[0]; //Name of race with spaces i.e. "Test Race"
     const setSelectedRaceYear = useContext(SelectedRaceContext)[3] //Setter function for the selected race's year
-    const [formData, setFormData] = useState({});
     const [lastSaved, setLastSaved] = useContext(LastSavedContext)
-    const userInfo = useContext(UserInfoContext)
+    const [formData, setFormData] = useState({});
+    const userInfo = useContext(UserInfoContext)[0]
 
     formData.date ? console.log(formatDateTime(formData.date).fullDate) : console.log("")
 

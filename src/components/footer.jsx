@@ -1,8 +1,12 @@
+//Contexts
+import { useContext } from "react";
+import { UserInfoContext } from "../pages/layout.jsx";
 //Styles
 import styles from "./footer.module.css"
 
 
 const Footer = (props) => {
+  const userInfo = useContext(UserInfoContext)[0];
   
   return (
     <>
@@ -19,7 +23,10 @@ const Footer = (props) => {
                 <li><a href="https://creekvt.com/blog/">Blog</a></li>
                 <li><a href="https://creekvt.com/about/">About</a></li>
                 <li><a href="https://creekvt.com/contact/">Contact</a></li>
+                {userInfo ?
+                <li><a href="http://localhost:3001/races/adminDashboard">Admin Dashboard</a></li> :
                 <li><a href="http://localhost:3001/races/adminLogin">Organizer Login</a></li>
+                }
             </ul>
         </div>
          <div className={styles["footer-items"]}>
