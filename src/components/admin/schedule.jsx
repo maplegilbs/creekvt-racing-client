@@ -3,7 +3,7 @@
 //Components
 import Default from "./default";
 //Contexts
-import { SelectedRaceContext} from "../../pages/adminDashboard";
+import { SelectedRaceContext } from "../../pages/adminDashboard";
 import { UserInfoContext } from "../../pages/layout.jsx";
 
 //Hooks
@@ -36,6 +36,29 @@ function ScheduleItemRow({ itemID, itemData, askDeleteItem, editItem }) {
 
 //Component with input elements to update selected schedule item.  Button to save or cancel edited data.
 function EditScheduleItemRow({ itemID, itemData, handleChange, saveItem, cancelAction }) {
+    const selectedRace = useContext(SelectedRaceContext)[0]; //Name of race with spaces i.e. "Test Race"
+    const [locationsOpts, setLocationsOpts] = useState([])
+
+    console.log(locationsOpts)
+
+    useEffect(() => {
+        async function getLocations() {
+            try {
+                const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
+                let locationResponse = await fetch(`http://localhost:3000/geoInfo/locationNames/${raceToFetch}`)
+                let locationsData = await locationResponse.json();
+                if (locationResponse.status === 200) {
+                    setLocationsOpts(locationsData)
+                }
+                else throw new Error(locationsData.message)
+
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        getLocations()
+    }, [])
+
     return (
         <>
             <div className={`${adminStyles["info-row"]} ${styles["edit-row"]} ${adminStyles["edit-row"]}`}>
@@ -57,8 +80,13 @@ function EditScheduleItemRow({ itemID, itemData, handleChange, saveItem, cancelA
                 </div>
                 <div className="input-row">
                     <div className={`input-group`}>
-                        <label htmlFor={`schedule-location-${itemID}`}>Location</label>
-                        <input type="text" name="location" id={`schedule-location-${itemID}`} onChange={(e) => handleChange(e, itemID)} value={itemData.location} />
+                        <label htmlFor={`location-${itemID}`}>Location</label>
+                        <select name="location" id={`location-${itemID}`} onChange={(e) => handleChange(e, itemID)}>
+                            <option> -- </option>
+                            {locationsOpts &&
+                                locationsOpts.map(location => <option value={location.name} selected = {`${location.name === itemData.location? "selected":""}`}>{location.name}</option>)
+                            }
+                        </select>
                     </div>
                 </div>
                 <div className={`${adminStyles["button-row"]} ${adminStyles["final-row"]} `}>
@@ -107,6 +135,7 @@ export default function Schedule() {
         getScheduleData()
     }, [selectedRace])
 
+    console.log(scheduleData)
 
     //Basic fetch of schedule data
     async function getScheduleData() {
