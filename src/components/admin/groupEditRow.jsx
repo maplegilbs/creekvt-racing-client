@@ -7,7 +7,7 @@ import { SelectedRaceContext } from "../../pages/adminDashboard"
 import { useState, useContext } from "react"
 //Icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPenToSquare, faCircleMinus, faCirclePlus, faCircleCheck } from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare, faCircleMinus, faPlus, faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 //Styles
 import adminStyles from "./adminGlobalStyles.module.css"
 import styles from "./athletes.module.css"
@@ -140,7 +140,7 @@ export default function EditGroupRow({ itemID, itemData, categoryOpts, setRegist
                 <>
                     <div className={`${adminStyles["button-row"]} ${styles["add-racer__button-row"]} `}>
                         <button className={`${"button button--medium"} ${adminStyles["icon__button"]}`} onClick={addRacer}>
-                            <FontAwesomeIcon className={`${styles["action-icon"]}`} icon={faCirclePlus} style={{ color: "#000000", }} /> &nbsp;&nbsp;Add Racer To Boat
+                            <FontAwesomeIcon className={`${styles["action-icon"]}`} icon={faPlus} style={{ color: "#000000", }} /> &nbsp;&nbsp;Add Racer To Boat
                         </button>
                     </div>
                     <div className={`${adminStyles["button-row"]} ${styles["edit-racer-group__button-row"]} `}>

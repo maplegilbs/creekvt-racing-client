@@ -11,7 +11,10 @@ import { UserInfoContext } from "../../pages/layout.jsx";
 import { useContext, useEffect, useState } from "react"
 //Icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
+import { faCircleDown, faPlus } from "@fortawesome/free-solid-svg-icons";
+//Libraries
+import { CSVLink } from "react-csv";
+import { formatDateTime } from "../../utils/formatDateTime.js";
 //Styles
 import adminStyles from "./adminGlobalStyles.module.css"
 import styles from "./athletes.module.css"
@@ -29,6 +32,7 @@ export default function Athletes() {
     const [selectedItemID, setSelectedItemID] = useState(null);  //The ID of a selected racer  
     const [categoryOpts, setCategoryOpts] = useState(null)
     const [errorState, setErrorState] = useState({ isInErrorState: false, message: "" })
+    const [csvData, setCSVData] = useState([]);
 
     console.log("Racer data: ", registeredRacerData, "Selected action: ", selectedAction, "Selcted item id: ", selectedItemID, "Categoy options: ", categoryOpts)
 
@@ -37,47 +41,61 @@ export default function Athletes() {
         getRacerData()
     }, [selectedRace, selectedRaceYear])
 
+    useEffect(() => {
+        let dataArray = [['Boat #', 'First Name', 'Last Name', 'Birthdate', 'Gender', 'Email', 'Category', 'Paid']];
+        if (registeredRacerData) {
+            registeredRacerData.forEach(racerEntity => {
+                racerEntity.racers.forEach(racer => {
+                    dataArray.push([racerEntity.racerEntityID, racer.firstName, racer.lastName, formatDateTime(racer.birthdate).htmlDate, racer.gender, racer.email, racer.category, racer.isPaid === 1 ? "true" : "false"])
+                })
+            })
+            setCSVData(dataArray)
+        }
+    }, [registeredRacerData])
+
 
     //Fetching and fomatting racer data
     async function getRacerData() {
-        try {
-            const token = localStorage.getItem("token")
-            const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
-            let categoryOptsResponse = await fetch(`http://localhost:3000/races/categories/${raceToFetch}`)
-            let categoryOptsData = await categoryOptsResponse.json();
-            setCategoryOpts(categoryOptsData[0].categoryOpts)
-            let racersResponse = await fetch(`http://localhost:3000/racers/admin/${raceToFetch}/${selectedRaceYear}`, {
-                headers: { authorization: `Bearer ${token}` }
-            })
-            let racersResponseJSON = await racersResponse.json();
-            if (racersResponse.status !== 200) { throw new Error(racersResponse.message) }
-            else if (racersResponseJSON.length > 0) {
-                let cleanedResponseJSON = racersResponseJSON.map(item => {
-                    for (let propertyName of Object.keys(item)) { if (item[propertyName] === 'null') item[propertyName] = null }
-                    return item;
+        if (selectedRace && selectedRaceYear) {
+            try {
+                const token = localStorage.getItem("token")
+                const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
+                let categoryOptsResponse = await fetch(`http://localhost:3000/races/categories/${raceToFetch}`)
+                let categoryOptsData = await categoryOptsResponse.json();
+                setCategoryOpts(categoryOptsData[0].categoryOpts)
+                let racersResponse = await fetch(`http://localhost:3000/racers/admin/${raceToFetch}/${selectedRaceYear}`, {
+                    headers: { authorization: `Bearer ${token}` }
                 })
-                //cycle through the response json.  if selected racer has an id that matches any other entity ids, add those to the current racers "group" (array)
-                //end with an object {1: [racer1Obj, racer2Obj], 2: [racer1Obj]}
-                let groupedRacers = cleanedResponseJSON.reduce((accum, racer) => {
-                    let updatedRacerEntity = accum[racer.racerEntityID] ? accum[racer.racerEntityID].concat(racer) : [racer]
-                    accum[racer.racerEntityID] = updatedRacerEntity
-                    return accum
-                }, {})
-                //take the above formatted object and turn it into an array of objects [ {racerEntityId: 1, category: "Canoe Tandem", racers: [racer1Obj, racer2Obj] }, {racerEntityId: 2, category: "Kayak", racers: [racer3Obj] }] that will be easier to map through later
-                let groupedRacersArray = []
-                Object.keys(groupedRacers).forEach(racerEntityID => {
-                    groupedRacersArray.push({
-                        racerEntityID: racerEntityID,
-                        category: groupedRacers[racerEntityID][0].category,
-                        racers: groupedRacers[racerEntityID],
+                let racersResponseJSON = await racersResponse.json();
+                if (racersResponse.status !== 200) { throw new Error(racersResponseJSON.message) }
+                else if (racersResponseJSON.length > 0) {
+                    let cleanedResponseJSON = racersResponseJSON.map(item => {
+                        for (let propertyName of Object.keys(item)) { if (item[propertyName] === 'null') item[propertyName] = null }
+                        return item;
                     })
-                })
-                setRegisteredRacerData(groupedRacersArray)
+                    //cycle through the response json.  if selected racer has an id that matches any other entity ids, add those to the current racers "group" (array)
+                    //end with an object {1: [racer1Obj, racer2Obj], 2: [racer1Obj]}
+                    let groupedRacers = cleanedResponseJSON.reduce((accum, racer) => {
+                        let updatedRacerEntity = accum[racer.racerEntityID] ? accum[racer.racerEntityID].concat(racer) : [racer]
+                        accum[racer.racerEntityID] = updatedRacerEntity
+                        return accum
+                    }, {})
+                    //take the above formatted object and turn it into an array of objects [ {racerEntityId: 1, category: "Canoe Tandem", racers: [racer1Obj, racer2Obj] }, {racerEntityId: 2, category: "Kayak", racers: [racer3Obj] }] that will be easier to map through later
+                    let groupedRacersArray = []
+                    Object.keys(groupedRacers).forEach(racerEntityID => {
+                        groupedRacersArray.push({
+                            racerEntityID: racerEntityID,
+                            category: groupedRacers[racerEntityID][0].category,
+                            racers: groupedRacers[racerEntityID],
+                        })
+                    })
+                    setRegisteredRacerData(groupedRacersArray)
+                }
+                else { setRegisteredRacerData([]) }
             }
-            else { setRegisteredRacerData([]) }
-        }
-        catch (err) {
-            setErrorState({ isInErrorState: true, message: `${err}` })
+            catch (err) {
+                setErrorState({ isInErrorState: true, message: `${err}` })
+            }
         }
     }
 
@@ -227,9 +245,14 @@ export default function Athletes() {
                     </div>
                     <br />
                     {selectedAction !== 'edit' &&
-                        <button className={`${"button button--medium"} ${adminStyles["icon__button"]}`} onClick={addBoat}>
-                            <FontAwesomeIcon className={`${styles["action-icon"]}`} icon={faCirclePlus} style={{ color: "#000000", }} /> &nbsp;&nbsp;Add Boat
-                        </button>
+                        <>
+                            <button className={`${"button button--medium"} ${adminStyles["icon__button"]}`} onClick={addBoat}>
+                                <FontAwesomeIcon className={`${styles["action-icon"]}`} icon={faPlus} style={{ color: "#000000", }} /> &nbsp;&nbsp;Add Boat
+                            </button>
+                            <button className={`${"button button--medium"} ${adminStyles["icon__button"]}`} >
+                                <FontAwesomeIcon className={`${styles["action-icon"]}`} icon={faCircleDown} style={{ color: "#000000", }} /> &nbsp;&nbsp; <CSVLink data={csvData} filename={`${selectedRace.split(" ").join("").toLowerCase()}_${selectedRaceYear}_registered_racers.csv`}>Download As CSV</CSVLink>
+                            </button>
+                        </>
                     }
                 </div>
             </>
