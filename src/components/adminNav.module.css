@@ -21,6 +21,17 @@
     text-transform: uppercase;
 }
 
+.menu-option--bottom {
+    margin-top: auto;
+    margin-bottom: 1rem;
+    margin-left: 5%;
+    margin-right: 5%;
+    padding: .5rem;
+    height: max-content;
+    background-color: white;
+    border-radius: 5px;
+}
+
 .menu-option:hover {
     text-shadow: 1px 1px #333;
 }

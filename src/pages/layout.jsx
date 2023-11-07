@@ -26,12 +26,6 @@ export const UserInfoContext = createContext();
 export default function Layout() {
     const [userInfo, setUserInfo] = useState(useLoaderData())
 
-    console.log(userInfo)
-
-    // useEffect(() => {
-    //     setUserInfo(useLoacerData())
-    // }, [])
-
     return (
         <UserInfoContext.Provider value={[userInfo, setUserInfo]}>
             <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh", justifyContent: "space-between" }}>
