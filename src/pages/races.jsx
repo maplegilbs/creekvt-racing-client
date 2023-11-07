@@ -18,7 +18,7 @@ export default function Races() {
             <div className={`card ${styles["card"]}`}>
                 <h5 className={`card-title ${styles["card-title"]}`}>{raceData.name}</h5>
                 <img src={raceData.primaryImageURL} className={`card-img`} alt="..." />
-                <div className={`card-body`}>
+                <div className={`card-body ${styles["card-body"]}`}>
                     <p className={`card-text ${styles["card-text"]}`}>
                         {raceData.shortDescription}
                     </p>
