@@ -1,5 +1,6 @@
 //Components
 import Default from "./default";
+import ReactQuill from "react-quill";
 //Contexts
 import { SelectedRaceContext, LastSavedContext } from "../../pages/adminDashboard";
 import { UserInfoContext } from "../../pages/layout.jsx";
@@ -8,7 +9,19 @@ import { useContext, useEffect, useState } from "react";
 //Libs
 import { formatDateTime } from "../../utils/formatDateTime";
 //Styles
+import 'react-quill/dist/quill.snow.css';
 import styles from "./details.module.css"
+
+//Quill Text Editor Setup
+const toolbarOptions = [
+    ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+    [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
+    [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+    [{ 'header': [1, 2, 3, 4, 5, false] }],
+    [{ 'align': [] }],
+    ['clean']                                         // remove formatting button
+];
 
 export default function Details() {
     const selectedRace = useContext(SelectedRaceContext)[0]; //Name of race with spaces i.e. "Test Race"
@@ -17,26 +30,29 @@ export default function Details() {
     const [formData, setFormData] = useState({});
     const userInfo = useContext(UserInfoContext)[0]
 
-    formData.date ? console.log(formatDateTime(formData.date).fullDate) : console.log("")
+    formData.date ? console.log(formData, selectedRace) : console.log("")
 
     useEffect(() => {
         const getRaceData = async () => {
             try {
                 const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
+                console.log(raceToFetch)
                 let raceData = await fetch(`http://localhost:3000/races/${raceToFetch}`)
                 let raceJSON = await raceData.json();
                 setFormData({
                     date: formatDateTime(new Date(raceJSON[0].date)).htmlDateTime,
-                    shortDescription: raceJSON[0].shortDescription,
-                    notification: raceJSON[0].notification,
+                    shortDescription: raceJSON[0].shortDescription !== "null"? raceJSON[0].shortDescription : null,
+                    longDescription: raceJSON[0].longDescription !== "null"? raceJSON[0].longDescription : null,
+                    notification: raceJSON[0].notification !== "null"? raceJSON[0].notification : null,
                     isRegOpen: raceJSON[0].isRegOpen,
-                    categories: raceJSON[0].categoryOptions
+                    categories: raceJSON[0].categoryOptions!== "null"? raceJSON[0].categoryOptions : null
                 })
             }
             catch (err) {
                 setFormData({
                     date: null,
                     shortDescription: '',
+                    longDescription: '',
                     notification: '',
                     isRegOpen: false,
                     categories: null
@@ -60,6 +76,7 @@ export default function Details() {
                 "name": `${selectedRace}`,
                 "date": `${formData.date}`,
                 "shortDescription": `${formData.shortDescription}`,
+                "longDescription": `${formData.longDescription}`,
                 "notification": `${formData.notification}`,
                 "isRegOpen": `${formData.isRegOpen}`,
                 "categoryOptions": `${formData.categories}`
@@ -71,6 +88,17 @@ export default function Details() {
             setLastSaved(timeSaved)
             setSelectedRaceYear(formatDateTime(formData.date).year)
         }
+    }
+
+    function handleQuillChange(value) {
+        console.log(value)
+        setFormData(prev => {
+            let updatedData = {
+                ...prev,
+                longDescription: value
+            }
+            return updatedData
+        })
     }
 
     function handleChange(e) {
@@ -90,6 +118,8 @@ export default function Details() {
         setLastSaved('edited')
     }
 
+    const test = new DOMParser(formData.longDescription, 'text/html')
+    console.log(test)
 
     if (selectedRace) {
         return (
@@ -112,6 +142,12 @@ export default function Details() {
                         <div className="input-group">
                             <label htmlFor="notification">Banner notfication (will appear as a banner at the top of the details section)</label>
                             <input type="text" name="notification" id="notification" placeholder="EXAMPLE:   Only 5 spots left!" onChange={handleChange} value={formData.notification ? formData.notification : ''} />
+                        </div>
+                    </div>
+                    <div className={`input-row ${styles["quill-container"]}`}>
+                        <div className="input-group">
+                            <label htmlFor="longDescription">Course Description</label>
+                            <ReactQuill id="longDescription" theme="snow" modules={{ toolbar: toolbarOptions }} value={formData.longDescription} onChange={handleQuillChange} />
                         </div>
                     </div>
                     <div className="input-row">

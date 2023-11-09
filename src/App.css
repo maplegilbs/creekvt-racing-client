@@ -3,9 +3,14 @@ html {
     scroll-behavior: smooth;
 }
 
-body,
-p {
+body, p {
     margin: 0;
+    font-family: Roboto, sans-serif;
+    color: black;
+}
+
+li {
+    font-size: 1rem;
 }
 
 a {
@@ -104,14 +109,12 @@ hr {
 }
 
 p {
-    font-family: Roboto, sans-serif;
     font-size: 16px;
     line-height: 27px;
     letter-spacing: 0px;
     font-weight: 400;
     font-style: normal;
     text-transform: none;
-    color: #636363;
 }
 
 .section-container {
@@ -163,10 +166,22 @@ p {
     margin-bottom: 1rem;
 }
 
+.input-row label {
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: .9rem;
+    border-bottom: 3px solid #a5b7bf;
+    width: max-content;
+}
 .input-group {
     display: flex;
     justify-content: space-between;
     flex-direction: column;
+    margin: 1rem auto;
+}
+
+.ql-editor{
+    min-height: 15rem;
 }
 
 @media screen and (max-width: 640px) {
