@@ -60,9 +60,9 @@ export default function Athletes() {
             try {
                 const token = localStorage.getItem("token")
                 const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
-                let categoryOptsResponse = await fetch(`http://localhost:3000/races/categories/${raceToFetch}`)
+                let categoryOptsResponse = await fetch(`http://localhost:3000/races/${raceToFetch}`)
                 let categoryOptsData = await categoryOptsResponse.json();
-                setCategoryOpts(categoryOptsData[0].categoryOpts)
+                setCategoryOpts(categoryOptsData[0].categoryOptions)
                 let racersResponse = await fetch(`http://localhost:3000/racers/admin/${raceToFetch}/${selectedRaceYear}`, {
                     headers: { authorization: `Bearer ${token}` }
                 })

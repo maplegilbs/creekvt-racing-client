@@ -29,7 +29,8 @@ export default function Details() {
                     date: formatDateTime(new Date(raceJSON[0].date)).htmlDateTime,
                     shortDescription: raceJSON[0].shortDescription,
                     notification: raceJSON[0].notification,
-                    isRegOpen: raceJSON[0].isRegOpen
+                    isRegOpen: raceJSON[0].isRegOpen,
+                    categories: raceJSON[0].categoryOptions
                 })
             }
             catch (err) {
@@ -37,7 +38,8 @@ export default function Details() {
                     date: null,
                     shortDescription: '',
                     notification: '',
-                    isRegOpen: false
+                    isRegOpen: false,
+                    categories: null
                 })
             }
         }
@@ -59,7 +61,8 @@ export default function Details() {
                 "date": `${formData.date}`,
                 "shortDescription": `${formData.shortDescription}`,
                 "notification": `${formData.notification}`,
-                "isRegOpen": `${formData.isRegOpen}`
+                "isRegOpen": `${formData.isRegOpen}`,
+                "categoryOptions": `${formData.categories}`
             })
         })
         if (updatedRace.status == 200) {
@@ -102,13 +105,19 @@ export default function Details() {
                     <div className="input-row">
                         <div className="input-group">
                             <label htmlFor="shortDescription">Short Description (max 300 characters)</label>
-                            <textarea rows="8" name="shortDescription" id="shortDescription" onChange={handleChange} value={formData.shortDescription ? formData.shortDescription : ''} />
+                            <textarea maxLength={300} rows="4" name="shortDescription" id="shortDescription" onChange={handleChange} value={formData.shortDescription ? formData.shortDescription : ''} />
                         </div>
                     </div>
                     <div className="input-row">
                         <div className="input-group">
                             <label htmlFor="notification">Banner notfication (will appear as a banner at the top of the details section)</label>
-                            <input type="text" name="notification" id="notification" placeholder="Example: Only 5 spots left!" onChange={handleChange} value={formData.notification ? formData.notification : ''} />
+                            <input type="text" name="notification" id="notification" placeholder="EXAMPLE:   Only 5 spots left!" onChange={handleChange} value={formData.notification ? formData.notification : ''} />
+                        </div>
+                    </div>
+                    <div className="input-row">
+                        <div className="input-group">
+                            <label htmlFor="categories">Race categories.  MUST BE SEPARATED BY COMMAS</label>
+                            <input type="text" name="categories" id="categories" placeholder="EXAMPLE:   Kayak, Canoe, Tandem Canoe, Tandem Kayak" onChange={handleChange} value={formData.categories ? formData.categories : ''} />
                         </div>
                     </div>
                     <div className="input-row">
