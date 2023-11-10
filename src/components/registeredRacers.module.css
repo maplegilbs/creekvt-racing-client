@@ -49,10 +49,6 @@ p.first-column, p.last-column {
     border-right: 0px;
 }
 
-h5.racer-detail {
-    justify-content: center;
-}
-
 @media screen and (min-width: 640px) {
     .header-row .racer-detail{
         font-size: 1.2rem;
@@ -60,7 +56,10 @@ h5.racer-detail {
         font-weight: 700;
         font-family: 'Montserrat', 'Roboto', sans-serif;
     }
-
+    
+    h5.racer-detail {
+        justify-content: center;
+    }
     .racer-row {
         grid-template-columns: 14rem 3fr 2fr;
     }
