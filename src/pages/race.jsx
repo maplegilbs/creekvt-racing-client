@@ -1,4 +1,5 @@
 //Components
+import CourseDetails from "../components/courseDetails";
 import Map from "../components/map";
 import RegisteredRacers from "../components/registeredRacers";
 //Hooks
@@ -23,7 +24,6 @@ export async function loader({ params }) {
     let groupedRacers = racersJSON.reduce((accum, curRacer) => {
         //if the accumulator has a racer in an array that shares the id of the current racer, add it to that array, otherwise make a new array
         // [{id: category: racers: []}]
-        console.log(accum)
         let foundGroup = accum.find(group => Number(group.id) === Number(curRacer.entityID));
         if (!foundGroup) {
             accum.push({ id: curRacer.entityID, category: curRacer.category, racers: [`${curRacer.firstName} ${curRacer.lastName}`] })
@@ -33,7 +33,6 @@ export async function loader({ params }) {
         }
         return accum
     }, [])
-    console.log(groupedRacers)
     return { raceJSON, scheduleJSON, locationsJSON, groupedRacers }
 }
 
@@ -166,7 +165,7 @@ export default function Race() {
                 <section className={`section-container`} id={`course-section`}>
                     <h2 className={`section-heading`}>Course Details</h2>
                     <hr />
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta cupiditate aliquid tenetur minus iusto facilis quidem rem officia cumque? Eligendi sint, reprehenderit asperiores eius harum excepturi laboriosam labore ipsum in quod fuga. Quos sit maiores atque soluta ut quae delectus commodi, quasi deserunt id repellendus labore ratione, dolore voluptatem recusandae impedit saepe vero hic harum perferendis, iusto excepturi inventore? Eveniet mollitia aut enim animi dignissimos inventore consequatur possimus ducimus provident excepturi illum nam quasi eligendi quaerat ullam fuga perspiciatis commodi sequi neque autem voluptatem, voluptatum maxime impedit. Recusandae dolore quis reprehenderit a aliquam magni, perferendis aspernatur odit! Enim, mollitia dicta.
+                    <CourseDetails details={raceData.longDescription} />
                 </section>
                 <section className={`section-container`} id={`results-section`}>
                     <h2 className={`section-heading`}>Results</h2>

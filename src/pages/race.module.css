@@ -30,6 +30,10 @@ section h4 {
     font-family: 'Roboto', sans-serif;
 }
 
+.heading-container h4 {
+    font-weight: 700;
+}
+
 .registration-button__container {
     position: relative;
 }

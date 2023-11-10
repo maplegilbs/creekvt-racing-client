@@ -15,7 +15,7 @@ export default function Header() {
             <div className={`${"collapse navbar-collapse"} ${styles["navbarSupportedContent"]}`} id="navbarSupportedContent">
                 <ul className={`${"nav navbar-nav"}`}>
                     <li className={`${"nav-item dropdown"}`}>
-                        <a className={`${"nav-link dropdown-toggle d-flex justify-content-start"} ${styles["dropdown-toggle"]}`} style={{ color: 'white' }} href="https://creekvt.com/flows"
+                        <a className={`${"nav-link dropdown-toggle d-flex justify-content-start"} ${styles["dropdown-toggle"]} ${styles["nav-link"]}`} style={{ color: 'white' }} href="https://creekvt.com/flows"
                             id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
                             aria-expanded="false">
                             Flows

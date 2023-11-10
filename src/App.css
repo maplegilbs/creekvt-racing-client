@@ -150,9 +150,9 @@ p {
 
 .primary-heading {
     text-align: center;
-    font-size: 3.25rem;
+    font-size: 4.25rem;
     text-shadow: 3px 2px #a5b7bf;
-    margin-bottom: 2rem;
+    margin-bottom: .5rem;
 }
 
 .section-heading {
@@ -195,7 +195,7 @@ p {
     }
 
     .primary-heading {
-        font-size: 2rem;
+        font-size: 2.75rem;
     }
 
     .section-container {
@@ -203,13 +203,11 @@ p {
     }
 
     .section-container hr {
-        margin: 0 auto;
         width: 50%;
     }
 
     .section-heading {
         margin: 10px auto;
-        text-align: center;
     }
 
 }
