@@ -17,7 +17,24 @@ export async function loader({ params }) {
     const raceJSON = await raceData.json();
     const locationsData = await fetch(`http://localhost:3000/geoInfo/${params.raceName}`);
     const locationsJSON = await locationsData.json();
-    return { raceJSON, scheduleJSON, locationsJSON }
+    //! need to dynamically populate the year
+    const racersData = await fetch(`http://localhost:3000/racers/${params.raceName}/2024`);
+    const racersJSON = await racersData.json();
+    let groupedRacers = racersJSON.reduce((accum, curRacer) => {
+        //if the accumulator has a racer in an array that shares the id of the current racer, add it to that array, otherwise make a new array
+        // [{id: category: racers: []}]
+        console.log(accum)
+        let foundGroup = accum.find(group => Number(group.id) === Number(curRacer.entityID));
+        if (!foundGroup) {
+            accum.push({ id: curRacer.entityID, category: curRacer.category, racers: [`${curRacer.firstName} ${curRacer.lastName}`] })
+        }
+        else {
+            foundGroup.racers.push(`${curRacer.firstName} ${curRacer.lastName}`)
+        }
+        return accum
+    }, [])
+    console.log(groupedRacers)
+    return { raceJSON, scheduleJSON, locationsJSON, groupedRacers }
 }
 
 function LocationContainer({ location, setSelectedMapLocation }) {
@@ -25,10 +42,10 @@ function LocationContainer({ location, setSelectedMapLocation }) {
     return (
         <div className={`${styles["location-container"]}`}>
             <div className={`${styles["location-header"]}`}>
-                <div className={`${styles["location-name"]}`} 
-                onClick={()=>{
-                    setSelectedMapLocation([Number(location.lat), Number(location.lng)])
-                }}>
+                <div className={`${styles["location-name"]}`}
+                    onClick={() => {
+                        setSelectedMapLocation([Number(location.lat), Number(location.lng)])
+                    }}>
                     <h6>{location.name}</h6>
                     <img src={location.iconUrl} />
                 </div>
@@ -65,15 +82,17 @@ export default function Race() {
     const raceData = useLoaderData().raceJSON[0];
     const scheduleData = useLoaderData().scheduleJSON;
     const locations = useLoaderData().locationsJSON;
+    const racers = useLoaderData().groupedRacers;
     const [selectedMapLocation, setSelectedMapLocation] = useState(null);
     const [mapMarkerData, setMapMarkerData] = useState(locations.map(location => [Number(location.lat), Number(location.lng), location.iconUrl]));
     const { raceName } = useParams()
-    
+
     const formattedTime = raceData.date ? formatDateTime(raceData.date) : null;
-    const locationContainers = locations.map(location => <LocationContainer location={location} setSelectedMapLocation={setSelectedMapLocation}/>)
+    const locationContainers = locations.map(location => <LocationContainer location={location} setSelectedMapLocation={setSelectedMapLocation} />)
     const scheduleItems = scheduleData ? scheduleData.map(eventDetails => <ScheduleItem eventDetails={eventDetails} />) : null;
 
-    console.log(selectedMapLocation)
+
+    console.log(raceData)
     return (
         <>
             {
@@ -115,13 +134,6 @@ export default function Race() {
                             <a href="#results-section" className={`link-std link-bold`}>Results</a>
                             <a href="#faqcontact-section" className={`link-std link-bold`}>FAQ</a>
                         </nav>
-                        {/* {
-                            new Date(raceData.date).valueOf() + (1000 * 60 * 60 * 24) < new Date().valueOf() ?
-                                <div className={`${styles["disclaimer-container"]}`}>
-                                    <h6>{`**The details on this page are for a race that has already occurred.  Be sure to check back for details on the ${formattedTime.year + 1} race as the date approaches.**`}</h6>
-                                </div> :
-                                <></>
-                        } */}
                     </div>
                 </section>
                 <section className={`section-container`} id={`schedule-section`}>
@@ -139,8 +151,7 @@ export default function Race() {
                 <section className={`section-container`} id={`athletes-section`}>
                     <h2 className={`section-heading`}>Registered Athletes</h2>
                     <hr />
-                    <RegisteredRacers raceData={raceData} />
-
+                    <RegisteredRacers raceData={raceData} racers={racers} />
                 </section>
                 <section className={`section-container`} id={`directions-section`}>
                     <h2 className={`section-heading`}>Directions</h2>
@@ -149,7 +160,7 @@ export default function Race() {
                         <div className={`${styles["location-section"]}`}>
                             {locationContainers}
                         </div>
-                        < Map mapMarkerData={mapMarkerData} selectedMapLocation={selectedMapLocation}/>
+                        < Map mapMarkerData={mapMarkerData} selectedMapLocation={selectedMapLocation} />
                     </div>
                 </section >
                 <section className={`section-container`} id={`course-section`}>

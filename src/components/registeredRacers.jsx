@@ -3,25 +3,8 @@ import { useEffect, useState } from "react"
 //Styles
 import styles from "./registeredRacers.module.css"
 
-export default function RegisteredRacers({ raceData }) {
-    const [registeredRacers, setRegisteredRacers] = useState([])
-
-    console.log(raceData, registeredRacers)
-
-    useEffect(() => {
-        const getRegisteredRacers = async () => {
-            try {
-                const raceToFetch = raceData.name.split(' ').join('').toLowerCase();
-                let racersResponse = await fetch(`http://localhost:3000/racers/${raceToFetch}`)
-                let racersJSON = await racersResponse.json();
-                console.log(racersJSON)
-                setRegisteredRacers(racersJSON[0])
-            } catch (error) {
-                console.error(error);
-            }
-        }
-        getRegisteredRacers()
-    }, [])
+export default function RegisteredRacers({ raceData, racers }) {
+    console.log(raceData, racers)
 
     return (
         <div className={`${styles["racers-grid"]}`}>
@@ -30,25 +13,26 @@ export default function RegisteredRacers({ raceData }) {
                 <h5 className={`${styles["racer-detail"]}`}>Athletes</h5>
                 <h5 className={`${styles["racer-detail"]}`}>Category</h5>
             </div>
-            {
-                registeredRacers.map((racer, i) => {
+            {racers.length > 0 &&
+                racers.map((racer, i) => {
                     return (
                         <div className={`${styles["racer-row"]}`}>
                             <p className={`${styles["racer-detail"]} ${styles["first-column"]}`}>{i + 1}</p>
                             <p className={`${styles["racer-detail"]}`}>
-                                <span>{racer.firstName} {racer.lastName}</span>
-                                {JSON.parse(racer.partners) ? JSON.parse(racer.partners).map(partner => {
-                                    return (<>
-                                        <span>{`${partner.firstName} ${partner.lastName}`}</span>
-                                    </>
-                                    )
-                                }) : <></>}
+                                {racer.racers.map((racerName, i) => {
+                                    let racerSpan = i < racer.racers.length -1 ? 
+                                    <span className={`${styles["racer-name__span"]}`}>{`${racerName}`}</span>
+                                    :
+                                    <span className={`${styles["racer-name__span"]}`}>{racerName}</span>
+                                    return racerSpan
+                                })}
                             </p>
                             <p className={`${styles["racer-detail"]} ${styles["last-column"]}`}>{racer.category}</p>
                         </div>
                     )
                 })
             }
+            {racers.length === 0 && <h5 className={`${styles["racer-row"]} ${styles["racer-row__full-row-heading"]}`}>No racers registered yet.</h5>}
         </div>
     )
 }

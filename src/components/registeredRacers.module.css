@@ -8,11 +8,17 @@
 
 .racer-row {
     display: grid;
-    grid-template-columns: 4rem;
-    grid-auto-columns: 1fr;
+    grid-template-columns: 4rem 3fr 2fr;
     justify-content: space-evenly;
     grid-gap: 1px;
     border-top: 1px solid black;
+}
+
+.racer-row__full-row-heading{
+    text-transform: uppercase;
+    font-size: 1rem;
+   padding: .5rem 0;
+    grid-template-columns: auto;
 }
 
 .header-row{
@@ -56,7 +62,7 @@ h5.racer-detail {
     }
 
     .racer-row {
-        grid-template-columns: 14rem;
+        grid-template-columns: 14rem 3fr 2fr;
     }
     
     p.racer-detail {
