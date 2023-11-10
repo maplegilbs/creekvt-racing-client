@@ -2,6 +2,7 @@
 import CourseDetails from "../components/courseDetails";
 import Map from "../components/map";
 import RegisteredRacers from "../components/registeredRacers";
+import Results from "../components/results";
 //Hooks
 import { useLoaderData, useParams } from "react-router-dom";
 //Libs
@@ -159,7 +160,7 @@ export default function Race() {
                         <div className={`${styles["location-section"]}`}>
                             {locationContainers}
                         </div>
-                        < Map mapMarkerData={mapMarkerData} selectedMapLocation={selectedMapLocation} />
+                        {/* < Map mapMarkerData={mapMarkerData} selectedMapLocation={selectedMapLocation} /> */}
                     </div>
                 </section >
                 <section className={`section-container`} id={`course-section`}>
@@ -170,9 +171,7 @@ export default function Race() {
                 <section className={`section-container`} id={`results-section`}>
                     <h2 className={`section-heading`}>Results</h2>
                     <hr />
-                    <form>
-
-                    </form>
+                    <Results/>
 
                 </section>
                 <section className={`section-container`} id={`faqcontact-section`}>
