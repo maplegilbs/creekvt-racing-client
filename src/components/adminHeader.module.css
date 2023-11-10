@@ -1,0 +1,24 @@
+.welcome-heading {
+    padding: .5rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    text-transform: uppercase;
+    background-color: rgba(240,240,240);
+    position: sticky;
+    top: 0;
+    border-bottom: 1px solid black;
+    font-family: 'Montserrat', 'Roboto', sans-serif;
+}
+
+.welcome-heading h4 {
+    font-size: .9rem;
+    margin: 0;
+    font-weight: 800;
+}
+
+.saved-heading{
+    color: rgb(36, 169, 36);
+}
+.unsaved-heading{
+    color: rgb(169, 36, 36);
+}

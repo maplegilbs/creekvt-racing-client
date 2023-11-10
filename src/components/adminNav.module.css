@@ -1,0 +1,58 @@
+.admin-menu {
+    flex-direction: column;
+    display: flex;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    border-right: 2px solid #777;
+}
+
+.admin-menu > label {
+    margin: 1rem auto 0 auto;;
+}
+
+.menu-option {
+    border: none;
+    border-bottom: 2px solid rgba(255, 255, 255, .7);
+    padding: 1rem;
+    background: transparent;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.menu-option--bottom {
+    margin-top: auto;
+    margin-bottom: 1rem;
+    margin-left: 5%;
+    margin-right: 5%;
+    padding: .5rem;
+    height: max-content;
+    background-color: white;
+    border-radius: 5px;
+}
+
+.menu-option:hover {
+    text-shadow: 1px 1px #333;
+}
+
+.menu-option.active {
+    background-color:  rgba(140,185,225,.55);
+}
+
+.menu-select {
+    padding: .5rem;
+    margin: 1rem;
+    background-color: white;
+    text-align: center;
+}
+
+.menu-select option {
+    border: none;
+    box-shadow: 1px 1px #333;
+    border-radius: 0px;
+}
+
+.menu-select:hover{
+    text-shadow: none;
+}

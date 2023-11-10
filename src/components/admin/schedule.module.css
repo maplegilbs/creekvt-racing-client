@@ -1,0 +1,17 @@
+div.schedule-headers,
+div.schedule-row {
+    grid-template-columns: 5rem 1fr 1fr 3fr 4fr;
+}
+
+div.edit-row {
+    grid-template-columns: 1fr;
+    grid-auto-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+    border-top: 2px dashed black;
+    margin-top: 2rem;
+    background-color: white;
+}
+
+
+
+

@@ -1,0 +1,14 @@
+div.checkbox-group {
+    flex-direction: row;
+    justify-content: start;
+}
+
+.quill-container > * {
+    height: max-content;
+    height: max-content;
+    width: 100%;
+}
+
+.checkbox-group label {
+    margin: 0 1rem 0 0;
+}
