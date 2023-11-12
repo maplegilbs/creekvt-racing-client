@@ -12,7 +12,7 @@ function ResultsRow({ result, isSelected, raceName }) {
     return (
         <tr className={isSelected ? `${styles["selected-row"]}` : ""}>
             <td>{result.year}</td>
-            {!raceName && <td>{result.raceName}</td>}
+            {raceName && <td>{result.raceName}</td>}
             <td>{result.place}</td>
             <td>{racerName}</td>
             <td>{result.raceCategory}</td>
@@ -30,11 +30,9 @@ function FilterPanel({ filterOptions, setFilterOptions }) {
                 <p>Filter By</p>
             </div>
             <div className={`${styles["search-panel__row"]}`}>
-                <FilterSelect labelName={"Race"} filterOptionName={"selectedRace"} filterOptions={filterOptions} setFilterOptions={setFilterOptions} />
-                <FilterSelect labelName={"Year"} filterOptionName={"selectedYear"} filterOptions={filterOptions} setFilterOptions={setFilterOptions} />
-                <FilterSelect labelName={"Category"} filterOptionName={"selectedCategory"} filterOptions={filterOptions} setFilterOptions={setFilterOptions} />
-                {/* //Category */}
-                {/* //Racer Name */}
+                <FilterSelect labelName={"Race"} filterName={"raceName"} filterOptions={filterOptions} setFilterOptions={setFilterOptions} />
+                <FilterSelect labelName={"Year"} filterName={"raceYear"} filterOptions={filterOptions} setFilterOptions={setFilterOptions} />
+                <FilterSelect labelName={"Category"} filterName={"raceCategory"} filterOptions={filterOptions} setFilterOptions={setFilterOptions} />
             </div>
         </div>
     )
@@ -54,52 +52,55 @@ function SearchPanel({ filterOptions, setFilterOptions }) {
     )
 }
 
-function FilterSelect({ labelName, filterOptionName, filterOptions, setFilterOptions }) {
-    let options = [];
-    // if (labelName === "Category")
-    if (labelName === "Race") options = filterOptions.availableRaceYears.map(raceYear => Object.keys(raceYear)[0])
-    if (labelName === "Year" && filterOptions.selectedRace) {
-        //go into available race years, find the selected race, and use that to return all keys (years)
-        let foundIndex = filterOptions.availableRaceYears.findIndex(raceName => Object.keys(raceName)[0] === filterOptions.selectedRace)
-        options = Object.keys(filterOptions.availableRaceYears[foundIndex][filterOptions.selectedRace])
+function FilterSelect({ labelName, filterName, filterOptions, setFilterOptions }) {
+    let options = filterOptions.filterGroups[filterName];
+    console.log(filterOptions, options)
+
+
+    function handleFilterOptsChange(e) {
+        setFilterOptions(prev => {
+           let updatedFilterOpts = {...prev}
+           updatedFilterOpts.selectedOpts[filterName] = e.target.value;
+           return updatedFilterOpts
+        })
     }
-    else if (labelName === "Year") {
-        options = filterOptions.availableRaceYears.reduce((accum, race) => {
-            for (let raceYear in race[Object.keys(race)[0]]) {
-                if (!accum.includes(raceYear)) accum.push(raceYear)
-            }
-            return accum
-        }, [])
-    }
+
     return (
         <div className={`${styles["filter-group"]}`}>
-            <label htmlFor={filterOptionName}>{labelName}</label><br />
-            <select id={filterOptionName} onChange={(e) => setFilterOptions(prev => { return { ...prev, [filterOptionName]: e.target.value } })}>
-                <option value={''}>All</option>
-                {options.sort().map(optionValue => {
-                    return <option value={optionValue}>{optionValue}</option>
-                })}
+            <label htmlFor={filterName}>{labelName}</label><br />
+            <select id={filterName} onChange={handleFilterOptsChange}>
+                <option value={''} selected >All</option>
+                {options &&
+                    options.sort().map(optionValue => {
+                        return <option value={optionValue}>{optionValue}</option>
+                    })}
             </select>
         </div>
     )
 }
 
 const initialFilterOptions = {
-    availableRaceYears: [],
-    selectedRace: null,
-    selectedYear: null,
-    availableCategories: [],
-    selectedCategory: null,
+    allFilterOpts: [],
+    selectedOpts: {
+        raceName: null,
+        raceYear: null,
+        raceCategory: null
+    },
+    filterGroups: {
+        raceName: null,
+        raceYear: null,
+        raceCategory: null
+    },
     searchName: null,
 }
 
 export default function Results() {
     const [results, setResults] = useState([])
+    const [filterOptions, setFilterOptions] = useState(initialFilterOptions)
     const [showFilterOptions, setShowFilterOptions] = useState(false)
     const [showSearchBar, setShowSearchBar] = useState(false)
     const [showSortOptions, setShowSortOptions] = useState(false)
     const { raceName } = useParams()
-    const [filterOptions, setFilterOptions] = useState(initialFilterOptions)
 
     console.log(filterOptions)
 
@@ -110,19 +111,29 @@ export default function Results() {
             let raceFiltersResponse = await fetch(`http://localhost:3000/results/resultYears`)
             if (raceFiltersResponse.status !== 200) throw new Error('Race filters unavailable')
             let raceFiltersData = await raceFiltersResponse.json();
-            let groupedFilterOptions = raceFiltersData.reduce((accum, item) => {
-                let foundRaceGroup = accum.find(group => Object.keys(group).includes(item.raceName))
-                if (foundRaceGroup) {
-                    let updatedRaceGroup = { ...foundRaceGroup[item.raceName], [item.raceYear]: item.raceCategory.split(", ").sort() }
-                    accum[accum.findIndex(group => Object.keys(group).includes(item.raceName))] = { [item.raceName]: updatedRaceGroup }
-                }
-                else {
-                    accum.push({ [item.raceName]: { [item.raceYear]: item.raceCategory.split(", ").sort() } })
-                }
-                return accum
-            }, [])
+
             setFilterOptions(prev => {
-                return { ...prev, availableRaceYears: groupedFilterOptions }
+                let updatedFilterOpts = { ...prev }
+                console.log(raceFiltersData)
+                for (let groupName in filterOptions.filterGroups) {
+                    if (groupName !== "raceCategory") {
+                        updatedFilterOpts.filterGroups[groupName] = raceFiltersData.reduce((accum, dataRow) => {
+                            if (accum.includes(dataRow[groupName])) return accum;
+                            accum.push(dataRow[groupName])
+                            return accum
+                        }, []).sort()
+                    }
+                    else {
+                        updatedFilterOpts.filterGroups[groupName] = raceFiltersData.reduce((accum, dataRow) => {
+                            dataRow[groupName].split(", ").forEach(category => {
+                                if (accum.includes(category)) return accum;
+                                accum.push(category)
+                            })
+                            return accum
+                        }, []).sort()
+                    }
+                }
+                return updatedFilterOpts
             })
             setResults(resultsData)
         }
@@ -132,6 +143,14 @@ export default function Results() {
 
         }
     }, [])
+
+    let filteredResults = results.filter(result => {
+        console.log(filterOptions)
+        if (filterOptions.selectedOpts.raceName && result.raceName.toLowerCase() !== filterOptions.selectedOpts.raceName.toLowerCase()) return false
+        if (filterOptions.selectedOpts.raceYear && Number(result.year) !== Number(filterOptions.selectedOpts.raceYear)) return false
+        if (filterOptions.selectedOpts.raceCategory && result.raceCategory.toLowerCase() !== filterOptions.selectedOpts.raceCategory.toLowerCase()) return false
+        return true
+    })
 
     return (
         <>
@@ -150,7 +169,7 @@ export default function Results() {
                     <thead>
                         <tr>
                             <th>Year</th>
-                            {!raceName && <th>Race</th>}
+                            {raceName && <th>Race</th>}
                             <th>Place</th>
                             <th>Racer</th>
                             <th>Category</th>
@@ -159,12 +178,14 @@ export default function Results() {
                             <th>Lap 2</th>
                         </tr>
                     </thead>
-                    {results.map(result => {
-                        let racerName = `${result.firstName} ${result.lastName}`.toLowerCase().trim()
-                        let isSelected = racerName.includes(filterOptions.searchName) && filterOptions.searchName.length > 0 ? true : false;
-                        return <ResultsRow result={result} isSelected={isSelected} raceName={raceName} />
-                    })
-                    }
+                    <tbody>
+                        {filteredResults.map(result => {
+                            let racerName = `${result.firstName} ${result.lastName}`.toLowerCase().trim()
+                            let isSelected = racerName.includes(filterOptions.searchName) && filterOptions.searchName.length > 0 ? true : false;
+                            return <ResultsRow key={result.id} result={result} isSelected={isSelected} raceName={raceName} />
+                        })
+                        }
+                    </tbody>
                 </table>
             }
         </>
