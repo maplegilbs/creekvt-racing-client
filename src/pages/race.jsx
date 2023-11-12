@@ -109,7 +109,7 @@ export default function Race() {
                             <>
                                 <h4>{`${formattedTime.dow} ${formattedTime.monthString} ${formattedTime.day}, ${formattedTime.year}`}</h4>
                                 <h4>{`${formattedTime.time} ${formattedTime.amPm}`}</h4>
-                            </> : <h4>CHECK BACK SOON FOR 2024 SCHEDULED RACE DATE</h4>
+                            </> : <h4>CHECK BACK SOON FOR NEXT SCHEDULED RACE DATE</h4>
                         }
                         <div className={`${styles["registration-button__container"]}`}>
                             {new Date(raceData.date) < new Date() ?
@@ -122,7 +122,7 @@ export default function Race() {
                                     Registration Currently Closed - Check Back Soon To Register
                                 </h5>
                             }
-                            <a href={`./${raceName}/register`} className={`button button--large ${raceData.isRegOpen === 0 ? "disabled" : ""} ${styles['registration-button']}`}>
+                            <a href={`./${raceName}/register`} className={`button button--large ${raceData.isRegOpen === 0 || new Date(raceData.date) < new Date()  ? "disabled" +" " + styles["hidden"] : ""} ${styles['registration-button']}`}>
                                 Register &nbsp;<img src="https://creekvt.com/races/RacerIcon.png" />
                             </a>
                         </div>

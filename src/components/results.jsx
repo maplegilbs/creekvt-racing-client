@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 //Icons
-import { faFilter, faMagnifyingGlass, faSort } from '@fortawesome/free-solid-svg-icons'
+import { faFilter, faMagnifyingGlass, faSort, faChevronRight } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 //Styles
 import styles from './results.module.css'
@@ -40,13 +40,25 @@ function FilterPanel({ filterOptions, setFilterOptions, raceName }) {
     )
 }
 
+function SortPanel({ filterrOptions, setFilterOptions, raceName }) {
+    return (
+        <div className={`${styles["search-panel__container"]}`}>
+            <div className={`${styles["search-panel__row"]}`}>
+                <p>Sort By</p>
+            </div>
+            <div className={`${styles["search-panel__row"]}`}>
+            </div>
+        </div>
+    )
+}
+
 function SearchPanel({ filterOptions, setFilterOptions }) {
     return (
         <div className={`${styles["search-panel__container"]}`}>
             <div>
                 <label htmlFor="racerSearch">Search By Racer</label>
                 <div className={`${styles["search-box"]}`}>
-                    <input type="search" name="racerSearch" id="racerSearch" value={filterOptions.searchName} onChange={(e) => setFilterOptions(prev => { return { ...prev, searchName: e.target.value } })} />
+                    <input type="search" name="racerSearch" id="racerSearch" value={filterOptions.searchName} onChange={(e) => setFilterOptions(prev => { return { ...prev, searchName: e.target.value.toLowerCase() } })} />
                     <FontAwesomeIcon icon={faMagnifyingGlass} />
                 </div>
             </div>
@@ -135,9 +147,15 @@ export default function Results() {
     const [showSearchBar, setShowSearchBar] = useState(false)
     const [showSortOptions, setShowSortOptions] = useState(false)
     const { raceName } = useParams()
-
-    console.log(filterOptions)
-
+    
+    let filteredResults = results.filter(result => {
+        if (filterOptions.selectedOpts.raceName && result.raceName.toLowerCase() !== filterOptions.selectedOpts.raceName.toLowerCase()) return false
+        if (filterOptions.selectedOpts.raceYear && Number(result.year) !== Number(filterOptions.selectedOpts.raceYear)) return false
+        if (filterOptions.selectedOpts.raceCategory && result.raceCategory.toLowerCase() !== filterOptions.selectedOpts.raceCategory.toLowerCase()) return false
+        return true
+    })
+    console.log(filterOptions, filteredResults)
+    
     useEffect(() => {
         async function getResults() {
             let resultsResponse = await fetch(`http://localhost:3000/results${raceName? "?raceName="+ raceName: "" }`)
@@ -145,7 +163,7 @@ export default function Results() {
             let raceFiltersResponse = await fetch(`http://localhost:3000/results/resultYears${raceName? "?raceName="+ raceName: "" }`)
             if (raceFiltersResponse.status !== 200) throw new Error('Race filters unavailable')
             let raceFiltersData = await raceFiltersResponse.json();
-            console.log(raceFiltersData)
+        console.log(raceFiltersData)
             setFilterOptions(prev => {
                 let updatedFilterOpts = { ...prev }
                 for (let groupName in filterOptions.filterGroups) {
@@ -178,26 +196,21 @@ export default function Results() {
         try {
             getResults()
         } catch (error) {
-
+            
         }
     }, [])
-
-    let filteredResults = results.filter(result => {
-        if (filterOptions.selectedOpts.raceName && result.raceName.toLowerCase() !== filterOptions.selectedOpts.raceName.toLowerCase()) return false
-        if (filterOptions.selectedOpts.raceYear && Number(result.year) !== Number(filterOptions.selectedOpts.raceYear)) return false
-        if (filterOptions.selectedOpts.raceCategory && result.raceCategory.toLowerCase() !== filterOptions.selectedOpts.raceCategory.toLowerCase()) return false
-        return true
-    })
-
+    
+    
     return (
         <>
             <div className={`${styles["action-buttons__container"]}`}>
-                <button className={`button button--medium ${styles["results-button"]}`} onClick={() => setShowSearchBar(prev => !prev)}>Search &nbsp;<FontAwesomeIcon icon={faMagnifyingGlass} /></button>
-                <button className={`button button--medium ${styles["results-button"]}`} onClick={() => setShowFilterOptions(prev => !prev)}>Filter &nbsp;<FontAwesomeIcon icon={faFilter} /></button>
-                <button className={`button button--medium ${styles["results-button"]}`} onClick={() => setShowSortOptions(prev => !prev)}>Sort &nbsp;<FontAwesomeIcon icon={faSort} /></button>
+                <button className={`button button--medium ${styles["results-button"]}`} onClick={() => setShowSearchBar(prev => !prev)}><FontAwesomeIcon icon={faChevronRight} rotation={showSearchBar? 90:0}/> &nbsp; Search &nbsp;<FontAwesomeIcon icon={faMagnifyingGlass} /></button>
+                <button className={`button button--medium ${styles["results-button"]}`} onClick={() => setShowFilterOptions(prev => !prev)}><FontAwesomeIcon icon={faChevronRight} rotation={showFilterOptions? 90:0}/> &nbsp; Filter &nbsp;<FontAwesomeIcon icon={faFilter} /></button>
+                <button className={`button button--medium ${styles["results-button"]}`} onClick={() => setShowSortOptions(prev => !prev)}><FontAwesomeIcon icon={faChevronRight} rotation={showSortOptions? 90:0}/> &nbsp; Sort &nbsp;<FontAwesomeIcon icon={faSort} /></button>
             </div>
             {showSearchBar && <SearchPanel filterOptions={filterOptions} setFilterOptions={setFilterOptions} />}
             {showFilterOptions && <FilterPanel filterOptions={filterOptions} setFilterOptions={setFilterOptions} raceName={raceName}/>}
+            {showSortOptions && <SortPanel filterOptions={filterOptions} setFilterOptions={setFilterOptions} raceName={raceName}/>}
             {results.length === 0 &&
                 <p>No results available</p>
             }

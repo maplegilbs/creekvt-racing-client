@@ -32,6 +32,10 @@ div.action-buttons__container button.results-button {
     text-shadow: none;
 }
 
+.action-buttons__container svg {
+    transition: all .5s;
+}
+
 .search-panel__container {
     width: 100%;
     background: rgb(255 255 255 / 80%);
@@ -65,6 +69,12 @@ div.action-buttons__container button.results-button {
     outline: none;
 }
 
-.filter-group{
+.filter-group {
     margin: .25rem .5rem;
+}
+
+.results-table td,
+.results-table th {
+    font-size: .7rem;
+    text-align: center;
 }
