@@ -95,14 +95,14 @@ export default function Race() {
     console.log(raceData)
     return (
         <>
+            <main className={`${styles["racepage-container"]}`}>
+                <section className={`section-container`}>
             {
                 (raceData.notification && raceData.notification !== 'null') &&
                 <div className={`${styles["notification-banner"]}`}>{
                     raceData.notification
                 }</div>
             }
-            <main className={`${styles["racepage-container"]}`}>
-                <section className={`section-container`}>
                     <div className={`${styles["heading-container"]}`}>
                         <h2 className={`primary-heading`}>{raceData.name}</h2>
                         {formattedTime ?
