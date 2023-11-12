@@ -44,6 +44,7 @@ section h4 {
 
 .heading-container h4 {
     font-weight: 800;
+    font-size: 2.25rem;
 }
 
 .registration-button__container {
@@ -65,7 +66,7 @@ section h4 {
     font-weight: 900;
     font-size: 1rem;
     text-transform: uppercase;
-    text-shadow: 1px 1px 7px black;
+    /* text-shadow: 1px 1px 7px black; */
     z-index: 2;
 }
 

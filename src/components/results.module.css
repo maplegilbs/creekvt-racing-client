@@ -7,6 +7,7 @@
 
 .selected-row {
     font-weight: 700;
+    background-color: rgba(255,255,255,.5);
 }
 
 .search-box {
@@ -77,4 +78,13 @@ div.action-buttons__container button.results-button {
 .results-table th {
     font-size: .7rem;
     text-align: center;
+}
+
+@media screen and (min-width: 640px) {
+    .results-table td,
+    .results-table th {
+        font-size: 1rem;
+        text-align: left;
+    }
+    
 }

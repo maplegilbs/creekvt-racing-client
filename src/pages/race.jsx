@@ -119,7 +119,7 @@ export default function Race() {
                                 :
                                 !raceData.isRegOpen &&
                                 <h5 className={`${styles["registration-notice__heading"]}`}>
-                                    Registration Currently Closed - Check Back Soon To Register
+                                    Registration Currently Closed - Check Back Soon To Sign Up
                                 </h5>
                             }
                             <a href={`./${raceName}/register`} className={`button button--large ${raceData.isRegOpen === 0 || new Date(raceData.date) < new Date()  ? "disabled" +" " + styles["hidden"] : ""} ${styles['registration-button']}`}>
@@ -160,7 +160,7 @@ export default function Race() {
                         <div className={`${styles["location-section"]}`}>
                             {locationContainers}
                         </div>
-                        {/* < Map mapMarkerData={mapMarkerData} selectedMapLocation={selectedMapLocation} /> */}
+                        < Map mapMarkerData={mapMarkerData} selectedMapLocation={selectedMapLocation} />
                     </div>
                 </section >
                 <section className={`section-container`} id={`course-section`}>
