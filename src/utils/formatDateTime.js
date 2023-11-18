@@ -58,3 +58,13 @@ export function convertTime (inputTime) {
     let outputTime = `${formatDateTime(date).time} ${formatDateTime(date).amPm}`
     return outputTime;
 }
+
+export function stringTimeToSeconds (timeString) {
+    let timeArray = timeString.split(":").reverse()
+    let timeInSeconds = timeArray.reduce((accum, value, index) => {
+        let curValInSeconds = Number(value) * 60 ** index
+        accum += curValInSeconds
+        return accum
+    }, 0)
+    return timeInSeconds
+}

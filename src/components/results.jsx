@@ -12,7 +12,7 @@ function ResultsRow({ result, isSelected, raceName }) {
     return (
         <tr className={isSelected ? `${styles["selected-row"]}` : ""}>
             <td>{result.year}</td>
-            {raceName && <td>{result.raceName}</td>}
+            {!raceName && <td>{result.raceName}</td>}
             <td>{result.place}</td>
             <td>{racerName}</td>
             <td>{result.raceCategory}</td>
@@ -165,7 +165,7 @@ function SortPanel({ filterOptions, setFilterOptions }) {
                 <SortSelect labelName={"Select To Sort"} filterName={"raceYear"} filterOptions={filterOptions} setFilterOptions={setFilterOptions} />
             </div>
             <div className={`${styles["search-panel__row"]}`}>
-                {selectedSortOptions && <p>SORT ORDER: &nbsp;<span className={`${styles["sort-order__span"]}`}>{selectedSortOptions}</span><span style={{cursor: "pointer"}} onClick={removeSortOpt}>&nbsp;&nbsp;&nbsp;&nbsp;<FontAwesomeIcon icon={faCircleXmark} color={"#4d7288"} /> </span></p>}
+                {selectedSortOptions && <p>SORT ORDER: &nbsp;<span className={`${styles["sort-order__span"]}`}>{selectedSortOptions}</span><span style={{ cursor: "pointer" }} onClick={removeSortOpt}>&nbsp;&nbsp;&nbsp;&nbsp;<FontAwesomeIcon icon={faCircleXmark} color={"#4d7288"} /> </span></p>}
             </div>
         </div>
     )
@@ -258,24 +258,42 @@ export default function Results() {
         return true
     })
 
-    function bulidSortFunction (arrayOfOptions) {
+    function bulidSortFunction(arrayOfOptions) {
         let ifStatements = arrayOfOptions.map(element => {
             console.log(element)
-            return (`
-            if(itemA.${sortLookup[element]} > itemB.${sortLookup[element]}) return 1
-            if(itemA.${sortLookup[element]} < itemB.${sortLookup[element]}) return -1`
-            )
+            if (!['Final Time', 'Lap 1', 'Lap 2'].includes(element)) {
+                return (`
+                if(itemA.${sortLookup[element]} > itemB.${sortLookup[element]}) return 1
+                if(itemA.${sortLookup[element]} < itemB.${sortLookup[element]}) return -1`
+                )
+            }
+            else {
+                return (`
+                if(stringTimeToSeconds(itemA.${sortLookup[element]}) > stringTimeToSeconds(itemB.${sortLookup[element]})) return 1
+                if(stringTimeToSeconds(itemA.${sortLookup[element]}) < stringTimeToSeconds(itemB.${sortLookup[element]})) return -1`
+                )
+            }
         });
-        let sortFunctionString = ifStatements.join('\n') + '\n\nreturn 0;'
+        let sortFunctionString = `
+        const stringTimeToSeconds = (timeString) => {
+            let timeArray = timeString.split(":").reverse()
+            let timeInSeconds = timeArray.reduce((accum, value, index) => {
+                let curValInSeconds = Number(value) * 60 ** index
+                accum += curValInSeconds
+                return accum
+            }, 0)
+            return timeInSeconds? timeInSeconds : 100000; 
+        }
+        ` + ifStatements.join('\n') + '\n\nreturn 0;'
         console.log(sortFunctionString)
         return new Function('itemA', 'itemB', sortFunctionString)
-    
+
     }
-    
+
     const sortFunction = bulidSortFunction(filterOptions.orderedSelectedSortOpts)
 
-    let sortedResults = filterOptions.orderedSelectedSortOpts.length > 0 ? filteredResults.sort((itemA, itemB) =>sortFunction(itemA, itemB)): filteredResults;
-    
+    let sortedResults = filterOptions.orderedSelectedSortOpts.length > 0 ? filteredResults.sort((itemA, itemB) => sortFunction(itemA, itemB)) : filteredResults;
+
 
 
 
@@ -346,7 +364,7 @@ export default function Results() {
                     <thead>
                         <tr>
                             <th>Year</th>
-                            {raceName && <th>Race</th>}
+                            {!raceName && <th>Race</th>}
                             <th>Place</th>
                             <th>Racer</th>
                             <th>Category</th>
