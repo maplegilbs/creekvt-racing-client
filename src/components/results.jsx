@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 //Icons
-import { faFilter, faMagnifyingGlass, faSort, faChevronRight } from '@fortawesome/free-solid-svg-icons'
+import { faFilter, faMagnifyingGlass, faSort, faChevronRight, faCircleXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 //Styles
 import styles from './results.module.css'
@@ -12,7 +12,7 @@ function ResultsRow({ result, isSelected, raceName }) {
     return (
         <tr className={isSelected ? `${styles["selected-row"]}` : ""}>
             <td>{result.year}</td>
-            {!raceName && <td>{result.raceName}</td>}
+            {raceName && <td>{result.raceName}</td>}
             <td>{result.place}</td>
             <td>{racerName}</td>
             <td>{result.raceCategory}</td>
@@ -20,36 +20,6 @@ function ResultsRow({ result, isSelected, raceName }) {
             <td>{result.lap1 || "-"}</td>
             <td>{result.lap2 || "-"}</td>
         </tr>
-    )
-}
-
-function FilterPanel({ filterOptions, setFilterOptions, raceName }) {
-    return (
-        <div className={`${styles["search-panel__container"]}`}>
-            <div className={`${styles["search-panel__row"]}`}>
-                <p>Filter By</p>
-            </div>
-            <div className={`${styles["search-panel__row"]}`}>
-                {!raceName &&
-                    <FilterSelect labelName={"Race"} filterName={"raceName"} filterOptions={filterOptions} setFilterOptions={setFilterOptions} />
-                }
-                <FilterSelect labelName={"Year"} filterName={"raceYear"} filterOptions={filterOptions} setFilterOptions={setFilterOptions} />
-                <FilterSelect labelName={"Category"} filterName={"raceCategory"} filterOptions={filterOptions} setFilterOptions={setFilterOptions} />
-                <FilterSearch labelName={"Name"} filterName={"racerName"} filterOptions={filterOptions} setFilterOptions={setFilterOptions} />
-            </div>
-        </div>
-    )
-}
-
-function SortPanel({ filterOptions, setFilterOptions, raceName }) {
-    return (
-        <div className={`${styles["search-panel__container"]}`}>
-            <div className={`${styles["search-panel__row"]}`}>
-                <p>Sort By</p>
-            </div>
-            <div className={`${styles["search-panel__row"]}`}>
-            </div>
-        </div>
     )
 }
 
@@ -66,26 +36,20 @@ function SearchPanel({ filterOptions, setFilterOptions }) {
         </div>
     )
 }
-function FilterSearch({ labelName, filterName, filterOptions, setFilterOptions }) {
 
-    function handleFilterOptsChange(e) {
-        setFilterOptions(prev => {
-            let updatedSelectedOpts = {
-                ...prev.selectedOpts,
-                racerName: e.target.value.toLowerCase()
-            }
-            let updatedFilterOpts = { ...prev,
-                selectedOpts: updatedSelectedOpts
-            }
-            return updatedFilterOpts
-        })
-    }
+function FilterPanel({ filterOptions, setFilterOptions, raceName }) {
     return (
-        <div className={`${styles["filter-group"]}`}>
-            <label htmlFor="racerSearch">Racer</label>
-            <div className={`${styles["search-box"]}`}>
-                <input type="search" name="racerSearch" id="racerSearch" value={filterOptions.selectedOpts.racerName} onChange={(e)=> handleFilterOptsChange(e)} />
-                <FontAwesomeIcon icon={faMagnifyingGlass} />
+        <div className={`${styles["search-panel__container"]}`}>
+            <div className={`${styles["search-panel__row"]}`}>
+                <p>Filter By</p>
+            </div>
+            <div className={`${styles["search-panel__row"]}`}>
+                {raceName &&
+                    <FilterSelect labelName={"Race"} filterName={"raceName"} filterOptions={filterOptions} setFilterOptions={setFilterOptions} />
+                }
+                <FilterSelect labelName={"Year"} filterName={"raceYear"} filterOptions={filterOptions} setFilterOptions={setFilterOptions} />
+                <FilterSelect labelName={"Category"} filterName={"raceCategory"} filterOptions={filterOptions} setFilterOptions={setFilterOptions} />
+                <FilterSearch filterOptions={filterOptions} setFilterOptions={setFilterOptions} />
             </div>
         </div>
     )
@@ -147,6 +111,104 @@ function FilterSelect({ labelName, filterName, filterOptions, setFilterOptions }
     )
 }
 
+function FilterSearch({ filterOptions, setFilterOptions }) {
+
+    function handleFilterOptsChange(e) {
+        setFilterOptions(prev => {
+            let updatedSelectedOpts = {
+                ...prev.selectedOpts,
+                racerName: e.target.value.toLowerCase()
+            }
+            let updatedFilterOpts = {
+                ...prev,
+                selectedOpts: updatedSelectedOpts
+            }
+            return updatedFilterOpts
+        })
+    }
+    return (
+        <div className={`${styles["filter-group"]}`}>
+            <label htmlFor="racerSearch">Racer</label>
+            <div className={`${styles["search-box"]}`}>
+                <input type="search" name="racerSearch" id="racerSearch" value={filterOptions.selectedOpts.racerName} onChange={(e) => handleFilterOptsChange(e)} />
+                <FontAwesomeIcon icon={faMagnifyingGlass} />
+            </div>
+        </div>
+    )
+}
+
+function SortPanel({ filterOptions, setFilterOptions }) {
+
+    let selectedSortOptions = filterOptions.orderedSelectedSortOpts.join(' > ')
+
+    function removeSortOpt() {
+        setFilterOptions(prev => {
+            let removedSortOpt = prev.orderedSelectedSortOpts.pop()
+            let updatedOrderedSelectedSortOpts = prev.orderedSelectedSortOpts
+            prev.sortOpts.push(removedSortOpt);
+            let updatedSortOpts = prev.sortOpts.sort()
+            let upatedFilterOptions = {
+                ...prev,
+                orderedSelectedSortOpts: updatedOrderedSelectedSortOpts,
+                sortOpts: updatedSortOpts
+            }
+            return upatedFilterOptions
+        })
+    }
+
+    return (
+        <div className={`${styles["search-panel__container"]}`}>
+            <div className={`${styles["search-panel__row"]}`}>
+                <p>Sort By</p>
+            </div>
+            <div className={`${styles["search-panel__row"]}`}>
+                <SortSelect labelName={"Select To Sort"} filterName={"raceYear"} filterOptions={filterOptions} setFilterOptions={setFilterOptions} />
+            </div>
+            <div className={`${styles["search-panel__row"]}`}>
+                {selectedSortOptions && <p>SORT ORDER: &nbsp;<span className={`${styles["sort-order__span"]}`}>{selectedSortOptions}</span><span style={{cursor: "pointer"}} onClick={removeSortOpt}>&nbsp;&nbsp;&nbsp;&nbsp;<FontAwesomeIcon icon={faCircleXmark} color={"#4d7288"} /> </span></p>}
+            </div>
+        </div>
+    )
+}
+
+function SortSelect({ labelName, filterName, filterOptions, setFilterOptions }) {
+    let options = filterOptions.sortOpts;
+
+    function handleSortOptsChange(e) {
+        setFilterOptions(prev => {
+            console.log(prev)
+            let selectedSortOpt = e.target.value;
+            let foundIndex = prev.sortOpts.indexOf(selectedSortOpt);
+            let updatedSortOpts = prev.sortOpts.toSpliced(foundIndex, 1)
+            prev.orderedSelectedSortOpts.push(selectedSortOpt)
+            let updatedOrderedSelectedSortOpts = prev.orderedSelectedSortOpts
+            let updatedFilterOpts = {
+                ...prev,
+                sortOpts: updatedSortOpts,
+                orderedSelectedSortOpts: updatedOrderedSelectedSortOpts,
+            }
+            return updatedFilterOpts
+        })
+
+    }
+
+    return (
+        <div className={`${styles["sort-group"]}`}>
+            {/* <label htmlFor={filterName}>{labelName}</label><br /> */}
+            <select id={filterName} onChange={handleSortOptsChange}>
+                <option value={''} selected >--</option>
+                {options &&
+                    options.sort().map(optionValue => {
+                        return <option value={optionValue}>{optionValue}</option>
+                    })}
+            </select>
+        </div>
+    )
+}
+
+
+
+//Setting up initial object to hold our filtered data
 const initialFilterOptions = {
     allFilterOpts: [],
     currentFilterOpts: [],
@@ -156,17 +218,30 @@ const initialFilterOptions = {
         raceCategory: null,
         racerName: null
     },
-    availableOpts: {
-
-    },
+    availableOpts: {},
     filterGroups: {
         raceName: null,
         raceYear: null,
         raceCategory: null
     },
+    sortOpts: ['Year', 'Place', 'Race Name', 'Category', 'Final Time', 'Lap 1', 'Lap 2', 'Racer'],
+    orderedSelectedSortOpts: [],
     searchName: null,
 }
 
+const sortLookup = {
+    'Year': 'year',
+    'Place': 'place',
+    'Race Name': 'raceName',
+    'Category': 'raceCategory',
+    'Final Time': 'fastestLap',
+    'Lap 1': 'lap1',
+    'Lap 2': 'lap2',
+    'Racer': 'lastName'
+}
+
+
+//DEFAULT COMPONENT
 export default function Results() {
     const [results, setResults] = useState([])
     const [filterOptions, setFilterOptions] = useState(initialFilterOptions)
@@ -182,6 +257,30 @@ export default function Results() {
         if (filterOptions.selectedOpts.racerName && !`${result.firstName} ${result.lastName}`.toLowerCase().trim().includes(filterOptions.selectedOpts.racerName)) return false
         return true
     })
+
+    function bulidSortFunction (arrayOfOptions) {
+        let ifStatements = arrayOfOptions.map(element => {
+            console.log(element)
+            return (`
+            if(itemA.${sortLookup[element]} > itemB.${sortLookup[element]}) return 1
+            if(itemA.${sortLookup[element]} < itemB.${sortLookup[element]}) return -1`
+            )
+        });
+        let sortFunctionString = ifStatements.join('\n') + '\n\nreturn 0;'
+        console.log(sortFunctionString)
+        return new Function('itemA', 'itemB', sortFunctionString)
+    
+    }
+    
+    const sortFunction = bulidSortFunction(filterOptions.orderedSelectedSortOpts)
+
+    let sortedResults = filterOptions.orderedSelectedSortOpts.length > 0 ? filteredResults.sort((itemA, itemB) =>sortFunction(itemA, itemB)): filteredResults;
+    
+
+
+
+
+
     console.log(filterOptions, filteredResults)
 
     useEffect(() => {
@@ -247,7 +346,7 @@ export default function Results() {
                     <thead>
                         <tr>
                             <th>Year</th>
-                            {!raceName && <th>Race</th>}
+                            {raceName && <th>Race</th>}
                             <th>Place</th>
                             <th>Racer</th>
                             <th>Category</th>
@@ -257,7 +356,7 @@ export default function Results() {
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredResults.map(result => {
+                        {sortedResults.map(result => {
                             let racerName = `${result.firstName} ${result.lastName}`.toLowerCase().trim()
                             let isSelected = racerName.includes(filterOptions.searchName) && filterOptions.searchName.length > 0 ? true : false;
                             return <ResultsRow key={result.id} result={result} isSelected={isSelected} raceName={raceName} />
