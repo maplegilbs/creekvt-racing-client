@@ -74,6 +74,21 @@ div.action-buttons__container button.results-button {
     margin: .25rem .5rem;
 }
 
+.filter-group select, .filter-group .search-box {
+    height: 1.5rem;
+    padding: 0px;
+}
+
+.filter-group .search-box {
+    display: flex;
+    align-items: center;
+}
+
+.filter-group input[type="search"]{
+    height: 1rem;
+    padding: .1rem;
+}
+
 .results-table td,
 .results-table th {
     font-size: .7rem;
