@@ -142,9 +142,10 @@ li.events-listItem {
 
 .location-header {
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: flex-start;
+    align-items: flex-start;
 }
 
 .location-details {
@@ -167,19 +168,20 @@ li.events-listItem {
 }
 
 .location-name img {
-    height: 1rem;
+    height: .85rem;
     width: auto;
     margin: 0 .5rem;
 }
 
 .location-link {
-    margin: .4rem .5rem;
-    color: white;
+    margin: .4rem 0;
+    padding-left: 2rem;
+    color: rgb(255, 255, 255);
     font-family: 'Montserrat', sans-serif;
     font-weight: 700;
     font-size: .7rem;
     text-transform: uppercase;
-    text-shadow: 1px 1px 5px #333;
+    text-shadow: 1px 1px 2px #333;
 }
 
 @media screen and (min-width: 640px) {
@@ -199,6 +201,12 @@ li.events-listItem {
     .location-section {
         width: 48%;
         margin: 0 .75%;
+    }
+
+    .location-header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
     }
 
     .directions-section {

@@ -9,7 +9,7 @@ import { useLoaderData, useParams } from "react-router-dom";
 import { formatDateTime, convertTime } from "../utils/formatDateTime";
 //Styles
 import styles from "./race.module.css"
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export async function loader({ params }) {
     // Get data via api call to populate page here
@@ -46,11 +46,13 @@ function LocationContainer({ location, setSelectedMapLocation }) {
                     onClick={() => {
                         setSelectedMapLocation([Number(location.lat), Number(location.lng)])
                     }}>
-                    <h6>{location.name}</h6>
                     <img src={location.iconUrl} />
+                    <h6>{location.name}</h6>
                 </div>
                 <div className={`${styles["location-buttons"]}`}>
-                    <a target="_blank" href={`https://www.google.com/maps/dir/?api=1&destination=${location.lat},${location.lng}`} className={`${styles["location-link"]}`}>Directions</a>
+                    <a target="_blank" href={`https://www.google.com/maps/dir/?api=1&destination=${location.lat},${location.lng}`} className={`${styles["location-link"]}`}>
+                        Directions
+                        </a>
                 </div>
             </div>
             {(location.description && location.description !== 'null') &&
