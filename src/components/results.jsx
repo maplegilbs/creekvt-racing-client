@@ -58,6 +58,7 @@ function FilterPanel({ filterOptions, setFilterOptions, raceName }) {
 
 function FilterSelect({ labelName, filterName, filterOptions, setFilterOptions }) {
     let options = filterOptions.filterGroups[filterName];
+
     function handleFilterOptsChange(e) {
         setFilterOptions(prev => {
             let updatedFilterOpts = { ...prev }
@@ -100,7 +101,7 @@ function FilterSelect({ labelName, filterName, filterOptions, setFilterOptions }
     return (
         <div className={`${styles["filter-group"]}`}>
             <label htmlFor={filterName}>{labelName}</label><br />
-            <select id={filterName} onChange={handleFilterOptsChange}>
+            <select id={filterName} value={filterOptions.selectedOpts[filterName]} onChange={handleFilterOptsChange}>
                 <option value={''} selected >All</option>
                 {options &&
                     options.sort().map(optionValue => {
@@ -333,6 +334,10 @@ export default function Results() {
                         updatedFilterOpts.availableOpts[groupName] = filterOptGroups
                     }
                 }
+                
+                //find the previous results year
+                let mostRecentResultYear = Math.max(...raceFiltersData.map(dataItem => dataItem.raceYear))
+                updatedFilterOpts.selectedOpts.raceYear = mostRecentResultYear;
                 updatedFilterOpts.allFilterOpts = raceFiltersData
                 return updatedFilterOpts
             })
@@ -341,7 +346,7 @@ export default function Results() {
         try {
             getResults()
         } catch (error) {
-
+            //!need error handling here
         }
     }, [])
 
