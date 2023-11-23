@@ -6,7 +6,7 @@ import Results from "../components/results";
 //Hooks
 import { useLoaderData, useParams } from "react-router-dom";
 //Libs
-import { formatDateTime, convertTime } from "../utils/formatDateTime";
+import { formatDateTime, convertTime, convertTimeToCompare } from "../utils/formatDateTime";
 //Styles
 import styles from "./race.module.css"
 import { useState } from "react";
@@ -17,10 +17,10 @@ export async function loader({ params }) {
     const scheduleJSON = await scheduleData.json()
     const raceData = await fetch(`http://localhost:3000/races/${params.raceName}`);
     const raceJSON = await raceData.json();
+    let currentRaceYear = new Date(raceJSON[0].date).getFullYear()
     const locationsData = await fetch(`http://localhost:3000/geoInfo/${params.raceName}`);
     const locationsJSON = await locationsData.json();
-    //! need to dynamically populate the year
-    const racersData = await fetch(`http://localhost:3000/racers/${params.raceName}/2024`);
+    const racersData = await fetch(`http://localhost:3000/racers/${params.raceName}/${currentRaceYear}`);
     const racersJSON = await racersData.json();
     let groupedRacers = racersJSON.reduce((accum, curRacer) => {
         //if the accumulator has a racer in an array that shares the id of the current racer, add it to that array, otherwise make a new array
@@ -52,7 +52,7 @@ function LocationContainer({ location, setSelectedMapLocation }) {
                 <div className={`${styles["location-buttons"]}`}>
                     <a target="_blank" href={`https://www.google.com/maps/dir/?api=1&destination=${location.lat},${location.lng}`} className={`${styles["location-link"]}`}>
                         Directions
-                        </a>
+                    </a>
                 </div>
             </div>
             {(location.description && location.description !== 'null') &&
@@ -90,8 +90,18 @@ export default function Race() {
     const { raceName } = useParams()
 
     const formattedTime = raceData.date ? formatDateTime(raceData.date) : null;
-    const locationContainers = locations.map(location => <LocationContainer location={location} setSelectedMapLocation={setSelectedMapLocation} />)
-    const scheduleItems = scheduleData ? scheduleData.map(eventDetails => <ScheduleItem eventDetails={eventDetails} />) : null;
+    const locationContainers = locations.sort((location1, location2) => {
+        if (location1.iconUrl > location2.iconUrl) return 1
+        if (location1.iconUrl < location2.iconUrl) return -1
+        return 0
+    })
+    .map(location => <LocationContainer key={location.id} location={location} setSelectedMapLocation={setSelectedMapLocation} />)
+    
+    const scheduleItems = scheduleData ?
+        scheduleData.sort((event1, event2) => convertTimeToCompare(event1.startTime) - convertTimeToCompare(event2.startTime))
+            .map(eventDetails => <ScheduleItem key={eventDetails.id} eventDetails={eventDetails} />)
+        :
+        null;
 
 
     console.log(raceData)
@@ -99,12 +109,12 @@ export default function Race() {
         <>
             <main className={`${styles["racepage-container"]}`}>
                 <section className={`section-container`}>
-            {
-                (raceData.notification && raceData.notification !== 'null') &&
-                <div className={`${styles["notification-banner"]}`}>{
-                    raceData.notification
-                }</div>
-            }
+                    {
+                        (raceData.notification && raceData.notification !== 'null') &&
+                        <div className={`${styles["notification-banner"]}`}>{
+                            raceData.notification
+                        }</div>
+                    }
                     <div className={`${styles["heading-container"]}`}>
                         <h2 className={`primary-heading`}>{raceData.name}</h2>
                         {formattedTime ?
@@ -124,7 +134,7 @@ export default function Race() {
                                     Registration Currently Closed - Check Back Soon To Sign Up
                                 </h5>
                             }
-                            <a href={`./${raceName}/register`} className={`button button--large ${raceData.isRegOpen === 0 || new Date(raceData.date) < new Date()  ? "disabled" +" " + styles["hidden"] : ""} ${styles['registration-button']}`}>
+                            <a href={`./${raceName}/register`} className={`button button--large ${raceData.isRegOpen === 0 || new Date(raceData.date) < new Date() ? "disabled" + " " + styles["hidden"] : ""} ${styles['registration-button']}`}>
                                 Register &nbsp;<img src="https://creekvt.com/races/RacerIcon.png" />
                             </a>
                         </div>
@@ -173,7 +183,7 @@ export default function Race() {
                 <section className={`section-container`} id={`results-section`}>
                     <h2 className={`section-heading`}>Results</h2>
                     <hr />
-                    <Results/>
+                    <Results />
 
                 </section>
                 <section className={`section-container`} id={`faqcontact-section`}>

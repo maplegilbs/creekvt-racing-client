@@ -15,14 +15,14 @@ export default function RegisteredRacers({ raceData, racers }) {
             {racers.length > 0 &&
                 racers.map((racer, i) => {
                     return (
-                        <div className={`${styles["racer-row"]}`} key={racer.id}>
+                        <div key={i} className={`${styles["racer-row"]}`} key={racer.id}>
                             <p className={`${styles["racer-detail"]} ${styles["first-column"]}`}>{i + 1}</p>
                             <p className={`${styles["racer-detail"]}`}>
                                 {racer.racers.map((racerName, i) => {
                                     let racerSpan = i < racer.racers.length -1 ? 
-                                    <span className={`${styles["racer-name__span"]}`}>{`${racerName}`}</span>
+                                    <span key={i} className={`${styles["racer-name__span"]}`}>{`${racerName}`}</span>
                                     :
-                                    <span className={`${styles["racer-name__span"]}`}>{racerName}</span>
+                                    <span key={i} className={`${styles["racer-name__span"]}`}>{racerName}</span>
                                     return racerSpan
                                 })}
                             </p>

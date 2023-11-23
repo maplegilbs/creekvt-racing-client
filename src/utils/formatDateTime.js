@@ -59,6 +59,13 @@ export function convertTime (inputTime) {
     return outputTime;
 }
 
+export function convertTimeToCompare (inputTime) {
+    let date = new Date();
+    date.setHours(inputTime.slice(0,2))
+    date.setMinutes(inputTime.slice(3,5))
+    return date;
+}
+
 export function stringTimeToSeconds (timeString) {
     let timeArray = timeString.split(":").reverse()
     let timeInSeconds = timeArray.reduce((accum, value, index) => {
