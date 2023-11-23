@@ -42,7 +42,7 @@ export default function Athletes() {
     }, [selectedRace, selectedRaceYear])
 
     useEffect(() => {
-        let dataArray = [['Boat #', 'First Name', 'Last Name', 'Birthdate', 'Gender', 'Email', 'Category', 'Paid']];
+        let dataArray = [['Boat ID', 'First Name', 'Last Name', 'Birthdate', 'Gender', 'Email', 'Category', 'Paid']];
         if (registeredRacerData) {
             registeredRacerData.forEach(racerEntity => {
                 racerEntity.racers.forEach(racer => {

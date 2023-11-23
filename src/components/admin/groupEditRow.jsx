@@ -19,6 +19,7 @@ export default function EditGroupRow({ itemID, itemData, categoryOpts, setRegist
     const [currentGroupInfo, setCurrentGroupInfo] = useState(itemData)
     const [isNoticeDisplayed, setIsNoticeDisplayed] = useState(false)
 
+
     console.log("Edit group row: ", itemID, currentGroupInfo, selectedRacer)
 
     //Add a racer to the boat.
@@ -28,7 +29,7 @@ export default function EditGroupRow({ itemID, itemData, categoryOpts, setRegist
             //create new blank racer
             let token = localStorage.getItem('token')
             //get the fields we will need to create a blank racer and generate an object with those keys and values set to null
-            let tableFieldsResponse = await fetch("http://localhost:3000/racers/tableInfo/racers", {
+            let tableFieldsResponse = await fetch("http://localhost:3000/racers/admin/tableInfo/racers", {
                 headers: { authorization: `Bearer ${token}` }
             })
             let tableFields = await tableFieldsResponse.json()
