@@ -1,5 +1,6 @@
 //Components
 import CourseDetails from "../components/courseDetails";
+import FAQ from "../components/faq";
 import Map from "../components/map";
 import RegisteredRacers from "../components/registeredRacers";
 import Results from "../components/results";
@@ -95,8 +96,8 @@ export default function Race() {
         if (location1.iconUrl < location2.iconUrl) return -1
         return 0
     })
-    .map(location => <LocationContainer key={location.id} location={location} setSelectedMapLocation={setSelectedMapLocation} />)
-    
+        .map(location => <LocationContainer key={location.id} location={location} setSelectedMapLocation={setSelectedMapLocation} />)
+
     const scheduleItems = scheduleData ?
         scheduleData.sort((event1, event2) => convertTimeToCompare(event1.startTime) - convertTimeToCompare(event2.startTime))
             .map(eventDetails => <ScheduleItem key={eventDetails.id} eventDetails={eventDetails} />)
@@ -108,7 +109,7 @@ export default function Race() {
     return (
         <>
             <main className={`${styles["racepage-container"]}`}>
-                <section className={`section-container`}>
+                <section className={`section-container`} style={{backgroundImage: "url('" + raceData.racePageImageURL + "')"}}>
                     {
                         (raceData.notification && raceData.notification !== 'null') &&
                         <div className={`${styles["notification-banner"]}`}>{
@@ -189,7 +190,7 @@ export default function Race() {
                 <section className={`section-container`} id={`faqcontact-section`}>
                     <h2 className={`section-heading`}>FAQ / Contact</h2>
                     <hr />
-
+                    <FAQ />
                 </section>
             </main>
         </>

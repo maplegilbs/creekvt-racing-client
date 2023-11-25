@@ -23,11 +23,10 @@
 }
 
 .racepage-container > section:nth-child(1){
-    background: url(https://creekvt.com/races/TestImage4.jpg);
     background-size: cover;
     background-position: 15% 50%;
     margin-top: -20px;
-    padding-bottom: 0px;
+    padding-bottom: 10px;
 }
 
 section h4 {
