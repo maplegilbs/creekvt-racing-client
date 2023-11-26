@@ -27,6 +27,17 @@
     background-position: 15% 50%;
     margin-top: -20px;
     padding-bottom: 10px;
+
+
+    background-size: cover;
+    background-position: 40% 50%;
+    margin-top: -20px;
+    padding-bottom: 10px;
+    height: calc(100vh - 50px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0px;
 }
 
 section h4 {
