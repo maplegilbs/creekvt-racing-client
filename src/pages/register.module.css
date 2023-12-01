@@ -5,7 +5,72 @@
     justify-content: center;
     border-radius: 5px;
     margin: 1rem auto;
-    background-color: rgba(217,218,223,.5);
-    width: max-content;
+    background-color: rgba(217, 218, 223, .5);
+    max-width: 95%;
     padding: 2rem;
+}
+
+.registration-form__container form{
+    width: 100%;
+}
+
+.racer-heading-row{
+    display: flex;
+    justify-content: space-between;
+}
+.racer-heading {
+    text-transform: uppercase;
+    font-size: .95rem;
+    font-weight: 700;
+    margin: 0 0 .75rem 0;
+    font-family: 'Montserrat';
+}
+
+.racer-delete{
+    font-size: .7rem;
+    border: 0px;
+    background-color: transparent;
+}
+
+.registration-form__container select {
+    border: 2px solid black;
+    padding: 1px;
+}
+
+.registration-form__container .registration-row {
+    margin: 0;
+    flex-wrap: wrap;
+    gap: 0px;
+}
+
+.registration-form__container .registration-group,
+.registration-form__container label
+ {
+    margin: .25rem 0;
+}
+
+.registration-form__container hr {
+    color: black;
+    border: 1px solid black;
+    margin: 2rem auto;
+}
+
+.add-partner__button {
+    border: 0px;
+    background-color: white;
+    border: 2px solid black;
+    border-radius: 5px;
+    font-size: .9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+@media screen and (min-width: 640px) {
+    .registration-form__container .registration-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+        margin-bottom: 1rem;
+    }
+    
 }
