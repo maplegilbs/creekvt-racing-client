@@ -27,6 +27,9 @@
 .sidebar-nav {
     grid-area: nav;
     background-color: rgba(140,185,225,.15);
+    position: sticky;
+    height: 100vh;
+    top: 0;
 }
 
 .content-wrapper {

@@ -22,11 +22,13 @@
 }
 
 .menu-option--bottom {
+    position: sticky;
+    bottom: 10px;
     margin-top: auto;
-    margin-bottom: 1rem;
+    margin-bottom: 15px;
     margin-left: 5%;
     margin-right: 5%;
-    padding: .5rem;
+    padding: 0.5rem;
     height: max-content;
     background-color: white;
     border-radius: 5px;

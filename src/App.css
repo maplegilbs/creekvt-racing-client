@@ -9,6 +9,10 @@ body, p {
     color: black;
 }
 
+main {
+    width: 100%;
+}
+
 li {
     font-size: 1rem;
 }
@@ -152,7 +156,7 @@ p {
     text-align: center;
     font-size: 4.25rem;
     text-shadow: 3px 2px #a5b7bf;
-    margin-bottom: .5rem;
+    margin-bottom: 2rem;
 }
 
 .section-heading {
@@ -172,6 +176,7 @@ p {
     font-size: .9rem;
     border-bottom: 3px solid #a5b7bf;
     width: max-content;
+    margin-bottom: .4rem;
 }
 .input-group {
     display: flex;

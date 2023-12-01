@@ -56,7 +56,7 @@ export default function EditAthleteRow({ itemData, setSelectedRacer, setErrorSta
             //If this is a racer being updated
             else {
                 let token = localStorage.getItem('token')
-                let tableFieldsResponse = await fetch("http://localhost:3000/racers/tableInfo/racers", {
+                let tableFieldsResponse = await fetch("http://localhost:3000/racers/admin/tableInfo/racers", {
                     headers: { authorization: `Bearer ${token}` }
                 })
                 let tableFields = await tableFieldsResponse.json()

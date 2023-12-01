@@ -1,6 +1,10 @@
 .notification-banner {
     margin: 1rem 0;
-    padding: 1rem .25rem;
+    padding: 0.5rem 1.5rem;
+    position: relative;
+    left: -1.5rem;
+    box-sizing: content-box;
+    top: -2.5rem;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -18,6 +22,24 @@
     margin-bottom: 2rem;
 }
 
+.racepage-container > section:nth-child(1){
+    background-size: cover;
+    background-position: 15% 50%;
+    margin-top: -20px;
+    padding-bottom: 10px;
+
+
+    background-size: cover;
+    background-position: 40% 50%;
+    margin-top: -20px;
+    padding-bottom: 10px;
+    height: calc(100vh - 50px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0px;
+}
+
 section h4 {
     margin: .5rem;
 }
@@ -31,11 +53,16 @@ section h4 {
 }
 
 .heading-container h4 {
-    font-weight: 700;
+    font-weight: 800;
+    font-size: 1.35rem;
 }
 
 .registration-button__container {
     position: relative;
+}
+
+.hidden {
+    visibility: hidden;
 }
 
 .registration-notice__heading {
@@ -49,8 +76,7 @@ section h4 {
     font-weight: 900;
     font-size: 1rem;
     text-transform: uppercase;
-    text-shadow: 1px 1px 7px black;
-    background-color: rgba(255, 255, 255, .5);
+    /* text-shadow: 1px 1px 7px black; */
     z-index: 2;
 }
 
@@ -65,6 +91,7 @@ section h4 {
     padding: .5rem 0;
     border-top: 1px solid black;
     border-bottom: 1px solid black;
+    background-color: rgba(255,255,255,.7);
 }
 
 .race-nav a {
@@ -125,9 +152,10 @@ li.events-listItem {
 
 .location-header {
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: flex-start;
+    align-items: flex-start;
 }
 
 .location-details {
@@ -150,25 +178,30 @@ li.events-listItem {
 }
 
 .location-name img {
-    height: 1rem;
+    height: .85rem;
     width: auto;
     margin: 0 .5rem;
 }
 
 .location-link {
-    margin: .4rem .5rem;
-    color: white;
+    margin: .4rem 0;
+    padding-left: 2rem;
+    color: rgb(255, 255, 255);
     font-family: 'Montserrat', sans-serif;
     font-weight: 700;
     font-size: .7rem;
     text-transform: uppercase;
-    text-shadow: 1px 1px 5px #333;
+    text-shadow: 1px 1px 2px #333;
 }
 
 @media screen and (min-width: 640px) {
 
     .race-nav a {
         font-size: 1rem;
+    }
+
+    .heading-container h4 {
+        font-size: 2.25rem;
     }
 
     .section-container {
@@ -178,6 +211,12 @@ li.events-listItem {
     .location-section {
         width: 48%;
         margin: 0 .75%;
+    }
+
+    .location-header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
     }
 
     .directions-section {

@@ -7,6 +7,7 @@ import Details from "../components/admin/details";
 import Directions from "../components/admin/directions";
 import Results from "../components/admin/results";
 import Schedule from "../components/admin/schedule";
+import FAQ from "../components/admin/faq";
 //Contexts
 import { UserInfoContext } from "./layout";
 //Hooks
@@ -80,7 +81,7 @@ export default function AdminDashboard() {
                 setEditComponent(<Results />);
                 break;
             case "faqs":
-                setEditComponent(<div>FAQS</div>);
+                setEditComponent(<FAQ />);
                 break;
             default:
                 setEditComponent(<Default userInfo={userInfo} />);

@@ -15,14 +15,14 @@ import styles from "./directions.module.css"
 import adminStyles from "./adminGlobalStyles.module.css"
 //Icon Urls
 const iconUrls = [
-    "https://creekvt.com/races/map_icons/startFlag.png",
-    "https://creekvt.com/races/map_icons/finishFlag.png",
-    "https://creekvt.com/races/map_icons/parking.png",
-    "https://creekvt.com/races/map_icons/register.png",
-    "https://creekvt.com/races/map_icons/putInDown.png",
-    "https://creekvt.com/races/map_icons/putInUp.png",
-    "https://creekvt.com/races/map_icons/takeOutDown.png",
-    "https://creekvt.com/races/map_icons/takeOutUp.png",
+    "https://creekvt.com/races/map_icons/01register.png",
+    "https://creekvt.com/races/map_icons/02startFlag.png",
+    "https://creekvt.com/races/map_icons/03finishFlag.png",
+    "https://creekvt.com/races/map_icons/04parking.png",
+    "https://creekvt.com/races/map_icons/05putInDown.png",
+    "https://creekvt.com/races/map_icons/05putInUp.png",
+    "https://creekvt.com/races/map_icons/06takeOutDown.png",
+    "https://creekvt.com/races/map_icons/06takeOutUp.png",
 ]
 
 // Component for informational row only.  Buttons to edit or delete racers.

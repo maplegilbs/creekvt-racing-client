@@ -1,5 +1,3 @@
-//! INCORPORATE LOCATION SELECTION
-
 //Components
 import Default from "./default";
 //Contexts
@@ -51,7 +49,6 @@ function EditScheduleItemRow({ itemID, itemData, handleChange, saveItem, cancelA
                     setLocationsOpts(locationsData)
                 }
                 else throw new Error(locationsData.message)
-
             } catch (error) {
                 console.log(error)
             }
