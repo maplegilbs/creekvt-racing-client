@@ -1,0 +1,40 @@
+.racer-heading-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.racer-heading {
+    text-transform: uppercase;
+    font-size: .95rem;
+    font-weight: 700;
+    margin: 0 0 .75rem 0;
+    font-family: 'Montserrat';
+}
+
+.racer-delete {
+    font-size: .7rem;
+    border: 0px;
+    background-color: transparent;
+}
+
+.register-racer-row .registration-row {
+    margin: 0;
+    flex-wrap: wrap;
+    gap: 0px;
+}
+
+.register-racer-row .registration-group,
+.register-racer-row label {
+    margin: .25rem 0;
+}
+
+
+@media screen and (min-width: 640px) {
+    .register-racer-row .registration-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+        margin-bottom: 1rem;
+    }
+
+}

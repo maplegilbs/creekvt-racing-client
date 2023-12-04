@@ -1,0 +1,106 @@
+.subtotal__container {
+    width: 90%;
+    padding: 1rem;
+    margin: 1rem auto;
+    border-radius: 4px;
+}
+
+.subtotal__container header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1rem auto 2rem auto;
+    font-family: 'Montserrat', 'Roboto', sans-serif;
+}
+
+
+.subtotal__container header h3 {
+    text-transform: uppercase;
+    font-weight: 800;
+    margin: 0;
+}
+
+.subtotal__container header h5,
+.registration-details h5 {
+    text-transform: uppercase;
+    font-size: .95rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.subtotal__container header button {
+    margin: 0;
+    font-size: .8rem;
+}
+
+.registration-details {
+    margin: 1.5rem auto;
+    padding: .5rem;
+}
+
+.registration-details h5 {
+    text-align: left;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+}
+
+.detail-row p {
+    margin: 0;
+}
+
+.receipt-row {
+    display: grid;
+    grid-template-columns: 3fr 1fr 2fr 2fr;
+    margin: 2px auto;
+    padding: 3px;
+}
+
+.receipt-row:not(.receipt-row--header) {
+    background-color: rgb(235, 235, 235);
+}
+
+.receipt-row h5 {
+    display: flex;
+    align-items: center;
+    text-transform: uppercase;
+    font-size: .9rem;
+    font-weight: 700;
+    text-align: left;
+}
+
+.receipt-row h5:not(:nth-child(1)),
+.receipt-row p:not(:nth-child(1)) {
+    justify-content: center;
+    text-align: center;
+}
+
+.receipt-row p {
+    margin-bottom: 0;
+}
+
+.receipt-row p span {
+    font-size: .8rem;
+}
+
+.subtotal-row {
+    border-top: 2px solid #222;
+    padding-top: .25rem;
+    margin-top: .5rem;
+    display: grid;
+    grid-template-columns: 6fr 2fr;
+}
+
+.subtotal-row p {
+    font-weight: 800;
+    font-size: 1.15rem;
+    text-transform: uppercase;
+}
+
+.subtotal-row p:last-child {
+    text-align: center;
+}
