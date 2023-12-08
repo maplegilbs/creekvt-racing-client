@@ -189,6 +189,11 @@ p {
     min-height: 15rem;
 }
 
+.required__span {
+    color: darkred;
+    font-size: 1rem;
+}
+
 @media screen and (max-width: 640px) {
 
     .mobile-hide {

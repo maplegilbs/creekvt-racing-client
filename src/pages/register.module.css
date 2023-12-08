@@ -10,6 +10,12 @@
     padding: 2rem;
 }
 
+.required-notice {
+    font-size: .8rem;
+    width: 100%;
+    margin: 0;
+}
+
 .registration-form__container form{
     width: 100%;
 }

@@ -7,7 +7,6 @@ import ReactDOM from "react-dom"
 import { formatDateTime } from "../utils/formatDateTime";
 //Styles
 import styles from "./checkout.module.css"
-import { Navigate } from "react-router";
 const PayPalButton = window.paypal.Buttons.driver("react", { React, ReactDOM });
 
 function Subtotal({ registrationData, raceInfo, setCheckoutStatus }) {

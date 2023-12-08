@@ -42,13 +42,19 @@ const sampleRegistration = {
     }]
 }
 
+const canAddPartners = {
+    "newhavenrace": false,
+    "peavinerace": true,
+    "testrace": true
+}
+
 export default function Register() {
     const { raceInfo, currentRaceYear } = useLoaderData();
-    // const [registrationFormData, setRegistrationFormData] = useState({});
-    const [registrationFormData, setRegistrationFormData] = useState(sampleRegistration);
+    const [registrationFormData, setRegistrationFormData] = useState({});
+    // const [registrationFormData, setRegistrationFormData] = useState(sampleRegistration);
     const { raceName } = useParams()
-    // const [checkoutStatus, setCheckoutStatus] = useState(null)
-    const [checkoutStatus, setCheckoutStatus] = useState('pending')
+    const [checkoutStatus, setCheckoutStatus] = useState(null)
+    // const [checkoutStatus, setCheckoutStatus] = useState('pending')
 
     let racerCategoryOptions =
         raceInfo.categoryOptions ?
@@ -59,23 +65,23 @@ export default function Register() {
 
     console.log(raceInfo, registrationFormData)
 
-    // useEffect(() => {
-    //     setRegistrationFormData(
-    //         {
-    //             year: currentRaceYear,
-    //             raceName: raceInfo.name,
-    //             racers: [
-    //                 {
-    //                     firstName: null,
-    //                     lastName: null,
-    //                     email: null,
-    //                     acaNumber: null,
-    //                     birthdate: null,
-    //                     gender: null
-    //                 }
-    //             ]
-    //         })
-    // }, [])
+    useEffect(() => {
+        setRegistrationFormData(
+            {
+                year: currentRaceYear,
+                raceName: raceInfo.name,
+                racers: [
+                    {
+                        firstName: null,
+                        lastName: null,
+                        email: null,
+                        acaNumber: null,
+                        birthdate: null,
+                        gender: null
+                    }
+                ]
+            })
+    }, [])
 
 
 
@@ -121,12 +127,15 @@ export default function Register() {
             {checkoutStatus === null &&
                 <div className={`${styles["registration-form__container"]}`}>
                     <h4 className={`section-heading`}>Register for the {`${currentRaceYear} ${raceInfo.name}`}</h4>
-                    <p>Register once per craft.  Be sure to include all partners in craft below.</p>
+                    {canAddPartners[raceName] &&
+                        <p>Register once per craft.  Be sure to include all partners in craft below.</p>
+                    }
+                    <p className={`${styles["required-notice"]}`}>Required fields are denoted with an astrisk *</p>
                     <form onSubmit={handleSubmit}>
                         {racerCategoryOptions &&
                             <div className={`input-row ${styles["registration-row"]}`}>
                                 <div className={`input-group ${styles["registration-group"]}`}>
-                                    <label htmlFor="category">Category *</label>
+                                    <div><label htmlFor="category">Category&nbsp;</label><span className="required__span">*</span></div>
                                     <select required value={registrationFormData.category} onChange={(e) => setRegistrationFormData(prev => { return { ...prev, category: e.target.value } })} name="category" id="category">
                                         <option value=""></option>
                                         {racerCategoryOptions}
@@ -138,18 +147,20 @@ export default function Register() {
                         {(registrationFormData.racers && registrationFormData.racers.length > 0) &&
                             registrationFormData.racers.map((racer, racerIndex) => {
                                 return (
-                                    <RacerRow setRegistrationFormData={setRegistrationFormData} registrationFormData={registrationFormData} raceName={raceName} racerIndex={racerIndex} />
+                                    <RacerRow raceInfo={raceInfo} setRegistrationFormData={setRegistrationFormData} registrationFormData={registrationFormData} raceName={raceName} racerIndex={racerIndex} />
 
                                 )
                             })
                         }
-                        <button className={`${styles["add-partner__button"]}`} type="button" onClick={addPartner}><FontAwesomeIcon icon={faCirclePlus} />&nbsp;Add Partner</button>
+                        {canAddPartners[raceName] &&
+                            <button className={`${styles["add-partner__button"]}`} type="button" onClick={addPartner}><FontAwesomeIcon icon={faCirclePlus} />&nbsp;Add Partner</button>
+                        }
                         <button className={`button button--medium`} type="submit">Continue to Payment</button>
                     </form>
                 </div>
             }
             {checkoutStatus === 'pending' &&
-                <Checkout registrationData={registrationFormData} raceInfo={raceInfo} setCheckoutStatus={setCheckoutStatus}/>
+                <Checkout registrationData={registrationFormData} raceInfo={raceInfo} setCheckoutStatus={setCheckoutStatus} />
             }
         </>
     )
