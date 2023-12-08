@@ -61,8 +61,8 @@ export default function RacerRow({ raceInfo, registrationFormData, setRegistrati
             </div>
             <div className={`input-row ${styles["registration-row"]}`}>
                 <div className={`input-group ${styles["registration-group"]}`}>
-                    <div><label htmlFor="email">Email&nbsp;</label><span className="required__span">*</span></div>
-                    <input onChange={handleChange} required type="email" name="email" id="email" value={registrationFormData.racers[racerIndex].email} />
+                    <div><label htmlFor="email">Email&nbsp;</label>{racerIndex === 0 && <span className="required__span">*</span>}</div>
+                    <input onChange={handleChange} required ={racerIndex === 0? true : false} type="email" name="email" id="email" value={registrationFormData.racers[racerIndex].email} />
                 </div>
             </div>
             <div className={`input-row ${styles["registration-row"]}`}>

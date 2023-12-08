@@ -2,12 +2,23 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 //Libraries
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom"
 import { formatDateTime } from "../utils/formatDateTime";
 //Styles
 import styles from "./checkout.module.css"
+import { useNavigate } from "react-router";
 const PayPalButton = window.paypal.Buttons.driver("react", { React, ReactDOM });
+
+function RegistrationNotice({ raceName}) {
+    return (
+        <div className={`${styles["registration-notice"]}`}>
+            <p>Thanks for registering! SYOTR!</p>
+            {/* <Loader /> */}
+            <p>Redirecting to {raceName} page</p>
+        </div>
+    )
+}
 
 function Subtotal({ registrationData, raceInfo, setCheckoutStatus }) {
 
@@ -60,8 +71,13 @@ function Subtotal({ registrationData, raceInfo, setCheckoutStatus }) {
 
 }
 
-export default function Checkout({ registrationData, raceInfo, setCheckoutStatus }) {
+export default function Checkout({ registrationData, raceName, raceInfo, setCheckoutStatus }) {
+    const navigate = useNavigate()
+    const [isRegComplete, setIsRegComplete] = useState(false)
 
+    useEffect(() => {
+        window.scroll(0, 0)
+    }, [])
     console.log(registrationData)
 
     /*----Paypal-----*/
@@ -82,23 +98,37 @@ export default function Checkout({ registrationData, raceInfo, setCheckoutStatus
     };
 
 
-    const onApprove = (data) => {
+    async function onApprove(data) {
         // Order is captured on the server and the response is returned to the browser
-        return fetch(`http://localhost:3000/register/orders/capture/${data.orderID}`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                orderID: data.orderID,
-                registrationData
+        try {
+            let captureResponse = await fetch(`http://localhost:3000/register/orders/capture/${data.orderID}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    orderID: data.orderID,
+                    registrationData
+                })
             })
-        })
-            .then((response) => response.json());
+            console.log(captureResponse)
+            let captureData = await captureResponse.json();
+            console.log(captureData)
+            if (captureResponse.status === 201) {
+                setIsRegComplete(true)
+                console.log(captureData)
+                // setTimeout(() => navigate(`/races/${raceName}#athletes-section`), 3000)
+            }
+
+        } catch (error) {
+
+        }
     };
 
     return (
-        <>
+        <>{isRegComplete &&
+            <RegistrationNotice raceName={raceName}/>
+        }
             <Subtotal registrationData={registrationData} raceInfo={raceInfo} setCheckoutStatus={setCheckoutStatus} />
             <PayPalButton
                 createOrder={(data) => createOrder(data)}

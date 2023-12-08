@@ -147,7 +147,7 @@ export default function Register() {
                         {(registrationFormData.racers && registrationFormData.racers.length > 0) &&
                             registrationFormData.racers.map((racer, racerIndex) => {
                                 return (
-                                    <RacerRow raceInfo={raceInfo} setRegistrationFormData={setRegistrationFormData} registrationFormData={registrationFormData} raceName={raceName} racerIndex={racerIndex} />
+                                    <RacerRow key={racerIndex} raceInfo={raceInfo} setRegistrationFormData={setRegistrationFormData} registrationFormData={registrationFormData} raceName={raceName} racerIndex={racerIndex} />
 
                                 )
                             })
@@ -160,7 +160,7 @@ export default function Register() {
                 </div>
             }
             {checkoutStatus === 'pending' &&
-                <Checkout registrationData={registrationFormData} raceInfo={raceInfo} setCheckoutStatus={setCheckoutStatus} />
+                <Checkout registrationData={registrationFormData} raceName={raceName} raceInfo={raceInfo} setCheckoutStatus={setCheckoutStatus} />
             }
         </>
     )
