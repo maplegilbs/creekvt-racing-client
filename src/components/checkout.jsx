@@ -70,7 +70,7 @@ function Subtotal({ registrationData, raceInfo, setCheckoutStatus }) {
     )
 }
 
-export default function Checkout({ registrationData, raceName, raceInfo, setCheckoutStatus }) {
+export default function Checkout({ registrationData, raceName, raceInfo, setCheckoutStatus, setReceiptInfo }) {
     const navigate = useNavigate()
     const [isRegComplete, setIsRegComplete] = useState(false)
 
@@ -111,12 +111,11 @@ export default function Checkout({ registrationData, raceName, raceInfo, setChec
                     registrationData
                 })
             })
-            console.log(captureResponse)
             let captureData = await captureResponse.json();
-            console.log(captureData)
             if (captureResponse.status === 201) {
                 setIsRegComplete(true)
                 console.log(captureData)
+                setReceiptInfo(captureData)
                 setTimeout(() => setCheckoutStatus('complete'), 3000)
             }
 
@@ -126,7 +125,7 @@ export default function Checkout({ registrationData, raceName, raceInfo, setChec
     };
 
     return (
-        <>{!isRegComplete &&
+        <>{isRegComplete &&
             <RegistrationNotice raceName={raceName} />
         }
             <Subtotal registrationData={registrationData} raceInfo={raceInfo} setCheckoutStatus={setCheckoutStatus} />
@@ -137,7 +136,7 @@ export default function Checkout({ registrationData, raceName, raceInfo, setChec
                     layout: 'vertical',
                     color: 'black',
                     shape: 'rect',
-                    label: 'paypal'
+                    label: 'paypal',
                 }
                 }
             />

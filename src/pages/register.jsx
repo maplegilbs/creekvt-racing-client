@@ -49,17 +49,18 @@ const canAddPartners = {
     "testrace": true
 }
 
-//!update dynamically, or be sure to populate based on provided data from race organizers
+//!update dynamically, or populate based on provided data from race organizers?
 const craftWithMultipleRacers = ["Canoe Tandem", "Kayak Tandem", "Raft"]
 
 export default function Register() {
     const { raceInfo, currentRaceYear } = useLoaderData();
-    // const [registrationFormData, setRegistrationFormData] = useState({});
-    const [registrationFormData, setRegistrationFormData] = useState(sampleRegistration);
+    const [registrationFormData, setRegistrationFormData] = useState({});
+    // const [registrationFormData, setRegistrationFormData] = useState(sampleRegistration); // testing purposes
     const { raceName } = useParams()
-    // const [checkoutStatus, setCheckoutStatus] = useState(null)
-    const [checkoutStatus, setCheckoutStatus] = useState('pending')
-    // const [checkoutStatus, setCheckoutStatus] = useState('complete')
+    const [checkoutStatus, setCheckoutStatus] = useState(null)
+    // const [checkoutStatus, setCheckoutStatus] = useState('pending') //testing purposes
+    // const [checkoutStatus, setCheckoutStatus] = useState('complete') //testing purposes
+    const [receiptInfo, setReceiptInfo] = useState(null)
 
     let racerCategoryOptions =
         raceInfo.categoryOptions ?
@@ -70,23 +71,23 @@ export default function Register() {
 
     console.log(raceInfo, registrationFormData)
 
-    // useEffect(() => {
-    //     setRegistrationFormData(
-    //         {
-    //             year: currentRaceYear,
-    //             raceName: raceInfo.name,
-    //             racers: [
-    //                 {
-    //                     firstName: null,
-    //                     lastName: null,
-    //                     email: null,
-    //                     acaNumber: null,
-    //                     birthdate: null,
-    //                     gender: null
-    //                 }
-    //             ]
-    //         })
-    // }, [])
+    useEffect(() => {
+        setRegistrationFormData(
+            {
+                year: currentRaceYear,
+                raceName: raceInfo.name,
+                racers: [
+                    {
+                        firstName: null,
+                        lastName: null,
+                        email: null,
+                        acaNumber: null,
+                        birthdate: null,
+                        gender: null
+                    }
+                ]
+            })
+    }, [])
 
 
 
@@ -176,10 +177,10 @@ export default function Register() {
                 </div>
             }
             {checkoutStatus === 'pending' &&
-                <Checkout registrationData={registrationFormData} raceName={raceName} raceInfo={raceInfo} setCheckoutStatus={setCheckoutStatus} />
+                <Checkout registrationData={registrationFormData} raceName={raceName} raceInfo={raceInfo} setCheckoutStatus={setCheckoutStatus} setReceiptInfo={setReceiptInfo}/>
             }
             {checkoutStatus === 'complete' &&
-                <RegistrationReceipt registrationData={registrationFormData} raceInfo={raceInfo} raceName={raceName} />
+                <RegistrationReceipt registrationData={registrationFormData} raceInfo={raceInfo} raceName={raceName} receiptInfo={receiptInfo}/>
             }
         </>
     )

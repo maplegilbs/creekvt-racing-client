@@ -1,13 +1,12 @@
 //Components
 import { Link, useParams } from "react-router-dom";
-import RegisteredRacers from "./registeredRacers";
 //Libraries
 import { formatDateTime } from "../utils/formatDateTime";
 //Styles
 import styles from "./checkout.module.css"
 import { useEffect, useState } from "react";
 
-export default function RegistrationReceipt({ registrationData, raceInfo, raceName }) {
+export default function RegistrationReceipt({ registrationData, raceInfo, raceName, receiptInfo }) {
     const [racers, setRacers] = useState(null)
     const params = useParams()
 
@@ -44,15 +43,19 @@ export default function RegistrationReceipt({ registrationData, raceInfo, raceNa
     return (
         <div className={`${styles["subtotal__container"]}`}>
             <header>
-                <h3>Get Ready To Race!</h3>
+                <h3 style={{margin: "0 auto;"}}>Get Ready To Race!</h3>
             </header>
-            <div className={`${styles["registration-details"]}`}>
-                <h5>Registration Details:</h5>
-                <div className={`${styles["detail-row"]}`}><p>Race:</p><p> {raceInfo.name}</p></div>
-                <div className={`${styles["detail-row"]}`}><p>Event Date:</p><p> {formatDateTime(new Date(raceInfo.date)).fullDate}</p></div>
-                <div className={`${styles["detail-row"]}`}><p>Participant Count:</p><p> {registrationData.racers.length}</p></div>
-                <div className={`${styles["detail-row"]}`}><p>Race Class:</p><p> {registrationData.category}</p></div>
+            <div >
+                <div ><p>Mark your calendar for {formatDateTime(new Date(raceInfo.date)).fullDate}.  You{registrationData.racers.map((racer, index) => {
+                    return index > 0 ? `${racer.firstName}` : ""
+                }).join(', ')
+                } will be competing in the {registrationData.category} class for champion of the {raceInfo.name}.  Good luck and SYOTR!</p></div>
             </div>
+            <br /><br />
+            <h5 style={{textAlign: "left;"}}>Here is your registration receipt.</h5>
+            <p style={{fontSize: ".8rem;", margin: "0"}}>Transaction ID: {receiptInfo.orderData.id}</p>
+            <p style={{fontSize: ".8rem", margin: "0"}}>Payment Date: {formatDateTime(new Date(receiptInfo.timeStamp)).fullDate}</p>
+            <br />
             <div className={`${styles["receipt-row"]} ${styles["receipt-row--header"]}`}>
                 <h5>Racer</h5>
                 <h5>Fee</h5>
@@ -75,13 +78,11 @@ export default function RegistrationReceipt({ registrationData, raceInfo, raceNa
             })
             }
             <div className={`${styles["subtotal-row"]}`}>
-                <p>Total</p>
+                <p>Paid</p>
                 <p>${subTotal.toFixed(2)}</p>
             </div>
-            {racers &&
-                <RegisteredRacers racers={racers} />
-            }
-            <Link to={`/races/${raceName}`}>Back to races</Link>
+            <br />
+            <p>Be sure to review the <Link to={`/races/${raceName}`}>race page</Link> for schedule, directions and other details.  Or contact the organizers with any questions.</p>
         </div>
     )
 
