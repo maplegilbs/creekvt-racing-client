@@ -30,7 +30,7 @@ export default function Layout() {
         <UserInfoContext.Provider value={[userInfo, setUserInfo]}>
             <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh", justifyContent: "space-between" }}>
                 <Header />
-                <div style={{ minHeight: "80vh", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
+                <div style={{ minHeight: "80vh", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", position: "relative" }}>
                     <Outlet />
                 </div>
                 <Footer />

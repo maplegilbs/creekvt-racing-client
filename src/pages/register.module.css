@@ -10,43 +10,36 @@
     padding: 2rem;
 }
 
-.registration-form__container form{
-    width: 100%;
-}
-
-.racer-heading-row{
+.header-info{
     display: flex;
     justify-content: space-between;
-}
-.racer-heading {
-    text-transform: uppercase;
-    font-size: .95rem;
-    font-weight: 700;
-    margin: 0 0 .75rem 0;
-    font-family: 'Montserrat';
+    width: 100%;
+    margin: 0 auto;
 }
 
-.racer-delete{
-    font-size: .7rem;
-    border: 0px;
-    background-color: transparent;
+.header-info p {
+    margin: 0;
+}
+
+.required-notice {
+    font-size: .8rem;
+    width: 100%;
+    margin: 0;
+}
+
+.race-details {
+    text-transform: uppercase;
+    font-size: 1rem;
+    margin: 0;
+}
+
+.registration-form__container form{
+    width: 100%;
 }
 
 .registration-form__container select {
     border: 2px solid black;
     padding: 1px;
-}
-
-.registration-form__container .registration-row {
-    margin: 0;
-    flex-wrap: wrap;
-    gap: 0px;
-}
-
-.registration-form__container .registration-group,
-.registration-form__container label
- {
-    margin: .25rem 0;
 }
 
 .registration-form__container hr {
@@ -63,14 +56,4 @@
     font-size: .9rem;
     font-weight: 700;
     text-transform: uppercase;
-}
-
-@media screen and (min-width: 640px) {
-    .registration-form__container .registration-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 2rem;
-        margin-bottom: 1rem;
-    }
-    
 }
