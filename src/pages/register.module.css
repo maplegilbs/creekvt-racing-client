@@ -10,9 +10,26 @@
     padding: 2rem;
 }
 
+.header-info{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.header-info p {
+    margin: 0;
+}
+
 .required-notice {
     font-size: .8rem;
     width: 100%;
+    margin: 0;
+}
+
+.race-details {
+    text-transform: uppercase;
+    font-size: 1rem;
     margin: 0;
 }
 

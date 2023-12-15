@@ -1,0 +1,41 @@
+.loader {
+    width: 100%;
+    height: 350px;
+    padding: 5%;
+    margin: 0 auto;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.loading_text {
+    letter-spacing: 4px;
+    padding: 10px;
+    font-size: 1.4rem;
+    font-weight: 600;
+    z-index: 100;
+    text-align: center;
+}
+
+.loading_spinner {
+    height: 80px;
+    width: 80px;
+    border: 7px solid #222233;
+    border-top: 7px solid #ffffff;
+    border-bottom: 7px solid #ffffff;
+    border-radius: 100%;
+    animation: loaderspin 3s linear infinite;
+}
+
+@keyframes loaderspin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+

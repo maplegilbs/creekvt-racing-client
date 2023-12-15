@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 //Styles
 import styles from "./registeredRacers.module.css"
 
-export default function RegisteredRacers({ raceData, racers }) {
+export default function RegisteredRacers({ racers }) {
 
     return (
         <div className={`${styles["racers-grid"]}`}>
@@ -19,10 +19,10 @@ export default function RegisteredRacers({ raceData, racers }) {
                             <p className={`${styles["racer-detail"]} ${styles["first-column"]}`}>{i + 1}</p>
                             <p className={`${styles["racer-detail"]}`}>
                                 {racer.racers.map((racerName, i) => {
-                                    let racerSpan = i < racer.racers.length -1 ? 
-                                    <span key={i} className={`${styles["racer-name__span"]}`}>{`${racerName}`}</span>
-                                    :
-                                    <span key={i} className={`${styles["racer-name__span"]}`}>{racerName}</span>
+                                    let racerSpan = i < racer.racers.length - 1 ?
+                                        <span key={i} className={`${styles["racer-name__span"]}`}>{`${racerName}`}</span>
+                                        :
+                                        <span key={i} className={`${styles["racer-name__span"]}`}>{racerName}</span>
                                     return racerSpan
                                 })}
                             </p>

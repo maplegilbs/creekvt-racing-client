@@ -1,3 +1,5 @@
+//Compontents
+import Loader from "./loader";
 //Icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
@@ -10,12 +12,10 @@ import styles from "./checkout.module.css"
 import { useNavigate } from "react-router";
 const PayPalButton = window.paypal.Buttons.driver("react", { React, ReactDOM });
 
-function RegistrationNotice({ raceName}) {
+function RegistrationNotice({ raceName }) {
     return (
         <div className={`${styles["registration-notice"]}`}>
-            <p>Thanks for registering! SYOTR!</p>
-            {/* <Loader /> */}
-            <p>Redirecting to {raceName} page</p>
+            <Loader loader_text={"Saving Registration"}/>
         </div>
     )
 }
@@ -68,7 +68,6 @@ function Subtotal({ registrationData, raceInfo, setCheckoutStatus }) {
             </div>
         </div>
     )
-
 }
 
 export default function Checkout({ registrationData, raceName, raceInfo, setCheckoutStatus }) {
@@ -83,6 +82,7 @@ export default function Checkout({ registrationData, raceName, raceInfo, setChec
     /*----Paypal-----*/
     async function createOrder(data) {
         // Order is created on the server and the order id is returned
+        //Nothing added to DB
         let createdOrder = await fetch("http://localhost:3000/register/orders/create", {
             method: "POST",
             headers: {
@@ -117,7 +117,7 @@ export default function Checkout({ registrationData, raceName, raceInfo, setChec
             if (captureResponse.status === 201) {
                 setIsRegComplete(true)
                 console.log(captureData)
-                // setTimeout(() => navigate(`/races/${raceName}#athletes-section`), 3000)
+                setTimeout(() => setCheckoutStatus('complete'), 3000)
             }
 
         } catch (error) {
@@ -126,8 +126,8 @@ export default function Checkout({ registrationData, raceName, raceInfo, setChec
     };
 
     return (
-        <>{isRegComplete &&
-            <RegistrationNotice raceName={raceName}/>
+        <>{!isRegComplete &&
+            <RegistrationNotice raceName={raceName} />
         }
             <Subtotal registrationData={registrationData} raceInfo={raceInfo} setCheckoutStatus={setCheckoutStatus} />
             <PayPalButton

@@ -1,6 +1,7 @@
 //Components
 import RacerRow from "../components/registerRacerRow";
 import Checkout from "../components/checkout";
+import RegistrationReceipt from "../components/registrationReceipt";
 //Hooks
 import { useLoaderData, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -48,13 +49,17 @@ const canAddPartners = {
     "testrace": true
 }
 
+//!update dynamically, or be sure to populate based on provided data from race organizers
+const craftWithMultipleRacers = ["Canoe Tandem", "Kayak Tandem", "Raft"]
+
 export default function Register() {
     const { raceInfo, currentRaceYear } = useLoaderData();
-    const [registrationFormData, setRegistrationFormData] = useState({});
-    // const [registrationFormData, setRegistrationFormData] = useState(sampleRegistration);
+    // const [registrationFormData, setRegistrationFormData] = useState({});
+    const [registrationFormData, setRegistrationFormData] = useState(sampleRegistration);
     const { raceName } = useParams()
-    const [checkoutStatus, setCheckoutStatus] = useState(null)
-    // const [checkoutStatus, setCheckoutStatus] = useState('pending')
+    // const [checkoutStatus, setCheckoutStatus] = useState(null)
+    const [checkoutStatus, setCheckoutStatus] = useState('pending')
+    // const [checkoutStatus, setCheckoutStatus] = useState('complete')
 
     let racerCategoryOptions =
         raceInfo.categoryOptions ?
@@ -65,23 +70,23 @@ export default function Register() {
 
     console.log(raceInfo, registrationFormData)
 
-    useEffect(() => {
-        setRegistrationFormData(
-            {
-                year: currentRaceYear,
-                raceName: raceInfo.name,
-                racers: [
-                    {
-                        firstName: null,
-                        lastName: null,
-                        email: null,
-                        acaNumber: null,
-                        birthdate: null,
-                        gender: null
-                    }
-                ]
-            })
-    }, [])
+    // useEffect(() => {
+    //     setRegistrationFormData(
+    //         {
+    //             year: currentRaceYear,
+    //             raceName: raceInfo.name,
+    //             racers: [
+    //                 {
+    //                     firstName: null,
+    //                     lastName: null,
+    //                     email: null,
+    //                     acaNumber: null,
+    //                     birthdate: null,
+    //                     gender: null
+    //                 }
+    //             ]
+    //         })
+    // }, [])
 
 
 
@@ -127,9 +132,17 @@ export default function Register() {
             {checkoutStatus === null &&
                 <div className={`${styles["registration-form__container"]}`}>
                     <h4 className={`section-heading`}>Register for the {`${currentRaceYear} ${raceInfo.name}`}</h4>
-                    {canAddPartners[raceName] &&
-                        <p>Register once per craft.  Be sure to include all partners in craft below.</p>
-                    }
+                    <br />
+                    <div className={`${styles["header-info"]}`}>
+                        <p className={`${styles["race-details"]}`}><strong>Race Date:</strong></p><p>{`${formatDateTime(new Date(raceInfo.date)).fullDate}`}</p>
+                    </div>
+                    <div className={`${styles["header-info"]}`}>
+                        <p className={`${styles["race-details"]}`}><strong>Fee:</strong> </p><p>{`$${raceInfo.fee} per racer`}</p>
+                    </div>
+                    <div className={`${styles["header-info"]}`}>
+                        <p className={`${styles["race-details"]}`}><strong>ACA Member Dicount:</strong> </p><p>{`$${raceInfo.acaDiscount}`}</p>
+                    </div>
+                    <br />
                     <p className={`${styles["required-notice"]}`}>Required fields are denoted with an astrisk *</p>
                     <form onSubmit={handleSubmit}>
                         {racerCategoryOptions &&
@@ -143,6 +156,9 @@ export default function Register() {
                                 </div>
                             </div>
                         }
+                        {(canAddPartners[raceName] && craftWithMultipleRacers.includes(registrationFormData.category)) &&
+                            <p>Register once per boat.  Be sure to include all racing partners who will be in the boat below.</p>
+                        }
                         <hr />
                         {(registrationFormData.racers && registrationFormData.racers.length > 0) &&
                             registrationFormData.racers.map((racer, racerIndex) => {
@@ -152,7 +168,7 @@ export default function Register() {
                                 )
                             })
                         }
-                        {canAddPartners[raceName] &&
+                        {(canAddPartners[raceName] && craftWithMultipleRacers.includes(registrationFormData.category)) &&
                             <button className={`${styles["add-partner__button"]}`} type="button" onClick={addPartner}><FontAwesomeIcon icon={faCirclePlus} />&nbsp;Add Partner</button>
                         }
                         <button className={`button button--medium`} type="submit">Continue to Payment</button>
@@ -161,6 +177,9 @@ export default function Register() {
             }
             {checkoutStatus === 'pending' &&
                 <Checkout registrationData={registrationFormData} raceName={raceName} raceInfo={raceInfo} setCheckoutStatus={setCheckoutStatus} />
+            }
+            {checkoutStatus === 'complete' &&
+                <RegistrationReceipt registrationData={registrationFormData} raceInfo={raceInfo} raceName={raceName} />
             }
         </>
     )
