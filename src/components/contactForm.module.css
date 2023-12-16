@@ -1,0 +1,8 @@
+.form-container button {
+    margin-left: 0;
+    margin-top: 2rem;
+}
+
+.form-container textarea {
+    border: 1.6px solid black;
+}

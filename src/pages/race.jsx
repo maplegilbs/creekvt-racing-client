@@ -11,6 +11,7 @@ import { formatDateTime, convertTime, convertTimeToCompare } from "../utils/form
 //Styles
 import styles from "./race.module.css"
 import { useState } from "react";
+import ContactForm from "../components/contactForm";
 
 export async function loader({ params }) {
     // Get data via api call to populate page here
@@ -145,7 +146,7 @@ export default function Race() {
                             <a href="#directions-section" className={`link-std link-bold`}>Directions</a>
                             <a href="#course-section" className={`link-std link-bold`}>Course</a>
                             <a href="#results-section" className={`link-std link-bold`}>Results</a>
-                            <a href="#faqcontact-section" className={`link-std link-bold`}>FAQ</a>
+                            <a href="#faq-section" className={`link-std link-bold`}>FAQ</a>
                         </nav>
                     </div>
                 </section>
@@ -192,10 +193,15 @@ export default function Race() {
                     <Results />
 
                 </section>
-                <section className={`section-container`} id={`faqcontact-section`}>
-                    <h2 className={`section-heading`}>FAQ / Contact</h2>
+                <section className={`section-container`} id={`faq-section`}>
+                    <h2 className={`section-heading`}>FAQ</h2>
                     <hr />
                     <FAQ />
+                </section>
+                <section className={`section-container`} id={`contact-section`}>
+                    <h2 className={`section-heading`}>Contact</h2>
+                    <hr />
+                    <ContactForm contactEmail={raceData.contactEmail} raceName={raceData.name}/>
                 </section>
             </main>
         </>

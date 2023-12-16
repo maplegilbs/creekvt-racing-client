@@ -1,5 +1,8 @@
+//Hooks
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+//Styles
+import styles from "./faq.module.css"
 
 
 export default function FAQ() {
@@ -25,15 +28,14 @@ export default function FAQ() {
             {faqData &&
                 <>
                     {faqData.map(item => {
-                        return (<>
-                            <p><strong>{item.question}</strong></p>
-                            <p>{item.answer}</p>
-                        </>)
+                        return (<details className={`${styles["faq-details"]}`}>
+                            <summary><strong>{item.question}</strong></summary>
+                            {item.answer}
+                        </details>)
                     })
                     }
                 </>
             }
-            <p>More questions? Get in touch with us here:</p>
         </>
     )
 }

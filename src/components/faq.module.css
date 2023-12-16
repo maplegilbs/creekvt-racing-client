@@ -1,0 +1,19 @@
+.faq-details {
+    margin: .7rem auto;
+    font-size: .9rem;
+}
+
+.faq-details summary {
+    margin: .25rem auto;
+}
+
+.faq-details summary::marker {
+    color: rgb(83 119 140);
+}
+
+@media screen and (min-width: 640px) {
+    .faq-details {
+        margin: .7rem auto;
+        font-size: initial;
+    }
+}
