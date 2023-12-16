@@ -140,9 +140,11 @@ export default function Register() {
                     <div className={`${styles["header-info"]}`}>
                         <p className={`${styles["race-details"]}`}><strong>Fee:</strong> </p><p>{`$${raceInfo.fee} per racer`}</p>
                     </div>
+                    {raceInfo.acaDiscount > 0 &&
                     <div className={`${styles["header-info"]}`}>
                         <p className={`${styles["race-details"]}`}><strong>ACA Member Dicount:</strong> </p><p>{`$${raceInfo.acaDiscount}`}</p>
                     </div>
+                    }
                     <br />
                     <p className={`${styles["required-notice"]}`}>Required fields are denoted with an astrisk *</p>
                     <form onSubmit={handleSubmit}>

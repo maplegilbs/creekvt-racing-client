@@ -173,7 +173,7 @@ export default function Race() {
                         <div className={`${styles["location-section"]}`}>
                             {locationContainers}
                         </div>
-                        {/* < Map mapMarkerData={mapMarkerData} selectedMapLocation={selectedMapLocation} /> */}
+                        < Map mapMarkerData={mapMarkerData} selectedMapLocation={selectedMapLocation} />
                     </div>
                 </section >
                 <section className={`section-container`} id={`course-section`}>
