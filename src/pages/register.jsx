@@ -140,7 +140,7 @@ export default function Register() {
                     </div>
                     {raceInfo.acaDiscount > 0 &&
                     <div className={`${styles["header-info"]}`}>
-                        <p className={`${styles["race-details"]}`}><strong>ACA Member Dicount:</strong> </p><p>{`$${raceInfo.acaDiscount}`}</p>
+                        <p className={`${styles["race-details"]}`}><strong>ACA Member Discount:</strong> </p><p>{`$${raceInfo.acaDiscount}`}</p>
                     </div>
                     }
                     <br />
