@@ -46,6 +46,31 @@ div.card {
     padding: .25rem;
 }
 
+.card-body-details{
+    display: flex;
+    flex-direction: column;
+    margin: .5rem auto 1rem auto;
+}
+
+.details-group{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.details-group p{
+    font-size: .8rem;
+    font-weight: 500;
+    margin: 0;
+    padding: 0;
+    width: 50%;
+    line-height: 1.2rem;
+}
+
+.details-group p:nth-child(1) {
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
 .card img {
     width: 100%;
     border-radius: 0px
@@ -107,6 +132,12 @@ div.card {
 
     .card-body{
         padding: 2%;
+    }
+
+    .card-body-details{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto;
     }
 
     .card-text {

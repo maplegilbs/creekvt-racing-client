@@ -109,7 +109,7 @@ export default function Race() {
     return (
         <>
             <main className={`${styles["racepage-container"]}`}>
-                <section className={`section-container`} style={{backgroundImage: "url('" + raceData.racePageImageURL + "')"}}>
+                <section className={`section-container`} style={{ backgroundImage: "url('" + raceData.racePageImageURL + "')" }}>
                     {
                         (raceData.notification && raceData.notification !== 'null') &&
                         <div className={`${styles["notification-banner"]}`}>{
@@ -164,6 +164,11 @@ export default function Race() {
                 <section className={`section-container`} id={`athletes-section`}>
                     <h2 className={`section-heading`}>Registered Athletes</h2>
                     <hr />
+                    {!(raceData.isRegOpen === 0 || new Date(raceData.date) < new Date()) &&
+                        <p>Looking to join the fun?&nbsp;
+                            <a href={`./${raceName}/register`} className={`link-std link-bold link-small`}>Register Here</a>
+                        </p>
+                    }
                     <RegisteredRacers raceData={raceData} racers={racers} />
                 </section>
                 <section className={`section-container`} id={`directions-section`}>

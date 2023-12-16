@@ -9,19 +9,17 @@ import ReactDOM from "react-dom"
 import { formatDateTime } from "../utils/formatDateTime";
 //Styles
 import styles from "./checkout.module.css"
-import { useNavigate } from "react-router";
 const PayPalButton = window.paypal.Buttons.driver("react", { React, ReactDOM });
 
-function RegistrationNotice({ raceName }) {
+function RegistrationNotice() {
     return (
         <div className={`${styles["registration-notice"]}`}>
-            <Loader loader_text={"Saving Registration"}/>
+            <Loader loader_text={"Saving Registration"} />
         </div>
     )
 }
 
 function Subtotal({ registrationData, raceInfo, setCheckoutStatus }) {
-
     let acaDiscount = Number(raceInfo.acaDiscount);
     let raceFee = Number(raceInfo.fee);
     let subTotal = 0;
@@ -51,7 +49,6 @@ function Subtotal({ registrationData, raceInfo, setCheckoutStatus }) {
                 const racerDiscount = racer.acaNumber ? (acaDiscount * -1) : 0;
                 const racerTotal = raceFee + racerDiscount;
                 subTotal += racerTotal;
-
                 return (
                     <div className={`${styles["receipt-row"]}`}>
                         <p>{`${racer.firstName + " " + racer.lastName}`}{racer.acaNumber && <><br /><span>ACA  #{racer.acaNumber}</span></>}</p>
@@ -70,9 +67,23 @@ function Subtotal({ registrationData, raceInfo, setCheckoutStatus }) {
     )
 }
 
+
+function CheckoutErrorNotice() {
+    return (
+        <>
+            <h1>We're sorry, there was an error processing the order.</h1>
+            <p>Please contact the race organizers to resolve the issue and get registered.</p>
+        </>
+    )
+}
+
+
+
+
+
 export default function Checkout({ registrationData, raceName, raceInfo, setCheckoutStatus, setReceiptInfo }) {
-    const navigate = useNavigate()
     const [isRegComplete, setIsRegComplete] = useState(false)
+    const [isCheckoutError, setisCheckoutError] = useState(false)
 
     useEffect(() => {
         window.scroll(0, 0)
@@ -80,26 +91,34 @@ export default function Checkout({ registrationData, raceName, raceInfo, setChec
     console.log(registrationData)
 
     /*----Paypal-----*/
+    //When payment button is clicked an order is created on the server and the order id is returned
+    //Nothing added to DB
     async function createOrder(data) {
-        // Order is created on the server and the order id is returned
-        //Nothing added to DB
-        let createdOrder = await fetch("http://localhost:3000/register/orders/create", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            // use the "body" param to optionally pass additional order information
-            // like product skus and quantities
-            body: JSON.stringify(registrationData),
-        })
-        let orderData = await createdOrder.json()
-        console.log(orderData)
-        return orderData.id
+        try {
+            let createdOrder = await fetch("http://localhost:3000/register/orders/create", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(registrationData),
+            })
+            console.log(createdOrder)
+            if (createdOrder.status >= 200 && createdOrder.status < 300) {
+                let orderData = await createdOrder.json()
+                return orderData.id
+            }
+            else {
+                setisCheckoutError(true)
+            }
+        } catch (error) {
+            setisCheckoutError(true)
+        }
     };
 
-
+    //When user completes paypal checkout (on popup or via CC submission)
+    //Order is captured on the server and the response is returned to the browser
+    //A new racer entity will be added to the DB along with associated racers
     async function onApprove(data) {
-        // Order is captured on the server and the response is returned to the browser
         try {
             let captureResponse = await fetch(`http://localhost:3000/register/orders/capture/${data.orderID}`, {
                 method: "POST",
@@ -111,35 +130,43 @@ export default function Checkout({ registrationData, raceName, raceInfo, setChec
                     registrationData
                 })
             })
-            let captureData = await captureResponse.json();
-            if (captureResponse.status === 201) {
+            //Payment is successfully captured, end of checkout process.
+            if (captureResponse.status >= 200 && captureResponse.status < 300) {
+                let captureData = await captureResponse.json();
                 setIsRegComplete(true)
                 console.log(captureData)
                 setReceiptInfo(captureData)
                 setTimeout(() => setCheckoutStatus('complete'), 3000)
             }
-
+            else {
+                setisCheckoutError(true)
+            }
         } catch (error) {
-
+            setisCheckoutError(true)
         }
     };
 
     return (
-        <>{isRegComplete &&
-            <RegistrationNotice raceName={raceName} />
-        }
-            <Subtotal registrationData={registrationData} raceInfo={raceInfo} setCheckoutStatus={setCheckoutStatus} />
-            <PayPalButton
-                createOrder={(data) => createOrder(data)}
-                onApprove={(data) => onApprove(data)}
-                style={{
-                    layout: 'vertical',
-                    color: 'black',
-                    shape: 'rect',
-                    label: 'paypal',
+        !isCheckoutError ?
+            <>
+                {
+                    isRegComplete &&
+                    <RegistrationNotice raceName={raceName} />
                 }
-                }
-            />
-        </>
+                < Subtotal registrationData={registrationData} raceInfo={raceInfo} setCheckoutStatus={setCheckoutStatus} />
+                <PayPalButton
+                    createOrder={(data) => createOrder(data)}
+                    onApprove={(data) => onApprove(data)}
+                    style={{
+                        layout: 'vertical',
+                        color: 'black',
+                        shape: 'rect',
+                        label: 'paypal',
+                    }
+                    }
+                />
+            </>
+            :
+            <CheckoutErrorNotice />
     )
 }

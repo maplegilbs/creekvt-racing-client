@@ -12,6 +12,7 @@ export async function loader() {
 
 export default function Races() {
     const racesData = useLoaderData();
+    console.log(racesData)
 
     const racesCards = racesData.map(raceData => {
         return (
@@ -19,13 +20,31 @@ export default function Races() {
                 <h5 className={`card-title ${styles["card-title"]}`}>{raceData.name}</h5>
                 <img src={raceData.primaryImageURL} className={`card-img`} alt="..." />
                 <div className={`card-body ${styles["card-body"]}`}>
+                    <div className={`${styles["card-body-details"]}`}>
+                        <div className={`${styles["details-group"]}`}>
+                            <p>Next Race:&nbsp;</p> <p>04/13/2024</p>
+                        </div>
+                        <div className={`${styles["details-group"]}`}>
+                            <p>Race Type:&nbsp;</p> <p>Downriver Creek Race</p>
+                        </div>
+                        <div className={`${styles["details-group"]}`}>
+                            <p>Difficulty:&nbsp;</p> <p>Class IV</p>
+                        </div>
+                        <div className={`${styles["details-group"]}`}>
+                            <p>Format:&nbsp;</p> <p>Individual Timed Heads</p>
+                        </div>
+                    </div>
                     <p className={`card-text ${styles["card-text"]}`}>
                         {raceData.shortDescription}
                     </p>
                     <div className={`${styles["button__container"]}`}>
-                        <a href={`./races/${raceData.name.split(' ').join('').toLowerCase()}/register`} className={`button button--large disabled`}>
-                            Register &nbsp;<img src="https://creekvt.com/races/RacerIcon.png" />
-                        </a>
+                        {(raceData.isRegOpen && (new Date(raceData.date) > new Date()))?
+                            <a href={`./races/${raceData.name.split(' ').join('').toLowerCase()}/register`} className={`button button--large`}>
+                                Register &nbsp;<img src="https://creekvt.com/races/RacerIcon.png" />
+                            </a>
+                            :
+                            <></>
+                        }
                         <a href={`/races/${raceData.name.split(' ').join('').toLowerCase()}`} className={`button button--large`}>Information</a>
                     </div>
                 </div>

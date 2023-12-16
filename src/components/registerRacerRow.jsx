@@ -51,23 +51,27 @@ export default function RacerRow({ raceInfo, registrationFormData, setRegistrati
             </div >
             <div className={`input-row ${styles["registration-row"]}`}>
                 <div className={`input-group ${styles["registration-group"]}`}>
-                <div><label htmlFor="firstName">First Name&nbsp;</label><span className="required__span">*</span></div>
+                    <div><label htmlFor="firstName">First Name&nbsp;</label><span className="required__span">*</span></div>
                     <input onChange={handleChange} required type="text" name="firstName" id="firstName" value={registrationFormData.racers[racerIndex].firstName} />
                 </div>
                 <div className={`input-group ${styles["registration-group"]}`}>
-                <div><label htmlFor="lastName">Last Name&nbsp;</label><span className="required__span">*</span></div>
+                    <div><label htmlFor="lastName">Last Name&nbsp;</label><span className="required__span">*</span></div>
                     <input onChange={handleChange} required type="text" name="lastName" id="lastName" value={registrationFormData.racers[racerIndex].lastName} />
                 </div>
             </div>
             <div className={`input-row ${styles["registration-row"]}`}>
                 <div className={`input-group ${styles["registration-group"]}`}>
                     <div><label htmlFor="email">Email&nbsp;</label>{racerIndex === 0 && <span className="required__span">*</span>}</div>
-                    <input onChange={handleChange} required ={racerIndex === 0? true : false} type="email" name="email" id="email" value={registrationFormData.racers[racerIndex].email} />
+                    <input onChange={handleChange} required={racerIndex === 0 ? true : false} type="email" name="email" id="email" value={registrationFormData.racers[racerIndex].email} />
                 </div>
             </div>
             <div className={`input-row ${styles["registration-row"]}`}>
                 <div className={`input-group ${styles["registration-group"]}`}>
-                    <div><label htmlFor="acaNumber">ACA Number</label><span className={`${styles["label-subtext__span"]}`}>&nbsp;&nbsp;memebers receive a ${raceInfo.acaDiscount} discount.</span></div>
+                    <div><label htmlFor="acaNumber">ACA Number</label>
+                        {raceInfo.acaDiscount > 0 &&
+                            <span className={`${styles["label-subtext__span"]}`}>&nbsp;&nbsp;memebers receive a ${raceInfo.acaDiscount} discount.</span>
+                        }
+                    </div>
                     <input onChange={handleChange} type="text" name="acaNumber" id="acaNumber" value={registrationFormData.racers[racerIndex].acaNumber} />
                 </div>
             </div>

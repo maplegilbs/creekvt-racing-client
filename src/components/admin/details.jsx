@@ -45,7 +45,9 @@ export default function Details() {
                     longDescription: raceJSON[0].longDescription !== "null"? raceJSON[0].longDescription : null,
                     notification: raceJSON[0].notification !== "null"? raceJSON[0].notification : null,
                     isRegOpen: raceJSON[0].isRegOpen,
-                    categories: raceJSON[0].categoryOptions!== "null"? raceJSON[0].categoryOptions : null
+                    categories: raceJSON[0].categoryOptions!== "null"? raceJSON[0].categoryOptions : null,
+                    fee: raceJSON[0].fee !== "null"? raceJSON[0].fee : null,
+                    acaDiscount: raceJSON[0].acaDiscount !=="null"? raceJSON[0].acaDiscount : null
                 })
             }
             catch (err) {
@@ -55,7 +57,9 @@ export default function Details() {
                     longDescription: '',
                     notification: '',
                     isRegOpen: false,
-                    categories: null
+                    categories: null,
+                    fee: null,
+                    acaDiscount: null
                 })
             }
         }
@@ -79,7 +83,9 @@ export default function Details() {
                 "longDescription": `${formData.longDescription}`,
                 "notification": `${formData.notification}`,
                 "isRegOpen": `${formData.isRegOpen}`,
-                "categoryOptions": `${formData.categories}`
+                "categoryOptions": `${formData.categories}`,
+                "fee": formData.fee,
+                "acaDiscount": formData.acaDiscount
             })
         })
         if (updatedRace.status == 200) {
@@ -137,6 +143,17 @@ export default function Details() {
                             <label htmlFor="shortDescription">Short Description (max 300 characters)</label>
                             <textarea maxLength={300} rows="4" name="shortDescription" id="shortDescription" onChange={handleChange} value={formData.shortDescription ? formData.shortDescription : ''} />
                         </div>
+                    </div>
+                    <div className="input-row">
+                        <div className="input-group">
+                            <label htmlFor="fee">Race Entrance Fee</label>
+                            <input type="number" name="fee" id="fee" onChange={handleChange} value={formData.fee ? formData.fee : ''} />
+                        </div>
+                        <div className="input-group">
+                            <label htmlFor="acaDiscount">ACA Discount</label>
+                            <input type="number" name="acaDiscount" id="acaDiscount" onChange={handleChange} value={formData.acaDiscount ? formData.acaDiscount : ''} />
+                        </div>
+                        
                     </div>
                     <div className="input-row">
                         <div className="input-group">
