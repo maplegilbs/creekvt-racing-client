@@ -53,7 +53,7 @@ export default function RegistrationReceipt({ registrationData, raceInfo, raceNa
             </div>
             <br /><br />
             <h5 style={{textAlign: "left;"}}>Here is your registration receipt.</h5>
-            <p style={{fontSize: ".8rem;", margin: "0"}}>Transaction ID: {receiptInfo.orderData.id}</p>
+            <p style={{fontSize: ".8rem", margin: "0"}}>Transaction ID: {receiptInfo.orderData.id}</p>
             <p style={{fontSize: ".8rem", margin: "0"}}>Payment Date: {formatDateTime(new Date(receiptInfo.timeStamp)).fullDate}</p>
             <br />
             <div className={`${styles["receipt-row"]} ${styles["receipt-row--header"]}`}>
@@ -82,7 +82,7 @@ export default function RegistrationReceipt({ registrationData, raceInfo, raceNa
                 <p>${subTotal.toFixed(2)}</p>
             </div>
             <br />
-            <p>Be sure to review the <Link to={`/races/${raceName}`}>race page</Link> for schedule, directions and other details.  Or contact the organizers with any questions.</p>
+            <p>Be sure to review the <a href={`/races/${raceName}`} className={`link-std`}>race page</a> for schedule, directions and other details.  Or contact the organizers with any questions.</p>
         </div>
     )
 

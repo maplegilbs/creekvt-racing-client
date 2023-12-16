@@ -69,8 +69,6 @@ export default function Register() {
             null;
 
 
-    console.log(raceInfo, registrationFormData)
-
     useEffect(() => {
         setRegistrationFormData(
             {
