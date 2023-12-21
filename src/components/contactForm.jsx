@@ -1,5 +1,6 @@
 //Components
 import Loader from "./loader"
+import ReCAPTCHA from "react-google-recaptcha"
 //Styles
 import { useState } from "react"
 import styles from "./contactForm.module.css"
@@ -46,7 +47,7 @@ export default function ContactForm({ contactEmail, raceName, message }) {
     if (submissionStatus === 'submitted') {
         return <ContactSubmittedMessage messageInfo={formData} />
     }
-    else if (submissionStatus === 'pendgiing'){
+    else if (submissionStatus === 'pending'){
         return <Loader />
     }
     else {
@@ -72,6 +73,7 @@ export default function ContactForm({ contactEmail, raceName, message }) {
                             <div><label htmlFor="message">Message&nbsp;</label><span className="required__span">*</span></div>
                             <textarea rows="8" name="message" id="message" required onChange={(e) => handleChange(e)} value={formData.message} />
                         </div>
+                        <ReCAPTCHA sitekey="6LdWQP8UAAAAACrKR5wiGxHVjKcY47IGw07ppbhA" />
                         <button className={`button button--medium`}>Send Message</button>
                     </form>
                 </div>
