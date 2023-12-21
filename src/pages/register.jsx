@@ -2,8 +2,9 @@
 import RacerRow from "../components/registerRacerRow";
 import Checkout from "../components/checkout";
 import RegistrationReceipt from "../components/registrationReceipt";
+import Loader from "../components/loader";
 //Hooks
-import { useLoaderData, useParams } from "react-router-dom";
+import { useLoaderData, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 //Icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -57,10 +58,11 @@ export default function Register() {
     const [registrationFormData, setRegistrationFormData] = useState({});
     // const [registrationFormData, setRegistrationFormData] = useState(sampleRegistration); // testing purposes
     const { raceName } = useParams()
-    const [checkoutStatus, setCheckoutStatus] = useState(null)
+    const [checkoutStatus, setCheckoutStatus] = useState(raceInfo.isRegOpen && new Date(raceInfo.date) > new Date() ? null : 'closed')
     // const [checkoutStatus, setCheckoutStatus] = useState('pending') //testing purposes
     // const [checkoutStatus, setCheckoutStatus] = useState('complete') //testing purposes
     const [receiptInfo, setReceiptInfo] = useState(null)
+    const navigate = useNavigate()
 
     let racerCategoryOptions =
         raceInfo.categoryOptions ?
@@ -68,6 +70,9 @@ export default function Register() {
             :
             null;
 
+    useEffect(() => {
+        if (checkoutStatus === 'closed') { setTimeout(()=>navigate(`/races/${raceName}`), 4000) }
+    }, [checkoutStatus])
 
     useEffect(() => {
         setRegistrationFormData(
@@ -90,21 +95,8 @@ export default function Register() {
 
 
     async function handleSubmit(e) {
-        //submit the data
-        //create a racer entity
-        //take the created racer entity id and apply it to the registered racers
-        //create the registered racers in the database
         e.preventDefault();
         setCheckoutStatus('pending')
-        // let registerResponse = await fetch(`http://localhost:3000/racers/${raceName}`, {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': "application/json"
-        //     },
-        //     body: JSON.stringify(registrationFormData)
-        // })
-        // let registerResponseJSON = await registerResponse.json();
-        // console.log(registerResponseJSON)
     }
 
     function addPartner() {
@@ -128,6 +120,11 @@ export default function Register() {
 
     return (
         <>
+            {checkoutStatus === 'closed' &&
+                <Loader
+                    loader_text={`Registration is not currently open for the ${raceInfo.name}.`}
+                    bottom_text={`Redirecting to ${raceInfo.name} page.`} />
+            }
             {checkoutStatus === null &&
                 <div className={`${styles["registration-form__container"]}`}>
                     <h4 className={`section-heading`}>Register for the {`${currentRaceYear} ${raceInfo.name}`}</h4>
@@ -139,9 +136,9 @@ export default function Register() {
                         <p className={`${styles["race-details"]}`}><strong>Fee:</strong> </p><p>{`$${raceInfo.fee} per racer`}</p>
                     </div>
                     {raceInfo.acaDiscount > 0 &&
-                    <div className={`${styles["header-info"]}`}>
-                        <p className={`${styles["race-details"]}`}><strong>ACA Member Discount:</strong> </p><p>{`$${raceInfo.acaDiscount}`}</p>
-                    </div>
+                        <div className={`${styles["header-info"]}`}>
+                            <p className={`${styles["race-details"]}`}><strong>ACA Member Discount:</strong> </p><p>{`$${raceInfo.acaDiscount}`}</p>
+                        </div>
                     }
                     <br />
                     <p className={`${styles["required-notice"]}`}>Required fields are denoted with an astrisk *</p>
@@ -177,10 +174,10 @@ export default function Register() {
                 </div>
             }
             {checkoutStatus === 'pending' &&
-                <Checkout registrationData={registrationFormData} raceName={raceName} raceInfo={raceInfo} setCheckoutStatus={setCheckoutStatus} setReceiptInfo={setReceiptInfo}/>
+                <Checkout registrationData={registrationFormData} raceName={raceName} raceInfo={raceInfo} setCheckoutStatus={setCheckoutStatus} setReceiptInfo={setReceiptInfo} />
             }
             {checkoutStatus === 'complete' &&
-                <RegistrationReceipt registrationData={registrationFormData} raceInfo={raceInfo} raceName={raceName} receiptInfo={receiptInfo}/>
+                <RegistrationReceipt registrationData={registrationFormData} raceInfo={raceInfo} raceName={raceName} receiptInfo={receiptInfo} />
             }
         </>
     )
