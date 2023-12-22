@@ -102,7 +102,6 @@ export default function Checkout({ registrationData, raceName, raceInfo, setChec
                 },
                 body: JSON.stringify(registrationData),
             })
-            console.log(createdOrder)
             if (createdOrder.status >= 200 && createdOrder.status < 300) {
                 let orderData = await createdOrder.json()
                 return orderData.id

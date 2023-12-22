@@ -41,13 +41,13 @@ export default function Details() {
                 let raceJSON = await raceData.json();
                 setFormData({
                     date: formatDateTime(new Date(raceJSON[0].date)).htmlDateTime,
-                    shortDescription: raceJSON[0].shortDescription !== "null"? raceJSON[0].shortDescription : null,
-                    longDescription: raceJSON[0].longDescription !== "null"? raceJSON[0].longDescription : null,
-                    notification: raceJSON[0].notification !== "null"? raceJSON[0].notification : null,
+                    shortDescription: raceJSON[0].shortDescription !== "null" ? raceJSON[0].shortDescription : null,
+                    longDescription: raceJSON[0].longDescription !== "null" ? raceJSON[0].longDescription : null,
+                    notification: raceJSON[0].notification !== "null" ? raceJSON[0].notification : null,
                     isRegOpen: raceJSON[0].isRegOpen,
-                    categories: raceJSON[0].categoryOptions!== "null"? raceJSON[0].categoryOptions : null,
-                    fee: raceJSON[0].fee !== "null"? raceJSON[0].fee : null,
-                    acaDiscount: raceJSON[0].acaDiscount !=="null"? raceJSON[0].acaDiscount : null
+                    categories: raceJSON[0].categoryOptions !== "null" ? raceJSON[0].categoryOptions : null,
+                    fee: raceJSON[0].fee !== "null" ? raceJSON[0].fee : null,
+                    acaDiscount: raceJSON[0].acaDiscount !== "null" ? raceJSON[0].acaDiscount : null
                 })
             }
             catch (err) {
@@ -59,7 +59,10 @@ export default function Details() {
                     isRegOpen: false,
                     categories: null,
                     fee: null,
-                    acaDiscount: null
+                    acaDiscount: null,
+                    type: null,
+                    format: null,
+                    difficulty: null
                 })
             }
         }
@@ -85,7 +88,10 @@ export default function Details() {
                 "isRegOpen": `${formData.isRegOpen}`,
                 "categoryOptions": `${formData.categories}`,
                 "fee": formData.fee,
-                "acaDiscount": formData.acaDiscount
+                "acaDiscount": formData.acaDiscount,
+                "type": formData.type,
+                "format": formData.format,
+                "difficulty": formData.difficulty
             })
         })
         if (updatedRace.status == 200) {
@@ -140,6 +146,20 @@ export default function Details() {
                     </div>
                     <div className="input-row">
                         <div className="input-group">
+                            <label htmlFor="type">Race Type</label>
+                            <input type="text" name="type" id="type" onChange={handleChange} value={formData.type ? formData.type : ''} />
+                        </div>
+                        <div className="input-group">
+                            <label htmlFor="format">Race Format</label>
+                            <input type="text" name="format" id="format" onChange={handleChange} value={formData.format ? formData.format : ''} />
+                        </div>
+                        <div className="input-group">
+                            <label htmlFor="difficulty">Race Difficulty</label>
+                            <input type="text" name="difficulty" id="difficulty" onChange={handleChange} value={formData.difficulty ? formData.difficulty : ''} />
+                        </div>
+                    </div>
+                    <div className="input-row">
+                        <div className="input-group">
                             <label htmlFor="shortDescription">Short Description (max 300 characters)</label>
                             <textarea maxLength={300} rows="4" name="shortDescription" id="shortDescription" onChange={handleChange} value={formData.shortDescription ? formData.shortDescription : ''} />
                         </div>
@@ -153,7 +173,6 @@ export default function Details() {
                             <label htmlFor="acaDiscount">ACA Discount</label>
                             <input type="number" name="acaDiscount" id="acaDiscount" onChange={handleChange} value={formData.acaDiscount ? formData.acaDiscount : ''} />
                         </div>
-                        
                     </div>
                     <div className="input-row">
                         <div className="input-group">
