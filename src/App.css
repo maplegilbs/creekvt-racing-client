@@ -181,6 +181,7 @@ p {
     width: max-content;
     margin-bottom: .4rem;
 }
+
 .input-group {
     display: flex;
     justify-content: space-between;

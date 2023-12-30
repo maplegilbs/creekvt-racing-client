@@ -61,7 +61,7 @@ div.card {
     font-size: .8rem;
     font-weight: 500;
     margin: 0;
-    padding: 0;
+    padding: .25rem 0;
     width: 50%;
     line-height: 1.2rem;
 }
@@ -69,6 +69,7 @@ div.card {
 .details-group p:nth-child(1) {
     font-weight: 600;
     text-transform: uppercase;
+    text-decoration: underline;
 }
 
 .card img {

@@ -2,6 +2,7 @@
 import { useLoaderData } from "react-router-dom";
 //Styles
 import styles from "./races.module.css"
+import { formatDateTime } from "../utils/formatDateTime";
 
 export async function loader() {
     //get data on all races from api here
@@ -22,16 +23,16 @@ export default function Races() {
                 <div className={`card-body ${styles["card-body"]}`}>
                     <div className={`${styles["card-body-details"]}`}>
                         <div className={`${styles["details-group"]}`}>
-                            <p>Next Race:&nbsp;</p> <p>04/13/2024</p>
+                            <p>Next Race:</p> {new Date(raceData.date) > new Date() ? <p>{formatDateTime(new Date(raceData.date)).fullDate}</p> : <p>TBD</p>}
                         </div>
                         <div className={`${styles["details-group"]}`}>
-                            <p>Race Type:&nbsp;</p> <p>Downriver Creek Race</p>
+                            <p>Race Type:</p> <p>{raceData.type}</p>
                         </div>
                         <div className={`${styles["details-group"]}`}>
-                            <p>Difficulty:&nbsp;</p> <p>Class IV</p>
+                            <p>Difficulty:</p> <p>{raceData.difficulty}</p>
                         </div>
                         <div className={`${styles["details-group"]}`}>
-                            <p>Format:&nbsp;</p> <p>Individual Timed Heads</p>
+                            <p>Format:</p> <p>{raceData.format}</p>
                         </div>
                     </div>
                     <p className={`card-text ${styles["card-text"]}`}>
