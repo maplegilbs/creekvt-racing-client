@@ -2,7 +2,7 @@
 import Loader from "./loader"
 import ReCAPTCHA from "react-google-recaptcha"
 //Styles
-import { useState } from "react"
+import { useState, useRef } from "react"
 import styles from "./contactForm.module.css"
 
 function ContactSubmittedMessage({ messageInfo }) {
@@ -14,9 +14,19 @@ function ContactSubmittedMessage({ messageInfo }) {
     )
 }
 
+function ContactFailedMessage({ contactEmail }) {
+    return (
+        <>
+            <p>We apologize but the message failed to be submitted.</p>
+            <p>Please try and contact us directly at {contactEmail}.</p>
+        </>
+    )
+}
+
 export default function ContactForm({ contactEmail, raceName, message }) {
     const [formData, setFormData] = useState({ raceName: raceName ? raceName : null })
     const [submissionStatus, setSubmissionStatus] = useState(null)
+    const recaptcha = useRef();
 
     function handleChange(e) {
         setFormData(prev => {
@@ -31,23 +41,40 @@ export default function ContactForm({ contactEmail, raceName, message }) {
     async function handleSubmit(e) {
         e.preventDefault();
         setSubmissionStatus('pending')
-        console.log(formData)
-        let contactResponse = await fetch('http://localhost:3000/contact', {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(formData)
-        })
-        if (contactResponse.status >= 200 && contactResponse.status < 300) {
-            setSubmissionStatus('submitted')
+        console.log(recaptcha.current)
+        const recaptchaValue = recaptcha.current.getValue();
+        if (!recaptchaValue) {
+            alert("ReCaptcha not verified.");
+            setSubmissionStatus(null)
+        } else {
+            let submittedFormData = {
+                ...formData,
+                recaptchaValue: recaptchaValue
+            }
+            console.log(submittedFormData, recaptchaValue)
+            let contactResponse = await fetch('http://localhost:3000/contact', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(submittedFormData)
+            })
+            if (contactResponse.status >= 200 && contactResponse.status < 300) {
+                setSubmissionStatus('submitted')
+            }
+            else {
+                setSubmissionStatus('failed')
+            }
         }
     }
 
     if (submissionStatus === 'submitted') {
         return <ContactSubmittedMessage messageInfo={formData} />
     }
-    else if (submissionStatus === 'pending'){
+    else if (submissionStatus === 'failed') {
+        return <ContactFailedMessage contactEmail={contactEmail} />
+    }
+    else if (submissionStatus === 'pending') {
         return <Loader />
     }
     else {
@@ -73,7 +100,7 @@ export default function ContactForm({ contactEmail, raceName, message }) {
                             <div><label htmlFor="message">Message&nbsp;</label><span className="required__span">*</span></div>
                             <textarea rows="8" name="message" id="message" required onChange={(e) => handleChange(e)} value={formData.message} />
                         </div>
-                        <ReCAPTCHA sitekey="6LdWQP8UAAAAACrKR5wiGxHVjKcY47IGw07ppbhA" />
+                        <ReCAPTCHA sitekey="6LdWQP8UAAAAACrKR5wiGxHVjKcY47IGw07ppbhA" ref={recaptcha} />
                         <button className={`button button--medium`}>Send Message</button>
                     </form>
                 </div>

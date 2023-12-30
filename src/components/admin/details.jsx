@@ -47,7 +47,11 @@ export default function Details() {
                     isRegOpen: raceJSON[0].isRegOpen,
                     categories: raceJSON[0].categoryOptions !== "null" ? raceJSON[0].categoryOptions : null,
                     fee: raceJSON[0].fee !== "null" ? raceJSON[0].fee : null,
-                    acaDiscount: raceJSON[0].acaDiscount !== "null" ? raceJSON[0].acaDiscount : null
+                    acaDiscount: raceJSON[0].acaDiscount !== "null" ? raceJSON[0].acaDiscount : null,
+                    type: raceJSON[0].type !== "null" ? raceJSON[0].type : null,
+                    format: raceJSON[0].format !== "null" ? raceJSON[0].format : null,
+                    difficulty: raceJSON[0].difficulty !== "null" ? raceJSON[0].difficulty : null,
+                    contactEmail: raceJSON[0].contactEmail !== "null" ? raceJSON[0].contactEmail : null,
                 })
             }
             catch (err) {
@@ -62,7 +66,8 @@ export default function Details() {
                     acaDiscount: null,
                     type: null,
                     format: null,
-                    difficulty: null
+                    difficulty: null,
+                    contactEmail: null
                 })
             }
         }
@@ -91,7 +96,8 @@ export default function Details() {
                 "acaDiscount": formData.acaDiscount,
                 "type": formData.type,
                 "format": formData.format,
-                "difficulty": formData.difficulty
+                "difficulty": formData.difficulty,
+                "contactEmail": formData.contactEmail
             })
         })
         if (updatedRace.status == 200) {
@@ -196,6 +202,12 @@ export default function Details() {
                         <div className={`input-group ${styles["checkbox-group"]}`}>
                             <label htmlFor="isRegOpen">Is Registration Open?</label>
                             <input type="checkbox" name="isRegOpen" id="isRegOpen" onChange={handleChange} checked={formData.isRegOpen ? true : false} />
+                        </div>
+                    </div>
+                    <div className="input-row">
+                        <div className="input-group">
+                            <label htmlFor="contactEmail">Race Contact (email)</label>
+                            <input type="email" name="contactEmail" id="contactEmail" onChange={handleChange} value={formData.contactEmail ? formData.contactEmail : ''} />
                         </div>
                     </div>
                     <button type="submit">Save</button>

@@ -1,5 +1,6 @@
 //Compontents
 import Loader from "./loader";
+import ContactForm from "./contactForm";
 //Icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
@@ -68,12 +69,16 @@ function Subtotal({ registrationData, raceInfo, setCheckoutStatus }) {
 }
 
 
-function CheckoutErrorNotice() {
+function CheckoutErrorNotice({contactEmail, raceName, message}) {
     return (
-        <>
+        <div className={`${styles["error-notice"]}`}>
             <h1>We're sorry, there was an error processing the order.</h1>
             <p>Please contact the race organizers to resolve the issue and get registered.</p>
-        </>
+            <ContactForm 
+            contactEmail={contactEmail}
+            raceName={raceName}
+            message={message}/>
+        </div>
     )
 }
 
@@ -166,6 +171,6 @@ export default function Checkout({ registrationData, raceName, raceInfo, setChec
                 />
             </>
             :
-            <CheckoutErrorNotice />
+            <CheckoutErrorNotice contactEmail={raceInfo.contactEmail} raceName={raceName}/>
     )
 }
