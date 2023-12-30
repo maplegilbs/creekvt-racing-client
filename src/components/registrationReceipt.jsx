@@ -1,10 +1,10 @@
-//Components
-import { Link, useParams } from "react-router-dom";
+//Hooks
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 //Libraries
 import { formatDateTime } from "../utils/formatDateTime";
 //Styles
 import styles from "./checkout.module.css"
-import { useEffect, useState } from "react";
 
 export default function RegistrationReceipt({ registrationData, raceInfo, raceName, receiptInfo }) {
     const [racers, setRacers] = useState(null)

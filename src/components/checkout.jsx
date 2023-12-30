@@ -69,15 +69,24 @@ function Subtotal({ registrationData, raceInfo, setCheckoutStatus }) {
 }
 
 
-function CheckoutErrorNotice({contactEmail, raceName, message}) {
+function CheckoutErrorNotice({ contactEmail, raceName, message }) {
+    const [wasContactFormSubmitted, setWasContactFormSubmitted] = useState(false)
     return (
         <div className={`${styles["error-notice"]}`}>
-            <h1>We're sorry, there was an error processing the order.</h1>
-            <p>Please contact the race organizers to resolve the issue and get registered.</p>
-            <ContactForm 
-            contactEmail={contactEmail}
-            raceName={raceName}
-            message={message}/>
+            {!wasContactFormSubmitted &&
+                <>
+                    <h1>We're sorry, there was an error processing the order.</h1>
+                    <p>Please contact the race organizers to resolve the issue and get registered.</p>
+                </>
+            }
+            <ContactForm
+                setWasContactFormSubmitted={setWasContactFormSubmitted}
+                contactEmail={contactEmail}
+                raceName={raceName}
+                message={message} />
+                {wasContactFormSubmitted &&
+                <a className={`button button--medium`} href="/races">Back to Races</a>
+            }
         </div>
     )
 }
@@ -171,6 +180,6 @@ export default function Checkout({ registrationData, raceName, raceInfo, setChec
                 />
             </>
             :
-            <CheckoutErrorNotice contactEmail={raceInfo.contactEmail} raceName={raceName}/>
+            <CheckoutErrorNotice contactEmail={raceInfo.contactEmail} raceName={raceName} />
     )
 }

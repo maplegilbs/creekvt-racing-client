@@ -23,7 +23,7 @@ function ContactFailedMessage({ contactEmail }) {
     )
 }
 
-export default function ContactForm({ contactEmail, raceName, message }) {
+export default function ContactForm({ contactEmail, raceName, message, setWasContactFormSubmitted }) {
     const [formData, setFormData] = useState({ raceName: raceName ? raceName : null })
     const [submissionStatus, setSubmissionStatus] = useState(null)
     const recaptcha = useRef();
@@ -61,6 +61,7 @@ export default function ContactForm({ contactEmail, raceName, message }) {
             })
             if (contactResponse.status >= 200 && contactResponse.status < 300) {
                 setSubmissionStatus('submitted')
+                if(setWasContactFormSubmitted) setWasContactFormSubmitted(true)
             }
             else {
                 setSubmissionStatus('failed')
