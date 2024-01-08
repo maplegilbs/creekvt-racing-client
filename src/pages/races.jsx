@@ -13,7 +13,6 @@ export async function loader() {
 
 export default function Races() {
     const racesData = useLoaderData();
-    console.log(racesData)
 
     const racesCards = racesData.map(raceData => {
         return (

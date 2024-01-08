@@ -151,27 +151,44 @@ export default function Race() {
                     </div>
                 </section>
                 <section className={`section-container`} id={`schedule-section`}>
-                    <h2 className={`section-heading`}>Schedule</h2>
-                    <hr />
-                    {
-                        scheduleItems ?
-                            <ul>
-                                {scheduleItems}
-                            </ul>
-                            :
-                            <h4>Check back for race schedule</h4>
-                    }
+                        {window.innerWidth > 640 &&
+                            <div className={'section__div--half-width'}>
+                                <h2 className={`section-heading`}>Registered Athletes</h2>
+                                <hr />
+                                {!(raceData.isRegOpen === 0 || new Date(raceData.date) < new Date()) &&
+                                    <p>Looking to join the fun?&nbsp;
+                                        <a href={`./${raceName}/register`} className={`link-std link-bold link-small`}>Register Here</a>
+                                    </p>
+                                }
+                                <RegisteredRacers raceData={raceData} racers={racers} />
+    
+                            </div>
+                        }
+                    <div className={`${window.innerWidth > 640 ? 'section__div--half-width' : 'section__div--full-width'}`}>
+                        <h2 className={`section-heading`}>Schedule</h2>
+                        <hr />
+                        {
+                            scheduleItems ?
+                                <ul>
+                                    {scheduleItems}
+                                </ul>
+                                :
+                                <h4>Check back for race schedule</h4>
+                        }
+                    </div>
                 </section>
-                <section className={`section-container`} id={`athletes-section`}>
-                    <h2 className={`section-heading`}>Registered Athletes</h2>
-                    <hr />
-                    {!(raceData.isRegOpen === 0 || new Date(raceData.date) < new Date()) &&
-                        <p>Looking to join the fun?&nbsp;
-                            <a href={`./${raceName}/register`} className={`link-std link-bold link-small`}>Register Here</a>
-                        </p>
-                    }
-                    <RegisteredRacers raceData={raceData} racers={racers} />
-                </section>
+                {window.innerWidth < 700 &&
+                    <section className={`section-container`} id={`athletes-section`}>
+                        <h2 className={`section-heading`}>Registered Athletes</h2>
+                        <hr />
+                        {!(raceData.isRegOpen === 0 || new Date(raceData.date) < new Date()) &&
+                            <p>Looking to join the fun?&nbsp;
+                                <a href={`./${raceName}/register`} className={`link-std link-bold link-small`}>Register Here</a>
+                            </p>
+                        }
+                        <RegisteredRacers raceData={raceData} racers={racers} />
+                    </section>
+                }
                 <section className={`section-container`} id={`directions-section`}>
                     <h2 className={`section-heading`}>Directions</h2>
                     <hr />
@@ -201,7 +218,7 @@ export default function Race() {
                 <section className={`section-container`} id={`contact-section`}>
                     <h2 className={`section-heading`}>Contact</h2>
                     <hr />
-                    <ContactForm contactEmail={raceData.contactEmail} raceName={raceData.name}/>
+                    <ContactForm contactEmail={raceData.contactEmail} raceName={raceData.name} />
                 </section>
             </main>
         </>

@@ -178,18 +178,18 @@ li.events-listItem {
 .location-name img {
     height: .85rem;
     width: auto;
-    margin: 0 .5rem;
+    margin: 0 0.5rem 0 0;
 }
 
 .location-link {
     margin: .4rem 0;
     padding-left: 2rem;
-    color: rgb(255, 255, 255);
+    color: rgb(0,0,0);
     font-family: 'Montserrat', sans-serif;
     font-weight: 700;
     font-size: .7rem;
     text-transform: uppercase;
-    text-shadow: 1px 1px 2px #333;
+    /* text-shadow: 1px 1px 2px #333; */
 }
 
 

@@ -66,7 +66,7 @@ a.button, .button {
     font-weight: 700;
     text-transform: uppercase;
     text-shadow: 1px 1px 5px #333;
-    border-radius: 5px;
+    border-radius: 3px;
 }
 
 a.button--large, .button--large {
@@ -198,6 +198,18 @@ p {
     font-size: 1rem;
 }
 
+#schedule-section{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.section__div--half-width {
+    width: 48%;
+}
+
+.section__div--full-width {
+    width: 100%
+}
 @media screen and (max-width: 640px) {
 
     .mobile-hide {
