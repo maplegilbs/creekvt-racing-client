@@ -200,11 +200,11 @@ p {
 
 #schedule-section{
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
 }
 
 .section__div--half-width {
-    width: 48%;
+    width: 47%;
 }
 
 .section__div--full-width {

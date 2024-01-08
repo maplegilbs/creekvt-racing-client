@@ -36,7 +36,6 @@ export default function Details() {
         const getRaceData = async () => {
             try {
                 const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
-                console.log(raceToFetch)
                 let raceData = await fetch(`http://localhost:3000/races/${raceToFetch}`)
                 let raceJSON = await raceData.json();
                 setFormData({
@@ -77,8 +76,9 @@ export default function Details() {
 
     async function handleSubmit(e) {
         e.preventDefault();
+        const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
         let token = localStorage.getItem('token')
-        let updatedRace = await fetch('http://localhost:3000/races/testrace', {
+        let updatedRace = await fetch(`http://localhost:3000/races/${raceToFetch}`, {
             method: 'PATCH',
             headers: {
                 authorization: `Bearer ${token}`,

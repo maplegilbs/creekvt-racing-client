@@ -71,11 +71,15 @@ function ScheduleItem({ eventDetails }) {
         <>
             {
                 eventDetails.startTime &&
-                <li className={`${styles["events-listItem"]}`}>
-                    <strong>{convertTime(eventDetails.startTime)} {eventDetails.endTime && eventDetails.endTime !== '00:00:00' ? `- ${convertTime(eventDetails.endTime)}` : ""}</strong> {eventDetails.name}
-                    <br />
-                    Location: <a href="#directions-section" className={`link-std`}>{eventDetails.location}</a>
-                </li>
+                <tr className={`${styles["events-listItem"]}`}>
+                    <td>
+                        <strong>{convertTime(eventDetails.startTime)} {eventDetails.endTime && eventDetails.endTime !== '00:00:00' ? `- ${convertTime(eventDetails.endTime)}` : ""}</strong>
+                    </td>
+                    <td>{eventDetails.name}</td>
+                    <td>
+                        <a href="#directions-section" className={`link-std`}>{eventDetails.location}</a>
+                    </td>
+                </tr>
 
             }
         </>
@@ -151,27 +155,33 @@ export default function Race() {
                     </div>
                 </section>
                 <section className={`section-container`} id={`schedule-section`}>
-                        {window.innerWidth > 640 &&
-                            <div className={'section__div--half-width'}>
-                                <h2 className={`section-heading`}>Registered Athletes</h2>
-                                <hr />
-                                {!(raceData.isRegOpen === 0 || new Date(raceData.date) < new Date()) &&
-                                    <p>Looking to join the fun?&nbsp;
-                                        <a href={`./${raceName}/register`} className={`link-std link-bold link-small`}>Register Here</a>
-                                    </p>
-                                }
-                                <RegisteredRacers raceData={raceData} racers={racers} />
-    
-                            </div>
-                        }
+                    {window.innerWidth > 640 &&
+                        <div className={'section__div--half-width'}>
+                            <h2 className={`section-heading`}>Registered Athletes</h2>
+                            <hr />
+                            {!(raceData.isRegOpen === 0 || new Date(raceData.date) < new Date()) &&
+                                <p>Looking to join the fun?&nbsp;
+                                    <a href={`./${raceName}/register`} className={`link-std link-bold link-small`}>Register Here</a>
+                                </p>
+                            }
+                            <RegisteredRacers raceData={raceData} racers={racers} />
+
+                        </div>
+                    }
                     <div className={`${window.innerWidth > 640 ? 'section__div--half-width' : 'section__div--full-width'}`}>
                         <h2 className={`section-heading`}>Schedule</h2>
                         <hr />
+                        <p>&nbsp;</p>
                         {
                             scheduleItems ?
-                                <ul>
-                                    {scheduleItems}
-                                </ul>
+                                <table className={`${styles["schedule__table"]}`}>
+                                    <thead>
+                                        <tr><th>TIME</th><th>EVENT</th><th>LOCATION</th></tr>
+                                    </thead>
+                                    <tbody>
+                                        {scheduleItems}
+                                    </tbody>
+                                </table>
                                 :
                                 <h4>Check back for race schedule</h4>
                         }
