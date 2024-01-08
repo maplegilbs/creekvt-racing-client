@@ -6,9 +6,6 @@ import { useNavigate } from "react-router";
 //Styles
 import styles from "./login.module.css"
 
-export function loader() {
-    return "Hello world";
-}
 
 export default function AdminLogin() {
     const userInfo = useContext(UserInfoContext)[0];

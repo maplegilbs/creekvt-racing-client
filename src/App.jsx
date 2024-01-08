@@ -2,7 +2,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout, {loader as layoutLoader} from "./pages/layout";
 //Pages
-import AdminLogin, {loader as adminLoader} from "./pages/login";
+import AdminLogin from "./pages/login";
 import AdminDashboard, {loader as adminDashboardLoader} from "./pages/adminDashboard";
 import Race, { loader as raceLoader } from "./pages/race";
 import Races, { loader as racesLoader } from "./pages/races";
@@ -24,7 +24,6 @@ const router = createBrowserRouter([
       },
       {
         path: "/races/adminLogin/",
-        loader: adminLoader,
         element: <AdminLogin />
       },
       {

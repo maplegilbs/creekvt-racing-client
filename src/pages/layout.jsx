@@ -4,7 +4,7 @@ import Footer from "../components/footer"
 import Header from "../components/header"
 //Contexts
 //Hooks
-import { useContext, createContext, useEffect, useState } from "react"
+import {createContext, useState } from "react"
 import { useLoaderData } from "react-router-dom"
 
 export async function loader() {
