@@ -25,7 +25,7 @@ export default function AdminLogin() {
         const getUserDataAndNavigate = async () => {
             if (isLoggedIn) {
                 let token = localStorage.getItem('token')
-                let currentUser = await fetch("http://localhost:3000/users/userInfo", {
+                let currentUser = await fetch(`${process.env.REACT_APP_SERVER}/users/userInfo`, {
                     headers: {
                         authorization: `Bearer ${token}`
                     }
@@ -45,7 +45,7 @@ export default function AdminLogin() {
 
     async function adminLogin(e) {
         e.preventDefault();
-        let loginResponse = await fetch(`http://localhost:3000/users/login`, {
+        let loginResponse = await fetch(`${process.env.REACT_APP_SERVER}/users/login`, {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json"

@@ -25,22 +25,11 @@ export const LastSavedContext = createContext();
 
 export async function loader() {
     let loaderInfo = {}
-    let token = localStorage.getItem('token');
-    let raceInfo = await fetch(`http://localhost:3000/races`)
+    let raceInfo = await fetch(`${process.env.REACT_APP_SERVER}/races`)
     if (raceInfo.status !== 200) loaderInfo.raceInfo = null;
     else {
         let raceJSON = await raceInfo.json()
         loaderInfo.raceInfo = raceJSON;
-    }
-    let currentUser = await fetch("http://localhost:3000/users/userInfo", {
-        headers: {
-            authorization: `Bearer ${token}`
-        }
-    });
-    if (currentUser.status !== 200) loaderInfo.currentUser = null;
-    else {
-        let currentUserInfo = await currentUser.json();
-        loaderInfo.currentUser = currentUserInfo
     }
     return loaderInfo;
 }

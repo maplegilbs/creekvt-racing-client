@@ -9,7 +9,7 @@ import { useLoaderData } from "react-router-dom"
 
 export async function loader() {
     let token = localStorage.getItem('token')
-    let currentUser = await fetch("http://localhost:3000/users/userInfo", {
+    let currentUser = await fetch(`${process.env.REACT_APP_SERVER}/users/userInfo`, {
         headers: {
             authorization: `Bearer ${token}`
         }
