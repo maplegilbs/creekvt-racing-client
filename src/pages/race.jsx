@@ -15,14 +15,14 @@ import ContactForm from "../components/contactForm";
 
 export async function loader({ params }) {
     // Get data via api call to populate page here
-    const scheduleData = await fetch(`http://localhost:3000/schedule/${params.raceName}`);
+    const scheduleData = await fetch(`${process.env.REACT_APP_SERVER}/schedule/${params.raceName}`);
     const scheduleJSON = await scheduleData.json()
-    const raceData = await fetch(`http://localhost:3000/races/${params.raceName}`);
+    const raceData = await fetch(`${process.env.REACT_APP_SERVER}/races/${params.raceName}`);
     const raceJSON = await raceData.json();
     let currentRaceYear = new Date(raceJSON[0].date).getFullYear()
-    const locationsData = await fetch(`http://localhost:3000/geoInfo/${params.raceName}`);
+    const locationsData = await fetch(`${process.env.REACT_APP_SERVER}/geoInfo/${params.raceName}`);
     const locationsJSON = await locationsData.json();
-    const racersData = await fetch(`http://localhost:3000/racers/${params.raceName}/${currentRaceYear}`);
+    const racersData = await fetch(`${process.env.REACT_APP_SERVER}/racers/${params.raceName}/${currentRaceYear}`);
     const racersJSON = await racersData.json();
     let groupedRacers = racersJSON.reduce((accum, curRacer) => {
         //if the accumulator has a racer in an array that shares the id of the current racer, add it to that array, otherwise make a new array

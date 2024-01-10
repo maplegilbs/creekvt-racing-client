@@ -52,7 +52,7 @@ export default function ContactForm({ contactEmail, raceName, message, setWasCon
                 recaptchaValue: recaptchaValue
             }
             console.log(submittedFormData, recaptchaValue)
-            let contactResponse = await fetch('https://creekvt-racing-server-a76b51389f41.herokuapp.com/contact', {
+            let contactResponse = await fetch(`${process.env.REACT_APP_SERVER}/contact`, {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json",

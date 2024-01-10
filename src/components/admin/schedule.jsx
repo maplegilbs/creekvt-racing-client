@@ -43,7 +43,7 @@ function EditScheduleItemRow({ itemID, itemData, handleChange, saveItem, cancelA
         async function getLocations() {
             try {
                 const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
-                let locationResponse = await fetch(`http://localhost:3000/geoInfo/locationNames/${raceToFetch}`)
+                let locationResponse = await fetch(`${process.env.REACT_APP_SERVER}/geoInfo/locationNames/${raceToFetch}`)
                 let locationsData = await locationResponse.json();
                 if (locationResponse.status === 200) {
                     setLocationsOpts(locationsData)
@@ -138,7 +138,7 @@ export default function Schedule() {
     async function getScheduleData() {
         try {
             const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
-            let response = await fetch(`http://localhost:3000/schedule/${raceToFetch}`)
+            let response = await fetch(`${process.env.REACT_APP_SERVER}/schedule/${raceToFetch}`)
             let responseJSON = await response.json();
             let cleanedResponseJSON = responseJSON.map(item => {
                 for (let propertyName of Object.keys(item)) {
@@ -157,7 +157,7 @@ export default function Schedule() {
     //Add a blank item with corresponding race name and id to the DB and repopulate the scheduleData state
     async function addItem() {
         const token = localStorage.getItem('token')
-        let tableInfoResponse = await fetch(`http://localhost:3000/schedule/tableInfo`, {
+        let tableInfoResponse = await fetch(`${process.env.REACT_APP_SERVER}/schedule/tableInfo`, {
             headers: { authorization: `Bearer ${token}` }
         })
         let tableInfo = await tableInfoResponse.json()
@@ -166,7 +166,7 @@ export default function Schedule() {
             if (column.Field !== 'id' && column.Field !== 'raceName') blankItem[column.Field] = null
         })
         const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
-        let addedItem = await fetch(`http://localhost:3000/schedule/${raceToFetch}`, {
+        let addedItem = await fetch(`${process.env.REACT_APP_SERVER}/schedule/${raceToFetch}`, {
             method: "POST",
             headers: {
                 authorization: `Bearer ${token}`,
@@ -200,7 +200,7 @@ export default function Schedule() {
         let itemDataToSave = scheduleData.find(item => item.id === itemID);
         const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
         const token = localStorage.getItem("token")
-        let updatedScheduleResponse = await fetch(`http://localhost:3000/schedule/${raceToFetch}/${itemID}`, {
+        let updatedScheduleResponse = await fetch(`${process.env.REACT_APP_SERVER}/schedule/${raceToFetch}/${itemID}`, {
             method: 'PATCH',
             headers: {
                 authorization: `Bearer ${token}`,
@@ -224,7 +224,7 @@ export default function Schedule() {
         try {
             const token = localStorage.getItem("token");
             const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
-            const deletedItem = await fetch(`http://localhost:3000/schedule/${raceToFetch}/${itemID}`, {
+            const deletedItem = await fetch(`${process.env.REACT_APP_SERVER}/schedule/${raceToFetch}/${itemID}`, {
                 method: 'DELETE',
                 headers: { authorization: `Bearer ${token}` }
             })

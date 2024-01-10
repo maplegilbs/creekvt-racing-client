@@ -304,9 +304,9 @@ export default function Results() {
 
     useEffect(() => {
         async function getResults() {
-            let resultsResponse = await fetch(`http://localhost:3000/results${raceName ? "?raceName=" + raceName : ""}`)
+            let resultsResponse = await fetch(`${process.env.REACT_APP_SERVER}/results${raceName ? "?raceName=" + raceName : ""}`)
             let resultsData = await resultsResponse.json();
-            let raceFiltersResponse = await fetch(`http://localhost:3000/results/resultYears${raceName ? "?raceName=" + raceName : ""}`)
+            let raceFiltersResponse = await fetch(`${process.env.REACT_APP_SERVER}/results/resultYears${raceName ? "?raceName=" + raceName : ""}`)
             if (raceFiltersResponse.status !== 200) throw new Error('Race filters unavailable')
             let raceFiltersData = await raceFiltersResponse.json();
             console.log(raceFiltersData)

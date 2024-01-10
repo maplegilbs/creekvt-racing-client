@@ -29,7 +29,7 @@ export default function EditGroupRow({ itemID, itemData, categoryOpts, setRegist
             //create new blank racer
             let token = localStorage.getItem('token')
             //get the fields we will need to create a blank racer and generate an object with those keys and values set to null
-            let tableFieldsResponse = await fetch("http://localhost:3000/racers/admin/tableInfo/racers", {
+            let tableFieldsResponse = await fetch(`${process.env.REACT_APP_SERVER}/racers/admin/tableInfo/racers`, {
                 headers: { authorization: `Bearer ${token}` }
             })
             let tableFields = await tableFieldsResponse.json()
@@ -59,7 +59,7 @@ export default function EditGroupRow({ itemID, itemData, categoryOpts, setRegist
             const token = localStorage.getItem("token")
             const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
             let wasUpdateSuccess = false;
-            let updatedEntityResponse = await fetch(`http://localhost:3000/racers/admin/editRacerEntity/${raceToFetch}/${itemID}`, {
+            let updatedEntityResponse = await fetch(`${process.env.REACT_APP_SERVER}/racers/admin/editRacerEntity/${raceToFetch}/${itemID}`, {
                 method: 'PATCH',
                 headers: {
                     authorization: `Bearer ${token}`,

@@ -38,7 +38,7 @@ export default function EditAthleteRow({ itemData, setSelectedRacer, setErrorSta
             let savedRacerID = racerData.id;
             //If this is a new racer being added
             if (Number(racerData.id) == 0) {
-                let savedRacerResponse = await fetch(`http://localhost:3000/racers/admin/addRacer/${raceToFetch}`, {
+                let savedRacerResponse = await fetch(`${process.env.REACT_APP_SERVER}/racers/admin/addRacer/${raceToFetch}`, {
                     method: 'POST',
                     headers: {
                         authorization: `Bearer ${token}`,
@@ -56,7 +56,7 @@ export default function EditAthleteRow({ itemData, setSelectedRacer, setErrorSta
             //If this is a racer being updated
             else {
                 let token = localStorage.getItem('token')
-                let tableFieldsResponse = await fetch("http://localhost:3000/racers/admin/tableInfo/racers", {
+                let tableFieldsResponse = await fetch(`${process.env.REACT_APP_SERVER}/racers/admin/tableInfo/racers`, {
                     headers: { authorization: `Bearer ${token}` }
                 })
                 let tableFields = await tableFieldsResponse.json()
@@ -66,7 +66,7 @@ export default function EditAthleteRow({ itemData, setSelectedRacer, setErrorSta
                         [field.Field]: racerData[field.Field]
                     }
                 }, {})
-                let editedRacerResponse = await fetch(`http://localhost:3000/racers/admin/editRacer/${raceToFetch}/${racerData.id}`, {
+                let editedRacerResponse = await fetch(`${process.env.REACT_APP_SERVER}/racers/admin/editRacer/${raceToFetch}/${racerData.id}`, {
                     method: 'PATCH',
                     headers: {
                         authorization: `Bearer ${token}`,

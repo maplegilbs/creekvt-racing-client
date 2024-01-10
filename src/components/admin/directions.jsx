@@ -140,7 +140,7 @@ export default function Directions() {
     async function getLocationsData() {
         try {
             const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
-            let response = await fetch(`http://localhost:3000/geoInfo/${raceToFetch}`)
+            let response = await fetch(`${process.env.REACT_APP_SERVER}/geoInfo/${raceToFetch}`)
             let responseJSON = await response.json();
             let cleanedResponseJSON = responseJSON.map(item => {
                 for (let propertyName of Object.keys(item)) {
@@ -158,7 +158,7 @@ export default function Directions() {
     //Add a blank item with corresponding race name and id to the DB and repopulate the scheduleData state
     async function addItem() {
         const token = localStorage.getItem('token')
-        let tableInfoResponse = await fetch(`http://localhost:3000/geoInfo/tableInfo`, {
+        let tableInfoResponse = await fetch(`${process.env.REACT_APP_SERVER}/geoInfo/tableInfo`, {
             headers: { authorization: `Bearer ${token}` }
         })
         let tableInfo = await tableInfoResponse.json()
@@ -167,7 +167,7 @@ export default function Directions() {
             if (column.Field !== 'id' && column.Field !== 'raceName') blankItem[column.Field] = null
         })
         const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
-        let addedItem = await fetch(`http://localhost:3000/geoInfo/${raceToFetch}`, {
+        let addedItem = await fetch(`${process.env.REACT_APP_SERVER}/geoInfo/${raceToFetch}`, {
             method: "POST",
             headers: {
                 authorization: `Bearer ${token}`,
@@ -229,7 +229,7 @@ export default function Directions() {
         let itemDataToSave = locations.find(item => item.id === itemID);
         const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
         const token = localStorage.getItem("token")
-        let updatedLocationResponse = await fetch(`http://localhost:3000/geoInfo/${raceToFetch}/${itemID}`, {
+        let updatedLocationResponse = await fetch(`${process.env.REACT_APP_SERVER}/geoInfo/${raceToFetch}/${itemID}`, {
             method: 'PATCH',
             headers: {
                 authorization: `Bearer ${token}`,
@@ -253,7 +253,7 @@ export default function Directions() {
         try {
             const token = localStorage.getItem("token");
             const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
-            const deletedItem = await fetch(`http://localhost:3000/geoInfo/${raceToFetch}/${itemID}`, {
+            const deletedItem = await fetch(`${process.env.REACT_APP_SERVER}/geoInfo/${raceToFetch}/${itemID}`, {
                 method: 'DELETE',
                 headers: { authorization: `Bearer ${token}` }
             })

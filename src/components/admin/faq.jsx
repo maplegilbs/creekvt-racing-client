@@ -100,7 +100,7 @@ export default function FAQ() {
     async function getFAQData() {
         try {
             const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
-            let faqResponse = await fetch(`http://localhost:3000/faq/${raceToFetch}`)
+            let faqResponse = await fetch(`${process.env.REACT_APP_SERVER}/faq/${raceToFetch}`)
             let faqJSON = await faqResponse.json();
             if (faqResponse.status === 200) {
                 setFaqData(faqJSON)
@@ -115,7 +115,7 @@ export default function FAQ() {
     //Add a blank item with corresponding race name and id to the DB and repopulate the faqData state
     async function addItem() {
         const token = localStorage.getItem('token')
-        let tableInfoResponse = await fetch(`http://localhost:3000/faq/tableInfo`, {
+        let tableInfoResponse = await fetch(`${process.env.REACT_APP_SERVER}/faq/tableInfo`, {
             headers: { authorization: `Bearer ${token}` }
         })
         let tableInfo = await tableInfoResponse.json()
@@ -124,7 +124,7 @@ export default function FAQ() {
             if (column.Field !== 'id' && column.Field !== 'raceName') blankItem[column.Field] = null
         })
         const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
-        let addedItem = await fetch(`http://localhost:3000/faq/${raceToFetch}`, {
+        let addedItem = await fetch(`${process.env.REACT_APP_SERVER}/faq/${raceToFetch}`, {
             method: "POST",
             headers: {
                 authorization: `Bearer ${token}`,
@@ -158,7 +158,7 @@ export default function FAQ() {
         let itemDataToSave = faqData.find(item => item.id === itemID);
         const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
         const token = localStorage.getItem("token")
-        let updatedFAQResponse = await fetch(`http://localhost:3000/faq/${raceToFetch}/${itemID}`, {
+        let updatedFAQResponse = await fetch(`${process.env.REACT_APP_SERVER}/faq/${raceToFetch}/${itemID}`, {
             method: 'PATCH',
             headers: {
                 authorization: `Bearer ${token}`,
@@ -182,7 +182,7 @@ export default function FAQ() {
         try {
             const token = localStorage.getItem("token");
             const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
-            const deletedItem = await fetch(`http://localhost:3000/faq/${raceToFetch}/${itemID}`, {
+            const deletedItem = await fetch(`${process.env.REACT_APP_SERVER}/faq/${raceToFetch}/${itemID}`, {
                 method: 'DELETE',
                 headers: { authorization: `Bearer ${token}` }
             })

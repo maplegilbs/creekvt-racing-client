@@ -60,10 +60,10 @@ export default function Athletes() {
             try {
                 const token = localStorage.getItem("token")
                 const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
-                let categoryOptsResponse = await fetch(`http://localhost:3000/races/${raceToFetch}`)
+                let categoryOptsResponse = await fetch(`${process.env.REACT_APP_SERVER}/races/${raceToFetch}`)
                 let categoryOptsData = await categoryOptsResponse.json();
                 setCategoryOpts(categoryOptsData[0].categoryOptions)
-                let racersResponse = await fetch(`http://localhost:3000/racers/admin/${raceToFetch}/${selectedRaceYear}`, {
+                let racersResponse = await fetch(`${process.env.REACT_APP_SERVER}/racers/admin/${raceToFetch}/${selectedRaceYear}`, {
                     headers: { authorization: `Bearer ${token}` }
                 })
                 let racersResponseJSON = await racersResponse.json();
@@ -105,7 +105,7 @@ export default function Athletes() {
             const token = localStorage.getItem("token")
             const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
             //Add a boat with the current year and racename fields to the DB
-            let addedBoatResponse = await fetch(`http://localhost:3000/racers/admin/addRaceEntity/${raceToFetch}`, {
+            let addedBoatResponse = await fetch(`${process.env.REACT_APP_SERVER}/racers/admin/addRaceEntity/${raceToFetch}`, {
                 method: 'POST',
                 headers: { authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -160,7 +160,7 @@ export default function Athletes() {
             let wasDeleteSuccess = false;
             //If we are deleting an entity, remove the entity and all associated racers and updated the registered racers state
             if (selectedAction.split("-")[1] === 'racerEntity') {
-                let deleteResponse = await fetch(`http://localhost:3000/racers/admin/deleteRacerEntity/${raceToFetch}/${itemID}`, {
+                let deleteResponse = await fetch(`${process.env.REACT_APP_SERVER}/racers/admin/deleteRacerEntity/${raceToFetch}/${itemID}`, {
                     method: 'DELETE',
                     headers: { authorization: `Bearer ${token}` }
                 })
@@ -175,7 +175,7 @@ export default function Athletes() {
             }
             //If we are deleting just a racer delete the racer based on ID and update the registered racers state
             else if (selectedAction.split("-")[1] === 'racer') {
-                let deleteResponse = await fetch(`http://localhost:3000/racers/admin/deleteRacer/${raceToFetch}/${itemID}`, {
+                let deleteResponse = await fetch(`${process.env.REACT_APP_SERVER}/racers/admin/deleteRacer/${raceToFetch}/${itemID}`, {
                     method: 'DELETE',
                     headers: { authorization: `Bearer ${token}` }
                 })

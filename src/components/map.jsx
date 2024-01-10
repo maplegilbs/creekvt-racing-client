@@ -16,7 +16,7 @@ function MyMapComponent({ mapMarkerData, selectedMapLocation }) {
 
     useEffect(() => {
         const buildMap = async () => {
-            let mapOptionsResponse = await fetch(`http://localhost:3000/geoInfo/mapOptions/${raceToFetch}`)
+            let mapOptionsResponse = await fetch(`${process.env.REACT_APP_SERVER}/geoInfo/mapOptions/${raceToFetch}`)
             let mapOptionsData = await mapOptionsResponse.json();
             mapOptionsData = mapOptionsData[0];
             const newMap = new window.google.maps.Map(ref.current, {

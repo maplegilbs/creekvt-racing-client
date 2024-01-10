@@ -12,7 +12,7 @@ export default function FAQ() {
     useEffect(() => {
         async function getFAQData() {
             try {
-                const faqResponse = await fetch(`http://localhost:3000/faq/${params.raceName}`);
+                const faqResponse = await fetch(`${process.env.REACT_APP_SERVER}/faq/${params.raceName}`);
                 const faqJSON = await faqResponse.json();
                 setFAQData(faqJSON)
             } catch (error) {

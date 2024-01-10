@@ -14,10 +14,10 @@ export default function RegistrationReceipt({ registrationData, raceInfo, raceNa
 
     useEffect(() => {
         async function getRacerData() {
-            const raceData = await fetch(`http://localhost:3000/races/${params.raceName}`);
+            const raceData = await fetch(`${process.env.REACT_APP_SERVER}/races/${params.raceName}`);
             const raceJSON = await raceData.json();
             let currentRaceYear = new Date(raceJSON[0].date).getFullYear()
-            const racersData = await fetch(`http://localhost:3000/racers/${params.raceName}/${currentRaceYear}`);
+            const racersData = await fetch(`${process.env.REACT_APP_SERVER}/racers/${params.raceName}/${currentRaceYear}`);
             const racersJSON = await racersData.json();
             let groupedRacers = racersJSON.reduce((accum, curRacer) => {
                 //if the accumulator has a racer in an array that shares the id of the current racer, add it to that array, otherwise make a new array

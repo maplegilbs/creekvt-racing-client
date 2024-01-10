@@ -15,7 +15,7 @@ import { formatDateTime } from "../utils/formatDateTime";
 import styles from "./register.module.css"
 
 export async function loader({ params }) {
-    const raceData = await fetch(`http://localhost:3000/races/${params.raceName}`);
+    const raceData = await fetch(`${process.env.REACT_APP_SERVER}/races/${params.raceName}`);
     const raceJSON = await raceData.json();
     let currentRaceYear = new Date(raceJSON[0].date).getFullYear();
     return ({ raceInfo: raceJSON[0], currentRaceYear })

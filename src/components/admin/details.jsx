@@ -36,7 +36,7 @@ export default function Details() {
         const getRaceData = async () => {
             try {
                 const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
-                let raceData = await fetch(`http://localhost:3000/races/${raceToFetch}`)
+                let raceData = await fetch(`${process.env.REACT_APP_SERVER}/races/${raceToFetch}`)
                 let raceJSON = await raceData.json();
                 setFormData({
                     date: formatDateTime(new Date(raceJSON[0].date)).htmlDateTime,
@@ -78,7 +78,7 @@ export default function Details() {
         e.preventDefault();
         const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
         let token = localStorage.getItem('token')
-        let updatedRace = await fetch(`http://localhost:3000/races/${raceToFetch}`, {
+        let updatedRace = await fetch(`${process.env.REACT_APP_SERVER}/races/${raceToFetch}`, {
             method: 'PATCH',
             headers: {
                 authorization: `Bearer ${token}`,

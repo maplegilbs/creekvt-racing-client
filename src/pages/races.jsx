@@ -6,7 +6,7 @@ import { formatDateTime } from "../utils/formatDateTime";
 
 export async function loader() {
     //get data on all races from api here
-    let racesData = await fetch('http://localhost:3000/races');
+    let racesData = await fetch(`${process.env.REACT_APP_SERVER}/races`);
     let racesJSON = await racesData.json();
     return racesJSON;
 }

@@ -109,7 +109,7 @@ export default function Checkout({ registrationData, raceName, raceInfo, setChec
     //Nothing added to DB
     async function createOrder(data) {
         try {
-            let createdOrder = await fetch("http://localhost:3000/register/orders/create", {
+            let createdOrder = await fetch(`${process.env.REACT_APP_SERVER}/register/orders/create`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -133,7 +133,7 @@ export default function Checkout({ registrationData, raceName, raceInfo, setChec
     //A new racer entity will be added to the DB along with associated racers
     async function onApprove(data) {
         try {
-            let captureResponse = await fetch(`http://localhost:3000/register/orders/capture/${data.orderID}`, {
+            let captureResponse = await fetch(`${process.env.REACT_APP_SERVER}/register/orders/capture/${data.orderID}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
