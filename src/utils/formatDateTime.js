@@ -25,7 +25,7 @@ export function formatDateTime(inputTime) {
     month++
     if (month < 10) { month = "0" + month.toString() }
     let year = inputTime.getFullYear();
-    let hour24 = inputTime.getHours();
+    let hour24 = inputTime.getHours() > 9 ? inputTime.getHours() : inputTime.getHours().toString().padStart(2 ,'0');
     let hour = hour24;
     let amPM = "am";
     if (hour24 == 12) { amPM = "pm" }

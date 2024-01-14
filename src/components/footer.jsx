@@ -24,8 +24,8 @@ const Footer = (props) => {
                 <li><a href="https://creekvt.com/about/">About</a></li>
                 <li><a href="https://creekvt.com/contact/">Contact</a></li>
                 {userInfo ?
-                <li><a href="http://localhost:3001/races/adminDashboard">Admin Dashboard</a></li> :
-                <li><a href="http://localhost:3001/races/adminLogin">Organizer Login</a></li>
+                <li><a href="http://localhost:3000/races/adminDashboard">Admin Dashboard</a></li> :
+                <li><a href="http://localhost:3000/races/adminLogin">Organizer Login</a></li>
                 }
             </ul>
         </div>

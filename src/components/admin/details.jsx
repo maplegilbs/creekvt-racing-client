@@ -8,6 +8,7 @@ import { UserInfoContext } from "../../pages/layout.jsx";
 import { useContext, useEffect, useState } from "react";
 //Libs
 import { formatDateTime } from "../../utils/formatDateTime";
+import { adjEDTtoUTC } from "../../utils/adjForUTCDate.js";
 //Styles
 import 'react-quill/dist/quill.snow.css';
 import styles from "./details.module.css"
@@ -30,6 +31,7 @@ export default function Details() {
     const [formData, setFormData] = useState({});
     const userInfo = useContext(UserInfoContext)[0]
 
+
     formData.date ? console.log(formData, selectedRace) : console.log("")
 
     useEffect(() => {
@@ -39,7 +41,7 @@ export default function Details() {
                 let raceData = await fetch(`${process.env.REACT_APP_SERVER}/races/${raceToFetch}`)
                 let raceJSON = await raceData.json();
                 setFormData({
-                    date: formatDateTime(new Date(raceJSON[0].date)).htmlDateTime,
+                    date: formatDateTime(adjEDTtoUTC(new Date(raceJSON[0].date))).htmlDateTime,
                     shortDescription: raceJSON[0].shortDescription !== "null" ? raceJSON[0].shortDescription : null,
                     longDescription: raceJSON[0].longDescription !== "null" ? raceJSON[0].longDescription : null,
                     notification: raceJSON[0].notification !== "null" ? raceJSON[0].notification : null,
@@ -51,6 +53,7 @@ export default function Details() {
                     format: raceJSON[0].format !== "null" ? raceJSON[0].format : null,
                     difficulty: raceJSON[0].difficulty !== "null" ? raceJSON[0].difficulty : null,
                     contactEmail: raceJSON[0].contactEmail !== "null" ? raceJSON[0].contactEmail : null,
+                    isPublished: raceJSON[0].isPublished !== "null" ? raceJSON[0].isPublished : null,
                 })
             }
             catch (err) {
@@ -66,7 +69,8 @@ export default function Details() {
                     type: null,
                     format: null,
                     difficulty: null,
-                    contactEmail: null
+                    contactEmail: null,
+                    isPublished: null
                 })
             }
         }
@@ -97,7 +101,8 @@ export default function Details() {
                 "type": formData.type,
                 "format": formData.format,
                 "difficulty": formData.difficulty,
-                "contactEmail": formData.contactEmail
+                "contactEmail": formData.contactEmail,
+                "isPublished": formData.isPublished
             })
         })
         if (updatedRace.status == 200) {
@@ -109,7 +114,6 @@ export default function Details() {
     }
 
     function handleQuillChange(value) {
-        console.log(value)
         setFormData(prev => {
             let updatedData = {
                 ...prev,
@@ -121,10 +125,10 @@ export default function Details() {
 
     function handleChange(e) {
         if (e.target.type === "checkbox") {
-            let isRegOpen = e.target.checked ? 1 : 0;
+            let isChecked = e.target.checked ? 1 : 0;
             setFormData({
                 ...formData,
-                isRegOpen: isRegOpen
+                [e.target.name]: isChecked
             })
         }
         else {
@@ -136,8 +140,8 @@ export default function Details() {
         setLastSaved('edited')
     }
 
-    const test = new DOMParser(formData.longDescription, 'text/html')
-    console.log(test)
+    // const test = new DOMParser(formData.longDescription, 'text/html')
+    // console.log(test)
 
     if (selectedRace) {
         return (
@@ -148,6 +152,12 @@ export default function Details() {
                         <div className="input-group">
                             <label htmlFor="date">Date & Time</label>
                             <input type="datetime-local" name="date" id="date" onChange={handleChange} value={formData.date} />
+                        </div>
+                    </div>
+                    <div className="input-row">
+                        <div className={`input-group ${styles["checkbox-group"]}`}>
+                            <label htmlFor="isRegOpen">Is Registration Open?</label>
+                            <input type="checkbox" name="isRegOpen" id="isRegOpen" onChange={handleChange} checked={formData.isRegOpen ? true : false} />
                         </div>
                     </div>
                     <div className="input-row">
@@ -166,8 +176,20 @@ export default function Details() {
                     </div>
                     <div className="input-row">
                         <div className="input-group">
+                            <label htmlFor="categories">Race categories.  MUST BE SEPARATED BY COMMAS</label>
+                            <input type="text" name="categories" id="categories" placeholder="EXAMPLE:   Kayak, Canoe, Tandem Canoe, Tandem Kayak" onChange={handleChange} value={formData.categories ? formData.categories : ''} />
+                        </div>
+                    </div>
+                    <div className="input-row">
+                        <div className="input-group">
                             <label htmlFor="shortDescription">Short Description (max 300 characters)</label>
                             <textarea maxLength={300} rows="4" name="shortDescription" id="shortDescription" onChange={handleChange} value={formData.shortDescription ? formData.shortDescription : ''} />
+                        </div>
+                    </div>
+                    <div className={`input-row ${styles["quill-container"]}`}>
+                        <div className="input-group">
+                            <label htmlFor="longDescription">Long Description</label>
+                            <ReactQuill id="longDescription" theme="snow" modules={{ toolbar: toolbarOptions }} value={formData.longDescription} onChange={handleQuillChange} />
                         </div>
                     </div>
                     <div className="input-row">
@@ -182,32 +204,20 @@ export default function Details() {
                     </div>
                     <div className="input-row">
                         <div className="input-group">
+                            <label htmlFor="contactEmail">Race Contact (email)</label>
+                            <input type="email" name="contactEmail" id="contactEmail" onChange={handleChange} value={formData.contactEmail ? formData.contactEmail : ''} />
+                        </div>
+                    </div>
+                    <div className="input-row">
+                        <div className="input-group">
                             <label htmlFor="notification">Banner notfication (will appear as a banner at the top of the details section)</label>
                             <input type="text" name="notification" id="notification" placeholder="EXAMPLE:   Only 5 spots left!" onChange={handleChange} value={formData.notification ? formData.notification : ''} />
                         </div>
                     </div>
-                    <div className={`input-row ${styles["quill-container"]}`}>
-                        <div className="input-group">
-                            <label htmlFor="longDescription">Course Description</label>
-                            <ReactQuill id="longDescription" theme="snow" modules={{ toolbar: toolbarOptions }} value={formData.longDescription} onChange={handleQuillChange} />
-                        </div>
-                    </div>
-                    <div className="input-row">
-                        <div className="input-group">
-                            <label htmlFor="categories">Race categories.  MUST BE SEPARATED BY COMMAS</label>
-                            <input type="text" name="categories" id="categories" placeholder="EXAMPLE:   Kayak, Canoe, Tandem Canoe, Tandem Kayak" onChange={handleChange} value={formData.categories ? formData.categories : ''} />
-                        </div>
-                    </div>
                     <div className="input-row">
                         <div className={`input-group ${styles["checkbox-group"]}`}>
-                            <label htmlFor="isRegOpen">Is Registration Open?</label>
-                            <input type="checkbox" name="isRegOpen" id="isRegOpen" onChange={handleChange} checked={formData.isRegOpen ? true : false} />
-                        </div>
-                    </div>
-                    <div className="input-row">
-                        <div className="input-group">
-                            <label htmlFor="contactEmail">Race Contact (email)</label>
-                            <input type="email" name="contactEmail" id="contactEmail" onChange={handleChange} value={formData.contactEmail ? formData.contactEmail : ''} />
+                            <label htmlFor="isPublished">Publish (Make Visible to public on the races page)</label>
+                            <input type="checkbox" name="isPublished" id="isPublished" onChange={handleChange} checked={formData.isPublished ? true : false} />
                         </div>
                     </div>
                     <button type="submit">Save</button>

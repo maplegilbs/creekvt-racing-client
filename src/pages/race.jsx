@@ -8,6 +8,7 @@ import Results from "../components/results";
 import { useLoaderData, useParams } from "react-router-dom";
 //Libs
 import { formatDateTime, convertTime, convertTimeToCompare } from "../utils/formatDateTime";
+import { adjEDTtoUTC } from "../utils/adjForUTCDate";
 //Styles
 import styles from "./race.module.css"
 import { useState } from "react";
@@ -95,7 +96,7 @@ export default function Race() {
     const [mapMarkerData, setMapMarkerData] = useState(locations.map(location => [Number(location.lat), Number(location.lng), location.iconUrl]));
     const { raceName } = useParams()
 
-    const formattedTime = raceData.date ? formatDateTime(raceData.date) : null;
+    const formattedTime = raceData.date ? formatDateTime(adjEDTtoUTC(new Date(raceData.date)) ) : null;
     const locationContainers = locations.sort((location1, location2) => {
         if (location1.iconUrl > location2.iconUrl) return 1
         if (location1.iconUrl < location2.iconUrl) return -1
