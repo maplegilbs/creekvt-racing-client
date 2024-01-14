@@ -49,6 +49,11 @@ p.last-column {
     border-right: 0px;
 }
 
+.racer-name__span {
+    display: flex;
+    align-items: center;
+}
+
 @media screen and (min-width: 640px) {
     .header-row .racer-detail {
         font-size: 1.2rem;
@@ -67,6 +72,7 @@ p.last-column {
 
     p.racer-detail {
         justify-content: center;
+        align-items: center;
         text-align: center;
         font-size: 1rem;
         font-weight: 400;

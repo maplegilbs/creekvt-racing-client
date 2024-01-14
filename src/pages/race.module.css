@@ -129,7 +129,11 @@ section h4 {
 }
 
 .schedule__table th, .events-listItem td{
-    padding: 0 1.25rem;
+    padding: 0 .5rem;
+}
+
+.schedule__table th:nth-child(1), .events-listItem td:nth-child(1){
+    padding: 0;
 }
 
 .schedule__table th {
@@ -221,6 +225,10 @@ section h4 {
     
     .section-container {
         padding: 1rem 1.5rem
+    }
+
+    .schedule__table th, .events-listItem td{
+        padding: 0 1.75rem;
     }
     
     .location-section {

@@ -173,7 +173,7 @@ export default function Race() {
                     <div className={`${window.innerWidth > 640 ? 'section__div--half-width' : 'section__div--full-width'}`}>
                         <h2 className={`section-heading`}>Schedule</h2>
                         <hr />
-                        <p>&nbsp;</p>
+                        {window.innerWidth > 640 && <p>&nbsp;</p>}
                         {
                             scheduleItems ?
                                 <table className={`${styles["schedule__table"]}`}>
@@ -189,7 +189,7 @@ export default function Race() {
                         }
                     </div>
                 </section>
-                {window.innerWidth < 700 &&
+                {window.innerWidth < 640 &&
                     <section className={`section-container`} id={`athletes-section`}>
                         <h2 className={`section-heading`}>Registered Athletes</h2>
                         <hr />
