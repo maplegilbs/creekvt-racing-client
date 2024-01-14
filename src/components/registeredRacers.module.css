@@ -76,16 +76,16 @@ p.last-column {
         text-align: center;
         font-size: 1rem;
         font-weight: 400;
-        flex-direction: row;
+        /* flex-direction: row; */
         line-height: 1.45rem;
     }
 
-    p.racer-detail span::after {
+    /* p.racer-detail span::after {
         content: "\00a0\00a0\2022\00a0\00a0";
     }
 
     p.racer-detail span:last-child:after {
         content: '';
-    }
+    } */
 
 }

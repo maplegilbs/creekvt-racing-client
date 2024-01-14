@@ -156,7 +156,7 @@ export default function Race() {
                 </section>
                 <section className={`section-container`} id={`schedule-section`}>
                     {window.innerWidth > 640 &&
-                        <div className={'section__div--half-width'}>
+                        <div className={'section__div--half-width'} id={`athletes-section`}>
                             <h2 className={`section-heading`}>Registered Athletes</h2>
                             <hr />
                             {!(raceData.isRegOpen === 0 || new Date(raceData.date) < new Date()) ?
