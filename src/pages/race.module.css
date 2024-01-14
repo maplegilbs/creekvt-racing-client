@@ -132,6 +132,14 @@ section h4 {
     padding: 0 1.25rem;
 }
 
+.schedule__table th {
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-family: 'Montserrat', 'Roboto', sans-serif;
+    text-decoration: underline;
+}
+
 .directions-section {
     display: flex;
     flex-direction: column;

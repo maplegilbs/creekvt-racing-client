@@ -49,7 +49,7 @@ div.card {
 .card-body-details{
     display: flex;
     flex-direction: column;
-    margin: .5rem auto 1rem auto;
+    margin: .5rem 0 1rem 0;
 }
 
 .details-group{
@@ -126,6 +126,11 @@ div.card {
         flex-direction: row;
     }
 
+    div.button__container>a {
+        font-size: 1rem;
+        background-color: red;
+    }
+
     .card-title {
         font-size: 1.75rem;
         top: 1.25rem;
@@ -133,6 +138,9 @@ div.card {
 
     .card-body{
         padding: 2%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
     }
 
     .card-body-details{
@@ -142,7 +150,7 @@ div.card {
     }
 
     .card-text {
-        height: 9rem;
+        min-height: 9rem;
         margin-bottom: 0;
         font-size: 1.05rem;
     }

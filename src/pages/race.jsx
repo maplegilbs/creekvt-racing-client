@@ -212,7 +212,7 @@ export default function Race() {
                     </div>
                 </section >
                 <section className={`section-container`} id={`course-section`}>
-                    <h2 className={`section-heading`}>Course Details</h2>
+                    <h2 className={`section-heading`}>Race Details</h2>
                     <hr />
                     <CourseDetails details={raceData.longDescription} />
                 </section>
