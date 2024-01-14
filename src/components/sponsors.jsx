@@ -34,7 +34,7 @@ export default function Sponsors() {
     console.log(sponsorInfo)
     return (
         <>
-            {sponsorInfo &&
+            {(sponsorInfo && sponsorInfo.length > 0 ) &&
                 <div className={`${styles["sponsor-container"]}`}>
                     {sponsorInfo.filter(sponsor => sponsor.tier === 'primary').length > 0 &&
                         <>
