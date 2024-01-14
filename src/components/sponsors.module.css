@@ -1,0 +1,86 @@
+.sponsor-container {
+    background-color: white;
+    padding: 2rem;
+    margin-bottom: 3rem;
+    box-shadow: 2px 2px 3px 3px rgb(100, 100, 120);
+}
+
+.sponsor-container h4 {
+    font-family: 'Montserrat', "Roboto", sans-serif;
+    font-weight: 800;
+    font-size: .85rem;
+    width: 100%;
+    text-transform: uppercase;
+    color: black;
+    text-align: center;
+    margin: .5rem 0;
+}
+
+.sponsor-container p {
+    font-family: 'Montserrat', "Roboto", sans-serif;
+    font-weight: 600;
+    font-size: .7rem;
+    width: 100%;
+    text-align: center;
+    margin: 0;
+}
+
+.sponsor-container hr {
+    width: 85%;
+    margin: .5rem auto;
+}
+
+.sponsor-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    margin: 1.2rem auto;
+}
+
+.sponsor-row p {
+    font-family: 'Montserrat', "Roboto", sans-serif;
+    font-weight: 800;
+    font-size: .7rem;
+    margin: 0 auto;
+}
+
+
+.sponsor-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    margin: 1rem 1%;
+}
+
+.sponsor-item.primary {
+    max-width: 45%;
+}
+
+.sponsor-item img {
+    max-width: 20vw;
+}
+
+.sponsor-item.primary img {
+    max-width: 100%;
+}
+
+
+@media screen and (min-width: 640px) {
+
+    .sponsor-container h4 {
+        font-size: 1.5rem;
+    }
+    
+    .sponsor-container p {
+        font-size: 1.15rem;
+    }
+
+    .sponsor-item img {
+        height: 15vh;
+    }
+
+    .sponsor-item.primary img {
+        height: 25vh;
+    }
+}

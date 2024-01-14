@@ -4,6 +4,7 @@ import FAQ from "../components/faq";
 import Map from "../components/map";
 import RegisteredRacers from "../components/registeredRacers";
 import Results from "../components/results";
+import Sponsors from "../components/sponsors";
 //Hooks
 import { useLoaderData, useParams } from "react-router-dom";
 //Libs
@@ -154,6 +155,11 @@ export default function Race() {
                         </nav>
                     </div>
                 </section>
+                <section className={`section-container`} id={`sponsors-section`}>
+                    <h2 className={`section-heading`}>Sponsors</h2>
+                    <hr />
+                    <Sponsors />
+                </section>
                 <section className={`section-container`} id={`schedule-section`}>
                     {window.innerWidth > 640 &&
                         <div className={'section__div--half-width'} id={`athletes-section`}>
@@ -220,7 +226,6 @@ export default function Race() {
                     <h2 className={`section-heading`}>Results</h2>
                     <hr />
                     <Results />
-
                 </section>
                 <section className={`section-container`} id={`faq-section`}>
                     <h2 className={`section-heading`}>FAQ</h2>

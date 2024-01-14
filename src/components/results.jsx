@@ -298,10 +298,6 @@ export default function Results() {
 
 
 
-
-
-    console.log(filterOptions, filteredResults)
-
     useEffect(() => {
         async function getResults() {
             let resultsResponse = await fetch(`${process.env.REACT_APP_SERVER}/results${raceName ? "?raceName=" + raceName : ""}`)

@@ -18,7 +18,7 @@
 .racepage-container>section {
     box-sizing: border-box;
     width: 100%;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
 }
 
 .racepage-container > section:nth-child(1){
