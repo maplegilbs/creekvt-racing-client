@@ -14,9 +14,9 @@ export async function loader() {
 export default function Races() {
     const racesData = useLoaderData();
 
-    const racesCards = racesData.map(raceData => {
+    const racesCards = racesData.filter(raceDate => raceDate.isPublished).map(raceData => {
         return (
-            <div className={`card ${styles["card"]}`}>
+            <div key={raceData.name} className={`card ${styles["card"]}`}>
                 <h5 className={`card-title ${styles["card-title"]}`}>{raceData.name}</h5>
                 <img src={raceData.primaryImageURL} className={`card-img`} alt="..." />
                 <div className={`card-body ${styles["card-body"]}`}>

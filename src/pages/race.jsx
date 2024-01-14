@@ -110,7 +110,6 @@ export default function Race() {
         null;
 
 
-    console.log(raceData)
     return (
         <>
             <main className={`${styles["racepage-container"]}`}>
@@ -159,10 +158,12 @@ export default function Race() {
                         <div className={'section__div--half-width'}>
                             <h2 className={`section-heading`}>Registered Athletes</h2>
                             <hr />
-                            {!(raceData.isRegOpen === 0 || new Date(raceData.date) < new Date()) &&
+                            {!(raceData.isRegOpen === 0 || new Date(raceData.date) < new Date()) ?
                                 <p>Looking to join the fun?&nbsp;
                                     <a href={`./${raceName}/register`} className={`link-std link-bold link-small`}>Register Here</a>
                                 </p>
+                                :
+                                <p>&nbsp;</p>
                             }
                             <RegisteredRacers raceData={raceData} racers={racers} />
 
