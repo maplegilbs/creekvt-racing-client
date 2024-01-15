@@ -41,17 +41,17 @@ export default function Sponsors() {
                             <h4>A big shoutout to this year's title sponsors!</h4>
                             <br />
                             <p>
-                                <strong>{sponsorInfo.filter(sponsor => sponsor.tier === 'primary').map(sponsor => <><span>{sponsor.name}</span><br /></>)}</strong>
+                                <strong>{sponsorInfo.filter(sponsor => sponsor.tier.toLowerCase() === 'primary').map(sponsor => <><span>{sponsor.name}</span><br /></>)}</strong>
                             </p>
                             <div className={`${styles["sponsor-row"]} ${styles["primary-row"]}`}>
-                                {sponsorInfo.filter(sponsor => sponsor.tier === 'primary').map(sponsor => <SponsorItem sponsor={sponsor} />)}
+                                {sponsorInfo.filter(sponsor => sponsor.tier.toLowerCase() === 'primary').map(sponsor => <SponsorItem sponsor={sponsor} />)}
                             </div>
                             <br />
                             <hr />
                         </>
                     }
                     <div className={`${styles["sponsor-row"]} ${styles["secondary-row"]}`}>
-                        {sponsorInfo.filter(sponsor => sponsor.tier === 'secondary').map(sponsor => <SponsorItem sponsor={sponsor} />)}
+                        {sponsorInfo.filter(sponsor => sponsor.tier.toLowerCase() === 'secondary').map(sponsor => <SponsorItem sponsor={sponsor} />)}
                     </div>
                 </div>
             }

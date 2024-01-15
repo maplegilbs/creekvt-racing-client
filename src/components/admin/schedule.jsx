@@ -37,7 +37,6 @@ function EditScheduleItemRow({ itemID, itemData, handleChange, saveItem, cancelA
     const selectedRace = useContext(SelectedRaceContext)[0]; //Name of race with spaces i.e. "Test Race"
     const [locationsOpts, setLocationsOpts] = useState([])
 
-    console.log(locationsOpts)
 
     useEffect(() => {
         async function getLocations() {
@@ -131,8 +130,6 @@ export default function Schedule() {
     useEffect(() => {
         getScheduleData()
     }, [selectedRace])
-
-    console.log(scheduleData)
 
     //Basic fetch of schedule data
     async function getScheduleData() {

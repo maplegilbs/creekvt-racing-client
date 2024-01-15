@@ -5,9 +5,10 @@ import Athletes from "../components/admin/athletes";
 import Default from "../components/admin/default";
 import Details from "../components/admin/details";
 import Directions from "../components/admin/directions";
+import FAQ from "../components/admin/faq";
 import Results from "../components/admin/results";
 import Schedule from "../components/admin/schedule";
-import FAQ from "../components/admin/faq";
+import Sponsors from "../components/admin/sponsors";
 //Contexts
 import { UserInfoContext } from "./layout";
 //Hooks
@@ -68,6 +69,9 @@ export default function AdminDashboard() {
                 break;
             case "results":
                 setEditComponent(<Results />);
+                break;
+            case "sponsors":
+                setEditComponent(<Sponsors />);
                 break;
             case "faqs":
                 setEditComponent(<FAQ />);

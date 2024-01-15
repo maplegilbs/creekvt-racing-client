@@ -32,8 +32,6 @@ export default function Details() {
     const userInfo = useContext(UserInfoContext)[0]
 
 
-    formData.date ? console.log(formData, selectedRace) : console.log("")
-
     useEffect(() => {
         const getRaceData = async () => {
             try {
