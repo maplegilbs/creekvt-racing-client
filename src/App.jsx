@@ -7,6 +7,7 @@ import AdminDashboard, {loader as adminDashboardLoader} from "./pages/adminDashb
 import Race, { loader as raceLoader } from "./pages/race";
 import Races, { loader as racesLoader } from "./pages/races";
 import Register, {loader as registerLoader} from "./pages/register";
+import ErrorElement from "./components/error"
 //Styles
 import "./App.css"
 
@@ -16,30 +17,36 @@ const router = createBrowserRouter([
     path: "/",
     loader: layoutLoader,
     element: <Layout />,
+    errorElement: <ErrorElement />,
     children: [
       {
         path: "/races/",
         loader: racesLoader,
-        element: <Races />
+        element: <Races />,
+        errorElement: <ErrorElement />
       },
       {
         path: "/races/adminLogin/",
-        element: <AdminLogin />
+        element: <AdminLogin />,
+        errorElement: <ErrorElement />
       },
       {
         path: "/races/adminDashboard/",
         loader: adminDashboardLoader,
-        element: <AdminDashboard />
+        element: <AdminDashboard />,
+        errorElement: <ErrorElement />
       },
       {
         path: "races/:raceName",
         loader: raceLoader,
-        element: <Race />
+        element: <Race />,
+        errorElement: <ErrorElement />
       },
       {
         path: "races/:raceName/register",
         loader: registerLoader,
-        element: <Register />
+        element: <Register />,
+        errorElement: <ErrorElement />
       }
     ]
   },
