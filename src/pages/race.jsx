@@ -158,7 +158,7 @@ export default function Race() {
                 <section className={`section-container`} id={`sponsors-section`}>
                     <h2 className={`section-heading`}>Sponsors</h2>
                     <hr />
-                    <p>We are always looking for sponsors to help keep this great race thriving.  <a href="#contact" className={`link-std link-bold link-small`}>Contact Us</a> to learn about becoming a sponsor.</p>
+                    <p>We are always looking for sponsors to help keep this great race thriving.  <a href="#contact-section" className={`link-std link-bold link-small`}>Contact Us</a> to learn about becoming a sponsor.</p>
                     <Sponsors />
                 </section>
                 <section className={`section-container`} id={`schedule-section`}>

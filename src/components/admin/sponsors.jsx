@@ -38,7 +38,7 @@ function SponsorRow({ itemID, itemData, askDeleteItem, editItem }) {
 function EditSponsorRow({ itemID, itemData, handleChange, saveItem, cancelAction }) {
     const selectedRace = useContext(SelectedRaceContext)[0]; //Name of race with spaces i.e. "Test Race"
 
-
+console.log(itemData.isActive   )
     return (
         <>
             <div className={`${adminStyles["info-row"]} ${styles["edit-row"]} ${adminStyles["edit-row"]}`}>
@@ -67,7 +67,7 @@ function EditSponsorRow({ itemID, itemData, handleChange, saveItem, cancelAction
                 <div className="input-row">
                     <div className={`input-group`}>
                         <label style={{ alignSelf: "center" }} htmlFor={`sponsor-isActive-${itemID}`}>Is Active?</label>
-                        <input style={{ alignSelf: "center" }} type="checkbox" name="isActive" id={`sponsor-isActive-${itemID}`} onChange={(e) => handleChange(e, itemID)} value={itemData.isActive} />
+                        <input style={{ alignSelf: "center" }} type="checkbox" name="isActive" id={`sponsor-isActive-${itemID}`} onChange={(e) => handleChange(e, itemID)} checked={itemData.isActive ? true : false} value={itemData.isActive} />
                     </div>
                 </div>
                 <div className={`${adminStyles["button-row"]} ${adminStyles["final-row"]} `}>
@@ -142,20 +142,20 @@ export default function Sponsors() {
     }
 
     async function saveItem(itemID) {
-        // let itemDataToSave = scheduleData.find(item => item.id === itemID);
-        // const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
-        // const token = localStorage.getItem("token")
-        // let updatedScheduleResponse = await fetch(`${process.env.REACT_APP_SERVER}/schedule/${raceToFetch}/${itemID}`, {
-        //     method: 'PATCH',
-        //     headers: {
-        //         authorization: `Bearer ${token}`,
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify(itemDataToSave)
-        // })
-        // const updatedScheduleJSON = await updatedScheduleResponse.json();
-        // setSelectedItemID(null)
-        // setSelectedAction(null)
+        let itemDataToSave = sponsorData.find(item => item.id === itemID);
+        const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
+        const token = localStorage.getItem("token")
+        let updatedSponsorResponse = await fetch(`${process.env.REACT_APP_SERVER}/sponsors/${raceToFetch}/${itemID}`, {
+            method: 'PATCH',
+            headers: {
+                authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(itemDataToSave)
+        })
+        const updatedSponsorJSON = await updatedSponsorResponse.json();
+        setSelectedItemID(null)
+        setSelectedAction(null)
     }
 
     //Update the schedule data when an input value field is being changed
@@ -194,7 +194,7 @@ export default function Sponsors() {
                 </div>
                 {/* {selectedAction === 'delete' &&
                     <>
-                    {scheduleData.map(sponsor => <ScheduleItemRow key={scheduleItem.id} itemID={scheduleItem.id} itemData={scheduleItem} editItem={editItem} askDeleteItem={askDeleteItem} />)}
+                    {sponsorData.map(sponsor => <ScheduleItemRow key={scheduleItem.id} itemID={scheduleItem.id} itemData={scheduleItem} editItem={editItem} askDeleteItem={askDeleteItem} />)}
                     <DeleteConfirmation
                     itemID={selectedItemID}
                     setSelectedItemID={setSelectedItemID}
