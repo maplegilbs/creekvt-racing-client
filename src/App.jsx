@@ -8,6 +8,7 @@ import Race, { loader as raceLoader } from "./pages/race";
 import Races, { loader as racesLoader } from "./pages/races";
 import Register, {loader as registerLoader} from "./pages/register";
 import ErrorElement from "./components/error"
+import RootErrorElement from "./components/errorRoot";
 //Styles
 import "./App.css"
 
@@ -17,7 +18,7 @@ const router = createBrowserRouter([
     path: "/",
     loader: layoutLoader,
     element: <Layout />,
-    errorElement: <ErrorElement />,
+    errorElement: <RootErrorElement />,
     children: [
       {
         path: "/races/",
