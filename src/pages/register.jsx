@@ -71,7 +71,7 @@ export default function Register() {
             null;
 
     useEffect(() => {
-        if (checkoutStatus === 'closed') { setTimeout(()=>navigate(`/races/${raceName}`), 4000) }
+        if (checkoutStatus === 'closed' || !raceInfo.isPublished) { setTimeout(() => navigate(`/races/${raceName}`), 3500) }
     }, [checkoutStatus])
 
     useEffect(() => {
@@ -118,13 +118,16 @@ export default function Register() {
         })
     }
 
-    return (
-        <>
-            {checkoutStatus === 'closed' &&
-                <Loader
-                    loader_text={`Registration is not currently open for the ${raceInfo.name}.`}
-                    bottom_text={`Redirecting to ${raceInfo.name} page.`} />
-            }
+    if (checkoutStatus === 'closed' || !raceInfo.isPublished) {
+        return (
+            <Loader
+                loader_text={`Registration is not currently open for the ${raceInfo.name}.`}
+                bottom_text={`Redirecting to ${raceInfo.name} page.`} />
+        )
+    }
+    else {
+        return (
+            <>
             {checkoutStatus === null &&
                 <div className={`${styles["registration-form__container"]}`}>
                     <h4 className={`section-heading`}>Register for the {`${currentRaceYear} ${raceInfo.name}`}</h4>
@@ -172,13 +175,14 @@ export default function Register() {
                         <button className={`button button--medium`} type="submit">Continue to Payment</button>
                     </form>
                 </div>
-            }
-            {checkoutStatus === 'pending' &&
-                <Checkout registrationData={registrationFormData} raceName={raceName} raceInfo={raceInfo} setCheckoutStatus={setCheckoutStatus} setReceiptInfo={setReceiptInfo} />
-            }
-            {checkoutStatus === 'complete' &&
-                <RegistrationReceipt registrationData={registrationFormData} raceInfo={raceInfo} raceName={raceName} receiptInfo={receiptInfo} />
-            }
-        </>
-    )
+                }
+                {checkoutStatus === 'pending' &&
+                    <Checkout registrationData={registrationFormData} raceName={raceName} raceInfo={raceInfo} setCheckoutStatus={setCheckoutStatus} setReceiptInfo={setReceiptInfo} />
+                }
+                {checkoutStatus === 'complete' &&
+                    <RegistrationReceipt registrationData={registrationFormData} raceInfo={raceInfo} raceName={raceName} receiptInfo={receiptInfo} />
+                }
+            </>
+        )
+    }
 }
