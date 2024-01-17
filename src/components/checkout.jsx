@@ -102,7 +102,7 @@ export default function Checkout({ registrationData, raceName, raceInfo, setChec
     useEffect(() => {
         window.scroll(0, 0)
     }, [])
-    console.log(registrationData)
+    console.log(registrationData, raceInfo)
 
     /*----Paypal-----*/
     //When payment button is clicked an order is created on the server and the order id is returned
@@ -140,7 +140,8 @@ export default function Checkout({ registrationData, raceName, raceInfo, setChec
                 },
                 body: JSON.stringify({
                     orderID: data.orderID,
-                    registrationData
+                    registrationData,
+                    date: raceInfo.date
                 })
             })
             //Payment is successfully captured, end of checkout process.
