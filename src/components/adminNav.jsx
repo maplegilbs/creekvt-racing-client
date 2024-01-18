@@ -39,7 +39,10 @@ export default function AdminNavBar({ availableRaces, infoSectionToEdit, setInfo
             <button onClick={() => setInfoSectionToEdit("results")} className={`${styles["menu-option"]} ${infoSectionToEdit === 'results' ? styles["active"] : ""}`}>Results</button>
             <button onClick={() => setInfoSectionToEdit("sponsors")} className={`${styles["menu-option"]} ${infoSectionToEdit === 'sponsors' ? styles["active"] : ""}`}>Sponsors</button>
             <button onClick={() => setInfoSectionToEdit("faqs")} className={`${styles["menu-option"]} ${infoSectionToEdit === 'faqs' ? styles["active"] : ""}`}>FAQs</button>
-            <button onClick={logOut} className={`${styles["menu-option"]} ${styles["menu-option--bottom"]}`}>LOG OUT</button>
+            <div className={`${styles["menu-option--bottom"]}`}>
+                <button onClick={() => setInfoSectionToEdit("account")} className={`${styles["menu-option"]} `}>ACCOUNT</button>
+                <button onClick={logOut} className={`${styles["menu-option"]}`}>LOG OUT</button>
+            </div>
         </menu>
     )
 }

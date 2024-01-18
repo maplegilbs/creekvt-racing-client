@@ -85,9 +85,7 @@ export default function EditAthleteRow({ itemData, setSelectedRacer, setErrorSta
                         else return racer
                     })
                     let foundIndex = updatedRacers.findIndex(racer => Number(racer.id) === 0)
-                    console.log(foundIndex)
                     if (foundIndex >= 0) updatedRacers[foundIndex].id = savedRacerID;
-                    console.log(updatedRacers)
                     let updatedGroup = {
                         ...prev,
                         racers: updatedRacers

@@ -1,4 +1,5 @@
 //Components
+import Account from "../components/admin/account";
 import AdminNavBar from "../components/adminNav";
 import AdminHeader from "../components/adminHeader";
 import Athletes from "../components/admin/athletes";
@@ -75,6 +76,9 @@ export default function AdminDashboard() {
                 break;
             case "faqs":
                 setEditComponent(<FAQ />);
+                break;
+            case "account":
+                setEditComponent(<Account />);
                 break;
             default:
                 setEditComponent(<Default userInfo={userInfo} />);
