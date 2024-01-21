@@ -15,7 +15,6 @@ export default function Account() {
     const [passwordMatch, setPasswordMatch] = useState(false)
     const [updateStatus, setUpdateStatus] = useState(null)
     let userInfo = useContext(UserInfoContext)[0]
-    console.log(formData, userInfo, updateStatus)
 
     //Update the schedule data when an input value field is being changed
     function handleChange(e) {
@@ -63,7 +62,6 @@ export default function Account() {
                     newPassword: formData.newPass
                 })
             });
-            console.log(updateResponse)
             if (updateResponse.status >= 200 && updateResponse.status < 300) {
                 setUpdateStatus('success')
             }
@@ -75,7 +73,6 @@ export default function Account() {
         }
     }
 
-    console.log(passwordMatch)
 
     return (
         <div className={`${adminStyles["info__container"]}`}>
@@ -85,7 +82,7 @@ export default function Account() {
             <br />
             <p><strong>Race Permissions:</strong></p>
             <ul>
-                {userInfo.races.map(race => <li>{race}</li>)}
+                {userInfo.races.map(race => <li key={race}>{race}</li>)}
             </ul>
             <br />
             <br />
@@ -108,7 +105,10 @@ export default function Account() {
                             updateStatus === 'success' &&
                             <div className={`${styles["password-form__overlay-container"]}`}>
                                 <p>Password Updated Successfully</p>
-                                <a className='button button--medium' onClick={() => clearForm()}>Close</a>
+                                <a className='button button--medium' onClick={() => {
+                                    clearForm(); 
+                                    toggleShowPasswordForm()
+                                }}>Close</a>
                             </div>
 
                         }

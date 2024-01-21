@@ -1,8 +1,12 @@
+//Components
+import Loader from "../components/loader";
 //Contexts
 import { UserInfoContext } from "./layout";
 //Hooks
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+//Libraries
+import { pause } from "../utils/pause";
 //Styles
 import styles from "./login.module.css"
 
@@ -12,6 +16,8 @@ export default function AdminLogin() {
     const setUserInfo = useContext(UserInfoContext)[1]
     const [loginData, setLoginData] = useState({})
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [loginStatus, setLoginStatus] = useState(null)
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -42,6 +48,8 @@ export default function AdminLogin() {
 
     async function adminLogin(e) {
         e.preventDefault();
+        setLoginStatus('pending')
+        await pause(3000)
         let loginResponse = await fetch(`${process.env.REACT_APP_SERVER}/users/login`, {
             method: 'POST',
             headers: {
@@ -53,7 +61,16 @@ export default function AdminLogin() {
             let loginInfo = await loginResponse.json();
             localStorage.setItem("token", loginInfo)
             setIsLoggedIn(true);
+            setLoginStatus('success')
         }
+        else {
+            setLoginStatus('failed')
+        }
+    }
+
+    function clearForm() {
+        setLoginData({})
+        setLoginStatus(null)
     }
 
     function handleChange(e) {
@@ -67,8 +84,26 @@ export default function AdminLogin() {
     return (
         <>
             <div className={`${styles["login-form__container"]}`}>
+                    {loginStatus === 'pending' &&
+                        <div className={`${styles["login-form__overlay-container"]}`}><Loader loader_text={"Logging In"} /></div>
+                    }
+                    {loginStatus === 'failed' &&
+                        <div className={`${styles["login-form__overlay-container"]}`}>
+                            <p>Login Failed - Double Check Username & Password</p>
+                            <a className='button button--medium' onClick={() => clearForm()}>Close</a>
+                        </div>
+                    }
+                    {loginStatus === 'success' &&
+                        <div className={`${styles["login-form__overlay-container"]}`}>
+                            <p>Logged In</p>
+                            <a className='button button--medium' onClick={() => {
+                                clearForm();
+                            }}>Close</a>
+                        </div>
+
+                    }
                 <h4 className={`section-heading`}>Organizer Login</h4>
-                <form onSubmit={adminLogin}>
+                <form style={{ position: "relative" }} onSubmit={adminLogin}>
                     <div className={`input-group`}>
                         <label htmlFor="userName">Username</label>
                         <input onChange={handleChange} type="text" name="userName" id="userName" />
