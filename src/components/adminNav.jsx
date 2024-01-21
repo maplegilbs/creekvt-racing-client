@@ -19,7 +19,7 @@ export default function AdminNavBar({ availableRaces, infoSectionToEdit, setInfo
         setSelectedRace(e.target.value)
     }
 
-    function logOut() {
+    async function logOut() {
         localStorage.removeItem('token');
         setUserInfo(null)
         navigate('/races')

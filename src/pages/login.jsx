@@ -49,7 +49,7 @@ export default function AdminLogin() {
     async function adminLogin(e) {
         e.preventDefault();
         setLoginStatus('pending')
-        await pause(3000)
+        await pause(1500)
         let loginResponse = await fetch(`${process.env.REACT_APP_SERVER}/users/login`, {
             method: 'POST',
             headers: {
@@ -69,15 +69,17 @@ export default function AdminLogin() {
     }
 
     function clearForm() {
-        setLoginData({})
         setLoginStatus(null)
     }
 
     function handleChange(e) {
         setLoginData(
             prev => {
-                prev[e.target.name] = e.target.value
-                return prev
+                let updatedLogin = {
+                    ...prev,
+                    [e.target.name]: e.target.value
+                }
+                return updatedLogin;
             })
     }
 
@@ -106,11 +108,11 @@ export default function AdminLogin() {
                 <form style={{ position: "relative" }} onSubmit={adminLogin}>
                     <div className={`input-group`}>
                         <label htmlFor="userName">Username</label>
-                        <input onChange={handleChange} type="text" name="userName" id="userName" />
+                        <input onChange={handleChange} type="text" name="userName" id="userName" value={loginData.userName}/>
                     </div>
                     <div className={`input-group`}>
                         <label htmlFor="password">Password</label>
-                        <input onChange={handleChange} type="password" name="password" id="password" />
+                        <input onChange={handleChange} type="password" name="password" id="password" value={loginData.password}/>
                     </div>
                     <button className={`button button--medium ${styles["login-button"]}`} type="submit">Login</button>
                 </form>
