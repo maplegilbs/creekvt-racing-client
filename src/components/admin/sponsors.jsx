@@ -4,7 +4,7 @@ import Default from "./default"
 import { SelectedRaceContext } from "../../pages/adminDashboard"
 import { UserInfoContext } from "../../pages/layout"
 //Hooks
-import { useContext, useEffect, useState } from "react"
+import { useContext, useEffect, useState, useRef } from "react"
 //Icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCirclePlus, faPenToSquare, faCircleMinus, faXmark, faFloppyDisk, faCircleXmark } from "@fortawesome/free-solid-svg-icons"
@@ -30,15 +30,20 @@ function SponsorRow({ itemID, itemData, askDeleteItem, editItem }) {
             </p>
             <p>{itemData.linkURL}</p>
             <img className={`${styles["image-thumbnail"]}`} src={`https://${itemData.imgURL}`} />
-
         </div>
     )
 }
 
 function EditSponsorRow({ itemID, itemData, handleChange, saveItem, cancelAction }) {
-    const selectedRace = useContext(SelectedRaceContext)[0]; //Name of race with spaces i.e. "Test Race"
+    const imageRef = useRef();
+    const previewRef = useRef()
 
-console.log(itemData.isActive   )
+    const onFileChange = () => {
+        if (imageRef.current.files.length > 0) {
+            previewRef.current.src = URL.createObjectURL(imageRef.current.files[0])
+        }
+    }
+
     return (
         <>
             <div className={`${adminStyles["info-row"]} ${styles["edit-row"]} ${adminStyles["edit-row"]}`}>
@@ -53,8 +58,8 @@ console.log(itemData.isActive   )
                         <label htmlFor={`sponsor-tier-${itemID}`}>Tier</label>
                         <select name="tier" id={`tier-${itemID}`} onChange={(e) => handleChange(e, itemID)}>
                             <option> -- </option>
-                            <option value="primary" selected={itemData.tier.toLowerCase() === 'primary' ? "selected" : ""}>Primary</option>
-                            <option value="secondary" selected={itemData.tier.toLowerCase() === 'secondary' ? "selected" : ""}>Secondary</option>
+                            <option value="primary" selected={(itemData.tier && itemData.tier.toLowerCase() === 'primary') ? "selected" : ""}>Primary</option>
+                            <option value="secondary" selected={(itemData.tier && itemData.tier.toLowerCase() === 'secondary') ? "selected" : ""}>Secondary</option>
                         </select>
                     </div>
                 </div>
@@ -70,7 +75,24 @@ console.log(itemData.isActive   )
                         <input style={{ alignSelf: "center" }} type="checkbox" name="isActive" id={`sponsor-isActive-${itemID}`} onChange={(e) => handleChange(e, itemID)} checked={itemData.isActive ? true : false} value={itemData.isActive} />
                     </div>
                 </div>
-                <div className={`${adminStyles["button-row"]} ${adminStyles["final-row"]} `}>
+                <div className={`input-row ${styles["second-row"]}`}>
+                    <div className={`input-group`}>
+                        <label htmlFor={`sponsor-isActive-${itemID}`}>Add Image</label>
+                        <input
+                            ref={imageRef}
+                            type="file"
+                            id="image"
+                            name="image"
+                            accept="image/png, image/jpeg, image/jpg"
+                            capture="environment"
+                            onChange={() => onFileChange()}
+                        />
+                    </div>
+                        <div className={`input-group`}>
+                            <img className={`${styles["image-thumbnail"]}`} ref={previewRef} src={`https://${itemData.imgURL}`}/>
+                        </div>
+                </div>
+                <div className={`${adminStyles["button-row"]} ${styles["third-row"]} `}>
                     <button className={`${"button button--medium"} ${adminStyles["icon__button"]}`} onClick={() => saveItem(itemID)}>
                         <FontAwesomeIcon className={`${adminStyles["action-icon"]}`} icon={faFloppyDisk} style={{ color: "#016014", }} /> &nbsp;&nbsp;Save
                     </button>
@@ -119,7 +141,37 @@ export default function Sponsors() {
 
     console.log(sponsorData)
 
-    function addItem() {
+    //Add a blank item with corresponding race name and id to the DB and repopulate the faqData state
+    async function addItem() {
+        try {
+            const token = localStorage.getItem('token')
+            let tableInfoResponse = await fetch(`${process.env.REACT_APP_SERVER}/sponsors/tableInfo`, {
+                headers: { authorization: `Bearer ${token}` }
+            })
+            let tableInfo = await tableInfoResponse.json()
+            const blankItem = { raceName: selectedRace };
+            tableInfo.forEach(column => {
+                if (column.Field !== 'id' && column.Field !== 'raceName') blankItem[column.Field] = null
+            })
+            const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
+            let addedItem = await fetch(`${process.env.REACT_APP_SERVER}/sponsors/${raceToFetch}`, {
+                method: "POST",
+                headers: {
+                    authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(blankItem)
+            })
+            let addedItemJSON = await addedItem.json()
+            setSponsorData(prev => {
+                let updatedSponsor = prev.concat({ ...blankItem, id: addedItemJSON.insertId })
+                return updatedSponsor
+            })
+            setSelectedItemID(addedItemJSON.insertId)
+            setSelectedAction('edit')
+        } catch (error) {
+            console.error(error)
+        }
 
     }
 
