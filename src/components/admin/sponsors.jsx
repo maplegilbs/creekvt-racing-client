@@ -83,14 +83,17 @@ function EditSponsorRow({ itemID, itemData, handleChange, saveItem, cancelAction
                             type="file"
                             id="image"
                             name="image"
-                            accept="image/png, image/jpeg, image/jpg"
+                            accept="image/png, image/jpeg"
                             capture="environment"
-                            onChange={() => onFileChange()}
+                            onChange={(e) => {
+                                handleChange(e, itemID)
+                                onFileChange()
+                            }}
                         />
                     </div>
-                        <div className={`input-group`}>
-                            <img className={`${styles["image-thumbnail"]}`} ref={previewRef} src={`https://${itemData.imgURL}`}/>
-                        </div>
+                    <div className={`input-group`}>
+                        <img className={`${styles["image-thumbnail"]}`} ref={previewRef} src={`https://${itemData.imgURL}`} />
+                    </div>
                 </div>
                 <div className={`${adminStyles["button-row"]} ${styles["third-row"]} `}>
                     <button className={`${"button button--medium"} ${adminStyles["icon__button"]}`} onClick={() => saveItem(itemID)}>
@@ -195,15 +198,21 @@ export default function Sponsors() {
 
     async function saveItem(itemID) {
         let itemDataToSave = sponsorData.find(item => item.id === itemID);
+        console.log(itemDataToSave)
         const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
         const token = localStorage.getItem("token")
+        let sponsorFormData = new FormData();
+        for (let itemProp in itemDataToSave) {
+            sponsorFormData.append(itemProp, itemDataToSave[itemProp])
+        }
+        sponsorFormData.forEach(entry => console.log(entry))
+        console.log(sponsorFormData)
         let updatedSponsorResponse = await fetch(`${process.env.REACT_APP_SERVER}/sponsors/${raceToFetch}/${itemID}`, {
             method: 'PATCH',
             headers: {
                 authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json'
             },
-            body: JSON.stringify(itemDataToSave)
+            body: sponsorFormData
         })
         const updatedSponsorJSON = await updatedSponsorResponse.json();
         setSelectedItemID(null)
@@ -221,6 +230,13 @@ export default function Sponsors() {
                         let updatedSponsor = {
                             ...sponsor,
                             [e.target.name]: isChecked
+                        }
+                        return updatedSponsor
+                    }
+                    else if (e.target.type === "file") {
+                        let updatedSponsor = {
+                            ...sponsor,
+                            [e.target.name]: e.target.files[0]
                         }
                         return updatedSponsor
                     }
