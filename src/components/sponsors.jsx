@@ -10,7 +10,7 @@ function SponsorItem({ sponsor }) {
     return (
         <div className={`${styles["sponsor-item"]} ${sponsor.tier === 'primary' ? styles['primary'] : ""}`}>
             {/* <p>{sponsor.name.toUpperCase()}</p> */}
-            <a href={sponsor.linkURL && sponsor.linkURL.toLowerCase() !== 'null' ? `${sponsor.linkURL}` : ""}><img src={`https://${sponsor.imgURL}`} /></a>
+            <a href={sponsor.linkURL && sponsor.linkURL.toLowerCase() !== 'null' ? `${sponsor.linkURL}` : ""}><img src={`${sponsor.imgURL}`} /></a>
         </div>
     )
 

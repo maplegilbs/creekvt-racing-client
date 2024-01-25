@@ -29,7 +29,7 @@ function SponsorRow({ itemID, itemData, askDeleteItem, editItem }) {
             }
             </p>
             <p>{itemData.linkURL}</p>
-            <img className={`${styles["image-thumbnail"]}`} src={`https://${itemData.imgURL}`} />
+            <img className={`${styles["image-thumbnail"]}`} src={`${itemData.imgURL}`} />
         </div>
     )
 }
@@ -38,11 +38,12 @@ function EditSponsorRow({ itemID, itemData, handleChange, saveItem, cancelAction
     const imageRef = useRef();
     const previewRef = useRef()
 
-    const onFileChange = () => {
-        if (imageRef.current.files.length > 0) {
-            previewRef.current.src = URL.createObjectURL(imageRef.current.files[0])
-        }
-    }
+    // const onFileChange = () => {
+    //     if (imageRef.current.files.length > 0) {
+    //         console.log(imageRef.current.files[0])
+    //         previewRef.current.src = URL.createObjectURL(imageRef.current.files[0])
+    //     }
+    // }
 
     return (
         <>
@@ -77,7 +78,7 @@ function EditSponsorRow({ itemID, itemData, handleChange, saveItem, cancelAction
                 </div>
                 <div className={`input-row ${styles["second-row"]}`}>
                     <div className={`input-group`}>
-                        <label htmlFor={`sponsor-isActive-${itemID}`}>Add Image</label>
+                        <label htmlFor={`sponsor-isActive-${itemID}`}>{itemData.imgURL? 'Change Image' : 'Add Image'}</label>
                         <input
                             ref={imageRef}
                             type="file"
@@ -87,12 +88,12 @@ function EditSponsorRow({ itemID, itemData, handleChange, saveItem, cancelAction
                             capture="environment"
                             onChange={(e) => {
                                 handleChange(e, itemID)
-                                onFileChange()
+                                // onFileChange()
                             }}
                         />
                     </div>
                     <div className={`input-group`}>
-                        <img className={`${styles["image-thumbnail"]}`} ref={previewRef} src={`https://${itemData.imgURL}`} />
+                        <img className={`${styles["image-thumbnail"]}`} ref={previewRef} src ={itemData.image ? URL.createObjectURL(itemData.image): itemData.imgURL ? itemData.imgURL : ''} />
                     </div>
                 </div>
                 <div className={`${adminStyles["button-row"]} ${styles["third-row"]} `}>
@@ -105,6 +106,25 @@ function EditSponsorRow({ itemID, itemData, handleChange, saveItem, cancelAction
                 </div>
             </div>
         </>
+    )
+}
+
+function DeleteConfirmation({ itemID, confirmDeleteItem, cancelAction }) {
+    return (
+        <div className={`${adminStyles["delete-confirm__container"]}`}>
+            <div>
+                {`Are you sure you want to delete this item?`}<br />
+                This action cannot be undone.
+                <div className={`${adminStyles["button-row"]} ${adminStyles["button-row--even-space"]}`}>
+                    <button type="button" className="button button--medium" onClick={() => confirmDeleteItem(itemID)}>
+                        Confirm
+                    </button>
+                    <button type="button" className="button button--medium" onClick={cancelAction}>
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
     )
 }
 
@@ -206,7 +226,6 @@ export default function Sponsors() {
             sponsorFormData.append(itemProp, itemDataToSave[itemProp])
         }
         sponsorFormData.forEach(entry => console.log(entry))
-        console.log(sponsorFormData)
         let updatedSponsorResponse = await fetch(`${process.env.REACT_APP_SERVER}/sponsors/${raceToFetch}/${itemID}`, {
             method: 'PATCH',
             headers: {
@@ -236,6 +255,7 @@ export default function Sponsors() {
                     else if (e.target.type === "file") {
                         let updatedSponsor = {
                             ...sponsor,
+                            imgURL: `https://creekvt.com/races/sponsorLogos/${e.target.files[0].name}`,
                             [e.target.name]: e.target.files[0]
                         }
                         return updatedSponsor
@@ -253,6 +273,25 @@ export default function Sponsors() {
         })
     }
 
+       //Display a modal to ask user to confirm deleting the item - if confirmed delete item from the database
+       async function confirmDeleteItem(itemID) {
+        try {
+            const token = localStorage.getItem("token");
+            const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
+            const deletedItem = await fetch(`${process.env.REACT_APP_SERVER}/sponsors/${raceToFetch}/${itemID}`, {
+                method: 'DELETE',
+                headers: { authorization: `Bearer ${token}` }
+            })
+            const deletedItemInfo = await deletedItem.json();
+            getSponsorData();
+        }
+        catch (err) {
+            console.log(err)
+        }
+        setSelectedItemID(null)
+        setSelectedAction(null)
+    }
+
     if (selectedRace && sponsorData) {
         return (
             <div className={`${adminStyles["info__container"]}`}>
@@ -260,9 +299,9 @@ export default function Sponsors() {
                 <div className={`${adminStyles["info-headers"]} ${styles['sponsor-headers']}`}>
                     <h6></h6><h6>Name</h6><h6>Tier</h6><h6>Active</h6><h6>Link URL</h6><h6>Image</h6>
                 </div>
-                {/* {selectedAction === 'delete' &&
+                {selectedAction === 'delete' &&
                     <>
-                    {sponsorData.map(sponsor => <ScheduleItemRow key={scheduleItem.id} itemID={scheduleItem.id} itemData={scheduleItem} editItem={editItem} askDeleteItem={askDeleteItem} />)}
+                    {sponsorData.map(sponsor => <SponsorRow key={sponsor.id} itemID={sponsor.id} itemData={sponsor} editItem={editItem} askDeleteItem={askDeleteItem} />)}
                     <DeleteConfirmation
                     itemID={selectedItemID}
                     setSelectedItemID={setSelectedItemID}
@@ -271,7 +310,7 @@ export default function Sponsors() {
                     cancelAction={cancelAction}
                         />
                     </>
-                } */}
+                }
                 {!selectedAction &&
                     sponsorData.map(sponsor => <SponsorRow key={sponsor.id} itemID={sponsor.id} itemData={sponsor} editItem={editItem} askDeleteItem={askDeleteItem} />)
                 }
