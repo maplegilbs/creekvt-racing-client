@@ -1,5 +1,6 @@
 //Components
 import Default from "./default";
+import DeleteConfirmation from "./deleteConfirmation.jsx";
 //Contexts
 import { SelectedRaceContext } from "../../pages/adminDashboard";
 import { UserInfoContext } from "../../pages/layout.jsx";
@@ -97,26 +98,6 @@ function EditScheduleItemRow({ itemID, itemData, handleChange, saveItem, cancelA
         </>
     )
 }
-
-function DeleteConfirmation({ itemID, confirmDeleteItem, cancelAction }) {
-    return (
-        <div className={`${adminStyles["delete-confirm__container"]}`}>
-            <div>
-                {`Are you sure you want to delete this item?`}<br />
-                This action cannot be undone.
-                <div className={`${adminStyles["button-row"]} ${adminStyles["button-row--even-space"]}`}>
-                    <button type="button" className="button button--medium" onClick={() => confirmDeleteItem(itemID)}>
-                        Confirm
-                    </button>
-                    <button type="button" className="button button--medium" onClick={cancelAction}>
-                        Cancel
-                    </button>
-                </div>
-            </div>
-        </div>
-    )
-}
-
 
 
 export default function Schedule() {

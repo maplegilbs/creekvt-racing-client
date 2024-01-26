@@ -1,10 +1,11 @@
 //components
 import Default from "./default"
+import DeleteConfirmation from "./deleteConfirmation"
 //Contexts
 import { SelectedRaceContext } from "../../pages/adminDashboard"
 import { UserInfoContext } from "../../pages/layout"
 //Hooks
-import { useContext, useEffect, useState, useRef } from "react"
+import { useContext, useEffect, useState } from "react"
 //Icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCirclePlus, faPenToSquare, faCircleMinus, faXmark, faFloppyDisk, faCircleXmark } from "@fortawesome/free-solid-svg-icons"
@@ -35,15 +36,6 @@ function SponsorRow({ itemID, itemData, askDeleteItem, editItem }) {
 }
 
 function EditSponsorRow({ itemID, itemData, handleChange, saveItem, cancelAction }) {
-    const imageRef = useRef();
-    const previewRef = useRef()
-
-    // const onFileChange = () => {
-    //     if (imageRef.current.files.length > 0) {
-    //         console.log(imageRef.current.files[0])
-    //         previewRef.current.src = URL.createObjectURL(imageRef.current.files[0])
-    //     }
-    // }
 
     return (
         <>
@@ -78,22 +70,18 @@ function EditSponsorRow({ itemID, itemData, handleChange, saveItem, cancelAction
                 </div>
                 <div className={`input-row ${styles["second-row"]}`}>
                     <div className={`input-group`}>
-                        <label htmlFor={`sponsor-isActive-${itemID}`}>{itemData.imgURL? 'Change Image' : 'Add Image'}</label>
+                        <label htmlFor={`sponsor-isActive-${itemID}`}>{itemData.imgURL ? 'Change Image' : 'Add Image'}</label>
                         <input
-                            ref={imageRef}
                             type="file"
                             id="image"
                             name="image"
                             accept="image/png, image/jpeg"
                             capture="environment"
-                            onChange={(e) => {
-                                handleChange(e, itemID)
-                                // onFileChange()
-                            }}
+                            onChange={(e) => { handleChange(e, itemID) }}
                         />
                     </div>
                     <div className={`input-group`}>
-                        <img className={`${styles["image-thumbnail"]}`} ref={previewRef} src ={itemData.image ? URL.createObjectURL(itemData.image): itemData.imgURL ? itemData.imgURL : ''} />
+                        <img className={`${styles["image-thumbnail"]}`} src={itemData.image ? URL.createObjectURL(itemData.image) : itemData.imgURL ? itemData.imgURL : ''} />
                     </div>
                 </div>
                 <div className={`${adminStyles["button-row"]} ${styles["third-row"]} `}>
@@ -108,26 +96,6 @@ function EditSponsorRow({ itemID, itemData, handleChange, saveItem, cancelAction
         </>
     )
 }
-
-function DeleteConfirmation({ itemID, confirmDeleteItem, cancelAction }) {
-    return (
-        <div className={`${adminStyles["delete-confirm__container"]}`}>
-            <div>
-                {`Are you sure you want to delete this item?`}<br />
-                This action cannot be undone.
-                <div className={`${adminStyles["button-row"]} ${adminStyles["button-row--even-space"]}`}>
-                    <button type="button" className="button button--medium" onClick={() => confirmDeleteItem(itemID)}>
-                        Confirm
-                    </button>
-                    <button type="button" className="button button--medium" onClick={cancelAction}>
-                        Cancel
-                    </button>
-                </div>
-            </div>
-        </div>
-    )
-}
-
 
 export default function Sponsors() {
     const selectedRace = useContext(SelectedRaceContext)[0]; //Name of race with spaces i.e. "Test Race"
@@ -273,8 +241,8 @@ export default function Sponsors() {
         })
     }
 
-       //Display a modal to ask user to confirm deleting the item - if confirmed delete item from the database
-       async function confirmDeleteItem(itemID) {
+    //Display a modal to ask user to confirm deleting the item - if confirmed delete item from the database
+    async function confirmDeleteItem(itemID) {
         try {
             const token = localStorage.getItem("token");
             const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
@@ -301,13 +269,13 @@ export default function Sponsors() {
                 </div>
                 {selectedAction === 'delete' &&
                     <>
-                    {sponsorData.map(sponsor => <SponsorRow key={sponsor.id} itemID={sponsor.id} itemData={sponsor} editItem={editItem} askDeleteItem={askDeleteItem} />)}
-                    <DeleteConfirmation
-                    itemID={selectedItemID}
-                    setSelectedItemID={setSelectedItemID}
-                    setSelectedAction={setSelectedAction}
-                    confirmDeleteItem={confirmDeleteItem}
-                    cancelAction={cancelAction}
+                        {sponsorData.map(sponsor => <SponsorRow key={sponsor.id} itemID={sponsor.id} itemData={sponsor} editItem={editItem} askDeleteItem={askDeleteItem} />)}
+                        <DeleteConfirmation
+                            itemID={selectedItemID}
+                            setSelectedItemID={setSelectedItemID}
+                            setSelectedAction={setSelectedAction}
+                            confirmDeleteItem={confirmDeleteItem}
+                            cancelAction={cancelAction}
                         />
                     </>
                 }
