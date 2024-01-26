@@ -1,4 +1,4 @@
-//components
+//Vomponents
 import Default from "./default"
 import DeleteConfirmation from "./deleteConfirmation"
 //Contexts
@@ -9,7 +9,9 @@ import { useContext, useEffect, useState } from "react"
 //Icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCirclePlus, faPenToSquare, faCircleMinus, faXmark, faFloppyDisk, faCircleXmark } from "@fortawesome/free-solid-svg-icons"
-import { faSquareCheck } from "@fortawesome/free-regular-svg-icons"
+import { faImage, faSquareCheck } from "@fortawesome/free-regular-svg-icons"
+//Libraries
+import { v4 as uuidv4 } from 'uuid'
 //Styles
 import styles from "./sponsors.module.css"
 import adminStyles from "./adminGlobalStyles.module.css"
@@ -21,22 +23,27 @@ function SponsorRow({ itemID, itemData, askDeleteItem, editItem }) {
                 <FontAwesomeIcon className={`${adminStyles["action-icon"]}`} onClick={() => editItem(itemID)} icon={faPenToSquare} style={{ color: "#000000", }} />
                 <FontAwesomeIcon className={`${adminStyles["action-icon"]}`} onClick={() => askDeleteItem(itemID)} icon={faCircleMinus} style={{ color: "#af2323", }} />
             </div>
-            <p>{itemData.name}</p>
-            <p>{itemData.tier.split('')[0].toUpperCase() + itemData.tier.substring(1).toLowerCase()}</p>
+            <p>{itemData.name ? itemData.name : ''}</p>
+            <p>{itemData.tier ? itemData.tier.split('')[0].toUpperCase() + itemData.tier.substring(1).toLowerCase() : ''}</p>
             <p>{itemData.isActive ?
                 <FontAwesomeIcon className={`${adminStyles["action-icon"]}`} icon={faSquareCheck} style={{ color: "#016014", }} />
                 :
                 <FontAwesomeIcon className={`${adminStyles["action-icon"]}`} icon={faXmark} style={{ color: "#af2323", }} />
             }
             </p>
-            <p>{itemData.linkURL}</p>
-            <img className={`${styles["image-thumbnail"]}`} src={`${itemData.imgURL}`} />
+            <p>{itemData.linkURL ? itemData.linkURL : ''}</p>
+            <div>
+                {itemData.imgURL ?
+                    <img className={`${styles["image-thumbnail"]}`} src={`${itemData.imgURL}`} />
+                    :
+                    <FontAwesomeIcon icon={faImage} size={'2xl'}/>
+                }
+            </div>
         </div>
     )
 }
 
 function EditSponsorRow({ itemID, itemData, handleChange, saveItem, cancelAction }) {
-
     return (
         <>
             <div className={`${adminStyles["info-row"]} ${styles["edit-row"]} ${adminStyles["edit-row"]}`}>
@@ -99,7 +106,6 @@ function EditSponsorRow({ itemID, itemData, handleChange, saveItem, cancelAction
 
 export default function Sponsors() {
     const selectedRace = useContext(SelectedRaceContext)[0]; //Name of race with spaces i.e. "Test Race"
-    const setSelectedRaceYear = useContext(SelectedRaceContext)[3] //Setter function for the selected race's year
     const userInfo = useContext(UserInfoContext)[0] //Logged in user info contianed in token
     const [sponsorData, setSponsorData] = useState(null);  //Array of objectes each containing data about specific sponsor
     const [selectedItemID, setSelectedItemID] = useState(null);  //The ID of a selected sponsor item  
@@ -130,7 +136,7 @@ export default function Sponsors() {
         }
     }
 
-    console.log(sponsorData)
+    console.log(sponsorData, typeof selectedItemID)
 
     //Add a blank item with corresponding race name and id to the DB and repopulate the faqData state
     async function addItem() {
@@ -144,21 +150,12 @@ export default function Sponsors() {
             tableInfo.forEach(column => {
                 if (column.Field !== 'id' && column.Field !== 'raceName') blankItem[column.Field] = null
             })
-            const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
-            let addedItem = await fetch(`${process.env.REACT_APP_SERVER}/sponsors/${raceToFetch}`, {
-                method: "POST",
-                headers: {
-                    authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(blankItem)
-            })
-            let addedItemJSON = await addedItem.json()
+            let newID = uuidv4()
             setSponsorData(prev => {
-                let updatedSponsor = prev.concat({ ...blankItem, id: addedItemJSON.insertId })
+                let updatedSponsor = prev.concat({ ...blankItem, id: newID })
                 return updatedSponsor
             })
-            setSelectedItemID(addedItemJSON.insertId)
+            setSelectedItemID(newID)
             setSelectedAction('edit')
         } catch (error) {
             console.error(error)
@@ -173,7 +170,8 @@ export default function Sponsors() {
     }
 
     //Action for when cancel button is selected
-    function cancelAction() {
+    async function cancelAction() {
+        await getSponsorData();
         setSelectedItemID(null);
         setSelectedAction(null);
     }
@@ -186,22 +184,34 @@ export default function Sponsors() {
 
     async function saveItem(itemID) {
         let itemDataToSave = sponsorData.find(item => item.id === itemID);
-        console.log(itemDataToSave)
         const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
         const token = localStorage.getItem("token")
         let sponsorFormData = new FormData();
         for (let itemProp in itemDataToSave) {
             sponsorFormData.append(itemProp, itemDataToSave[itemProp])
         }
-        sponsorFormData.forEach(entry => console.log(entry))
-        let updatedSponsorResponse = await fetch(`${process.env.REACT_APP_SERVER}/sponsors/${raceToFetch}/${itemID}`, {
-            method: 'PATCH',
-            headers: {
-                authorization: `Bearer ${token}`,
-            },
-            body: sponsorFormData
-        })
-        const updatedSponsorJSON = await updatedSponsorResponse.json();
+        sponsorFormData.delete('id')
+        //if item is being updated patch request
+        if (typeof itemID === 'number') {
+            await fetch(`${process.env.REACT_APP_SERVER}/sponsors/${raceToFetch}/${itemID}`, {
+                method: 'PATCH',
+                headers: {
+                    authorization: `Bearer ${token}`,
+                },
+                body: sponsorFormData
+            })
+        }
+        //if item is being saved for the first time post request
+        else if (typeof itemID === 'string') {
+            await fetch(`${process.env.REACT_APP_SERVER}/sponsors/${raceToFetch}`, {
+                method: "POST",
+                headers: {
+                    authorization: `Bearer ${token}`,
+                },
+                body: sponsorFormData
+            })
+        }
+        getSponsorData()
         setSelectedItemID(null)
         setSelectedAction(null)
     }
