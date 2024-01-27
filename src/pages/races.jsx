@@ -55,7 +55,7 @@ export default function Races() {
     return (
         <main>
             <div className={`${styles["hero-image__container"]}`}>
-                <img className={`${styles["hero-image"]}`} src="https://creekvt.com/races/RaceMainPage2.jpg" />
+                <img className={`${styles["hero-image"]}`} src="https://creekvt.com/races/RaceMainPage.jpg" />
             </div>
             <div className={`${styles["content-container"]}`}>
                 <div className={`${styles["heading-container"]}`}>
