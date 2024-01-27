@@ -8,6 +8,8 @@ import { useContext, useEffect, useState } from "react"
 //Icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare, faCircleMinus, faCirclePlus, faFloppyDisk, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
+//Libraries
+import { v4 as uuidv4 } from 'uuid'
 //Styles
 import styles from "./faq.module.css"
 import adminStyles from "./adminGlobalStyles.module.css"
@@ -32,7 +34,6 @@ function FAQRow({ itemData, editItem, askDeleteItem }) {
 }
 
 function EditFAQRow({ itemData, handleChange, saveItem, cancelAction }) {
-    const selectedRace = useContext(SelectedRaceContext)[0]; //Name of race with spaces i.e. "Test Race"
     let itemID = itemData.id
 
     return (
@@ -63,12 +64,9 @@ function EditFAQRow({ itemData, handleChange, saveItem, cancelAction }) {
 
 export default function FAQ() {
     const selectedRace = useContext(SelectedRaceContext)[0]; //Name of race with spaces i.e. "Test Race"
-    const userInfo = useContext(UserInfoContext)[0];  //Logged in user info contianed in token
     const [faqData, setFaqData] = useState(null)
     const [selectedItemID, setSelectedItemID] = useState(null);  //The ID of a selected schedule item  
     const [selectedAction, setSelectedAction] = useState(null);  //Null, 'delete' or 'edit' to be used to determine if Edit components allowing for input should be displayed or not
-
-    console.log(faqData, selectedItemID)
 
     //Set our initial state based on any changes in the selected race
     useEffect(() => {
@@ -102,21 +100,12 @@ export default function FAQ() {
         tableInfo.forEach(column => {
             if (column.Field !== 'id' && column.Field !== 'raceName') blankItem[column.Field] = null
         })
-        const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
-        let addedItem = await fetch(`${process.env.REACT_APP_SERVER}/faq/${raceToFetch}`, {
-            method: "POST",
-            headers: {
-                authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(blankItem)
-        })
-        let addedItemJSON = await addedItem.json()
+        let newID = uuidv4();
         setFaqData(prev => {
-            let updatedFAQ = prev.concat({ ...blankItem, id: addedItemJSON.insertId })
+            let updatedFAQ = prev.concat({ ...blankItem, id: newID })
             return updatedFAQ
         })
-        setSelectedItemID(addedItemJSON.insertId)
+        setSelectedItemID(newID)
         setSelectedAction('edit')
     }
 
@@ -131,25 +120,6 @@ export default function FAQ() {
         setSelectedItemID(null);
         setSelectedAction(null);
     }
-
-    //Update the selected item in the database by way of its ID
-    async function saveItem(itemID) {
-        let itemDataToSave = faqData.find(item => item.id === itemID);
-        const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
-        const token = localStorage.getItem("token")
-        let updatedFAQResponse = await fetch(`${process.env.REACT_APP_SERVER}/faq/${raceToFetch}/${itemID}`, {
-            method: 'PATCH',
-            headers: {
-                authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(itemDataToSave)
-        })
-        const updatedFAQJSON = await updatedFAQResponse.json();
-        setSelectedItemID(null)
-        setSelectedAction(null)
-    }
-
     //Set the selected action state to delete and the selected item id to the id of the item selected -- this will render the delete confirmation component with the ability to confirm or cancel deletion
     function askDeleteItem(itemID) {
         setSelectedItemID(itemID)
@@ -161,11 +131,10 @@ export default function FAQ() {
         try {
             const token = localStorage.getItem("token");
             const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
-            const deletedItem = await fetch(`${process.env.REACT_APP_SERVER}/faq/${raceToFetch}/${itemID}`, {
+            await fetch(`${process.env.REACT_APP_SERVER}/faq/${raceToFetch}/${itemID}`, {
                 method: 'DELETE',
                 headers: { authorization: `Bearer ${token}` }
             })
-            const deletedItemInfo = await deletedItem.json();
             getFAQData();
         }
         catch (err) {
@@ -174,6 +143,44 @@ export default function FAQ() {
         setSelectedItemID(null)
         setSelectedAction(null)
     }
+
+    //Save item - whether item is newly created or updated
+    //If itemID is a string it means it came from UUID and is a newly created item, if its a number it came from a call to the DB and means it is an item being updated
+    async function saveItem(itemID) {
+        try {
+            let itemDataToSave = faqData.find(item => item.id === itemID);
+            const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
+            const token = localStorage.getItem("token")
+            delete itemDataToSave.id
+            //if item is being updated patch request
+            if (typeof itemID === 'number') {
+                await fetch(`${process.env.REACT_APP_SERVER}/faq/${raceToFetch}/${itemID}`, {
+                    method: 'PATCH',
+                    headers: {
+                        authorization: `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(itemDataToSave)
+                })
+            }
+            //if item is being saved for the first time post request
+            else if (typeof itemID === 'string') {
+                await fetch(`${process.env.REACT_APP_SERVER}/faq/${raceToFetch}`, {
+                    method: "POST",
+                    headers: {
+                        authorization: `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(itemDataToSave)
+                })
+            }
+            setSelectedItemID(null)
+            setSelectedAction(null)
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
 
     //Update the faq data when an input value field is being changed
     function handleChange(e, itemID) {
@@ -196,30 +203,30 @@ export default function FAQ() {
         <div className={`${adminStyles["info__container"]} ${styles["faq__container"]}`}>
             <h2 className="section-heading">{selectedRace ? `${selectedRace} FAQ` : `Select a race to edit`}</h2>
             <div className={`${adminStyles["info-headers"]} ${styles['faq-headers']}`}>
-                    <h6></h6><h6>Question</h6><h6>Answer</h6>
-                </div>
+                <h6></h6><h6>Question</h6><h6>Answer</h6>
+            </div>
             {(faqData && !selectedAction) &&
                 faqData.map(faqItem => <FAQRow key={faqItem.id} itemData={faqItem} editItem={editItem} askDeleteItem={askDeleteItem} />)
             }
             {selectedAction === 'edit' &&
-                    faqData.map(faqItem => {
-                        return selectedItemID === faqItem.id ?
-                            <EditFAQRow key={faqItem.id} itemData={faqItem} handleChange={handleChange} saveItem={saveItem} cancelAction={cancelAction} />
-                            :
-                            <FAQRow key={faqItem.id} itemData={faqItem} editItem={editItem} askDeleteItem={askDeleteItem} />
-                    })
-                }
+                faqData.map(faqItem => {
+                    return selectedItemID === faqItem.id ?
+                        <EditFAQRow key={faqItem.id} itemData={faqItem} handleChange={handleChange} saveItem={saveItem} cancelAction={cancelAction} />
+                        :
+                        <FAQRow key={faqItem.id} itemData={faqItem} editItem={editItem} askDeleteItem={askDeleteItem} />
+                })
+            }
             {selectedAction === 'delete' &&
-             <>
-             {faqData.map(faqItem => <FAQRow key={faqItem.id} itemData={faqItem} editItem={editItem} askDeleteItem={askDeleteItem} />)}
-             <DeleteConfirmation
-                 itemID={selectedItemID}
-                 setSelectedItemID={setSelectedItemID}
-                 setSelectedAction={setSelectedAction}
-                 confirmDeleteItem={confirmDeleteItem}
-                 cancelAction={cancelAction}
-             />
-         </>
+                <>
+                    {faqData.map(faqItem => <FAQRow key={faqItem.id} itemData={faqItem} editItem={editItem} askDeleteItem={askDeleteItem} />)}
+                    <DeleteConfirmation
+                        itemID={selectedItemID}
+                        setSelectedItemID={setSelectedItemID}
+                        setSelectedAction={setSelectedAction}
+                        confirmDeleteItem={confirmDeleteItem}
+                        cancelAction={cancelAction}
+                    />
+                </>
             }
             {selectedAction !== 'edit' &&
                 <button className={`${"button button--medium"} ${adminStyles["icon__button"]}`} onClick={() => addItem()}>

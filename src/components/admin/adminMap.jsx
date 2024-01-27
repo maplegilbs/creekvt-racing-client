@@ -14,15 +14,10 @@ function MyMapComponent({ mapMarkerData, updateLocationFromMapClick, selectedIte
     const [mapMarkers, setMapMarkers] = useState([])
     const ref = useRef();
 
-
-
-
     //When the map is updated (via a new selected race) two things change - our first useEffect fires to build a new map
     //But also the component will have been passed new mapMaker data and so the second useEffect will also run
     //If the new map has not been built yet the map markers will have been set to the old map
     //So what we want to happen is for the mapMarkers to refresh after a new map has been built
-
-
     useEffect(() => {
         const buildMap = async () => {
             const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
@@ -50,7 +45,7 @@ function MyMapComponent({ mapMarkerData, updateLocationFromMapClick, selectedIte
 
     }, [selectedRace]);
 
-    //Should stop listening unless set loation on map button clicked
+    //Should stop listening unless set location on map button clicked
     useEffect(() => {
         function mapClickAction(e) {
             updateLocationFromMapClick(e, selectedItemID)
@@ -72,7 +67,6 @@ function MyMapComponent({ mapMarkerData, updateLocationFromMapClick, selectedIte
             setMapMarkers(() => {
                 // console.log('Setting markers')
                 let markers = mapMarkerData.map(markerData => {
-                    console.log(markerData)
                     const markerIcon = {
                         url: markerData.iconUrl ? markerData.iconUrl : "https://creekvt.com/races/RacerIcon.png",
                         scaledSize: new window.google.maps.Size(25, 25)

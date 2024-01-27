@@ -36,7 +36,7 @@ function SponsorRow({ itemID, itemData, askDeleteItem, editItem }) {
                 {itemData.imgURL ?
                     <img className={`${styles["image-thumbnail"]}`} src={`${itemData.imgURL}`} />
                     :
-                    <FontAwesomeIcon icon={faImage} size={'2xl'}/>
+                    <FontAwesomeIcon icon={faImage} size={'2xl'} />
                 }
             </div>
         </div>
@@ -136,7 +136,6 @@ export default function Sponsors() {
         }
     }
 
-    console.log(sponsorData, typeof selectedItemID)
 
     //Add a blank item with corresponding race name and id to the DB and repopulate the faqData state
     async function addItem() {
@@ -182,6 +181,8 @@ export default function Sponsors() {
         setSelectedAction('delete')
     }
 
+    //Save item - whether item is newly created or updated
+    //If itemID is a string it means it came from UUID and is a newly created item, if its a number it came from a call to the DB and means it is an item being updated
     async function saveItem(itemID) {
         let itemDataToSave = sponsorData.find(item => item.id === itemID);
         const raceToFetch = selectedRace.split(' ').join('').toLowerCase();

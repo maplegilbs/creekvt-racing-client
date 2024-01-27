@@ -3,14 +3,15 @@ import AdminMap from './adminMap'
 import Default from "./default";
 import DeleteConfirmation from './deleteConfirmation.jsx';
 //Contexts
-import { SelectedRaceContext} from "../../pages/adminDashboard";
+import { SelectedRaceContext } from "../../pages/adminDashboard";
 import { UserInfoContext } from "../../pages/layout.jsx";
-
 //Hooks
 import { useContext, useEffect, useState, useRef } from "react";
 //Icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare, faCircleMinus, faCirclePlus, faCircleXmark, faFloppyDisk, faLocationCrosshairs } from "@fortawesome/free-solid-svg-icons";
+//Libraries
+import { v4 as uuidv4 } from 'uuid'
 //Styles
 import styles from "./directions.module.css"
 import adminStyles from "./adminGlobalStyles.module.css"
@@ -79,7 +80,7 @@ function EditLocationRow({ editRowRef, itemID, itemData, handleChange, selectLoc
                     <div className={`${styles["marker-icons__container"]}`}>
                         <h5>Select An Icon</h5>
                         <div className={`${styles["marker-icons"]}`}>
-                            {iconUrls.map(iconUrl => <input type="button" name="iconUrl" onClick={(e) => handleChange(e, itemID)} value={iconUrl} style={{ background: `no-repeat center/cover url(${iconUrl})`, opacity: `${itemData.iconUrl === iconUrl ? 1 : .25}`}} />)}
+                            {iconUrls.map(iconUrl => <input type="button" name="iconUrl" onClick={(e) => handleChange(e, itemID)} value={iconUrl} style={{ background: `no-repeat center/cover url(${iconUrl})`, opacity: `${itemData.iconUrl === iconUrl ? 1 : .25}` }} />)}
                         </div>
                     </div>
                 </div>
@@ -138,38 +139,26 @@ export default function Directions() {
 
     //Add a blank item with corresponding race name and id to the DB and repopulate the scheduleData state
     async function addItem() {
-        const token = localStorage.getItem('token')
-        let tableInfoResponse = await fetch(`${process.env.REACT_APP_SERVER}/geoInfo/tableInfo`, {
-            headers: { authorization: `Bearer ${token}` }
-        })
-        let tableInfo = await tableInfoResponse.json()
-        const blankItem = { raceName: selectedRace };
-        tableInfo.forEach(column => {
-            if (column.Field !== 'id' && column.Field !== 'raceName') blankItem[column.Field] = null
-        })
-        const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
-        let addedItem = await fetch(`${process.env.REACT_APP_SERVER}/geoInfo/${raceToFetch}`, {
-            method: "POST",
-            headers: {
-                authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(blankItem)
-        })
-        let addedItemJSON = await addedItem.json()
-        console.log(addedItemJSON)
-        setLocations(prev => {
-            let updatedLocations = prev.concat({ ...blankItem, id: addedItemJSON.insertId })
-            return updatedLocations
-        })
-        setSelectedItemID(addedItemJSON.insertId)
-        setSelectedAction('edit')
-    }
-
-    //Set the selected action state to edit and the selected item id to the id of the item selected -- this will render a component with input fields for the selected item
-    function editItem(itemID) {
-        setSelectedItemID(itemID)
-        setSelectedAction('edit')
+        try {
+            const token = localStorage.getItem('token')
+            let tableInfoResponse = await fetch(`${process.env.REACT_APP_SERVER}/geoInfo/tableInfo`, {
+                headers: { authorization: `Bearer ${token}` }
+            })
+            let tableInfo = await tableInfoResponse.json()
+            const blankItem = { raceName: selectedRace };
+            tableInfo.forEach(column => {
+                if (column.Field !== 'id' && column.Field !== 'raceName') blankItem[column.Field] = null
+            })
+            let newID = uuidv4();
+            setLocations(prev => {
+                let updatedLocations = prev.concat({ ...blankItem, id: newID })
+                return updatedLocations
+            })
+            setSelectedItemID(newID)
+            setSelectedAction('edit')
+        } catch (error) {
+            console.error(error)
+        }
     }
 
 
@@ -180,7 +169,6 @@ export default function Directions() {
 
     //Update the current item's lat/lng based on a map click
     function updateLocationFromMapClick(e, itemID) {
-        console.log(itemID, mapClickAction)
         setLocations(prev => {
             let updatedLocations = prev.map(location => {
                 if (location.id !== itemID) return location
@@ -195,7 +183,12 @@ export default function Directions() {
             })
             return updatedLocations
         })
-        // setMapClickAction(null)
+    }
+
+    //Set the selected action state to edit and the selected item id to the id of the item selected -- this will render a component with input fields for the selected item
+    function editItem(itemID) {
+        setSelectedItemID(itemID)
+        setSelectedAction('edit')
     }
 
     //Action for when cancel button is selected
@@ -203,24 +196,6 @@ export default function Directions() {
         setMapClickAction(null)
         setSelectedItemID(null);
         setSelectedAction(null);
-    }
-
-    //Update the selected item in the database by way of its ID
-    async function saveItem(itemID) {
-        let itemDataToSave = locations.find(item => item.id === itemID);
-        const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
-        const token = localStorage.getItem("token")
-        let updatedLocationResponse = await fetch(`${process.env.REACT_APP_SERVER}/geoInfo/${raceToFetch}/${itemID}`, {
-            method: 'PATCH',
-            headers: {
-                authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(itemDataToSave)
-        })
-        const updatedLocationJSON = await updatedLocationResponse.json();
-        setSelectedItemID(null)
-        setSelectedAction(null)
     }
 
     //Set the selected action state to delete and the selected item id to the id of the item selected -- this will render the delete confirmation component with the ability to confirm or cancel deletion
@@ -234,12 +209,10 @@ export default function Directions() {
         try {
             const token = localStorage.getItem("token");
             const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
-            const deletedItem = await fetch(`${process.env.REACT_APP_SERVER}/geoInfo/${raceToFetch}/${itemID}`, {
+            await fetch(`${process.env.REACT_APP_SERVER}/geoInfo/${raceToFetch}/${itemID}`, {
                 method: 'DELETE',
                 headers: { authorization: `Bearer ${token}` }
             })
-            const deletedItemInfo = await deletedItem.json();
-            console.log(deletedItemInfo)
             getLocationsData();
         }
         catch (err) {
@@ -249,7 +222,44 @@ export default function Directions() {
         setSelectedAction(null)
     }
 
-    console.log(locations)
+    //Save item - whether item is newly created or updated
+    //If itemID is a string it means it came from UUID and is a newly created item, if its a number it came from a call to the DB and means it is an item being updated
+    async function saveItem(itemID) {
+        try {
+            let itemDataToSave = locations.find(item => item.id === itemID);
+            const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
+            const token = localStorage.getItem("token")
+            delete itemDataToSave.id
+            //if item is being updated patch request
+            if (typeof itemID === 'number') {
+                await fetch(`${process.env.REACT_APP_SERVER}/geoInfo/${raceToFetch}/${itemID}`, {
+                    method: 'PATCH',
+                    headers: {
+                        authorization: `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(itemDataToSave)
+                })
+            }
+            //if item is being saved for the first time post request
+            else if (typeof itemID === 'string') {
+                await fetch(`${process.env.REACT_APP_SERVER}/geoInfo/${raceToFetch}`, {
+                    method: "POST",
+                    headers: {
+                        authorization: `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(itemDataToSave)
+                })
+            }
+            getLocationsData()
+            setSelectedItemID(null)
+            setSelectedAction(null)
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
     //Update the location data when an input value field is being changed
     function handleChange(e, itemID) {
         setLocations(prev => {

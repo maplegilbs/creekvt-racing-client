@@ -34,13 +34,13 @@ export default function Athletes() {
     const [errorState, setErrorState] = useState({ isInErrorState: false, message: "" })
     const [csvData, setCSVData] = useState([]);
 
-    console.log("Racer data: ", registeredRacerData, "Selected action: ", selectedAction, "Selcted item id: ", selectedItemID, "Categoy options: ", categoryOpts)
-
     //Set our initial state based on any changes in the selected race
     useEffect(() => {
         getRacerData()
     }, [selectedRace, selectedRaceYear])
 
+
+    //Set our CSV data anytime the registeredRacerData is changed
     useEffect(() => {
         let dataArray = [['Boat ID', 'First Name', 'Last Name', 'Birthdate', 'Gender', 'Email', 'Category', 'Paid']];
         if (registeredRacerData) {
@@ -134,16 +134,16 @@ export default function Athletes() {
         }
     }
 
-    //Action for when cancel button is selected
-    function cancelAction() {
-        setSelectedItemID(null);
-        setSelectedAction("");
-    }
-
     //Set the selected action state to edit and the selected item id to the id of the item selected -- this will render a component with input fields for the selected item
     function editItem(itemID) {
         setSelectedItemID(itemID)
         setSelectedAction('edit')
+    }
+
+    //Action for when cancel button is selected
+    function cancelAction() {
+        setSelectedItemID(null);
+        setSelectedAction("");
     }
 
     //Set the selected action state to delete and the selected item id to the id of the item selected -- this will render the delete confirmation component with the ability to confirm or cancel deletion

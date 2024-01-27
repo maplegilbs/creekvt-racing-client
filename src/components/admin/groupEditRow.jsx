@@ -19,9 +19,6 @@ export default function EditGroupRow({ itemID, itemData, categoryOpts, setRegist
     const [currentGroupInfo, setCurrentGroupInfo] = useState(itemData)
     const [isNoticeDisplayed, setIsNoticeDisplayed] = useState(false)
 
-
-    console.log("Edit group row: ", itemID, currentGroupInfo, selectedRacer)
-
     //Add a racer to the boat.
     async function addRacer() {
         try {
