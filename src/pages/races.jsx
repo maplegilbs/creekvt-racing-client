@@ -38,7 +38,7 @@ export default function Races() {
                         {raceData.shortDescription}
                     </p>
                     <div className={`${styles["button__container"]}`}>
-                        {(raceData.isRegOpen && (new Date(raceData.date) > new Date()))?
+                        {(raceData.isRegOpen && (new Date(raceData.date) > new Date())) ?
                             <a href={`./races/${raceData.name.split(' ').join('').toLowerCase()}/register`} className={`button button--large`}>
                                 Register &nbsp;<img src="https://creekvt.com/races/RacerIcon.png" />
                             </a>
@@ -59,7 +59,8 @@ export default function Races() {
             </div>
             <div className={`${styles["content-container"]}`}>
                 <div className={`${styles["heading-container"]}`}>
-                    <h2 className={`primary-heading`}>Vermont Whitewater Races</h2>
+                    <h2 className={`primary-heading`}>Vermont Whitewater Racing</h2>
+                    <br />
                     <p className={`${styles["heading-container__summary"]}`}>
                         Welcome to the world of whitewater racing in the Green Mountains. On
                         this site you can register to compete, find information on each
@@ -67,7 +68,8 @@ export default function Races() {
                         results and photos. For the 2024 season we are looking forward
                         to the return of the classic New Haven Ledges Race, as well as the 3rd
                         annual Peavine Race. Check the individual race pages for details and to
-                        sign up. <br /><br />See you at the finish line.</p>
+                        sign up. </p>
+                    <p className={`${styles["heading-container__summary"]}`}>- See you at the finish line!</p>
                 </div>
                 <section className={`section-container`}>
                     <h2 className={`section-heading`}>2024 Lineup</h2>

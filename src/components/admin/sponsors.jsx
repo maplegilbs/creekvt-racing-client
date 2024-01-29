@@ -219,6 +219,7 @@ export default function Sponsors() {
 
     //Update the schedule data when an input value field is being changed
     function handleChange(e, itemID) {
+        const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
         setSponsorData(prev => {
             let updatedSponsors = prev.map(sponsor => {
                 if (sponsor.id !== itemID) return sponsor
@@ -234,7 +235,7 @@ export default function Sponsors() {
                     else if (e.target.type === "file") {
                         let updatedSponsor = {
                             ...sponsor,
-                            imgURL: `https://creekvt.com/races/sponsorLogos/${e.target.files[0].name}`,
+                            imgURL: `https://creekvt.com/races/${raceToFetch.slice(0, raceToFetch.length -4)}/images/sponsorLogos/${e.target.files[0].name}`,
                             [e.target.name]: e.target.files[0]
                         }
                         return updatedSponsor
