@@ -38,19 +38,20 @@ const router = createBrowserRouter([
         errorElement: <ErrorElement />
       },
       {
-        path: "races/:raceName",
+        path: "/races/:raceName",
         loader: raceLoader,
         element: <Race />,
         errorElement: <ErrorElement />
       },
       {
-        path: "races/:raceName/register",
+        path: "/races/:raceName/register",
         loader: registerLoader,
         element: <Register />,
         errorElement: <ErrorElement />
       }
     ]
   },
+  {basename: "/races"}
 
 ])
 export default function App() {

@@ -5,16 +5,25 @@ div.sponsor-row {
 
 .image-thumbnail {
     height: 8vh;
+    object-fit: contain;
 }
 
 .edit-row select {
-border: 1.6px solid rgb(118, 118, 118);
-padding: 1.2px 2px;
+    border: 1.6px solid rgb(118, 118, 118);
+    padding: 1.2px 2px;
 }
 
-.edit-row input[type="checkbox"]{
+.edit-row input[type="checkbox"] {
     flex-grow: 1;
     height: 17px;
     width: 17px;
     margin-left: 2rem;
+}
+
+.second-row {
+    grid-row: 2;
+}
+
+.third-row {
+    grid-row: 3;
 }

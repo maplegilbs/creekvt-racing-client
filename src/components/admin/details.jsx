@@ -138,8 +138,6 @@ export default function Details() {
         setLastSaved('edited')
     }
 
-    // const test = new DOMParser(formData.longDescription, 'text/html')
-    // console.log(test)
 
     if (selectedRace) {
         return (

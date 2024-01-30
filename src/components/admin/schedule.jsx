@@ -1,9 +1,9 @@
 //Components
 import Default from "./default";
+import DeleteConfirmation from "./deleteConfirmation.jsx";
 //Contexts
 import { SelectedRaceContext } from "../../pages/adminDashboard";
 import { UserInfoContext } from "../../pages/layout.jsx";
-
 //Hooks
 import { useContext, useEffect, useState } from "react";
 //Icons
@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare, faCircleMinus, faCirclePlus, faFloppyDisk, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 //Libs
 import { convertTime } from "../../utils/formatDateTime";
+import { v4 as uuidv4 } from 'uuid'
 //Styles
 import styles from "./schedule.module.css"
 import adminStyles from "./adminGlobalStyles.module.css"
@@ -80,7 +81,7 @@ function EditScheduleItemRow({ itemID, itemData, handleChange, saveItem, cancelA
                         <select name="location" id={`location-${itemID}`} onChange={(e) => handleChange(e, itemID)}>
                             <option> -- </option>
                             {locationsOpts &&
-                                locationsOpts.map(location => <option value={location.name} selected = {`${location.name === itemData.location? "selected":""}`}>{location.name}</option>)
+                                locationsOpts.map(location => <option value={location.name} selected={`${location.name === itemData.location ? "selected" : ""}`}>{location.name}</option>)
                             }
                         </select>
                     </div>
@@ -97,26 +98,6 @@ function EditScheduleItemRow({ itemID, itemData, handleChange, saveItem, cancelA
         </>
     )
 }
-
-function DeleteConfirmation({ itemID, confirmDeleteItem, cancelAction }) {
-    return (
-        <div className={`${adminStyles["delete-confirm__container"]}`}>
-            <div>
-                {`Are you sure you want to delete this item?`}<br />
-                This action cannot be undone.
-                <div className={`${adminStyles["button-row"]} ${adminStyles["button-row--even-space"]}`}>
-                    <button type="button" className="button button--medium" onClick={() => confirmDeleteItem(itemID)}>
-                        Confirm
-                    </button>
-                    <button type="button" className="button button--medium" onClick={cancelAction}>
-                        Cancel
-                    </button>
-                </div>
-            </div>
-        </div>
-    )
-}
-
 
 
 export default function Schedule() {
@@ -153,31 +134,26 @@ export default function Schedule() {
 
     //Add a blank item with corresponding race name and id to the DB and repopulate the scheduleData state
     async function addItem() {
-        const token = localStorage.getItem('token')
-        let tableInfoResponse = await fetch(`${process.env.REACT_APP_SERVER}/schedule/tableInfo`, {
-            headers: { authorization: `Bearer ${token}` }
-        })
-        let tableInfo = await tableInfoResponse.json()
-        const blankItem = { raceName: selectedRace };
-        tableInfo.forEach(column => {
-            if (column.Field !== 'id' && column.Field !== 'raceName') blankItem[column.Field] = null
-        })
-        const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
-        let addedItem = await fetch(`${process.env.REACT_APP_SERVER}/schedule/${raceToFetch}`, {
-            method: "POST",
-            headers: {
-                authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(blankItem)
-        })
-        let addedItemJSON = await addedItem.json()
-        setScheduleData(prev => {
-            let updatedSchedule = prev.concat({ ...blankItem, id: addedItemJSON.insertId })
-            return updatedSchedule
-        })
-        setSelectedItemID(addedItemJSON.insertId)
-        setSelectedAction('edit')
+        try {
+            const token = localStorage.getItem('token')
+            let tableInfoResponse = await fetch(`${process.env.REACT_APP_SERVER}/schedule/tableInfo`, {
+                headers: { authorization: `Bearer ${token}` }
+            })
+            let tableInfo = await tableInfoResponse.json()
+            const blankItem = { raceName: selectedRace };
+            tableInfo.forEach(column => {
+                if (column.Field !== 'id' && column.Field !== 'raceName') blankItem[column.Field] = null
+            })
+            let newID = uuidv4();
+            setScheduleData(prev => {
+                let updatedSchedule = prev.concat({ ...blankItem, id: newID })
+                return updatedSchedule
+            })
+            setSelectedItemID(newID)
+            setSelectedAction('edit')
+        } catch (error) {
+            console.error(error)
+        }
     }
 
     //Set the selected action state to edit and the selected item id to the id of the item selected -- this will render a component with input fields for the selected item
@@ -192,23 +168,6 @@ export default function Schedule() {
         setSelectedAction(null);
     }
 
-    //Update the selected item in the database by way of its ID
-    async function saveItem(itemID) {
-        let itemDataToSave = scheduleData.find(item => item.id === itemID);
-        const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
-        const token = localStorage.getItem("token")
-        let updatedScheduleResponse = await fetch(`${process.env.REACT_APP_SERVER}/schedule/${raceToFetch}/${itemID}`, {
-            method: 'PATCH',
-            headers: {
-                authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(itemDataToSave)
-        })
-        const updatedScheduleJSON = await updatedScheduleResponse.json();
-        setSelectedItemID(null)
-        setSelectedAction(null)
-    }
 
     //Set the selected action state to delete and the selected item id to the id of the item selected -- this will render the delete confirmation component with the ability to confirm or cancel deletion
     function askDeleteItem(itemID) {
@@ -221,18 +180,55 @@ export default function Schedule() {
         try {
             const token = localStorage.getItem("token");
             const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
-            const deletedItem = await fetch(`${process.env.REACT_APP_SERVER}/schedule/${raceToFetch}/${itemID}`, {
+            await fetch(`${process.env.REACT_APP_SERVER}/schedule/${raceToFetch}/${itemID}`, {
                 method: 'DELETE',
                 headers: { authorization: `Bearer ${token}` }
             })
-            const deletedItemInfo = await deletedItem.json();
             getScheduleData();
         }
         catch (err) {
-            console.log(err)
+            console.error(err)
         }
         setSelectedItemID(null)
         setSelectedAction(null)
+    }
+
+    //Update the selected item in the database by way of its ID
+    async function saveItem(itemID) {
+        try {
+            let itemDataToSave = scheduleData.find(item => item.id === itemID);
+            const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
+            const token = localStorage.getItem("token")
+            delete itemDataToSave.id
+            //if item is being updated patch request
+            if (typeof itemID === 'number') {
+                await fetch(`${process.env.REACT_APP_SERVER}/schedule/${raceToFetch}/${itemID}`, {
+                    method: 'PATCH',
+                    headers: {
+                        authorization: `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(itemDataToSave)
+                })
+            }
+            //if item is being saved for the first time post request
+            else if (typeof itemID === 'string') {
+                await fetch(`${process.env.REACT_APP_SERVER}/schedule/${raceToFetch}`, {
+                    method: "POST",
+                    headers: {
+                        authorization: `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(itemDataToSave)
+                })
+            }
+            getScheduleData()
+            setSelectedItemID(null)
+            setSelectedAction(null)
+        }
+        catch (error) {
+            console.error(error)
+        }
     }
 
     //Update the schedule data when an input value field is being changed

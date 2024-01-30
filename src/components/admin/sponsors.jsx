@@ -1,5 +1,6 @@
-//components
+//Vomponents
 import Default from "./default"
+import DeleteConfirmation from "./deleteConfirmation"
 //Contexts
 import { SelectedRaceContext } from "../../pages/adminDashboard"
 import { UserInfoContext } from "../../pages/layout"
@@ -8,7 +9,9 @@ import { useContext, useEffect, useState } from "react"
 //Icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCirclePlus, faPenToSquare, faCircleMinus, faXmark, faFloppyDisk, faCircleXmark } from "@fortawesome/free-solid-svg-icons"
-import { faSquareCheck } from "@fortawesome/free-regular-svg-icons"
+import { faImage, faSquareCheck } from "@fortawesome/free-regular-svg-icons"
+//Libraries
+import { v4 as uuidv4 } from 'uuid'
 //Styles
 import styles from "./sponsors.module.css"
 import adminStyles from "./adminGlobalStyles.module.css"
@@ -20,25 +23,27 @@ function SponsorRow({ itemID, itemData, askDeleteItem, editItem }) {
                 <FontAwesomeIcon className={`${adminStyles["action-icon"]}`} onClick={() => editItem(itemID)} icon={faPenToSquare} style={{ color: "#000000", }} />
                 <FontAwesomeIcon className={`${adminStyles["action-icon"]}`} onClick={() => askDeleteItem(itemID)} icon={faCircleMinus} style={{ color: "#af2323", }} />
             </div>
-            <p>{itemData.name}</p>
-            <p>{itemData.tier.split('')[0].toUpperCase() + itemData.tier.substring(1).toLowerCase()}</p>
+            <p>{itemData.name ? itemData.name : ''}</p>
+            <p>{itemData.tier ? itemData.tier.split('')[0].toUpperCase() + itemData.tier.substring(1).toLowerCase() : ''}</p>
             <p>{itemData.isActive ?
                 <FontAwesomeIcon className={`${adminStyles["action-icon"]}`} icon={faSquareCheck} style={{ color: "#016014", }} />
                 :
                 <FontAwesomeIcon className={`${adminStyles["action-icon"]}`} icon={faXmark} style={{ color: "#af2323", }} />
             }
             </p>
-            <p>{itemData.linkURL}</p>
-            <img className={`${styles["image-thumbnail"]}`} src={`https://${itemData.imgURL}`} />
-
+            <p>{itemData.linkURL ? itemData.linkURL : ''}</p>
+            <div>
+                {itemData.imgURL ?
+                    <img className={`${styles["image-thumbnail"]}`} src={`${itemData.imgURL}`} />
+                    :
+                    <FontAwesomeIcon icon={faImage} size={'2xl'} />
+                }
+            </div>
         </div>
     )
 }
 
 function EditSponsorRow({ itemID, itemData, handleChange, saveItem, cancelAction }) {
-    const selectedRace = useContext(SelectedRaceContext)[0]; //Name of race with spaces i.e. "Test Race"
-
-console.log(itemData.isActive   )
     return (
         <>
             <div className={`${adminStyles["info-row"]} ${styles["edit-row"]} ${adminStyles["edit-row"]}`}>
@@ -53,8 +58,8 @@ console.log(itemData.isActive   )
                         <label htmlFor={`sponsor-tier-${itemID}`}>Tier</label>
                         <select name="tier" id={`tier-${itemID}`} onChange={(e) => handleChange(e, itemID)}>
                             <option> -- </option>
-                            <option value="primary" selected={itemData.tier.toLowerCase() === 'primary' ? "selected" : ""}>Primary</option>
-                            <option value="secondary" selected={itemData.tier.toLowerCase() === 'secondary' ? "selected" : ""}>Secondary</option>
+                            <option value="primary" selected={(itemData.tier && itemData.tier.toLowerCase() === 'primary') ? "selected" : ""}>Primary</option>
+                            <option value="secondary" selected={(itemData.tier && itemData.tier.toLowerCase() === 'secondary') ? "selected" : ""}>Secondary</option>
                         </select>
                     </div>
                 </div>
@@ -70,7 +75,23 @@ console.log(itemData.isActive   )
                         <input style={{ alignSelf: "center" }} type="checkbox" name="isActive" id={`sponsor-isActive-${itemID}`} onChange={(e) => handleChange(e, itemID)} checked={itemData.isActive ? true : false} value={itemData.isActive} />
                     </div>
                 </div>
-                <div className={`${adminStyles["button-row"]} ${adminStyles["final-row"]} `}>
+                <div className={`input-row ${styles["second-row"]}`}>
+                    <div className={`input-group`}>
+                        <label htmlFor={`sponsor-isActive-${itemID}`}>{itemData.imgURL ? 'Change Image' : 'Add Image'}</label>
+                        <input
+                            type="file"
+                            id="image"
+                            name="image"
+                            accept="image/png, image/jpeg"
+                            capture="environment"
+                            onChange={(e) => { handleChange(e, itemID) }}
+                        />
+                    </div>
+                    <div className={`input-group`}>
+                        <img className={`${styles["image-thumbnail"]}`} src={itemData.image ? URL.createObjectURL(itemData.image) : itemData.imgURL ? itemData.imgURL : ''} />
+                    </div>
+                </div>
+                <div className={`${adminStyles["button-row"]} ${styles["third-row"]} `}>
                     <button className={`${"button button--medium"} ${adminStyles["icon__button"]}`} onClick={() => saveItem(itemID)}>
                         <FontAwesomeIcon className={`${adminStyles["action-icon"]}`} icon={faFloppyDisk} style={{ color: "#016014", }} /> &nbsp;&nbsp;Save
                     </button>
@@ -83,10 +104,8 @@ console.log(itemData.isActive   )
     )
 }
 
-
 export default function Sponsors() {
     const selectedRace = useContext(SelectedRaceContext)[0]; //Name of race with spaces i.e. "Test Race"
-    const setSelectedRaceYear = useContext(SelectedRaceContext)[3] //Setter function for the selected race's year
     const userInfo = useContext(UserInfoContext)[0] //Logged in user info contianed in token
     const [sponsorData, setSponsorData] = useState(null);  //Array of objectes each containing data about specific sponsor
     const [selectedItemID, setSelectedItemID] = useState(null);  //The ID of a selected sponsor item  
@@ -117,9 +136,29 @@ export default function Sponsors() {
         }
     }
 
-    console.log(sponsorData)
 
-    function addItem() {
+    //Add a blank item with corresponding race name and id to the DB and repopulate the faqData state
+    async function addItem() {
+        try {
+            const token = localStorage.getItem('token')
+            let tableInfoResponse = await fetch(`${process.env.REACT_APP_SERVER}/sponsors/tableInfo`, {
+                headers: { authorization: `Bearer ${token}` }
+            })
+            let tableInfo = await tableInfoResponse.json()
+            const blankItem = { raceName: selectedRace };
+            tableInfo.forEach(column => {
+                if (column.Field !== 'id' && column.Field !== 'raceName') blankItem[column.Field] = null
+            })
+            let newID = uuidv4()
+            setSponsorData(prev => {
+                let updatedSponsor = prev.concat({ ...blankItem, id: newID })
+                return updatedSponsor
+            })
+            setSelectedItemID(newID)
+            setSelectedAction('edit')
+        } catch (error) {
+            console.error(error)
+        }
 
     }
 
@@ -130,7 +169,8 @@ export default function Sponsors() {
     }
 
     //Action for when cancel button is selected
-    function cancelAction() {
+    async function cancelAction() {
+        await getSponsorData();
         setSelectedItemID(null);
         setSelectedAction(null);
     }
@@ -141,25 +181,45 @@ export default function Sponsors() {
         setSelectedAction('delete')
     }
 
+    //Save item - whether item is newly created or updated
+    //If itemID is a string it means it came from UUID and is a newly created item, if its a number it came from a call to the DB and means it is an item being updated
     async function saveItem(itemID) {
         let itemDataToSave = sponsorData.find(item => item.id === itemID);
         const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
         const token = localStorage.getItem("token")
-        let updatedSponsorResponse = await fetch(`${process.env.REACT_APP_SERVER}/sponsors/${raceToFetch}/${itemID}`, {
-            method: 'PATCH',
-            headers: {
-                authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(itemDataToSave)
-        })
-        const updatedSponsorJSON = await updatedSponsorResponse.json();
+        let sponsorFormData = new FormData();
+        for (let itemProp in itemDataToSave) {
+            sponsorFormData.append(itemProp, itemDataToSave[itemProp])
+        }
+        sponsorFormData.delete('id')
+        //if item is being updated patch request
+        if (typeof itemID === 'number') {
+            await fetch(`${process.env.REACT_APP_SERVER}/sponsors/${raceToFetch}/${itemID}`, {
+                method: 'PATCH',
+                headers: {
+                    authorization: `Bearer ${token}`,
+                },
+                body: sponsorFormData
+            })
+        }
+        //if item is being saved for the first time post request
+        else if (typeof itemID === 'string') {
+            await fetch(`${process.env.REACT_APP_SERVER}/sponsors/${raceToFetch}`, {
+                method: "POST",
+                headers: {
+                    authorization: `Bearer ${token}`,
+                },
+                body: sponsorFormData
+            })
+        }
+        getSponsorData()
         setSelectedItemID(null)
         setSelectedAction(null)
     }
 
     //Update the schedule data when an input value field is being changed
     function handleChange(e, itemID) {
+        const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
         setSponsorData(prev => {
             let updatedSponsors = prev.map(sponsor => {
                 if (sponsor.id !== itemID) return sponsor
@@ -169,6 +229,14 @@ export default function Sponsors() {
                         let updatedSponsor = {
                             ...sponsor,
                             [e.target.name]: isChecked
+                        }
+                        return updatedSponsor
+                    }
+                    else if (e.target.type === "file") {
+                        let updatedSponsor = {
+                            ...sponsor,
+                            imgURL: `https://creekvt.com/races/${raceToFetch.slice(0, raceToFetch.length -4)}/images/sponsorLogos/${e.target.files[0].name}`,
+                            [e.target.name]: e.target.files[0]
                         }
                         return updatedSponsor
                     }
@@ -185,6 +253,25 @@ export default function Sponsors() {
         })
     }
 
+    //Display a modal to ask user to confirm deleting the item - if confirmed delete item from the database
+    async function confirmDeleteItem(itemID) {
+        try {
+            const token = localStorage.getItem("token");
+            const raceToFetch = selectedRace.split(' ').join('').toLowerCase();
+            const deletedItem = await fetch(`${process.env.REACT_APP_SERVER}/sponsors/${raceToFetch}/${itemID}`, {
+                method: 'DELETE',
+                headers: { authorization: `Bearer ${token}` }
+            })
+            const deletedItemInfo = await deletedItem.json();
+            getSponsorData();
+        }
+        catch (err) {
+            console.log(err)
+        }
+        setSelectedItemID(null)
+        setSelectedAction(null)
+    }
+
     if (selectedRace && sponsorData) {
         return (
             <div className={`${adminStyles["info__container"]}`}>
@@ -192,18 +279,18 @@ export default function Sponsors() {
                 <div className={`${adminStyles["info-headers"]} ${styles['sponsor-headers']}`}>
                     <h6></h6><h6>Name</h6><h6>Tier</h6><h6>Active</h6><h6>Link URL</h6><h6>Image</h6>
                 </div>
-                {/* {selectedAction === 'delete' &&
+                {selectedAction === 'delete' &&
                     <>
-                    {sponsorData.map(sponsor => <ScheduleItemRow key={scheduleItem.id} itemID={scheduleItem.id} itemData={scheduleItem} editItem={editItem} askDeleteItem={askDeleteItem} />)}
-                    <DeleteConfirmation
-                    itemID={selectedItemID}
-                    setSelectedItemID={setSelectedItemID}
-                    setSelectedAction={setSelectedAction}
-                    confirmDeleteItem={confirmDeleteItem}
-                    cancelAction={cancelAction}
+                        {sponsorData.map(sponsor => <SponsorRow key={sponsor.id} itemID={sponsor.id} itemData={sponsor} editItem={editItem} askDeleteItem={askDeleteItem} />)}
+                        <DeleteConfirmation
+                            itemID={selectedItemID}
+                            setSelectedItemID={setSelectedItemID}
+                            setSelectedAction={setSelectedAction}
+                            confirmDeleteItem={confirmDeleteItem}
+                            cancelAction={cancelAction}
                         />
                     </>
-                } */}
+                }
                 {!selectedAction &&
                     sponsorData.map(sponsor => <SponsorRow key={sponsor.id} itemID={sponsor.id} itemData={sponsor} editItem={editItem} askDeleteItem={askDeleteItem} />)
                 }

@@ -10,7 +10,7 @@ function SponsorItem({ sponsor }) {
     return (
         <div className={`${styles["sponsor-item"]} ${sponsor.tier === 'primary' ? styles['primary'] : ""}`}>
             {/* <p>{sponsor.name.toUpperCase()}</p> */}
-            <a href={sponsor.linkURL && sponsor.linkURL.toLowerCase() !== 'null' ? `${sponsor.linkURL}` : ""}><img src={`https://${sponsor.imgURL}`} /></a>
+            <a href={sponsor.linkURL && sponsor.linkURL.toLowerCase() !== 'null' ? `${sponsor.linkURL}` : ""}><img src={`${sponsor.imgURL}`} /></a>
         </div>
     )
 
@@ -44,14 +44,14 @@ export default function Sponsors() {
                                 <strong>{sponsorInfo.filter(sponsor => sponsor.tier.toLowerCase() === 'primary').map(sponsor => <><span>{sponsor.name}</span><br /></>)}</strong>
                             </p>
                             <div className={`${styles["sponsor-row"]} ${styles["primary-row"]}`}>
-                                {sponsorInfo.filter(sponsor => sponsor.tier.toLowerCase() === 'primary').map(sponsor => <SponsorItem sponsor={sponsor} />)}
+                                {sponsorInfo.filter(sponsor => sponsor.tier.toLowerCase() === 'primary' && sponsor.isActive).map(sponsor => <SponsorItem sponsor={sponsor} />)}
                             </div>
                             <br />
                             <hr />
                         </>
                     }
                     <div className={`${styles["sponsor-row"]} ${styles["secondary-row"]}`}>
-                        {sponsorInfo.filter(sponsor => sponsor.tier.toLowerCase() === 'secondary').map(sponsor => <SponsorItem sponsor={sponsor} />)}
+                        {sponsorInfo.filter(sponsor => sponsor.tier.toLowerCase() === 'secondary' && sponsor.isActive).map(sponsor => <SponsorItem sponsor={sponsor} />)}
                     </div>
                 </div>
             }
