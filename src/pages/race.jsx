@@ -2,6 +2,7 @@
 import ContactForm from "../components/contactForm";
 import CourseDetails from "../components/courseDetails";
 import FAQ from "../components/faq";
+import Gallery from "../components/gallery";
 import Loader from "../components/loader";
 import Map from "../components/map";
 import RegisteredRacers from "../components/registeredRacers";
@@ -233,7 +234,7 @@ export default function Race() {
                             <div className={`${styles["location-section"]}`}>
                                 {locationContainers}
                             </div>
-                            < Map mapMarkerData={mapMarkerData} selectedMapLocation={selectedMapLocation} />
+                            {/* < Map mapMarkerData={mapMarkerData} selectedMapLocation={selectedMapLocation} /> */}
                         </div>
                     </section >
                     <section className={`section-container`} id={`course-section`}>
@@ -246,6 +247,17 @@ export default function Race() {
                         <hr />
                         <Results />
                     </section>
+
+
+
+                    <section className={`section-container`} id={`gallery-section`}>
+                        <h2 className={`section-heading`}>Gallery</h2>
+                        <hr />
+                        <Gallery />
+                    </section>
+                    
+                    
+                    
                     <section className={`section-container`} id={`faq-section`}>
                         <h2 className={`section-heading`}>FAQ</h2>
                         <hr />
