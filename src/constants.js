@@ -1,36 +1,25 @@
 export const galleryImages = {
     newhavenrace: [
         {
-            src: 'caleb_kenna_001_1800.jpg',
+            src: 'scott_martin_013_1800.jpg',
             width: 1800,
-            height: 1200,
+            height: 1202,
             alt: 'Picture of kayakers at the New Haven Whitewater Kayak Race in Bristol, Vermont',
-            description: 'Photo credit Caleb Kenna',
+            description: 'Photo credit Scott Martin',
             srcSet: [
-                { src: 'caleb_kenna_001_300.jpg', width: 300, height: 200 },
-                { src: 'caleb_kenna_001_900.jpg', width: 900, height: 600 },
+                { src: 'scott_martin_013_300.jpg', width: 300, height: 200 },
+                { src: 'scott_martin_013_900.jpg', width: 900, height: 601 },
             ]
         },
         {
-            src: 'caleb_kenna_002_1800.jpg',
-            width: 1800,
-            height: 1201,
+            src: 'scott_martin_010_1800.jpg',
+            width: 1440,
+            height: 1800,
             alt: 'Picture of kayakers at the New Haven Whitewater Kayak Race in Bristol, Vermont',
-            description: 'Photo credit Caleb Kenna',
+            description: 'Photo credit Scott Martin',
             srcSet: [
-                { src: 'caleb_kenna_002_300.jpg', width: 300, height: 200 },
-                { src: 'caleb_kenna_002_900.jpg', width: 900, height: 601 },
-            ]
-        },
-        {
-            src: 'caleb_kenna_003_1800.jpg',
-            width: 1800,
-            height: 1200,
-            alt: 'Picture of kayakers at the New Haven Whitewater Kayak Race in Bristol, Vermont',
-            description: 'Photo credit Caleb Kenna',
-            srcSet: [
-                { src: 'caleb_kenna_003_300.jpg', width: 300, height: 200 },
-                { src: 'caleb_kenna_003_900.jpg', width: 900, height: 600 },
+                { src: 'scott_martin_010_300.jpg', width: 240, height: 300 },
+                { src: 'scott_martin_010_900.jpg', width: 720, height: 900 },
             ]
         },
         {
@@ -100,6 +89,39 @@ export const galleryImages = {
             ]
         },
         {
+            src: 'caleb_kenna_001_1800.jpg',
+            width: 1800,
+            height: 1200,
+            alt: 'Picture of kayakers at the New Haven Whitewater Kayak Race in Bristol, Vermont',
+            description: 'Photo credit Caleb Kenna',
+            srcSet: [
+                { src: 'caleb_kenna_001_300.jpg', width: 300, height: 200 },
+                { src: 'caleb_kenna_001_900.jpg', width: 900, height: 600 },
+            ]
+        },
+        {
+            src: 'caleb_kenna_002_1800.jpg',
+            width: 1800,
+            height: 1201,
+            alt: 'Picture of kayakers at the New Haven Whitewater Kayak Race in Bristol, Vermont',
+            description: 'Photo credit Caleb Kenna',
+            srcSet: [
+                { src: 'caleb_kenna_002_300.jpg', width: 300, height: 200 },
+                { src: 'caleb_kenna_002_900.jpg', width: 900, height: 601 },
+            ]
+        },
+        {
+            src: 'caleb_kenna_003_1800.jpg',
+            width: 1800,
+            height: 1200,
+            alt: 'Picture of kayakers at the New Haven Whitewater Kayak Race in Bristol, Vermont',
+            description: 'Photo credit Caleb Kenna',
+            srcSet: [
+                { src: 'caleb_kenna_003_300.jpg', width: 300, height: 200 },
+                { src: 'caleb_kenna_003_900.jpg', width: 900, height: 600 },
+            ]
+        },
+        {
             src: 'scott_martin_007_1800.jpg',
             width: 1202,
             height: 1800,
@@ -133,17 +155,6 @@ export const galleryImages = {
             ]
         },
         {
-            src: 'scott_martin_010_1800.jpg',
-            width: 1440,
-            height: 1800,
-            alt: 'Picture of kayakers at the New Haven Whitewater Kayak Race in Bristol, Vermont',
-            description: 'Photo credit Scott Martin',
-            srcSet: [
-                { src: 'scott_martin_010_300.jpg', width: 240, height: 300 },
-                { src: 'scott_martin_010_900.jpg', width: 720, height: 900 },
-            ]
-        },
-        {
             src: 'scott_martin_011_1800.jpg',
             width: 1202,
             height: 1800,
@@ -163,17 +174,6 @@ export const galleryImages = {
             srcSet: [
                 { src: 'scott_martin_012_300.jpg', width: 300, height: 200 },
                 { src: 'scott_martin_012_900.jpg', width: 900, height: 601 },
-            ]
-        },
-        {
-            src: 'scott_martin_013_1800.jpg',
-            width: 1800,
-            height: 1202,
-            alt: 'Picture of kayakers at the New Haven Whitewater Kayak Race in Bristol, Vermont',
-            description: 'Photo credit Scott Martin',
-            srcSet: [
-                { src: 'scott_martin_013_300.jpg', width: 300, height: 200 },
-                { src: 'scott_martin_013_900.jpg', width: 900, height: 601 },
             ]
         },
         {

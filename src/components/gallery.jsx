@@ -10,7 +10,6 @@ import { useParams } from 'react-router-dom'
 //Styles
 import 'yet-another-react-lightbox/styles.css'
 import "yet-another-react-lightbox/plugins/captions.css";
-import styles from './gallery.module.css'
 
 export default function Gallery() {
   const { raceName } = useParams()
@@ -19,11 +18,9 @@ export default function Gallery() {
   const baseURL = `https://creekvt.com/races/${raceName.slice(0, -4)}/images/gallery`
 
   const slides = galleryImages[raceName].map(image => {
-    console.log(image)
     return { src: `${baseURL}/${image.src}`, width: image.width, height: image.height, description: image.description, alt: image.alt, imageFit: 'contain' }
   })
 
-  console.log(slides)
   return (
     <>
 
