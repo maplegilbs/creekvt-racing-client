@@ -165,12 +165,14 @@ export default function Race() {
                                 </a>
                             </div>
                             <nav className={`${styles['race-nav']}`}>
-                                <a href="#schedule-section" className={`link-std link-bold`}>Schedule</a>
-                                <a href="#athletes-section" className={`link-std link-bold`}>Athletes</a>
-                                <a href="#directions-section" className={`link-std link-bold`}>Directions</a>
-                                <a href="#course-section" className={`link-std link-bold`}>Course</a>
-                                <a href="#results-section" className={`link-std link-bold`}>Results</a>
-                                <a href="#faq-section" className={`link-std link-bold`}>FAQ</a>
+                                <a href={`./${raceName}#schedule-section`} className={`link-std link-bold`}>Schedule</a>
+                                <a href={`./${raceName}#athletes-section`} className={`link-std link-bold`}>Athletes</a>
+                                <a href={`./${raceName}#directions-section`} className={`link-std link-bold`}>Directions</a>
+                                <a href={`./${raceName}#course-section`} className={`link-std link-bold`}>Course</a>
+                                <a href={`./${raceName}#results-section`} className={`link-std link-bold`}>Results</a>
+                                <a href={`./${raceName}#results-section`} className={`link-std link-bold`}>Gallery</a>
+                                <a href={`./${raceName}#faq-section`} className={`link-std link-bold`}>FAQ</a>
+                                <a href={`./${raceName}#faq-section`} className={`link-std link-bold`}>Contact</a>
                             </nav>
                         </div>
                     </section>
