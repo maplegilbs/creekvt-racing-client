@@ -50,7 +50,7 @@ function MyMapComponent({ mapMarkerData, selectedMapLocation }) {
                     position: { lat: markerData[0], lng: markerData[1] },
                     myMap,
                     icon: markerIcon,
-                    title: "Hello World!",
+                    title: "Event Location",
                 });
                 myMarker.setMap(newMap)
                 setMapMarkers(prev => {
@@ -64,7 +64,6 @@ function MyMapComponent({ mapMarkerData, selectedMapLocation }) {
     }, []);
 
     useEffect(() => {
-        console.log(selectedMapLocation, myMap);
         if (selectedMapLocation && myMap) {
             let bounds = new window.google.maps.LatLngBounds()
             let location = new window.google.maps.LatLng(selectedMapLocation[0], selectedMapLocation[1])

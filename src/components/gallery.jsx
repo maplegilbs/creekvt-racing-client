@@ -23,7 +23,7 @@ export default function Gallery() {
 
   return (
     <>
-
+{raceName === 'newhavenrace'? <p>Note most images seen here depict fairly high water from the 2019 event.</p> : <></>}
       <PhotoAlbum
         layout="rows"
         photos={slides}

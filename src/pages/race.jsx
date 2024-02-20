@@ -77,7 +77,7 @@ function ScheduleItem({ eventDetails }) {
                 eventDetails.startTime &&
                 <tr className={`${styles["events-listItem"]}`}>
                     <td>
-                        <strong>{convertTime(eventDetails.startTime)} {eventDetails.endTime && eventDetails.endTime !== '00:00:00' ? `- ${convertTime(eventDetails.endTime)}` : ""}</strong>
+                        <strong>{convertTime(eventDetails.startTime)} {eventDetails.endTime && eventDetails.endTime !== '00:00:00' ? (<><span className={`${styles['time-divider']}`}></span>{` ${convertTime(eventDetails.endTime)}`}</>) : ""}</strong>
                     </td>
                     <td>{eventDetails.name}</td>
                     <td>
@@ -170,9 +170,9 @@ export default function Race() {
                                 <a href={`./${raceName}#directions-section`} className={`link-std link-bold`}>Directions</a>
                                 <a href={`./${raceName}#course-section`} className={`link-std link-bold`}>Course</a>
                                 <a href={`./${raceName}#results-section`} className={`link-std link-bold`}>Results</a>
-                                <a href={`./${raceName}#results-section`} className={`link-std link-bold`}>Gallery</a>
+                                <a href={`./${raceName}#gallery-section`} className={`link-std link-bold`}>Gallery</a>
                                 <a href={`./${raceName}#faq-section`} className={`link-std link-bold`}>FAQ</a>
-                                <a href={`./${raceName}#faq-section`} className={`link-std link-bold`}>Contact</a>
+                                <a href={`./${raceName}#contact-section`} className={`link-std link-bold`}>Contact</a>
                             </nav>
                         </div>
                     </section>
@@ -229,6 +229,16 @@ export default function Race() {
                             <RegisteredRacers raceData={raceData} racers={racers} />
                         </section>
                     }
+                    <section className={`section-container`} id={`course-section`}>
+                        <h2 className={`section-heading`}>Race Details</h2>
+                        <hr />
+                        <CourseDetails details={raceData.longDescription} />
+                    </section>
+                    <section className={`section-container`} id={`gallery-section`}>
+                        <h2 className={`section-heading`}>Gallery</h2>
+                        <hr />
+                        <Gallery />
+                    </section>
                     <section className={`section-container`} id={`directions-section`}>
                         <h2 className={`section-heading`}>Directions</h2>
                         <hr />
@@ -236,30 +246,14 @@ export default function Race() {
                             <div className={`${styles["location-section"]}`}>
                                 {locationContainers}
                             </div>
-                            {/* < Map mapMarkerData={mapMarkerData} selectedMapLocation={selectedMapLocation} /> */}
+                            < Map mapMarkerData={mapMarkerData} selectedMapLocation={selectedMapLocation} />
                         </div>
                     </section >
-                    <section className={`section-container`} id={`course-section`}>
-                        <h2 className={`section-heading`}>Race Details</h2>
-                        <hr />
-                        <CourseDetails details={raceData.longDescription} />
-                    </section>
                     <section className={`section-container`} id={`results-section`}>
                         <h2 className={`section-heading`}>Results</h2>
                         <hr />
                         <Results />
                     </section>
-
-
-
-                    <section className={`section-container`} id={`gallery-section`}>
-                        <h2 className={`section-heading`}>Gallery</h2>
-                        <hr />
-                        <Gallery />
-                    </section>
-                    
-                    
-                    
                     <section className={`section-container`} id={`faq-section`}>
                         <h2 className={`section-heading`}>FAQ</h2>
                         <hr />
