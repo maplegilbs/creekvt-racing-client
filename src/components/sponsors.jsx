@@ -6,7 +6,6 @@ import styles from './sponsors.module.css'
 
 function SponsorItem({ sponsor }) {
 
-    console.log(sponsor)
     return (
         <div className={`${styles["sponsor-item"]} ${sponsor.tier === 'primary' ? styles['primary'] : ""}`}>
             {/* <p>{sponsor.name.toUpperCase()}</p> */}
@@ -31,7 +30,6 @@ export default function Sponsors() {
 
     }, [])
 
-    console.log(sponsorInfo)
     return (
         <>
             {(sponsorInfo && sponsorInfo.length > 0 ) &&

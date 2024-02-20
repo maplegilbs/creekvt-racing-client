@@ -99,7 +99,6 @@ export default function Race() {
     const [mapMarkerData, setMapMarkerData] = useState(locations.map(location => [Number(location.lat), Number(location.lng), location.iconUrl]));
     const { raceName } = useParams()
     const navigate = useNavigate();
-    console.log(raceData)
 
     useEffect(() => {
         if (!raceData.isPublished) {

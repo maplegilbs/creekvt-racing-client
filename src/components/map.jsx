@@ -80,7 +80,6 @@ function MyMapComponent({ mapMarkerData, selectedMapLocation }) {
 }
 
 export default function Map({ mapMarkerData, selectedMapLocation }) {
-    console.log(selectedMapLocation)
 
     return (
         <div className={`${styles["map-container"]}`}>

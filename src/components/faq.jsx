@@ -28,7 +28,7 @@ export default function FAQ() {
             {faqData &&
                 <>
                     {faqData.map(item => {
-                        return (<details className={`${styles["faq-details"]}`}>
+                        return (<details key={item.id} className={`${styles["faq-details"]}`}>
                             <summary><strong>{item.question}</strong></summary>
                             {item.answer}
                         </details>)

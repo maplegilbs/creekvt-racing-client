@@ -286,7 +286,6 @@ export default function Results() {
             return timeInSeconds? timeInSeconds : 100000; 
         }
         ` + ifStatements.join('\n') + '\n\nreturn 0;'
-        console.log(sortFunctionString)
         return new Function('itemA', 'itemB', sortFunctionString)
 
     }
@@ -305,7 +304,6 @@ export default function Results() {
             let raceFiltersResponse = await fetch(`${process.env.REACT_APP_SERVER}/results/resultYears${raceName ? "?raceName=" + raceName : ""}`)
             if (raceFiltersResponse.status !== 200) throw new Error('Race filters unavailable')
             let raceFiltersData = await raceFiltersResponse.json();
-            console.log(raceFiltersData)
             setFilterOptions(prev => {
                 let updatedFilterOpts = { ...prev }
                 for (let groupName in filterOptions.filterGroups) {
