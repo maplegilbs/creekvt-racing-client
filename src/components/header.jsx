@@ -31,15 +31,15 @@ export default function Header() {
                     </li>
                     <hr className={`${"mobile-show"}`} />
                     <li className={`${"nav-item d-flex justify-content-start"}`}>
-                        <a className={`${"nav-link"} ${styles["nav-link"]}`} href="https://creekvt.com/map.html">Map</a>
-                    </li>
-                    <hr className={`${"mobile-show"}`} />
-                    <li className={`${"nav-item d-flex justify-content-start"}`}>
                         <a className={`${"nav-link"} ${styles["nav-link"]}`} href="https://creekvt.com/blog">Blog</a>
                     </li>
                     <hr className={`${"mobile-show"}`} />
                     <li className={`${"nav-item d-flex justify-content-start"}`}>
                         <a className={`${"nav-link"} ${styles["nav-link"]}`} href="/races">Races</a>
+                    </li>
+                    <hr className={`${"mobile-show"}`} />
+                    <li className={`${"nav-item d-flex justify-content-start"}`}>
+                        <a className={`${"nav-link"} ${styles["nav-link"]}`} href="https://creekvt.com/map.html">Map</a>
                     </li>
                     <hr className={`${"mobile-show"}`} />
                     <li className={`${"nav-item d-flex justify-content-start"}`}>
