@@ -39,7 +39,7 @@ export default function Races() {
                     </p>
                     <div className={`${styles["button__container"]}`}>
                         {(raceData.isRegOpen && (new Date(raceData.date) > new Date())) ?
-                            <a href={`./races/${raceData.name.split(' ').join('').toLowerCase()}/register`} className={`button button--large`}>
+                            <a href={`${raceData.name.split(' ').join('').toLowerCase()}/register`} className={`button button--large`}>
                                 Register &nbsp;<img src="https://creekvt.com/races/RacerIcon.png" />
                             </a>
                             :
