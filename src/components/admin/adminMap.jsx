@@ -93,14 +93,15 @@ function MyMapComponent({ mapMarkerData, updateLocationFromMapClick, selectedIte
             setMapMarkers(prev => {
                 let filteredMarkers = prev.filter(marker => {
                     let foundMarker = mapMarkerData.findIndex(markerData => marker.position.lat() === Number(markerData.lat) && marker.position.lng() === Number(markerData.lng))
-                    if (foundMarker === -1) { console.log('Filtering out old marker'); marker.setMap(null) }
+                    if (foundMarker === -1) { 
+                        // console.log('Filtering out old marker'); 
+                        marker.setMap(null) }
                     else return true
                 })
                 mapMarkerData.forEach(markerData => {
                     let foundMarker = filteredMarkers.findIndex(marker => marker.position.lat() === Number(markerData.lat) && marker.position.lng() === Number(markerData.lng))
                     if (foundMarker === -1) {
                         // console.log('Adding a new marker')
-                        console.log(markerData)
                         const markerIcon = {
                             url: markerData.iconUrl ? markerData.iconUrl : "https://creekvt.com/races/RacerIcon.png",
                             scaledSize: new window.google.maps.Size(25, 25)

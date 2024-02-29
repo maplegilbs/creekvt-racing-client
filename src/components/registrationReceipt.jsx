@@ -10,7 +10,6 @@ export default function RegistrationReceipt({ registrationData, raceInfo, raceNa
     const [racers, setRacers] = useState(null)
     const params = useParams()
 
-    console.log('line13', registrationData)
 
     useEffect(() => {
         async function getRacerData() {

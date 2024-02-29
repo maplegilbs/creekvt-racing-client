@@ -177,7 +177,6 @@ function SortSelect({ labelName, filterName, filterOptions, setFilterOptions }) 
 
     function handleSortOptsChange(e) {
         setFilterOptions(prev => {
-            console.log(prev)
             let selectedSortOpt = e.target.value;
             let foundIndex = prev.sortOpts.indexOf(selectedSortOpt);
             let updatedSortOpts = prev.sortOpts.toSpliced(foundIndex, 1)
@@ -261,7 +260,6 @@ export default function Results() {
 
     function bulidSortFunction(arrayOfOptions) {
         let ifStatements = arrayOfOptions.map(element => {
-            console.log(element)
             if (!['Final Time', 'Lap 1', 'Lap 2'].includes(element)) {
                 return (`
                 if(itemA.${sortLookup[element]} > itemB.${sortLookup[element]}) return 1

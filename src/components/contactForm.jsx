@@ -41,7 +41,6 @@ export default function ContactForm({ contactEmail, raceName, message, setWasCon
     async function handleSubmit(e) {
         e.preventDefault();
         setSubmissionStatus('pending')
-        console.log(recaptcha.current)
         const recaptchaValue = recaptcha.current.getValue();
         if (!recaptchaValue) {
             alert("ReCaptcha not verified.");
@@ -51,7 +50,6 @@ export default function ContactForm({ contactEmail, raceName, message, setWasCon
                 ...formData,
                 recaptchaValue: recaptchaValue
             }
-            console.log(submittedFormData, recaptchaValue)
             let contactResponse = await fetch(`${process.env.REACT_APP_SERVER}/contact`, {
                 method: 'POST',
                 headers: {

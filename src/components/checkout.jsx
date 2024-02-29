@@ -102,7 +102,6 @@ export default function Checkout({ registrationData, raceName, raceInfo, setChec
     useEffect(() => {
         window.scroll(0, 0)
     }, [])
-    console.log(registrationData, raceInfo)
 
     /*----Paypal-----*/
     //When payment button is clicked an order is created on the server and the order id is returned
@@ -148,7 +147,6 @@ export default function Checkout({ registrationData, raceName, raceInfo, setChec
             if (captureResponse.status >= 200 && captureResponse.status < 300) {
                 let captureData = await captureResponse.json();
                 setIsRegComplete(true)
-                console.log(captureData)
                 setReceiptInfo(captureData)
                 setTimeout(() => setCheckoutStatus('complete'), 3000)
             }
