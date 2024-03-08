@@ -718,5 +718,6 @@ export const galleryImages = {
                 }
             ]
         },
-    ]
+    ],
+    wellsriverrumble: []
 } 

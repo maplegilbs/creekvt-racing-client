@@ -15,7 +15,7 @@ export default function Gallery() {
   const { raceName } = useParams()
   const [index, setIndex] = useState(-1);
 
-  const baseURL = `https://creekvt.com/races/${raceName.slice(0, -4)}/images/gallery`
+  const baseURL = raceName.toLowerCase() === 'wellsriverrumble' ? `https://creekvt.com/races/wells/images/gallery` : `https://creekvt.com/races/${raceName.slice(0, -4)}/images/gallery`;
 
   const slides = galleryImages[raceName].map(image => {
     return { src: `${baseURL}/${image.src}`, width: image.width, height: image.height, description: image.description, alt: image.alt, imageFit: 'contain' }
