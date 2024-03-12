@@ -3,7 +3,7 @@
     padding: 0.5rem 1.5rem;
     position: absolute;
     box-sizing: border-box;
-    top: 70px;
+    top: 0px;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -145,10 +145,15 @@ section h4 {
 
 .schedule__table th, .events-listItem td{
     padding: 0 .5rem;
+    font-weight: 500;
+    font-size: .8rem;
+    width: 40%;
 }
 
 .schedule__table th:nth-child(1), .events-listItem td:nth-child(1){
     padding: 0 .5rem;
+    text-align: left;
+    width: 30%;
 }
 
 .schedule__table th {
@@ -244,6 +249,7 @@ section h4 {
 
     .schedule__table th, .events-listItem td{
         padding: 0 1.75rem;
+        font-size: initial;
     }
 
     .events-listItem td:nth-child(1){
