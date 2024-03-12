@@ -1,0 +1,13 @@
+.gallery h6, .photographer h6, .photographer p {
+    text-align: left;
+    font-size: .8rem;
+    display: inline;
+}
+
+.photographer h6 {
+    margin-left: 5px;
+}
+
+.photographer a {
+    
+}

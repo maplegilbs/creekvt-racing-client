@@ -1,3 +1,10 @@
+//template:
+// export const variableName = {
+//     newhavenrace: [],
+//     peavinerace: [],
+//     wellsriverrumble: []
+// }
+
 export const galleryImages = {
     newhavenrace: [
         {
