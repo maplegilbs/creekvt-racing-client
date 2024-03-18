@@ -109,8 +109,9 @@ export default function Race() {
 
     const formattedTime = raceData.date ? formatDateTime(adjEDTtoUTC(new Date(raceData.date))) : null;
     const locationContainers = locations.sort((location1, location2) => {
-        if (location1.iconUrl > location2.iconUrl) return 1
-        if (location1.iconUrl < location2.iconUrl) return -1
+        console.log(location1, location2)
+        if (location1.id < location2.id) return -1
+        if (location1.id > location2.id) return 1
         return 0
     })
         .map(location => <LocationContainer key={location.id} location={location} setSelectedMapLocation={setSelectedMapLocation} />)
