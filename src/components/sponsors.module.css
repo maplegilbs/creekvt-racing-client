@@ -81,6 +81,6 @@
     }
 
     .sponsor-item.primary img {
-        height: 25vh;
+        max-height: 25vh;
     }
 }

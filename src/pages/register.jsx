@@ -21,28 +21,6 @@ export async function loader({ params }) {
     return ({ raceInfo: raceJSON[0], currentRaceYear })
 }
 
-//!remove after testing
-const sampleRegistration = {
-    raceName: "Test Race",
-    year: 2024,
-    category: "Canoe Tandem",
-    racers: [{
-        acaNumber: null,
-        birthdate: null,
-        email: "test@example.com",
-        firstName: "Bob",
-        gender: null,
-        lastName: "Loblob",
-    },
-    {
-        acaNumber: "12758",
-        birthdate: null,
-        email: "mike@example.com",
-        firstName: "Mike",
-        gender: null,
-        lastName: "Michaels",
-    }]
-}
 
 const canAddPartners = {
     "newhavenrace": false,
@@ -51,7 +29,7 @@ const canAddPartners = {
 }
 
 //!update dynamically, or populate based on provided data from race organizers?
-const craftWithMultipleRacers = ["Canoe Tandem", "Kayak Tandem", "Raft"]
+const craftWithMultipleRacers = ["Tandem Kayak", "Tandem Canoe Male", "Tandem Canoe Female", "Tandem Canoe Mixed", "Tandem Canoe Adult/Youth", "Inflatable Team"]
 
 export default function Register() {
     const { raceInfo, currentRaceYear } = useLoaderData();
