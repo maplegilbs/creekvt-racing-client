@@ -81,7 +81,7 @@ function ScheduleItem({ eventDetails }) {
                     </td>
                     <td>{eventDetails.name}</td>
                     <td>
-                        <a href="#directions-section" className={`link-std`}>{eventDetails.location}</a>
+                        <a href={`./${eventDetails.raceName.split(" ").join('').toLowerCase()}#directions-section`} className={`link-std`}>{eventDetails.location}</a>
                     </td>
                 </tr>
 

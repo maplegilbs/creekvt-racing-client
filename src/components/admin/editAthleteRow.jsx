@@ -18,7 +18,9 @@ export default function EditAthleteRow({ itemData, setSelectedRacer, setErrorSta
 
 
     function handleRacerChange(e) {
-        let updatedValue = e.target.type === 'date' ? formatDateTime(new Date(`${e.target.value}T00:00`)).htmlDate : e.target.value;
+        console.log('change function fired')
+        // let updatedValue = e.target.type === 'date' ? formatDateTime(new Date(`${e.target.value}T00:00`)).htmlDate : e.target.value;
+        let updatedValue = e.target.value;
         setRacerData(prev => {
             let updatedRacerData = {
                 ...prev,

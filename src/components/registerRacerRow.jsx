@@ -69,7 +69,7 @@ export default function RacerRow({ raceInfo, registrationFormData, setRegistrati
                 <div className={`input-group ${styles["registration-group"]}`}>
                     <div><label htmlFor="acaNumber">ACA Number</label>
                         {raceInfo.acaDiscount > 0 &&
-                            <span className={`${styles["label-subtext__span"]}`}>&nbsp;&nbsp;memebers receive a ${raceInfo.acaDiscount} discount.</span>
+                            <span className={`${styles["label-subtext__span"]}`}>&nbsp;&nbsp;members receive a ${raceInfo.acaDiscount} discount.</span>
                         }
                     </div>
                     <input onChange={handleChange} type="text" name="acaNumber" id="acaNumber" value={registrationFormData.racers[racerIndex].acaNumber} />
