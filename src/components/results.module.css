@@ -1,8 +1,7 @@
 .results-subheading{
     text-align: left;
-    font-size: .8rem;
-    display: inline;
-    margin-left: 5px;
+    font-size: .9rem;
+    margin: 1rem 0 1rem 5px;
 }
 
 .results-table {

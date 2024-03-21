@@ -345,7 +345,7 @@ export default function Results() {
 
     return (
         <>
-        <h6 className={`${styles["results-subheading"]}`}>Displaying Most Recent Results.  Use the filter option to view results from prior years.</h6>
+        <h6 className={`${styles["results-subheading"]}`}>Displaying most recent results.  Use the filter option to view results from prior years.</h6>
             <div className={`${styles["action-buttons__container"]}`}>
                 <button className={`button button--medium ${styles["results-button"]}`} onClick={() => setShowFilterOptions(prev => !prev)}><FontAwesomeIcon icon={faChevronRight} rotation={showFilterOptions ? 90 : 0} /> &nbsp; Filter &nbsp;<FontAwesomeIcon icon={faFilter} /></button>
                 <button className={`button button--medium ${styles["results-button"]}`} onClick={() => setShowSortOptions(prev => !prev)}><FontAwesomeIcon icon={faChevronRight} rotation={showSortOptions ? 90 : 0} /> &nbsp; Sort &nbsp;<FontAwesomeIcon icon={faSort} /></button>
