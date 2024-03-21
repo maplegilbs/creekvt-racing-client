@@ -345,14 +345,15 @@ export default function Results() {
 
     return (
         <>
+        <h6 className={`${styles["results-subheading"]}`}>Displaying Most Recent Results.  Use the filter option to view results from prior years.</h6>
             <div className={`${styles["action-buttons__container"]}`}>
-                <button className={`button button--medium ${styles["results-button"]}`} onClick={() => setShowSearchBar(prev => !prev)}><FontAwesomeIcon icon={faChevronRight} rotation={showSearchBar ? 90 : 0} /> &nbsp; Search &nbsp;<FontAwesomeIcon icon={faMagnifyingGlass} /></button>
                 <button className={`button button--medium ${styles["results-button"]}`} onClick={() => setShowFilterOptions(prev => !prev)}><FontAwesomeIcon icon={faChevronRight} rotation={showFilterOptions ? 90 : 0} /> &nbsp; Filter &nbsp;<FontAwesomeIcon icon={faFilter} /></button>
                 <button className={`button button--medium ${styles["results-button"]}`} onClick={() => setShowSortOptions(prev => !prev)}><FontAwesomeIcon icon={faChevronRight} rotation={showSortOptions ? 90 : 0} /> &nbsp; Sort &nbsp;<FontAwesomeIcon icon={faSort} /></button>
+                <button className={`button button--medium ${styles["results-button"]}`} onClick={() => setShowSearchBar(prev => !prev)}><FontAwesomeIcon icon={faChevronRight} rotation={showSearchBar ? 90 : 0} /> &nbsp; Search &nbsp;<FontAwesomeIcon icon={faMagnifyingGlass} /></button>
             </div>
-            {showSearchBar && <SearchPanel filterOptions={filterOptions} setFilterOptions={setFilterOptions} />}
             {showFilterOptions && <FilterPanel filterOptions={filterOptions} setFilterOptions={setFilterOptions} raceName={raceName} />}
             {showSortOptions && <SortPanel filterOptions={filterOptions} setFilterOptions={setFilterOptions} raceName={raceName} />}
+            {showSearchBar && <SearchPanel filterOptions={filterOptions} setFilterOptions={setFilterOptions} />}
             {results.length === 0 &&
                 <p>No results available</p>
             }
