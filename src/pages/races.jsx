@@ -1,3 +1,5 @@
+//Components
+import { Helmet } from "react-helmet";
 //Hooks
 import { useLoaderData } from "react-router-dom";
 //Styles
@@ -60,32 +62,41 @@ export default function Races() {
         })
 
     return (
-        <main>
-            <div className={`${styles["hero-image__container"]}`}>
-                <img className={`${styles["hero-image"]}`} src="https://creekvt.com/races/RaceMainPage.jpg" />
-            </div>
-            <div className={`${styles["content-container"]}`}>
-                <div className={`${styles["heading-container"]}`}>
-                    <h2 className={`primary-heading`}>Vermont Whitewater Racing</h2>
-                    <br />
-                    <p className={`${styles["heading-container__summary"]}`}>
-                        Welcome to the world of whitewater racing in the Green Mountains. On
-                        this site you can register to compete, find information on each
-                        race, or relive prior years by browsing through our collection of race
-                        results and photos. For the 2024 season we are looking forward
-                        to the classic New Haven Ledges Race, the 3rd
-                        annual Peavine Race as well as the return of the Wells River Rumble! Check the individual race pages for details and to
-                        sign up. </p>
-                    <p className={`${styles["heading-container__summary"]}`}>- See you at the finish line!</p>
+        <>
+            <Helmet>
+                <meta property="og:title" content="Creek VT Races" />
+                <meta property="og:description" content="Creek VT - Vermont Whitewater Racing" />
+                <meta property="og:image" content="https://creekvt.com/races/RaceMainPage.jpg" />
+                <meta property="og:url" content="https://creekvt.com/races" />
+                <meta property="og:type" content="website" />
+            </Helmet>
+            <main>
+                <div className={`${styles["hero-image__container"]}`}>
+                    <img className={`${styles["hero-image"]}`} src="https://creekvt.com/races/RaceMainPage.jpg" />
                 </div>
-                <section className={`section-container`}>
-                    <h2 className={`section-heading`}>2024 Lineup</h2>
-                    <hr />
-                    <div className={`${styles["race-cards__container"]}`}>
-                        {racesCards}
+                <div className={`${styles["content-container"]}`}>
+                    <div className={`${styles["heading-container"]}`}>
+                        <h2 className={`primary-heading`}>Vermont Whitewater Racing</h2>
+                        <br />
+                        <p className={`${styles["heading-container__summary"]}`}>
+                            Welcome to the world of whitewater racing in the Green Mountains. On
+                            this site you can register to compete, find information on each
+                            race, or relive prior years by browsing through our collection of race
+                            results and photos. For the 2024 season we are looking forward
+                            to the classic New Haven Ledges Race, the 3rd
+                            annual Peavine Race as well as the return of the Wells River Rumble! Check the individual race pages for details and to
+                            sign up. </p>
+                        <p className={`${styles["heading-container__summary"]}`}>- See you at the finish line!</p>
                     </div>
-                </section>
-            </div>
-        </main>
+                    <section className={`section-container`}>
+                        <h2 className={`section-heading`}>2024 Lineup</h2>
+                        <hr />
+                        <div className={`${styles["race-cards__container"]}`}>
+                            {racesCards}
+                        </div>
+                    </section>
+                </div>
+            </main>
+        </>
     )
 }
