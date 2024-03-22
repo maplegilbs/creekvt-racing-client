@@ -3,6 +3,7 @@ import ContactForm from "../components/contactForm";
 import CourseDetails from "../components/courseDetails";
 import FAQ from "../components/faq";
 import Gallery from "../components/gallery";
+import { Helmet } from "react-helmet";
 import Loader from "../components/loader";
 import Map from "../components/map";
 import RegisteredRacers from "../components/registeredRacers";
@@ -126,13 +127,21 @@ export default function Race() {
         return (
             <Loader
                 loader_text={`${raceData.name ? "The " + raceData.name : 'This race'} is not currently active`}
-            bottom_text={"Redirecting to the races page."}
+                bottom_text={"Redirecting to the races page."}
             />
         )
     }
     else
         return (
             <>
+                <Helmet>
+                    <title>Creek VT - {raceData.name}</title>
+                    <meta property="og:title" content={`The ${raceData.name} - Creek VT`} />
+                    <meta property="og:description" content={`The official site of the ${formattedTime.year} ${raceData.name}.  Visit to register, learn more about the race, or view prior year results and photos.`} />
+                    <meta property="og:image" content={`https://creekvt.com/races/${raceName}/${raceData.primaryImageURL}`} />
+                    <meta property="og:url" content={`https://creekvt.com/races/${raceName}`} />
+                    <meta property="og:type" content="website" />
+                </Helmet>
                 <main className={`${styles["racepage-container"]}`}>
                     <section className={`section-container`} style={{ backgroundImage: "url('" + raceData.racePageImageURL + "')" }}>
                         {
