@@ -122,7 +122,7 @@ export default function Register() {
                         </div>
                     }
                     <br />
-                    <p className={`${styles["required-notice"]}`}>Required fields are denoted with an astrisk *</p>
+                    <p className={`${styles["required-notice"]}`}>Required fields are denoted with an asterisk *</p>
                     <form onSubmit={handleSubmit}>
                         {racerCategoryOptions &&
                             <div className={`input-row ${styles["registration-row"]}`}>

@@ -9,6 +9,8 @@ import Map from "../components/map";
 import RegisteredRacers from "../components/registeredRacers";
 import Results from "../components/results";
 import Sponsors from "../components/sponsors";
+//Constants
+import { galleryImages } from '../constants.js'
 //Hooks
 import { useLoaderData, useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -188,7 +190,7 @@ export default function Race() {
                     <section className={`section-container`} id={`sponsors-section`}>
                         <h2 className={`section-heading`}>Sponsors</h2>
                         <hr />
-                        <p>We are always looking for sponsors to help keep this great race thriving.  <a href="#contact-section" className={`link-std link-bold link-small`}>Contact Us</a> to learn about becoming a sponsor.</p>
+                        <p>We are always looking for sponsors to help keep this great race thriving.  <a href={`${raceName}#contact-section`} className={`link-std link-bold link-small`}>Contact Us</a> to learn about becoming a sponsor.</p>
                         <Sponsors />
                     </section>
                     <section className={`section-container`} id={`schedule-section`}>
@@ -243,11 +245,13 @@ export default function Race() {
                         <hr />
                         <CourseDetails details={raceData.longDescription} />
                     </section>
-                    <section className={`section-container`} id={`gallery-section`}>
-                        <h2 className={`section-heading`}>Gallery</h2>
-                        <hr />
-                        <Gallery />
-                    </section>
+                    {galleryImages[raceName].length > 0 &&
+                        <section className={`section-container`} id={`gallery-section`}>
+                            <h2 className={`section-heading`}>Gallery</h2>
+                            <hr />
+                            <Gallery />
+                        </section>
+                    }
                     <section className={`section-container`} id={`directions-section`}>
                         <h2 className={`section-heading`}>Directions</h2>
                         <hr />

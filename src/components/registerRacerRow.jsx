@@ -9,7 +9,8 @@ export default function RacerRow({ raceInfo, registrationFormData, setRegistrati
 
     const displayFields = {
         newhavenrace: ['firstName', 'lastName', 'category', 'email', 'acaNumber'],
-        peavinerace: ['firstName', 'lastName', 'category', 'email', 'acaNumber', 'birthDate', 'gender'],
+        peavinerace: ['firstName', 'lastName', 'category', 'email', 'acaNumber', 'birthDate'],
+        wellsriverrumble: ['firstName', 'lastName', 'category', 'email', 'acaNumber'],
         testrace: ['firstName', 'lastName', 'category', 'email', 'acaNumber', 'birthDate', 'gender'],
     }
 
