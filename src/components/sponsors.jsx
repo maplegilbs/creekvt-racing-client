@@ -27,27 +27,26 @@ export default function Sponsors() {
             setSponsorInfo(sponsorsData)
         }
         getSponsorInfo()
-
     }, [])
 
     return (
         <>
-            {(sponsorInfo && sponsorInfo.length > 0 ) &&
+            {(sponsorInfo && sponsorInfo.filter(sponsor => sponsor.isActive).length > 0 ) &&
                 <div className={`${styles["sponsor-container"]}`}>
-                    {sponsorInfo.filter(sponsor => sponsor.tier === 'primary').length > 0 &&
+                    {sponsorInfo.filter(sponsor => sponsor.tier.toLowerCase() === 'primary' && sponsor.isActive).length > 0 &&
                         <>
                             <h4>A big shoutout to this year's title sponsors!</h4>
                             <br />
                             <p>
-                                <strong>{sponsorInfo.filter(sponsor => sponsor.tier.toLowerCase() === 'primary').map(sponsor => <><span>{sponsor.name}</span><br /></>)}</strong>
+                                <strong>{sponsorInfo.filter(sponsor => sponsor.tier.toLowerCase() === 'primary' && sponsor.isActive).map(sponsor => <><span>{sponsor.name}</span><br /></>)}</strong>
                             </p>
                             <div className={`${styles["sponsor-row"]} ${styles["primary-row"]}`}>
                                 {sponsorInfo.filter(sponsor => sponsor.tier.toLowerCase() === 'primary' && sponsor.isActive).map(sponsor => <SponsorItem sponsor={sponsor} />)}
                             </div>
                             <br />
-                            <hr />
                         </>
                     }
+                    {(sponsorInfo.filter(sponsor => sponsor.tier.toLowerCase() === 'primary' && sponsor.isActive).length > 0 && sponsorInfo.filter(sponsor => sponsor.tier.toLowerCase() === 'secondary' && sponsor.isActive).length > 0)  && <hr/>}
                     <div className={`${styles["sponsor-row"]} ${styles["secondary-row"]}`}>
                         {sponsorInfo.filter(sponsor => sponsor.tier.toLowerCase() === 'secondary' && sponsor.isActive).map(sponsor => <SponsorItem sponsor={sponsor} />)}
                     </div>
