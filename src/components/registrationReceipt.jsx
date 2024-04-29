@@ -62,14 +62,24 @@ export default function RegistrationReceipt({ registrationData, raceInfo, raceNa
                 <h5>Subtotal</h5>
             </div>
             {registrationData.racers.map(racer => {
+                let isRacerYouth = false;
+                if(racer.birthdate){
+                    let racerBirthdateAsDate = new Date(racer.birthdate)
+                    let raceDateAsDate = new Date(raceInfo.date)
+                    if(raceDateAsDate.getFullYear() - racerBirthdateAsDate.getFullYear() > 18){isRacerYouth = false}
+                    else if (raceDateAsDate.getFullYear() - racerBirthdateAsDate.getFullYear() < 18){isRacerYouth = true}
+                    else if (racerBirthdateAsDate.getMonth() < raceDateAsDate.getMonth() ){isRacerYouth = false}
+                    else if (racerBirthdateAsDate.getDate() < raceDateAsDate.getDate() ){isRacerYouth = false}
+                    else {isRacerYouth = true}
+                }
                 const racerDiscount = racer.acaNumber ? (acaDiscount * -1) : 0;
-                const racerTotal = raceFee + racerDiscount;
+                const racerTotal = isRacerYouth && raceInfo.youthFee ? Number(raceInfo.youthFee) + racerDiscount : raceFee + racerDiscount;
                 subTotal += racerTotal;
 
                 return (
                     <div className={`${styles["receipt-row"]}`}>
                         <p>{`${racer.firstName + " " + racer.lastName}`}{racer.acaNumber && <><br /><span>ACA  #{racer.acaNumber}</span></>}</p>
-                        <p>{`${raceInfo.fee}`}</p>
+                        <p>{`${isRacerYouth && raceInfo.youthFee ? raceInfo.youthFee : raceInfo.fee}`}</p>
                         <p>{`${racerDiscount.toFixed(2)}`}</p>
                         <p>{`${racerTotal.toFixed(2)}`}</p>
                     </div>
