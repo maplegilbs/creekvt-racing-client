@@ -18,7 +18,7 @@
 
 .heading-container__summary {
     padding: .5rem;
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 600;
     width: 95%;
     margin: .5rem auto;
@@ -126,6 +126,8 @@ div.card {
         flex-direction: row;
         padding: .5rem 2rem;
         justify-content: space-between;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(0,1fr));
     }
 
     .button__container {
@@ -138,7 +140,7 @@ div.card {
     }
 
     .card-title {
-        font-size: 1.75rem;
+        font-size: 1.4rem;
         top: 1.25rem;
     }
 
@@ -158,11 +160,11 @@ div.card {
     .card-text {
         min-height: 9rem;
         margin-bottom: 0;
-        font-size: 1.05rem;
+        font-size: .95rem;
     }
 
     div.card {
-        width: 42%;
+        /* width: 42%; */
         margin: 1rem 4%;
     }
 

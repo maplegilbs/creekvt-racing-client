@@ -6,8 +6,6 @@ nav.navbar {
 	background-image: linear-gradient(110deg, #4e647b, #293b46);
 	box-shadow: 2px 3px 10px 4px;
 	margin-bottom: 20px;
-	/* height: 70px; */
-	/* height: auto; */
 	padding: 2px 20px 4px 0 !important;
 }
 
