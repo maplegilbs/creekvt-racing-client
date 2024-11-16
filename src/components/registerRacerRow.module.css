@@ -1,6 +1,7 @@
 .racer-heading-row {
     display: flex;
     justify-content: space-between;
+    height: 2rem;
 }
 
 .racer-heading {
@@ -26,6 +27,14 @@
 .register-racer-row .registration-group,
 .register-racer-row label {
     margin: .25rem 0;
+}
+
+.register-racer-row .registration-group img {
+    height: 1.25rem;
+    margin: .5rem;
+    box-shadow: 1px 1px 3px 1px #333;
+    aspect-ratio: 3/2;
+    object-fit: cover;
 }
 
 .label-subtext__span {

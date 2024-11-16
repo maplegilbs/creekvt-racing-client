@@ -11,10 +11,10 @@ const usaLocs = Object.keys(flagLookup.unitedStates).map(state => <option value=
 
 export default function RacerRow({ raceInfo, registrationFormData, setRegistrationFormData, raceName, racerIndex }) {
     const displayFields = {
-        newhavenrace: ['firstName', 'lastName', 'category', 'email', 'acaNumber'],
-        peavinerace: ['firstName', 'lastName', 'category', 'email', 'acaNumber', 'birthDate'],
-        wellsriverrumble: ['firstName', 'lastName', 'category', 'email', 'acaNumber'],
-        testrace: ['firstName', 'lastName', 'category', 'email', 'acaNumber', 'birthDate', 'gender'],
+        newhavenrace: ['firstName', 'lastName', 'location', 'category', 'email', 'acaNumber'],
+        peavinerace: ['firstName', 'lastName', 'location', 'category', 'email', 'acaNumber', 'birthDate'],
+        wellsriverrumble: ['firstName', 'lastName', 'location', 'category', 'email', 'acaNumber'],
+        testrace: ['firstName', 'lastName', 'location', 'category', 'email', 'acaNumber', 'birthDate', 'gender'],
     }
 
     function handleChange(e) {
@@ -43,12 +43,10 @@ export default function RacerRow({ raceInfo, registrationFormData, setRegistrati
             return updatedRegistrationFormData
         })
     }
-
     return (
         <div className={`${styles["register-racer-row"]}`}>
             <div className={`${styles["racer-heading-row"]}`} >
                 <p className={`${styles["racer-heading"]}`}>Racer {racerIndex + 1}</p>
-
                 {(registrationFormData.racers && registrationFormData.racers.length > 1) &&
                     <button type="button" onClick={removeRacer} className={`${styles["racer-heading"]} ${styles["racer-delete"]}`}> Remove Racer {racerIndex + 1}&nbsp; <FontAwesomeIcon icon={faCircleMinus} color={'#990000'} /></button>
                 }
@@ -65,7 +63,12 @@ export default function RacerRow({ raceInfo, registrationFormData, setRegistrati
             </div>
             <div className={`input-row ${styles["registration-row"]}`}>
                 <div className={`input-group ${styles["registration-group"]}`}>
-                    <div><label htmlFor="location">Location&nbsp;</label>{racerIndex === 0 && <span className="required__span">*</span>}</div>
+                    <div>
+                        <label htmlFor="location">Location&nbsp;</label>{racerIndex === 0 && <span className="required__span">*</span>}
+                        {registrationFormData.racers[racerIndex].location &&
+                            <img src={`/flags/${(flagLookup.canada[registrationFormData.racers[racerIndex].location] || flagLookup.unitedStates[registrationFormData.racers[racerIndex].location]).toLowerCase()}.svg`} height={"100%"} alt={"Flag of racer's location"} />
+                        }
+                    </div>
                     <select onChange={handleChange} required name="location" id="location" value={registrationFormData.racers[racerIndex].location} >
                         <option value=""></option>
                         <optgroup label="United States">
@@ -74,6 +77,7 @@ export default function RacerRow({ raceInfo, registrationFormData, setRegistrati
                         <optgroup label="Canada">
                             {canadaLocs}
                         </optgroup>
+                        <option>Other</option>
                     </select>
                 </div>
             </div>
