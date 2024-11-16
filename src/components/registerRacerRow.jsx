@@ -1,12 +1,15 @@
 //Icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleMinus, faCirclePlus } from "@fortawesome/free-solid-svg-icons";
+//Constants
+import { flagLookup } from "../constants";
 //Styles
 import styles from "./registerRacerRow.module.css"
 
+const canadaLocs = Object.keys(flagLookup.canada).map(prov => <option value={prov}>{prov}</option>)
+const usaLocs = Object.keys(flagLookup.unitedStates).map(state => <option value={state}>{state}</option>)
 
 export default function RacerRow({ raceInfo, registrationFormData, setRegistrationFormData, raceName, racerIndex }) {
-
     const displayFields = {
         newhavenrace: ['firstName', 'lastName', 'category', 'email', 'acaNumber'],
         peavinerace: ['firstName', 'lastName', 'category', 'email', 'acaNumber', 'birthDate'],
@@ -58,6 +61,20 @@ export default function RacerRow({ raceInfo, registrationFormData, setRegistrati
                 <div className={`input-group ${styles["registration-group"]}`}>
                     <div><label htmlFor="lastName">Last Name&nbsp;</label><span className="required__span">*</span></div>
                     <input onChange={handleChange} required type="text" name="lastName" id="lastName" value={registrationFormData.racers[racerIndex].lastName} />
+                </div>
+            </div>
+            <div className={`input-row ${styles["registration-row"]}`}>
+                <div className={`input-group ${styles["registration-group"]}`}>
+                    <div><label htmlFor="location">Location&nbsp;</label>{racerIndex === 0 && <span className="required__span">*</span>}</div>
+                    <select onChange={handleChange} required name="location" id="location" value={registrationFormData.racers[racerIndex].location} >
+                        <option value=""></option>
+                        <optgroup label="United States">
+                            {usaLocs}
+                        </optgroup>
+                        <optgroup label="Canada">
+                            {canadaLocs}
+                        </optgroup>
+                    </select>
                 </div>
             </div>
             <div className={`input-row ${styles["registration-row"]}`}>

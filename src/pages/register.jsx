@@ -62,6 +62,7 @@ export default function Register() {
                     {
                         firstName: null,
                         lastName: null,
+                        location: null,
                         email: null,
                         acaNumber: null,
                         birthdate: null,
@@ -84,6 +85,7 @@ export default function Register() {
             updatedRacers.push({
                 firstName: null,
                 lastName: null,
+                location: null,
                 email: null,
                 acaNumber: null,
                 birthdate: null,
