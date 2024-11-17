@@ -1,9 +1,13 @@
+//Constants
+import { flagLookup } from "../constants"
 //Hooks
 import { useEffect, useState } from "react"
 //Styles
 import styles from "./registeredRacers.module.css"
 
 export default function RegisteredRacers({ racers }) {
+    let locationAbbrevs = Object.assign(flagLookup.canada, flagLookup.unitedStates)
+    console.log(racers)
 
     return (
         <div className={`${styles["racers-grid"]}`}>
@@ -19,10 +23,12 @@ export default function RegisteredRacers({ racers }) {
                             <p className={`${styles["racer-detail"]} ${styles["first-column"]}`}>{i + 1}</p>
                             <p className={`${styles["racer-detail"]}`}>
                                 {racer.racers.map((racerName, i) => {
-                                    let racerSpan = i < racer.racers.length - 1 ?
-                                        <span key={i} className={`${styles["racer-name__span"]}`}>{`${racerName}`}</span>
-                                        :
-                                        <span key={i} className={`${styles["racer-name__span"]}`}>{racerName}</span>
+                                    let racerSpan = <span key={i} className={`${styles["racer-name__span"]}`}>
+                                        {`${racerName.split("-")[0]}`}
+                                        {racerName.split("-")[1] !== 'null' &&
+                                            <img src={`/flags/${locationAbbrevs[racerName.split("-")[1]].toLowerCase()}.svg`} height={'20px'} />
+                                        }
+                                    </span>
                                     return racerSpan
                                 })}
                             </p>

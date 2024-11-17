@@ -52,6 +52,16 @@ p.last-column {
 .racer-name__span {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    width: 80%;
+}
+
+.racer-name__span img {
+    height: 1.25rem;
+    margin: .5rem;
+    box-shadow: 1px 1px 3px 1px #333;
+    aspect-ratio: 3/2;
+    object-fit: cover;
 }
 
 @media screen and (min-width: 640px) {
