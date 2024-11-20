@@ -79,22 +79,22 @@ export default function Races() {
                         <h2 className={`primary-heading`}>Vermont Whitewater Racing</h2>
                         {/* <br /> */}
                         <p className={`${styles["heading-container__summary"]}`}>
-                            Thanks to everybody for a great 2024 season of whitewater racing in the Green Mountains.
+                            {/* Thanks to everybody for a great 2024 season of whitewater racing in the Green Mountains.
                             <br/><br/>
                             Congratultaions to all the competitors, organizers and volunteers.  Check individual race pages for results.  
                             <br/><br/>
-                            - See you for the next round in 2025!
-                            {/* Welcome to the world of whitewater racing in the Green Mountains. On
+                            - See you for the next round in 2025! */}
+                            Welcome to the world of whitewater racing in the Green Mountains. On
                             this site you can register to compete, find information on each
                             race, or relive prior years by browsing through our collection of race
-                            results and photos. For the 2024 season we are looking forward
-                            to the classic New Haven Ledges Race, the 3rd
-                            annual Peavine Race as well as the return of the Wells River Rumble!</p>
-                        <p className={`${styles["heading-container__summary"]}`}>- See you at the finish line!</p> */}
-                        </p>
+                            results and photos. For the 2025 season we are looking forward
+                            to the classic New Haven Ledges Race, the 4th
+                            annual Peavine Race and potentially more... so stay tuned!</p>
+                        <p className={`${styles["heading-container__summary"]}`}>- See you at the finish line!</p>
+                        
                     </div>
                     <section className={`section-container`}>
-                        <h2 className={`section-heading`}>2024 Lineup</h2>
+                        <h2 className={`section-heading`}>2025 Lineup</h2>
                         <hr />
                         <div className={`${styles["race-cards__container"]}`}>
                             {racesCards}
