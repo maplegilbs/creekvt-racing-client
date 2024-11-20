@@ -8,6 +8,7 @@ import styles from "./registeredRacers.module.css"
 export default function RegisteredRacers({ racers }) {
     let locationAbbrevs = Object.assign(flagLookup.canada, flagLookup.unitedStates)
     console.log(racers)
+    console.log(locationAbbrevs)
 
     return (
         <div className={`${styles["racers-grid"]}`}>
@@ -23,10 +24,14 @@ export default function RegisteredRacers({ racers }) {
                             <p className={`${styles["racer-detail"]} ${styles["first-column"]}`}>{i + 1}</p>
                             <p className={`${styles["racer-detail"]}`}>
                                 {racer.racers.map((racerName, i) => {
+                                    console.log(racerName)
                                     let racerSpan = <span key={i} className={`${styles["racer-name__span"]}`}>
-                                        {`${racerName.split("-")[0]}`}
-                                        {racerName.split("-")[1] !== 'null' &&
-                                            <img src={`/flags/${locationAbbrevs[racerName.split("-")[1]].toLowerCase()}.svg`} height={'20px'} />
+                                        {`${racerName.split("loc=")[0]}`}
+                                        {(racerName.split("loc=")[1] !== 'null' && racerName.split("loc=")[1].toLowerCase() !== 'other') &&
+                                            <div  className={`${styles["location__div"]}`}>
+                                                <p>{locationAbbrevs[racerName.split("loc=")[1]].toUpperCase()}</p>
+                                                <img src={`/flags/${locationAbbrevs[racerName.split("loc=")[1]].toLowerCase()}.svg`} height={'20px'} />
+                                            </div>
                                         }
                                     </span>
                                     return racerSpan

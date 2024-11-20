@@ -36,10 +36,10 @@ export async function loader({ params }) {
         // [{id: category: racers: []}]
         let foundGroup = accum.find(group => Number(group.id) === Number(curRacer.entityID));
         if (!foundGroup) {
-            accum.push({ id: curRacer.entityID, category: curRacer.category, racers: [`${curRacer.firstName} ${curRacer.lastName}-${curRacer.location}`] })
+            accum.push({ id: curRacer.entityID, category: curRacer.category, racers: [`${curRacer.firstName} ${curRacer.lastName}loc=${curRacer.location}`] })
         }
         else {
-            foundGroup.racers.push(`${curRacer.firstName} ${curRacer.lastName}-${curRacer.location}`)
+            foundGroup.racers.push(`${curRacer.firstName} ${curRacer.lastName}loc=${curRacer.location}`)
         }
         return accum
     }, [])

@@ -65,7 +65,7 @@ export default function RacerRow({ raceInfo, registrationFormData, setRegistrati
                 <div className={`input-group ${styles["registration-group"]}`}>
                     <div>
                         <label htmlFor="location">Location&nbsp;</label>{racerIndex === 0 && <span className="required__span">*</span>}
-                        {registrationFormData.racers[racerIndex].location &&
+                        {(registrationFormData.racers[racerIndex].location && registrationFormData.racers[racerIndex].location.toLowerCase() !== 'other') && 
                             <img src={`/flags/${(flagLookup.canada[registrationFormData.racers[racerIndex].location] || flagLookup.unitedStates[registrationFormData.racers[racerIndex].location]).toLowerCase()}.svg`} height={"100%"} alt={"Flag of racer's location"} />
                         }
                     </div>
@@ -77,7 +77,7 @@ export default function RacerRow({ raceInfo, registrationFormData, setRegistrati
                         <optgroup label="Canada">
                             {canadaLocs}
                         </optgroup>
-                        <option>Other</option>
+                        <option value="other">Other</option>
                     </select>
                 </div>
             </div>
