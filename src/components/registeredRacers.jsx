@@ -30,7 +30,7 @@ export default function RegisteredRacers({ racers }) {
                                         {(racerName.split("loc=")[1] !== 'null' && racerName.split("loc=")[1].toLowerCase() !== 'other') &&
                                             <div  className={`${styles["location__div"]}`}>
                                                 <p>{locationAbbrevs[racerName.split("loc=")[1]].toUpperCase()}</p>
-                                                <img src={`/flags/${locationAbbrevs[racerName.split("loc=")[1]].toLowerCase()}.svg`} height={'20px'} />
+                                                <img src={`${process.env.PUBLIC_URL}/flags/${locationAbbrevs[racerName.split("loc=")[1]].toLowerCase()}.svg`} height={'20px'} />
                                             </div>
                                         }
                                     </span>

@@ -23,7 +23,7 @@ export default function Races() {
             return 0
         })
         .map(raceData => {
-            console.log(raceData)
+            
             return (
                 <div key={raceData.name} className={`card ${styles["card"]}`}>
                     <h5 className={`card-title ${styles["card-title"]}`}>{raceData.name}</h5>

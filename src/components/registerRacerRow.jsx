@@ -66,7 +66,7 @@ export default function RacerRow({ raceInfo, registrationFormData, setRegistrati
                     <div>
                         <label htmlFor="location">Location&nbsp;</label>{racerIndex === 0 && <span className="required__span">*</span>}
                         {(registrationFormData.racers[racerIndex].location && registrationFormData.racers[racerIndex].location.toLowerCase() !== 'other') && 
-                            <img src={`/flags/${(flagLookup.canada[registrationFormData.racers[racerIndex].location] || flagLookup.unitedStates[registrationFormData.racers[racerIndex].location]).toLowerCase()}.svg`} height={"100%"} alt={"Flag of racer's location"} />
+                            <img src={`${process.env.PUBLIC_URL}/flags/${(flagLookup.canada[registrationFormData.racers[racerIndex].location] || flagLookup.unitedStates[registrationFormData.racers[racerIndex].location]).toLowerCase()}.svg`} height={"100%"} alt={"Flag of racer's location"} />
                         }
                     </div>
                     <select onChange={handleChange} required name="location" id="location" value={registrationFormData.racers[racerIndex].location} >
