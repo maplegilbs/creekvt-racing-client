@@ -1,3 +1,5 @@
+//Constants
+import { flagLookup } from "../../constants";
 //Contexts
 import { SelectedRaceContext } from "../../pages/adminDashboard"
 //Hooks
@@ -11,6 +13,8 @@ import { formatDateTime } from "../../utils/formatDateTime.js";
 import adminStyles from "./adminGlobalStyles.module.css"
 import styles from "./athletes.module.css"
 
+const canadaLocs = Object.keys(flagLookup.canada).map(prov => <option value={prov}>{prov}</option>)
+const usaLocs = Object.keys(flagLookup.unitedStates).map(state => <option value={state}>{state}</option>)
 
 export default function EditAthleteRow({ itemData, setSelectedRacer, setErrorState, setCurrentGroupInfo }) {
     const selectedRace = useContext(SelectedRaceContext)[0]; //Name of race with spaces i.e. "Test Race"
@@ -104,7 +108,7 @@ export default function EditAthleteRow({ itemData, setSelectedRacer, setErrorSta
         setRacerData(prev => {
             return {
                 ...prev,
-                isPaid: Number(prev.isPaid) === 0? 1 : 0
+                isPaid: Number(prev.isPaid) === 0 ? 1 : 0
             }
         })
     }
@@ -132,6 +136,19 @@ export default function EditAthleteRow({ itemData, setSelectedRacer, setErrorSta
             <div className={`input-group`}>
                 <label htmlFor="lastName">Last Name</label>
                 <input type="text" name="lastName" id="lastName" onChange={(e) => handleRacerChange(e, racerData.id)} value={racerData.lastName} />
+            </div>
+            <div className={`input-group`}>
+                <label htmlFor="location">Location</label>
+                <select name="location" id="location" onChange={(e) => handleRacerChange(e, racerData.id)} value={racerData.location}>
+                    <option value=""></option>
+                    <optgroup label="United States">
+                        {usaLocs}
+                    </optgroup>
+                    <optgroup label="Canada">
+                        {canadaLocs}
+                    </optgroup>
+                    <option value="other">Other</option>
+                </select>
             </div>
             <div className={`input-group`}>
                 <label htmlFor="email">Email</label>
