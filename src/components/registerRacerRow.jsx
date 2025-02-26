@@ -11,7 +11,7 @@ const usaLocs = Object.keys(flagLookup.unitedStates).map(state => <option value=
 
 export default function RacerRow({ raceInfo, registrationFormData, setRegistrationFormData, raceName, racerIndex }) {
     const displayFields = {
-        newhavenrace: ['firstName', 'lastName', 'location', 'category', 'email', 'acaNumber'],
+        newhavenrace: ['firstName', 'lastName', 'location', 'category', 'email', 'acaNumber', 'tShirtSize'],
         peavinerace: ['firstName', 'lastName', 'location', 'category', 'email', 'acaNumber', 'birthDate'],
         wellsriverrumble: ['firstName', 'lastName', 'location', 'category', 'email', 'acaNumber'],
         testrace: ['firstName', 'lastName', 'location', 'category', 'email', 'acaNumber', 'birthDate', 'gender'],
@@ -117,6 +117,21 @@ export default function RacerRow({ raceInfo, registrationFormData, setRegistrati
                             <option>Female</option>
                             <option>Other</option>
                             <option>Prefer Not To Respond</option>
+                        </select>
+                    </div>
+                </div>
+            }
+            {
+                displayFields[raceName].includes('tShirtSize') &&
+                <div className={`input-row ${styles["registration-row"]}`}>
+                    <div className={`input-group ${styles["registration-group"]}`}>
+                        <label htmlFor="gender">Shirt Size</label>
+                        <select value={registrationFormData.racers[racerIndex].gender} onChange={handleChange} name="tShirtSize" id="tShirtSize">
+                            <option></option>
+                            <option>S</option>
+                            <option>M</option>
+                            <option>L</option>
+                            <option>XL</option>
                         </select>
                     </div>
                 </div>
