@@ -11,7 +11,7 @@ const usaLocs = Object.keys(flagLookup.unitedStates).map(state => <option value=
 
 export default function RacerRow({ raceInfo, registrationFormData, setRegistrationFormData, raceName, racerIndex }) {
     const displayFields = {
-        newhavenrace: ['firstName', 'lastName', 'location', 'category', 'email', 'acaNumber', 'tShirtSize'],
+        newhavenrace: ['firstName', 'lastName', 'location', 'category', 'email', 'acaNumber'],
         peavinerace: ['firstName', 'lastName', 'location', 'category', 'email', 'acaNumber', 'birthDate'],
         wellsriverrumble: ['firstName', 'lastName', 'location', 'category', 'email', 'acaNumber'],
         testrace: ['firstName', 'lastName', 'location', 'category', 'email', 'acaNumber', 'birthDate', 'gender'],
