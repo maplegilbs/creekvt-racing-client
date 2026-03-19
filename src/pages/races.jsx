@@ -87,14 +87,14 @@ export default function Races() {
                             Welcome to the world of whitewater racing in the Green Mountains. On
                             this site you can register to compete, find information on each
                             race, or relive prior years by browsing through our collection of race
-                            results and photos. For the 2025 season we are looking forward
-                            to the classic New Haven Ledges Race, the 4th
-                            annual Peavine Race and potentially more... so stay tuned!</p>
+                            results and photos. For the 2026 season we are looking forward
+                            to the classic New Haven Ledges Race, the 5th
+                            annual Peavine Race and another exciting rumble on The Wells!</p>
                         <p className={`${styles["heading-container__summary"]}`}>- See you at the finish line!</p>
                         
                     </div>
                     <section className={`section-container`}>
-                        <h2 className={`section-heading`}>2025 Lineup</h2>
+                        <h2 className={`section-heading`}>2026 Lineup</h2>
                         <hr />
                         <div className={`${styles["race-cards__container"]}`}>
                             {racesCards}
