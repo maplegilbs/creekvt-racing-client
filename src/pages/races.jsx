@@ -23,7 +23,6 @@ export default function Races() {
             return 0
         })
         .map(raceData => {
-            
             return (
                 <div key={raceData.name} className={`card ${styles["card"]}`}>
                     <h5 className={`card-title ${styles["card-title"]}`}>{raceData.name}</h5>
@@ -48,7 +47,7 @@ export default function Races() {
                         </p>
                         <div className={`${styles["button__container"]}`}>
                             {(raceData.isRegOpen && (new Date(raceData.date) > new Date())) ?
-                                <a href={`${raceData.name.split(' ').join('').toLowerCase()}/register`} className={`button button--large`}>
+                                <a href={raceData.name === 'Wells River Rumble'? `https://docs.google.com/forms/d/e/1FAIpQLSdFYuOYGQdD2lHQ33-oIvOFpYT6kGr0pwCSHGckWUVjhDueCQ/viewform?usp=dialog` : `${raceData.name.split(' ').join('').toLowerCase()}/register`} className={`button button--large`}>
                                     Register &nbsp;<img src="https://creekvt.com/races/RacerIcon.png" />
                                 </a>
                                 :

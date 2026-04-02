@@ -171,7 +171,7 @@ export default function Race() {
                                         Registration Currently Closed - Check Back Soon To Sign Up
                                     </h5>
                                 }
-                                <a href={`./${raceName}/register`} className={`button button--large ${raceData.isRegOpen === 0 || new Date(raceData.date) < new Date() ? "disabled" + " " + styles["hidden"] : ""} ${styles['registration-button']}`}>
+                                <a href={raceName === 'wellsriverrumble'? `https://docs.google.com/forms/d/e/1FAIpQLSdFYuOYGQdD2lHQ33-oIvOFpYT6kGr0pwCSHGckWUVjhDueCQ/viewform?usp=dialog` : `./${raceName}/register`} className={`button button--large ${raceData.isRegOpen === 0 || new Date(raceData.date) < new Date() ? "disabled" + " " + styles["hidden"] : ""} ${styles['registration-button']}`}>
                                     Register &nbsp;<img src="https://creekvt.com/races/RacerIcon.png" />
                                 </a>
                             </div>
@@ -200,7 +200,7 @@ export default function Race() {
                                 <hr />
                                 {!(raceData.isRegOpen === 0 || new Date(raceData.date) < new Date()) ?
                                     <p>Looking to join the fun?&nbsp;
-                                        <a href={`./${raceName}/register`} className={`link-std link-bold link-small`}>Register Here</a>
+                                        <a href={raceName === 'wellsriverrumble'? `https://docs.google.com/forms/d/e/1FAIpQLSdFYuOYGQdD2lHQ33-oIvOFpYT6kGr0pwCSHGckWUVjhDueCQ/viewform?usp=dialog` : `./${raceName}/register`} className={`link-std link-bold link-small`}>Register Here</a>
                                     </p>
                                     :
                                     <p>&nbsp;</p>
